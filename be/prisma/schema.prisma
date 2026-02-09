@@ -8,11 +8,20 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  username     String?  @unique
-  email        String   @unique
+  id           Int       @id @default(autoincrement())
+  username     String?   @unique
+  email        String    @unique
   password     String
   photoProfile String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  examples     Example[]
+}
+
+model Example {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  Image       String
+  userId      User   @relation(fields: [id], references: [id])
 }

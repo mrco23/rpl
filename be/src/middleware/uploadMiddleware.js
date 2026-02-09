@@ -2,13 +2,11 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-// 1. Pastikan folder tujuan ada
 const uploadDir = "public/uploads";
 if (!fs.existsSync(uploadDir)) {
 	fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// 2. Atur penyimpanan
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, uploadDir);

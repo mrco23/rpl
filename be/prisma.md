@@ -7,8 +7,9 @@ ___
 ```javascript
 const EXAMPLE = await prisma.<NAMA-TABLE>.create({
     data: {
-    <NAMA-FIELD>: <VALUE>
-    <NAMA-FIELD>: <VALUE>
+    <NAMA-FIELD>: <VALUE>,
+    <NAMA-FIELD>: <VALUE>,
+    <NAMA-FIELD>: <VALUE>,
 }
     });
 ```
@@ -18,8 +19,7 @@ const EXAMPLE = await prisma.<NAMA-TABLE>.create({
 ___
 #### Mencari semua data yang ada di <NAMA-TABLE>
 ```javascript
-const EXAMPLE = await prisma.
-<NAMA-TABLE>.findMany();
+const EXAMPLE = await prisma.<NAMA-TABLE>.findMany();
 ```
 #### Memilih Kolom tertentu
 ```javascript
