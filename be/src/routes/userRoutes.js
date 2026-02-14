@@ -1,15 +1,17 @@
 import express from "express";
-import UserController from "../controllers/userController.js";
+import User from "../controllers/User.js";
 import {verifyToken} from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 
-const router = express.Router();
-const userController = new UserController()
-const {getMyProfile, updateProfile} = userController
+const userRoutes = express.Router();
+const userController = new User()
+const {getProfile, updateProfile, login, register} = userController
 
-router.use(verifyToken);
+userRoutes.post('/login', login)
+userRoutes.post('/register', register)
 
-router.get("/me", getMyProfile);
-router.put("/me", upload.single("photo"), updateProfile);
+userRoutes.use(verifyToken);
+userRoutes.get("/me", getProfile);
+userRoutes.put("/me", upload.single("photo"), updateProfile);
 
-export default router;
+export default userRoutes;

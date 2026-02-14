@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export const verifyToken = (req, res, next) => {
+	console.log('middleware untuk authorization')
 	const authHeader = req.headers["authorization"];
 
 	const token = authHeader && authHeader.split(" ")[1];
@@ -13,7 +14,7 @@ export const verifyToken = (req, res, next) => {
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 		// Jika token valid, simpan data user (id & email) ke dalam request
 		req.user = decoded;
-		next(); // Lanjut ke controller
+		next();
 	} catch (error) {
 		return res.status(403).json({ message: "Token tidak valid atau kadaluarsa." });
 	}
