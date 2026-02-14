@@ -1,4 +1,4 @@
-export function UserPresensi() {
+export function LoginPage() {
     return (
         <></>
     )
