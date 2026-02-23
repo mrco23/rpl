@@ -3,25 +3,40 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           Int       @id @default(autoincrement())
-  username     String?   @unique
-  email        String    @unique
-  password     String
-  photoProfile String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  examples     Example[]
+model Profil_Sekolah {
+  id_sekolah     Int              @id @default(autoincrement())
+  nama_sekolah   String           @unique(map: "Profil_Sekolah_namaSekolah_key")
+  visi           String
+  misi           String
+  deskripsi      String
+  logo           String
+  Kontak_Sekolah Kontak_Sekolah[]
+  Pengguna       Pengguna[]
 }
 
-model Example {
-  id          Int    @id @default(autoincrement())
-  title       String
-  description String
-  Image       String
-  userId      User   @relation(fields: [id], references: [id])
+model Kontak_Sekolah {
+  id_kontak      Int             @id @default(autoincrement())
+  alamat         String
+  no_telpon      String
+  email          String
+  media_sosial   String
+  id_sekolah     Int?
+  Profil_Sekolah Profil_Sekolah? @relation(fields: [id_sekolah], references: [id_sekolah], map: "Kontak_Sekolah_profil_SekolahIdSekolah_fkey")
+
+  @@index([id_sekolah], map: "Kontak_Sekolah_profil_SekolahIdSekolah_fkey")
+}
+
+model Pengguna {
+  id             Int             @id @default(autoincrement())
+  username       String          @unique
+  password       String
+  photo_profil   String?
+  id_sekolah     Int?
+  Profil_Sekolah Profil_Sekolah? @relation(fields: [id_sekolah], references: [id_sekolah], map: "Pengguna_profil_SekolahIdSekolah_fkey")
+
+  @@index([id_sekolah], map: "Pengguna_profil_SekolahIdSekolah_fkey")
 }

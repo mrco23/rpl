@@ -1,58 +1,58 @@
 import prisma from "../config/prisma.js";
 import bcrypt from "bcryptjs";
 import {generateToken, verifyToken} from "../utils/jwt.js";
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 
 class User {
     register = async (req, res) => {
         try {
-            const {name, email, password} = req.body;
+            const {username, password} = req.body;
 
-            const existingUser = await prisma.user.findUnique({where: {email}});
-            if (existingUser) return res.status(400).json({message: "Email sudah digunakan"});
+            const existingUser = await prisma.pengguna.findUnique({where: {username}});
+            if (existingUser) return res.status(400).json({message: "Nama Pengguna sudah digunakan"});
 
-            // Hash Password
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
-            // Simpan ke DB
-            const user = await prisma.user.create({
+            const user = await prisma.pengguna.create({
                 data: {
-                    name,
-                    email,
-                    password: hashedPassword,
+                    username, password: hashedPassword,
                 },
             });
 
             res
                 .status(201)
-                .json({message: "Register berhasil", data: {id: user.id, email: user.email}});
+                .json({message: "Register berhasil", data: {id: user.id, username: user.username}});
         } catch (error) {
             res.status(500).json({message: error.message});
         }
     };
     login = async (req, res) => {
         try {
-            const {email, password} = req.body;
-            const user = await prisma.user.findUnique({
-                where: {
-                    email: email
-                },
-                select: {
-                    id: true,
-                    email: true,
-                    password: true
+            const {username, password} = req.body;
+            if (!username || !password) return res.status(401).json({message: "Nama Pengguna atau Kata Sandi Tidak ada"});
+            console.log('hai')
+            const user = await prisma.pengguna.findUnique({
+                    where: {
+                        username: username
+                    }
                 }
-            });
-            if (!user) return res.status(400).json({message: "Email atau password salah"});
+            )
+
+            if (!user) return res.status(400).json({message: "Nama Pengguna atau Kata Sandi salah"});
 
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) return res.status(400).json({message: "Email atau password salah"});
 
             const token = generateToken({id: user.id})
 
-            res.json({message: "Login berhasil", token});
+            res.json({
+                message: "Login berhasil",
+                token,
+                username: user.username
+            })
+            ;
         } catch (error) {
             res.status(500).json({message: error.message});
         }
@@ -63,27 +63,21 @@ class User {
             const token = verifyToken(authHeaders);
             const {id} = token
 
-            const user = await prisma.user.findUnique({
-                where: {id: id},
-                select: {
-                    username:true,
-                    email:true,
-                    photoProfile: true,
-                    createdAt:true
-                },
+            const user = await prisma.pengguna.findUnique({
+                where: {id: id}, select: {
+                    username: true,
+                    photo_profil: true,
+                }
             })
-
-            console.log(user)
 
             if (!user) return res.status(401).json({message: 'User not found'});
 
-            if (user.photoProfile) {
-                user.photoUrl = `${req.protocol}://${req.get("host")}/uploads/${user.photoProfile}`;
+            if (user.photo_profil) {
+                user.photo_profil = `${req.protocol}://${req.get("host")}/uploads/${user.photo_profil}`;
             }
 
             res.json({
-                message: 'Success',
-                data: user,
+                message: 'Success', data: user,
             })
         } catch (error) {
             res.status(500).json({message: error.message});
@@ -99,18 +93,15 @@ class User {
             if (name) updateData.name = name;
 
             if (req.file) {
-                updateData.photoProfile = req.file.filename;
+                updateData.photo_profil = req.file.filename;
             }
 
-            const updatedUser = await prisma.user.update({
-                where: {id: userId},
-                data: updateData,
-                select: {id: true, name: true, email: true, photoProfile: true},
+            const updatedUser = await prisma.pengguna.update({
+                where: {id: userId}, data: updateData, select: {id: true, username: true, photo_profil: true},
             });
 
             res.json({
-                message: "Profil berhasil diupdate",
-                data: updatedUser,
+                message: "Profil berhasil diupdate", data: updatedUser,
             });
         } catch (error) {
             res.status(500).json({message: "Gagal update profil: " + error.message});
