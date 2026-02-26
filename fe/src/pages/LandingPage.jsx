@@ -4,11 +4,14 @@ import {AuthContext} from '../contexts/AuthContext.jsx'
 import {useNavigate} from "react-router";
 import {Button} from '@components/ui/Button.jsx'
 import Navbar from '@components/common/Navbar.jsx'
+import LoadingSpinner from "@contexts/ui/LoadingSpinner.jsx";
+
 export default function LandingPage() {
     const navigate = useNavigate();
 
-    return (<>
+    return (<div className={'min-w-screen min-h-screen flex justify-center items-center flex-col'}>
+        <LoadingSpinner/>
         <Navbar/>
         <Button onClick={() => navigate('/login')}>go to login !</Button>
-    </>);
+    </div>);
 }
