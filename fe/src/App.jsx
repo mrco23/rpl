@@ -16,17 +16,17 @@ import AdminLayout from './components/layout/AdminLayout.jsx'
 
 function App() {
     return (<>
-            <Routes>
-                <Route path="/" element={<LandingPage/>}/>
-                <Route path="/pendaftaran" element={<PendaftaranPage/>}/>
-                <Route path='/login' element={<LoginPage/>}/>
-                <Route path='/admin' element={<ProtectedRoute><AdminLayout/></ProtectedRoute>}>
-                    <Route index element={<AdminDashboard/>}/>
-                    <Route path={"profil-sekolah"} element={<AdminProfilSekolah/>}/>
-                </Route>
-                <Route path="*" element={<NotFoundPage/>}/>
-            </Routes>
-        </>);
+        <Routes>
+            <Route path="/" element={<LandingPage/>}/>
+            <Route path="/pendaftaran" element={<PendaftaranPage/>}/>
+            <Route path='/login' element={<LoginPage/>}/>
+            <Route path='/admin' element={<ProtectedRoute><AdminLayout/></ProtectedRoute>}>
+                <Route index element={<AdminDashboard/>}/>
+                <Route path={"profil-sekolah"} element={<AdminProfilSekolah/>}/>
+            </Route>
+            <Route path="*" element={<NotFoundPage/>}/>
+        </Routes>
+    </>);
 }
 
 export default App;

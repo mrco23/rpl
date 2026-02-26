@@ -12,6 +12,5 @@ export default function LandingPage() {
     return (<div className={'min-w-screen min-h-screen flex flex-col'}>
         {/*<LoadingSpinner/>*/}
         <Navbar/>
-        <Button onClick={() => navigate('/login')}>go to login !</Button>
     </div>);
 }
