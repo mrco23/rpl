@@ -1,5 +1,5 @@
 import {useNavigate} from 'react-router'
-import {Button} from '../../components/ui/Button.jsx'
+import {Button} from '@components/ui/Button.jsx'
 export default function AdminDashboard() {
     const navigate = useNavigate()
     const handleLogout = async () => {
