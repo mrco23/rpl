@@ -1,11 +1,12 @@
 import {Button} from "../ui/Button.jsx";
 import {IoSchoolSharp} from "react-icons/io5";
-import {NavLink, useNavigate} from "react-router";
+import {NavLink, useNavigate, useLocation} from "react-router";
 import {MdOutlineKeyboardArrowDown} from "react-icons/md";
 import {useState} from "react";
 
 export default function Navbar() {
     const navigate = useNavigate();
+    const location = useLocation()
 
     return (<>
             <div className={"h-10 bg-(--blue-dark-hover)"}></div>
