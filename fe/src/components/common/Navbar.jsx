@@ -13,7 +13,9 @@ export default function Navbar() {
             <nav className={"flex justify-between items-center h-20 bg-white w-full px-15 lg:px-30"}>
                 <p className={"text-xl text-slate-900"}>SMP Katolik St. Rafael</p>
                 <ul className="flex justify-between text-slate-900 gap-10">
-                    <li><NavLink to={"/"}>Beranda</NavLink></li>
+                    <li><NavLink to={"/"}
+                                 className={`${location.pathname == '/' && 'text-(--yellow-normal-hover)'}`}>Beranda</NavLink>
+                    </li>
                     <Dropdown dropOption={['satu', 'dua']}>Tentang</Dropdown>
                     <Dropdown dropOption={['satu', 'dua']}>Akademik</Dropdown>
                     <li><NavLink to={"/"}>SPMB</NavLink></li>
