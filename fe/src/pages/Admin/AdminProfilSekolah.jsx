@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router'
 import {useEffect, useState} from "react";
-import {getProfil} from "../../services/handlers/profilSekolah.js";
+import {getProfil} from "@services/handlers/profilSekolah.js";
 
 export default function AdminProfilSekolah() {
     const navigate = useNavigate()

@@ -1,9 +1,9 @@
 import {useState, useContext} from "react";
-import {login} from "../services/handlers/handleAuth.js";
-import {FormLogin} from '../components/common/Form.jsx'
-import {AuthContext} from '../contexts/AuthContext.jsx'
+import {login} from "@services/handlers/handleAuth.js";
+import {FormLogin} from '@components/common/Form.jsx'
+import {AuthContext} from '@contexts/AuthContext.jsx'
 import {useNavigate} from 'react-router'
-import {Button} from '../components/ui/Button.jsx'
+import {Button} from '@components/ui/Button.jsx'
 
 export default function LoginPage() {
     const {loading, setLoading, user, setUser} = useContext(AuthContext)

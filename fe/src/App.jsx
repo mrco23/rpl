@@ -11,7 +11,7 @@ import NotFoundPage from "./pages/NotFoundPage.jsx";
 import ProtectedRoute from "./Security/ProtectedRoute.jsx";
 
 /* Layouts */
-import AdminLayout from './components/layout/AdminLayout.jsx'
+import AdminLayout from '@components/layout/AdminLayout.jsx'
 
 
 function App() {
