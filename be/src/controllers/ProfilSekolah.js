@@ -26,8 +26,6 @@ class ProfilSekolah {
             console.error(err)
         }
     }
-
-
     updateProfilSekolah = async (req, res) => {
         try {
             const authHeaders = req.headers['authorization'].split(" ")[1]

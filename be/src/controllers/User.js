@@ -2,7 +2,9 @@ import prisma from "../config/prisma.js";
 import bcrypt from "bcryptjs";
 import {generateToken, verifyToken} from "../utils/jwt.js";
 import jwt from 'jsonwebtoken';
+import userService from "../services/UserService.js";
 
+const {getUserProfil, putUserProfil, createUser, getUser} = userService
 
 class User {
     register = async (req, res) => {
@@ -15,11 +17,7 @@ class User {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
-            const user = await prisma.pengguna.create({
-                data: {
-                    username, password: hashedPassword,
-                },
-            });
+            const user = await createUser(username, hashedPassword);
 
             res
                 .status(201)
@@ -32,13 +30,8 @@ class User {
         try {
             const {username, password} = req.body;
             if (!username || !password) return res.status(401).json({message: "Nama Pengguna atau Kata Sandi Tidak ada"});
-            console.log('hai')
-            const user = await prisma.pengguna.findUnique({
-                    where: {
-                        username: username
-                    }
-                }
-            )
+
+            const user = await getUser(username);
 
             if (!user) return res.status(400).json({message: "Nama Pengguna atau Kata Sandi salah"});
 
@@ -63,12 +56,7 @@ class User {
             const token = verifyToken(authHeaders);
             const {id} = token
 
-            const user = await prisma.pengguna.findUnique({
-                where: {id: id}, select: {
-                    username: true,
-                    photo_profil: true,
-                }
-            })
+            const user = await getUserProfil(id)
 
             if (!user) return res.status(401).json({message: 'User not found'});
 
@@ -88,17 +76,15 @@ class User {
             const userId = req.user.id;
             const {name} = req.body;
 
-            let updateData = {};
+            let updatedData = {};
 
-            if (name) updateData.name = name;
+            if (name) updatedData.name = name;
 
             if (req.file) {
-                updateData.photo_profil = req.file.filename;
+                updatedData.photo_profil = req.file.filename;
             }
 
-            const updatedUser = await prisma.pengguna.update({
-                where: {id: userId}, data: updateData, select: {id: true, username: true, photo_profil: true},
-            });
+            const updatedUser = await putUserProfil(userId, updatedData);
 
             res.json({
                 message: "Profil berhasil diupdate", data: updatedUser,
