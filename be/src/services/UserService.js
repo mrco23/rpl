@@ -1,38 +1,37 @@
 import prisma from '../config/prisma.js'
+import jwt from 'jsonwebtoken'
+import bcrypt from "bcryptjs";
 
-class UserService {
-    getUser(username) {
-        return prisma.pengguna.findUnique({
-                where: {
-                    username: username
-                }
-            }
-        )
-    }
-
-    getUserProfil(id) {
-        return prisma.pengguna.findUnique({
-            where: {id: id}, select: {
-                username: true,
-                photo_profil: true,
-            }
-        });
-    }
-
-    putUserProfil(id, updatedData) {
-        return prisma.pengguna.update({
-            where: {id: id}, data: updatedData, select: {id: true, username: true, photo_profil: true},
-        });
-    }
-
-    createUser(username, hashedPassword) {
-        return prisma.pengguna.create({
-            data: {
-                username, password: hashedPassword,
-            },
-        });
-    }
+export const getUser = (username) => {
+    return prisma.pengguna.findUnique({
+        where: {
+            username: username
+        }
+    })
 }
 
-const userService = new UserService();
-export default userService;
+export const createUser = async (username, password) => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return prisma.pengguna.create({
+        data: {
+            username, password: hashedPassword,
+        },
+    });
+}
+
+export const getUserProfil = (id) => {
+    return prisma.pengguna.findUnique({
+        where: {id: id}, select: {
+            username: true, photo_profil: true,
+        }
+    });
+}
+
+export const putUserProfil = (id, updatedData) => {
+    return prisma.pengguna.update({
+        where: {id: id}, data: updatedData, select: {id: true, username: true, photo_profil: true},
+    });
+}
+
+

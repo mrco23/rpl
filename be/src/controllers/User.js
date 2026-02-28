@@ -2,22 +2,17 @@ import prisma from "../config/prisma.js";
 import bcrypt from "bcryptjs";
 import {generateToken, verifyToken} from "../utils/jwt.js";
 import jwt from 'jsonwebtoken';
-import userService from "../services/UserService.js";
-
-const {getUserProfil, putUserProfil, createUser, getUser} = userService
+import {getUserProfil, putUserProfil, createUser, getUser} from "../services/UserService.js";
 
 class User {
     register = async (req, res) => {
         try {
             const {username, password} = req.body;
 
-            const existingUser = await prisma.pengguna.findUnique({where: {username}});
+            const existingUser = await getUser(username)
             if (existingUser) return res.status(400).json({message: "Nama Pengguna sudah digunakan"});
 
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-
-            const user = await createUser(username, hashedPassword);
+            const user = await createUser(username, password);
 
             res
                 .status(201)
@@ -93,7 +88,6 @@ class User {
             res.status(500).json({message: "Gagal update profil: " + error.message});
         }
     }
-
 }
 
 export default User;
