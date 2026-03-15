@@ -15,4 +15,4 @@ routes.use("/extracurriculars", extracurricularRoutes);
 routes.use("/news", newsRoutes);
 routes.use("/achievements", achievementsRoutes);
 
-export default routes;
+export default routes;  
