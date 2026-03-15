@@ -1,0 +1,25 @@
+import express from "express";
+import ContentController from "../controllers/ContentController.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
+
+const createContentRouter = (type) => {
+  const router = express.Router();
+  const controller = new ContentController(type);
+
+  // PUBLIC
+  router.get("/public", controller.listPublic);
+  router.get("/public/:id", controller.detailPublic);
+
+  // PRIVATE
+  router.get("", verifyToken, controller.list);
+  router.post("", verifyToken, upload.single("gambar"), controller.create);
+  router.put("/:id", verifyToken, upload.single("gambar"), controller.update);
+  router.delete("/:id", verifyToken, controller.remove);
+
+  return router;
+};
+
+export const extracurricularRoutes = createContentRouter("extracurriculars");
+export const newsRoutes = createContentRouter("news");
+export const achievementsRoutes = createContentRouter("achievements");

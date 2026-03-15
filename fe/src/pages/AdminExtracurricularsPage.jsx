@@ -1,35 +1,31 @@
-import React from 'react';
-import DashboardLayout from '@components/layout/DashboardLayout.jsx';
-import { TableWrapper } from '@components/ui/ui';
-import { mockData } from '@data/mockData';
-import { adminSidebar } from '@data/navigation.js';
+import ContentTablePage from "@components/admin/ContentTablePage.jsx";
+import { extracurricularApi } from "@services/siteContentService.js";
 
 export default function AdminExtracurricularsPage() {
   return (
-    <DashboardLayout role="Admin" title="Content Management Ekstrakurikuler" subtitle="Kelola daftar ekstrakurikuler beserta mentor dan jadwalnya." sidebarItems={adminSidebar}>
-      <div className="grid xl:grid-cols-[1.1fr_.9fr] gap-8">
-        <TableWrapper headers={['Nama', 'Deskripsi', 'Mentor', 'Aksi']}>
-          {mockData.extracurriculars.map((item) => (
-            <tr key={item.id} className="border-b border-slate-100">
-              <td className="px-6 py-4 font-medium text-slate-900">{item.name}</td>
-              <td className="px-6 py-4 text-slate-600">{item.description}</td>
-              <td className="px-6 py-4 text-slate-600">{item.mentor}</td>
-              <td className="px-6 py-4"><div className="flex gap-2"><button className="px-4 py-2 rounded-xl bg-blue-light text-blue-normal font-semibold">Edit</button><button className="px-4 py-2 rounded-xl bg-yellow-light text-yellow-dark-active font-semibold">Hapus</button></div></td>
-            </tr>
-          ))}
-        </TableWrapper>
-        <div className="bg-white rounded-[28px] p-8 shadow-[0_20px_45px_var(--color-blue-normal)_/12%] border border-slate-100">
-          <h2 className="text-2xl font-bold text-slate-900 mb-5">Tambah Data Baru</h2>
-          <form className="grid gap-5">
-            <input className="w-full px-5 py-4 rounded-2xl border border-slate-200" placeholder="Nama ekstrakurikuler" />
-            <input className="w-full px-5 py-4 rounded-2xl border border-slate-200" placeholder="Mentor" />
-            <input className="w-full px-5 py-4 rounded-2xl border border-slate-200" placeholder="Jadwal" />
-            <textarea rows="3" className="w-full px-5 py-4 rounded-2xl border border-slate-200" placeholder="Deskripsi" />
-            <input className="w-full px-5 py-4 rounded-2xl border border-slate-200" placeholder="URL gambar" />
-            <button type="button" className="px-7 py-4 rounded-2xl bg-blue-dark text-white font-bold">Simpan Data</button>
-          </form>
-        </div>
-      </div>
-    </DashboardLayout>
+    <ContentTablePage
+      title="Kelola Ekstrakurikuler"
+      subtitle="Kelola daftar ekstrakurikuler beserta mentor dan jadwalnya."
+      headers={["Nama", "Deskripsi", "Mentor", "Jadwal", "Operasi"]}
+      formTitle="Simpan Data"
+      resourceLabel="Ekstrakurikuler"
+      service={extracurricularApi}
+      fields={[
+        { name: "nama", label: "Nama ekstrakurikuler" },
+        { name: "mentor", label: "Mentor" },
+        { name: "jadwal", label: "Jadwal" },
+        { name: "deskripsi", label: "Deskripsi", type: "textarea", rows: 4 },
+        { name: "gambar", label: "Gambar", type: "file", required: false },
+      ]}
+      rowRenderer={(item, handleEdit, handleDelete) => (
+        <tr key={item.id_ekstrakurikuler} className="border-b border-slate-100">
+          <td className="px-6 py-4 font-medium text-slate-900">{item.nama}</td>
+          <td className="px-6 py-4 text-slate-600">{item.deskripsi}</td>
+          <td className="px-6 py-4 text-slate-600">{item.mentor}</td>
+          <td className="px-6 py-4 text-slate-600">{item.jadwal}</td>
+          <td className="px-6 py-4"><div className="flex gap-2"><button onClick={() => handleEdit(item)} className="px-4 py-2 rounded-xl bg-blue-light text-blue-normal font-semibold">Ubah</button><button onClick={() => handleDelete(item)} className="px-4 py-2 rounded-xl bg-yellow-light text-yellow-dark-active font-semibold">Delete</button></div></td>
+        </tr>
+      )}
+    />
   );
 }

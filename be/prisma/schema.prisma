@@ -8,35 +8,92 @@ datasource db {
 }
 
 model Profil_Sekolah {
-  id_sekolah     Int              @id @default(autoincrement())
-  nama_sekolah   String           @unique(map: "Profil_Sekolah_namaSekolah_key")
-  visi           String
-  misi           String
-  deskripsi      String
-  logo           String
-  Kontak_Sekolah Kontak_Sekolah[]
-  Pengguna       Pengguna[]
+  id_sekolah              Int               @id @default(autoincrement())
+  nama_sekolah            String            @unique(map: "Profil_Sekolah_nama_sekolah_key")
+  visi                    String            @db.Text
+  misi                    String            @db.Text
+  deskripsi               String            @db.Text
+  logo                    String?
+  nama_kepala_sekolah     String?
+  foto_kepala_sekolah     String?
+  sambutan_kepala_sekolah String?           @db.Text
+  kontak                  Kontak_Sekolah?
+  Pengguna                Pengguna[]
+  ekstrakurikuler         Ekstrakurikuler[]
+  berita                  Berita[]
+  prestasi                Prestasi[]
+
+  @@map("profil_sekolah")
 }
 
 model Kontak_Sekolah {
-  id_kontak      Int             @id @default(autoincrement())
-  alamat         String
+  id_kontak      Int            @id @default(autoincrement())
+  alamat         String         @db.Text
   no_telpon      String
   email          String
-  media_sosial   String
-  id_sekolah     Int?
-  Profil_Sekolah Profil_Sekolah? @relation(fields: [id_sekolah], references: [id_sekolah], map: "Kontak_Sekolah_profil_SekolahIdSekolah_fkey")
+  media_sosial   String?        @db.Text
+  whatsapp       String?
+  id_sekolah     Int            @unique
+  Profil_Sekolah Profil_Sekolah @relation(fields: [id_sekolah], references: [id_sekolah], onDelete: Cascade, map: "kontak_sekolah_id_sekolah_fkey")
 
-  @@index([id_sekolah], map: "Kontak_Sekolah_profil_SekolahIdSekolah_fkey")
+  @@map("kontak_sekolah")
 }
 
 model Pengguna {
   id             Int             @id @default(autoincrement())
   username       String          @unique
   password       String
+  name           String?
+  role           String          @default("admin")
   photo_profil   String?
   id_sekolah     Int?
-  Profil_Sekolah Profil_Sekolah? @relation(fields: [id_sekolah], references: [id_sekolah], map: "Pengguna_profil_SekolahIdSekolah_fkey")
+  Profil_Sekolah Profil_Sekolah? @relation(fields: [id_sekolah], references: [id_sekolah], map: "pengguna_id_sekolah_fkey")
 
-  @@index([id_sekolah], map: "Pengguna_profil_SekolahIdSekolah_fkey")
+  @@index([id_sekolah], map: "pengguna_id_sekolah_idx")
+  @@map("pengguna")
+}
+
+model Ekstrakurikuler {
+  id_ekstrakurikuler Int            @id @default(autoincrement())
+  nama               String
+  deskripsi          String         @db.Text
+  mentor             String
+  jadwal             String
+  gambar             String?
+  id_sekolah         Int
+  created_at         DateTime       @default(now())
+  updated_at         DateTime       @updatedAt
+  Profil_Sekolah     Profil_Sekolah @relation(fields: [id_sekolah], references: [id_sekolah], onDelete: Cascade)
+
+  @@index([id_sekolah], map: "ekstrakurikuler_id_sekolah_idx")
+  @@map("ekstrakurikuler")
+}
+
+model Berita {
+  id_berita      Int            @id @default(autoincrement())
+  judul          String
+  deskripsi      String         @db.Text
+  isi            String         @db.Text
+  gambar         String?
+  id_sekolah     Int
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  Profil_Sekolah Profil_Sekolah @relation(fields: [id_sekolah], references: [id_sekolah], onDelete: Cascade)
+
+  @@index([id_sekolah], map: "berita_id_sekolah_idx")
+  @@map("berita")
+}
+
+model Prestasi {
+  id_prestasi    Int            @id @default(autoincrement())
+  judul          String
+  deskripsi      String         @db.Text
+  gambar         String?
+  id_sekolah     Int
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  Profil_Sekolah Profil_Sekolah @relation(fields: [id_sekolah], references: [id_sekolah], onDelete: Cascade)
+
+  @@index([id_sekolah], map: "prestasi_id_sekolah_idx")
+  @@map("prestasi")
 }
