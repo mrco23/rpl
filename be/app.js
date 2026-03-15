@@ -21,5 +21,5 @@ app.use("/uploads", express.static("public/uploads"));
 app.use("/api", routes);
 
 app.listen(PORT, () => {
-    console.log(`Server Profil User berjalan di http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });

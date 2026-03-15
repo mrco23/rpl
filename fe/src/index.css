@@ -6,26 +6,26 @@ body {
 
 /* colour palette */
 @theme{
-    --yellow-light: #fffbe9;
-    --yellow-light-hover: #fffadd;
-    --yellow-light-active: #fef4ba;
-    --yellow-normal: #fddb1f;
-    --yellow-normal-hover: #e4c51c;
-    --yellow-normal-active: #caaf19;
-    --yellow-dark: #bea417;
-    --yellow-dark-hover: #988313;
-    --yellow-dark-active: #72630e;
-    --yellow-dark-darker: #594d0b;
+    --color-yellow-light: #fffbe9;
+    --color-yellow-light-hover: #fffadd;
+    --color-yellow-light-active: #fef4ba;
+    --color-yellow-normal: #fddb1f;
+    --color-yellow-normal-hover: #e4c51c;
+    --color-yellow-normal-active: #caaf19;
+    --color-yellow-dark: #bea417;
+    --color-yellow-dark-hover: #988313;
+    --color-yellow-dark-active: #72630e;
+    --color-yellow-dark-darker: #594d0b;
 
-    --blue-light: #e9edf9;
-    --blue-light-hover: #dfe4f6;
-    --blue-light-active: #bcc7eb;
-    --blue-normal: #274ac0;
-    --blue-normal-hover: #2343ad;
-    --blue-normal-active: #1f3b9a;
-    --blue-dark: #1d3890;
-    --blue-dark-hover: #172c73;
-    --blue-dark-active: #122156;
-    --blue-dark-darker: #0e1a43;
+    --color-blue-light: #e9edf9;
+    --color-blue-light-hover: #dfe4f6;
+    --color-blue-light-active: #bcc7eb;
+    --color-blue-normal: #274ac0;
+    --color-blue-normal-hover: #2343ad;
+    --color-blue-normal-active: #1f3b9a;
+    --color-blue-dark: #1d3890;
+    --color-blue-dark-hover: #172c73;
+    --color-blue-dark-active: #122156;
+    --color-blue-dark-darker: #0e1a43;
 
 }
