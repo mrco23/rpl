@@ -1,0 +1,23 @@
+meta {
+  name: Update
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{base_url}}/pengumuman/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "judul": "Libur Nasional",
+    "isi": "Libur selama seminggu",
+    "status": "published"
+  }
+}

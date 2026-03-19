@@ -2,18 +2,29 @@ import ContentService from "../services/ContentService.js";
 import { buildFileUrl } from "../utils/file.js";
 
 const imageFieldMap = {
-  extracurriculars: "gambar",
-  news: "gambar",
-  achievements: "gambar",
+  berita: "gambar",
+  prestasi: "gambar",
+  pengumuman: null, // no image field
+  program_unggulan: "gambar",
+  ekstrakurikuler: "gambar",
+  fasilitas: "gambar",
 };
+
+const normalizeDate = (item) => {
+    // If we need to send specific date format, handle it. Let's just return item for now.
+    return item;
+}
 
 const normalize = (req, type, item) => {
   if (!item) return item;
   const imageField = imageFieldMap[type];
-  return {
-    ...item,
-    [imageField]: buildFileUrl(req, item[imageField]),
-  };
+  if (imageField && item[imageField]) {
+    return {
+      ...item,
+      [imageField]: buildFileUrl(req, item[imageField]),
+    };
+  }
+  return item;
 };
 
 class ContentController {
@@ -52,7 +63,16 @@ class ContentController {
   create = async (req, res) => {
     try {
       const payload = { ...req.body };
-      if (req.file) payload[imageFieldMap[this.type]] = req.file.filename;
+      const imageField = imageFieldMap[this.type];
+      if (req.file && imageField) {
+          payload[imageField] = req.file.filename;
+      }
+      
+      // Some date fields in Pengumuman
+      if (payload.tampil_mulai) payload.tampil_mulai = new Date(payload.tampil_mulai);
+      if (payload.tampil_sampai) payload.tampil_sampai = new Date(payload.tampil_sampai);
+      if (payload.published_at) payload.published_at = new Date(payload.published_at);
+
       const created = await ContentService.create(this.type, req.user.id, payload);
       res.status(201).json({ message: "success", data: normalize(req, this.type, created) });
     } catch (error) {
@@ -63,7 +83,15 @@ class ContentController {
   update = async (req, res) => {
     try {
       const payload = { ...req.body };
-      if (req.file) payload[imageFieldMap[this.type]] = req.file.filename;
+      const imageField = imageFieldMap[this.type];
+      if (req.file && imageField) {
+          payload[imageField] = req.file.filename;
+      }
+
+      if (payload.tampil_mulai) payload.tampil_mulai = new Date(payload.tampil_mulai);
+      if (payload.tampil_sampai) payload.tampil_sampai = new Date(payload.tampil_sampai);
+      if (payload.published_at) payload.published_at = new Date(payload.published_at);
+
       const updated = await ContentService.update(this.type, req.user.id, req.params.id, payload);
       res.json({ message: "success", data: normalize(req, this.type, updated) });
     } catch (error) {

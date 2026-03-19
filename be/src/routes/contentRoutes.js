@@ -20,6 +20,9 @@ const createContentRouter = (type) => {
   return router;
 };
 
-export const extracurricularRoutes = createContentRouter("extracurriculars");
-export const newsRoutes = createContentRouter("news");
-export const achievementsRoutes = createContentRouter("achievements");
+export const beritaRoutes = createContentRouter("berita");
+export const prestasiRoutes = createContentRouter("prestasi");
+export const pengumumanRoutes = createContentRouter("pengumuman");
+export const programUnggulanRoutes = createContentRouter("program_unggulan");
+export const ekstrakurikulerRoutes = createContentRouter("ekstrakurikuler");
+export const fasilitasRoutes = createContentRouter("fasilitas");

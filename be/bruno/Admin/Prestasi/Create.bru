@@ -1,0 +1,23 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/prestasi
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "judul": "Juara 1 Lomba",
+    "deskripsi": "Tingkat Provinsi",
+    "tahun": "2024"
+  }
+}

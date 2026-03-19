@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "RPL Backend API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

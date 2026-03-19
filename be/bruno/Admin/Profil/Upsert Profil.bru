@@ -1,0 +1,23 @@
+meta {
+  name: Upsert Profil
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/profile
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "nama_sekolah": "SMK Hebat",
+    "visi": "Visi Unggul",
+    "misi": "Misi Cerdas"
+  }
+}
