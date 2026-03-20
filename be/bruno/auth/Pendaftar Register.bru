@@ -1,0 +1,26 @@
+meta {
+  name: Pendaftar Register
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/pendaftar/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nama_lengkap": "Elegantia Bardien Makarawung",
+    "alamat": "Pineleng sana dikit",
+    "no_hp": "086666666666"
+  }
+}
+
+script:post-response {
+  const data = res.getBody();
+  if (data.token) {
+    bru.setEnvVar("token", data.token);
+  }
+}
