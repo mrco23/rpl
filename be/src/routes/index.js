@@ -3,14 +3,13 @@ import userRoutes from "./userRoutes.js";
 import profilRoute from "./profilRoutes.js";
 import pendaftarRoute from "./pendaftarRoutes.js";
 import dokumenRoute from "./dokumenRoutes.js";
-import {
-  beritaRoutes,
-  prestasiRoutes,
-  pengumumanRoutes,
-  programUnggulanRoutes,
-  ekstrakurikulerRoutes,
-  fasilitasRoutes
-} from "./contentRoutes.js";
+
+import beritaRoutes from "./beritaRoutes.js";
+import prestasiRoutes from "./prestasiRoutes.js";
+import pengumumanRoutes from "./pengumumanRoutes.js";
+import programUnggulanRoutes from "./programUnggulanRoutes.js";
+import ekstrakurikulerRoutes from "./ekstrakurikulerRoutes.js";
+import fasilitasRoutes from "./fasilitasRoutes.js";
 
 const routes = express.Router();
 
@@ -27,4 +26,4 @@ routes.use("/fasilitas", fasilitasRoutes);
 routes.use("/pendaftar", pendaftarRoute);
 routes.use("/dokumen", dokumenRoute);
 
-export default routes;  
+export default routes;
