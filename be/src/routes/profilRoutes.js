@@ -1,27 +1,16 @@
 import express from "express";
-import ProfilController from "../controllers/ProfilController.js";
+import {
+  createProfil,
+  updateProfilData,
+  updateProfilImage,
+  upsertKontak,
+  getProfil,
+  getPublicProfil,
+} from "../controllers/ProfilController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 
 const profilRoute = express.Router();
-const profilController = new ProfilController();
-
-const {
-  upsertProfil,
-  upsertKontak,
-  getProfil,
-  getPublicProfil,
-} = profilController;
-
-const handleProfileUploads = (req, _res, next) => {
-  if (req.files?.logo?.[0]) {
-    req.body.logo = req.files.logo[0].filename;
-  }
-  if (req.files?.foto_kepala_sekolah?.[0]) {
-    req.body.foto_kepala_sekolah = req.files.foto_kepala_sekolah[0].filename;
-  }
-  next();
-};
 
 // PUBLIC
 profilRoute.get("/public", getPublicProfil);
@@ -29,7 +18,9 @@ profilRoute.get("/public", getPublicProfil);
 // PRIVATE
 profilRoute.get("", verifyToken, getProfil);
 
-// We combine both profile create/update logic in upsert due to relation 1:1 logically
+/* 
+  POST: Membuat profil pertama kali beserta gambar.
+*/
 profilRoute.post(
   "",
   verifyToken,
@@ -37,10 +28,34 @@ profilRoute.post(
     { name: "logo", maxCount: 1 },
     { name: "foto_kepala_sekolah", maxCount: 1 },
   ]),
-  handleProfileUploads,
-  upsertProfil
+  createProfil
 );
 
+/* 
+  PUT: Update hanya data profil (teks) tanpa gambar.
+*/
+profilRoute.put(
+  "",
+  verifyToken,
+  updateProfilData
+);
+
+/* 
+  PATCH: Khusus mengganti gambar logo / foto_kepala_sekolah.
+*/
+profilRoute.patch(
+  "/image",
+  verifyToken,
+  upload.fields([
+    { name: "logo", maxCount: 1 },
+    { name: "foto_kepala_sekolah", maxCount: 1 },
+  ]),
+  updateProfilImage
+);
+
+/* 
+  POST: Upsert kontak karena relasi 1:1 dan tanpa file.
+*/
 profilRoute.post(
   "/kontak",
   verifyToken,
