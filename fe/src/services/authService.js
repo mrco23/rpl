@@ -1,6 +1,9 @@
-import { instance } from "./api/axios.js";
+import { requestAPI } from "./api.js";
 
 export const loginService = async (payload) => {
-  const response = await instance.post("/login", payload);
-  return response.data;
+  return await requestAPI({
+    method: "POST",
+    url: "/login",
+    data: payload,
+  });
 };
