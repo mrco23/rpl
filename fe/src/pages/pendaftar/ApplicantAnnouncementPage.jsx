@@ -1,7 +1,7 @@
 import React from 'react';
 import DashboardLayout from '@components/layout/DashboardLayout';
-import { mockData } from '../data/mockData';
-import { applicantSidebar } from '../data/navigation';
+import { mockData } from '../../data/mockData';
+import { applicantSidebar } from '../../data/navigation';
 
 export default function ApplicantAnnouncementPage() {
   const mine = mockData.applicants.filter((item) => item.accountId === 'u-applicant');
