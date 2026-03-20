@@ -11,9 +11,7 @@ model Admin {
   id_admin    Int      @id @default(autoincrement())
   username    String   @unique
   password    String
-  nama        String
   foto_profil String?
-  is_active   Boolean  @default(true)
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
@@ -35,7 +33,6 @@ model Verifikator {
   password       String
   nama           String
   foto_profil    String?
-  is_active      Boolean  @default(true)
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
 
@@ -83,16 +80,13 @@ model Kontak {
 }
 
 model Berita {
-  id_berita    Int       @id @default(autoincrement())
-  judul        String
-  deskripsi    String    @db.Text
-  isi          String    @db.Text
-  gambar       String?
-  status       String    @default("draft")
-  published_at DateTime?
-  id_admin     Int
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt
+  id_berita  Int      @id @default(autoincrement())
+  judul      String
+  deskripsi  String   @db.Text
+  gambar     String?
+  id_admin   Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -101,16 +95,12 @@ model Berita {
 }
 
 model Pengumuman {
-  id_pengumuman Int       @id @default(autoincrement())
+  id_pengumuman Int      @id @default(autoincrement())
   judul         String
-  isi           String    @db.Text
-  status        String    @default("draft")
-  tampil_mulai  DateTime?
-  tampil_sampai DateTime?
-  tahun_ajaran  String?
+  deksripsi     String?  @db.Text
   id_admin      Int
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -152,7 +142,7 @@ model Ekstrakurikuler {
   id_ekstrakurikuler Int      @id @default(autoincrement())
   nama               String
   deskripsi          String   @db.Text
-  mentor             String?
+  pembina            String?  @db.Text
   jadwal             String?
   gambar             String?
   id_admin           Int
@@ -170,7 +160,7 @@ model Prestasi {
   judul       String
   deskripsi   String   @db.Text
   gambar      String?
-  tahun       String?
+  peraih      String
   id_admin    Int
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
@@ -198,8 +188,7 @@ model Pendaftar {
   nama_ibu           String?
   nama_wali          String?
   tahun_ajaran       String?
-  status_pendaftaran String    @default("draft")
-  is_archived        Boolean   @default(false)
+  status_pendaftaran String    @default("seleksi")
   created_at         DateTime  @default(now())
   updated_at         DateTime  @updatedAt
 
@@ -212,10 +201,8 @@ model Pendaftar {
 model Dokumen {
   id_dokumen         Int       @id @default(autoincrement())
   nama_dokumen       String
-  file_asli          String?
-  file_path          String
-  mime_type          String?
-  ukuran_file        Int?
+  mime_type          String
+  ukuran_file        Int
   versi_upload       Int       @default(1)
   status_verifikasi  String    @default("menunggu_verifikasi")
   catatan_verifikasi String?   @db.Text
