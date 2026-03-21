@@ -1,0 +1,15 @@
+meta {
+  name: Get All (Admin)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/prestasi
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

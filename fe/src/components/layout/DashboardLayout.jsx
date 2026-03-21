@@ -1,10 +1,16 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router';
-import { mockData } from '@data/mockData';
+import React from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import useAuth from "@contexts/useAuth.js";
 
 export default function DashboardLayout({ role, title, subtitle, sidebarItems, children }) {
   const location = useLocation();
-  const user = mockData.users.find((item) => item.role === role.toLowerCase()) || mockData.users[0];
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -12,23 +18,19 @@ export default function DashboardLayout({ role, title, subtitle, sidebarItems, c
         <aside className="bg-blue-dark-darker text-white p-6 lg:p-8">
           <div className="mb-10">
             <div className="text-sm uppercase tracking-[0.2em] text-blue-200 mb-2">{role}</div>
-            <div className="font-extrabold text-2xl leading-tight">{mockData.profile.schoolName}</div>
+            <div className="font-extrabold text-2xl leading-tight">Dashboard Sekolah</div>
           </div>
           <div className="space-y-2">
             {sidebarItems.map((item) => (
-              <Link
-                key={item.route}
-                to={item.route}
-                className={`block w-full text-left px-4 py-3 rounded-2xl font-medium transition hover:bg-white/10 ${location.pathname === item.route ? 'bg-yellow-normal text-yellow-dark-darker' : ''}`}
-              >
+              <Link key={item.route} to={item.route} className={`block w-full text-left px-4 py-3 rounded-2xl font-medium transition hover:bg-white/10 ${location.pathname === item.route ? "bg-yellow-normal text-yellow-dark-darker" : ""}`}>
                 {item.label}
               </Link>
             ))}
           </div>
           <div className="mt-10 p-4 rounded-2xl bg-white/10">
-            <div className="font-semibold">{user.name}</div>
-            <div className="text-sm text-blue-200 mb-4">{user.email}</div>
-            <button className="w-full py-3 rounded-xl bg-yellow-normal text-yellow-dark-darker font-bold">Logout</button>
+            <div className="font-semibold">{user?.name || user?.username || "Administrator"}</div>
+            <div className="text-sm text-blue-200 mb-4">{user?.role || "admin"}</div>
+            <button onClick={handleLogout} className="w-full py-3 rounded-xl bg-yellow-normal text-yellow-dark-darker font-bold">Logout</button>
           </div>
         </aside>
         <main className="p-4 md:p-8 lg:p-10 overflow-x-hidden">

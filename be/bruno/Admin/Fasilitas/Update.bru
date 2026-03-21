@@ -1,0 +1,22 @@
+meta {
+  name: Update
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{base_url}}/fasilitas/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "nama": "Laboratorium Komputer",
+    "deskripsi": "Fasilitas lab komputer"
+  }
+}

@@ -1,29 +1,29 @@
 import { Route, Routes } from "react-router";
 /* Pages */
-import LandingPage from './pages/LandingPage';
-import ExtracurricularPage from './pages/ExtracurricularPage';
-import AchievementsPage from './pages/AchievementsPage';
-import FacilitiesPage from './pages/FacilitiesPage';
-import NewsPage from './pages/NewsPage';
-import GuidePage from './pages/GuidePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import AdminOverviewPage from './pages/AdminOverviewPage';
-import AdminProfilePage from './pages/AdminProfilePage';
-import AdminAchievementsPage from './pages/AdminAchievementsPage';
-import AdminExtracurricularsPage from './pages/AdminExtracurricularsPage';
-import AdminNewsPage from './pages/AdminNewsPage';
-import AdminValidationPage from './pages/AdminValidationPage';
-import AdminNotificationsPage from './pages/AdminNotificationsPage';
-import AdminAccountsPage from './pages/AdminAccountsPage';
-import VerifierOverviewPage from './pages/VerifierOverviewPage';
-import VerifierDocumentsPage from './pages/VerifierDocumentsPage';
-import ApplicantOverviewPage from './pages/ApplicantOverviewPage';
-import ApplicantRegistrationPage from './pages/ApplicantRegistrationPage';
-import ApplicantUploadPage from './pages/ApplicantUploadPage';
-import ApplicantStatusPage from './pages/ApplicantStatusPage';
-import ApplicantAnnouncementPage from './pages/ApplicantAnnouncementPage';
-import NotFoundPage from './pages/NotFoundPage';
+import LandingPage from './pages/public/LandingPage';
+import ExtracurricularPage from './pages/public/ExtracurricularPage';
+import AchievementsPage from './pages/public/AchievementsPage';
+import FacilitiesPage from './pages/public/FacilitiesPage';
+import NewsPage from './pages/public/NewsPage';
+import GuidePage from './pages/public/GuidePage';
+import LoginPage from './pages/public/LoginPage';
+import RegisterPage from './pages/public/RegisterPage';
+import AdminOverviewPage from './pages/admin/AdminOverviewPage';
+import AdminProfilePage from './pages/admin/AdminProfilePage';
+import AdminAchievementsPage from './pages/admin/AdminAchievementsPage';
+import AdminExtracurricularsPage from './pages/admin/AdminExtracurricularsPage';
+import AdminNewsPage from './pages/admin/AdminNewsPage';
+import AdminValidationPage from './pages/admin/AdminValidationPage';
+import AdminNotificationsPage from './pages/admin/AdminNotificationsPage';
+import AdminAccountsPage from './pages/admin/AdminAccountsPage';
+import VerifierOverviewPage from './pages/verifikator/VerifierOverviewPage';
+import VerifierDocumentsPage from './pages/verifikator/VerifierDocumentsPage';
+import ApplicantOverviewPage from './pages/pendaftar/ApplicantOverviewPage';
+import ApplicantRegistrationPage from './pages/pendaftar/ApplicantRegistrationPage';
+import ApplicantUploadPage from './pages/pendaftar/ApplicantUploadPage';
+import ApplicantStatusPage from './pages/pendaftar/ApplicantStatusPage';
+import ApplicantAnnouncementPage from './pages/pendaftar/ApplicantAnnouncementPage';
+import NotFoundPage from './pages/public/NotFoundPage';
 
 
 function App() {

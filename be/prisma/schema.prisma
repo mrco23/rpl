@@ -7,36 +7,217 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Profil_Sekolah {
-  id_sekolah     Int              @id @default(autoincrement())
-  nama_sekolah   String           @unique(map: "Profil_Sekolah_namaSekolah_key")
-  visi           String
-  misi           String
-  deskripsi      String
-  logo           String
-  Kontak_Sekolah Kontak_Sekolah[]
-  Pengguna       Pengguna[]
+model Admin {
+  id_admin    Int      @id @default(autoincrement())
+  username    String   @unique
+  password    String
+  foto_profil String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  profil           Profil[]
+  kontak           Kontak[]
+  berita           Berita[]
+  pengumuman       Pengumuman[]
+  fasilitas        Fasilitas[]
+  program_unggulan ProgramUnggulan[]
+  ekstrakurikuler  Ekstrakurikuler[]
+  prestasi         Prestasi[]
+
+  @@map("admin")
 }
 
-model Kontak_Sekolah {
-  id_kontak      Int             @id @default(autoincrement())
-  alamat         String
-  no_telpon      String
-  email          String
-  media_sosial   String
-  id_sekolah     Int?
-  Profil_Sekolah Profil_Sekolah? @relation(fields: [id_sekolah], references: [id_sekolah], map: "Kontak_Sekolah_profil_SekolahIdSekolah_fkey")
-
-  @@index([id_sekolah], map: "Kontak_Sekolah_profil_SekolahIdSekolah_fkey")
-}
-
-model Pengguna {
-  id             Int             @id @default(autoincrement())
-  username       String          @unique
+model Verifikator {
+  id_verifikator Int      @id @default(autoincrement())
+  username       String   @unique
   password       String
-  photo_profil   String?
-  id_sekolah     Int?
-  Profil_Sekolah Profil_Sekolah? @relation(fields: [id_sekolah], references: [id_sekolah], map: "Pengguna_profil_SekolahIdSekolah_fkey")
+  nama           String
+  foto_profil    String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
 
-  @@index([id_sekolah], map: "Pengguna_profil_SekolahIdSekolah_fkey")
+  dokumen Dokumen[]
+
+  @@map("verifikator")
+}
+
+model Profil {
+  id_profil               Int      @id @default(autoincrement())
+  nama_sekolah            String   @unique
+  visi                    String   @db.Text
+  misi                    String   @db.Text
+  deskripsi               String   @db.Text
+  logo                    String?
+  nama_kepala_sekolah     String?
+  foto_kepala_sekolah     String?
+  sambutan_kepala_sekolah String?  @db.Text
+  id_admin                Int
+  created_at              DateTime @default(now())
+  updated_at              DateTime @updatedAt
+
+  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin], map: "profil_id_admin_idx")
+  @@map("profil")
+}
+
+model Kontak {
+  id_kontak    Int      @id @default(autoincrement())
+  alamat       String   @db.Text
+  no_telpon    String
+  email        String
+  media_sosial String?  @db.Text
+  whatsapp     String?
+  link_maps    String?
+  id_admin     Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin], map: "kontak_id_admin_idx")
+  @@map("kontak")
+}
+
+model Berita {
+  id_berita  Int      @id @default(autoincrement())
+  judul      String
+  deskripsi  String   @db.Text
+  gambar     String?
+  id_admin   Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin], map: "berita_id_admin_idx")
+  @@map("berita")
+}
+
+model Pengumuman {
+  id_pengumuman Int      @id @default(autoincrement())
+  judul         String
+  deksripsi     String?  @db.Text
+  id_admin      Int
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin], map: "pengumuman_id_admin_idx")
+  @@map("pengumuman")
+}
+
+model Fasilitas {
+  id_fasilitas Int      @id @default(autoincrement())
+  nama         String
+  deskripsi    String   @db.Text
+  gambar       String?
+  id_admin     Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin], map: "fasilitas_id_admin_idx")
+  @@map("fasilitas")
+}
+
+model ProgramUnggulan {
+  id_program Int      @id @default(autoincrement())
+  nama       String
+  deskripsi  String   @db.Text
+  gambar     String?
+  id_admin   Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin], map: "program_unggulan_id_admin_idx")
+  @@map("program_unggulan")
+}
+
+model Ekstrakurikuler {
+  id_ekstrakurikuler Int      @id @default(autoincrement())
+  nama               String
+  deskripsi          String   @db.Text
+  pembina            String?  @db.Text
+  jadwal             String?
+  gambar             String?
+  id_admin           Int
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin], map: "ekstrakurikuler_id_admin_idx")
+  @@map("ekstrakurikuler")
+}
+
+model Prestasi {
+  id_prestasi Int      @id @default(autoincrement())
+  judul       String
+  deskripsi   String   @db.Text
+  gambar      String?
+  peraih      String
+  id_admin    Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin], map: "prestasi_id_admin_idx")
+  @@map("prestasi")
+}
+
+model Pendaftar {
+  id_pendaftar       Int       @id @default(autoincrement())
+  no_pendaftaran     String    @unique
+  nama_lengkap       String
+  nisn               String?   @unique
+  nik                String?   @unique
+  jenis_kelamin      String?
+  tempat_lahir       String?
+  tanggal_lahir      DateTime? @db.Date
+  alamat             String    @db.Text
+  no_hp              String
+  email              String?
+  asal_sekolah       String?
+  nama_ayah          String?
+  nama_ibu           String?
+  nama_wali          String?
+  tahun_ajaran       String?
+  status_pendaftaran String    @default("seleksi")
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+
+  dokumen Dokumen[]
+
+  @@index([status_pendaftaran], map: "pendaftar_status_idx")
+  @@map("pendaftar")
+}
+
+model Dokumen {
+  id_dokumen         Int       @id @default(autoincrement())
+  nama_dokumen       String
+  mime_type          String
+  ukuran_file        Int
+  versi_upload       Int       @default(1)
+  status_verifikasi  String    @default("menunggu_verifikasi")
+  catatan_verifikasi String?   @db.Text
+  verified_at        DateTime?
+  id_pendaftar       Int
+  id_verifikator     Int?
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+
+  pendaftar   Pendaftar    @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
+  verifikator Verifikator? @relation(fields: [id_verifikator], references: [id_verifikator], onDelete: SetNull)
+
+  @@unique([id_pendaftar, nama_dokumen, versi_upload], map: "dokumen_versi_unique")
+  @@index([id_pendaftar], map: "dokumen_id_pendaftar_idx")
+  @@index([id_verifikator], map: "dokumen_id_verifikator_idx")
+  @@index([status_verifikasi], map: "dokumen_status_idx")
+  @@map("dokumen")
 }
