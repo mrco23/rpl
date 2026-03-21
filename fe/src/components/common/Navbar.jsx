@@ -1,62 +1,225 @@
-import {Button} from "../ui/Button.jsx";
-import {IoSchoolSharp} from "react-icons/io5";
-import {NavLink, useNavigate, useLocation} from "react-router";
-import {MdOutlineKeyboardArrowDown} from "react-icons/md";
-import {useState} from "react";
+import React, { useState } from "react";
+import logo from "@assets/logo.jpeg";
+import { ChevronDown } from "lucide-react";
+import { useLocation } from "react-router";
 
-export default function Navbar() {
-    const navigate = useNavigate();
-    const location = useLocation()
+function Navbar() {
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [openModal, setOpenModal] = useState(null);
+  const location = useLocation();
 
-    return (<>
-            <div className={"h-10 bg-(--blue-dark-hover)"}></div>
-            <nav className={"flex justify-between items-center h-20 bg-white w-full px-15 lg:px-30"}>
-                <p className={"text-xl text-slate-900"}>SMP Katolik St. Rafael</p>
-                <ul className="flex justify-between text-slate-900 gap-10">
-                    <li><NavLink to={"/"}
-                                 className={`${location.pathname == '/' && 'text-(--yellow-normal-hover)'}`}>Beranda</NavLink>
-                    </li>
-                    <Dropdown dropOption={['satu', 'dua']}>Tentang</Dropdown>
-                    <Dropdown dropOption={['satu', 'dua']}>Akademik</Dropdown>
-                    <li><NavLink to={"/"}>SPMB</NavLink></li>
-                    <li><NavLink to={"/"}>Berita</NavLink></li>
-                    <li><NavLink to={"/"}>Kontak</NavLink></li>
+  const handleDropdown = (menu) => {
+    setOpenDropdown(openDropdown === menu ? null : menu);
+  };
 
-                    <li>
-                        <button className={"cursor-pointer"} onClick={() => {
-                            navigate("/login")
-                        }}>Login
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-        </>
+  const handleModal = (content) => {
+    setOpenModal(content);
+    setOpenDropdown(null);
+  };
 
-    );
-}
+  return (
+    <>
+      <nav className="w-full bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="logo" className="w-10 h-10 object-contain" />
+          </div>
 
-function Dropdown({dropOption, children}) {
-    const [isOpen, setIsOpen] = useState(false);
-    const handleOpen = () => setIsOpen(prev => !prev);
-    const navigate = useNavigate();
-    return (<li><NavLink to={"/"}>
-        <div className="relative">
-            <button onClick={handleOpen} type="button"
-                    className={'flex items-center gap-3 relative cursor-pointer'}>
-                {children}
-                <MdOutlineKeyboardArrowDown className={`transition-all ${isOpen ? "rotate-180" : ""}`}/>
+          {/* Menu */}
+          <ul className="hidden md:flex space-x-8 text-gray-600 font-medium">
+            <li
+              className={`cursor-pointer ${
+                location.pathname === "/"
+                  ? "text-black font-bold"
+                  : "text-gray-600 hover:text-blue-600"
+              }`}
+            >
+              Beranda
+            </li>
+
+            {/* Tentang */}
+            <li className="relative flex items-center gap-1">
+              <div
+                onClick={() => handleDropdown("tentang")}
+                className={`flex items-center gap-1 cursor-pointer ${
+                  location.pathname.includes("/tentang")
+                    ? "text-black font-bold"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
+                Tentang
+                <ChevronDown
+                  size={16}
+                  className={
+                    location.pathname.includes("/tentang") ? "rotate-180" : ""
+                  }
+                />
+              </div>
+
+              {openDropdown === "tentang" && (
+                <div className="absolute top-8 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
+                  <p
+                    onClick={() => handleModal("sejarah")}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Sejarah Sekolah
+                  </p>
+                  <p
+                    onClick={() => handleModal("visi")}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Visi dan Misi Sekolah
+                  </p>
+                  <p
+                    onClick={() => handleModal("kepsek")}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Sambutan Kepala Sekolah
+                  </p>
+                  <p
+                    onClick={() => handleModal("fasilitas")}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Fasilitas Sekolah
+                  </p>
+                </div>
+              )}
+            </li>
+
+            {/* Akademik */}
+            <li className="relative flex items-center gap-1">
+              <div
+                onClick={() => handleDropdown("akademik")}
+                className="flex items-center gap-1 hover:text-blue-600 cursor-pointer"
+              >
+                Akademik
+                <ChevronDown size={16} />
+              </div>
+
+              {openDropdown === "akademik" && (
+                <div className="absolute top-8 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
+                  <p
+                    onClick={() => handleModal("kurikulum")}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Program Unggulan
+                  </p>
+                  <p
+                    onClick={() => handleModal("guru")}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Ekstrakurikuler
+                  </p>
+                  <p
+                    onClick={() => handleModal("guru")}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Prestasi Siswa
+                  </p>
+                </div>
+              )}
+            </li>
+
+            <li
+              className={`cursor-pointer ${
+                location.pathname === "/Panduan"
+                  ? "text-black font-bold"
+                  : "text-gray-600 hover:text-blue-600"
+              }`}
+            >
+              Panduan
+            </li>
+            <li
+              className={`cursor-pointer ${
+                location.pathname === "/Berita"
+                  ? "text-black font-bold"
+                  : "text-gray-600 hover:text-blue-600"
+              }`}
+            >
+              Berita
+            </li>
+          </ul>
+
+          {/* Button */}
+          <div className="hidden md:flex space-x-4">
+            <button className="text-blue-900 border border-blue-900 p-3 rounded-2xl font-medium hover:underline">
+              Masuk
+            </button>
+            <button className="bg-blue-800 text-white px-4 py-2 border rounded-2xl hover:bg-blue-900 transition">
+              Daftar Sekarang
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* MODAL */}
+      {openModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-[999]">
+          <div className="bg-white rounded-xl p-6 w-96 relative">
+            <button
+              onClick={() => setOpenModal(null)}
+              className="absolute top-2 right-3 text-gray-500"
+            >
+              ✖
             </button>
 
-            {isOpen ? (
-                <ul className="absolute bg-white min-w-45  gap-2 flex flex-col items-center justify-center shadow-lg mt-2 rounded-lg overflow-hidden">
-                    {dropOption.map((option) => (<li className="hover:bg-slate-300 w-full px-2 py-2.5">
-                        <button onClick={() => {
-                            navigate(`/${option}`)
-                        }}>{option}</button>
-                    </li>))}
+            {/* ISI MODAL */}
+            {openModal === "sejarah" && (
+              <>
+                <h2 className="text-xl font-bold mb-2">Sejarah Sekolah</h2>
+                <p>Ini isi sejarah sekolah...</p>
+              </>
+            )}
 
+            {openModal === "visi" && (
+              <>
+                <h2 className="text-xl font-bold mb-2">Visi & Misi</h2>
+                <p>Ini isi visi dan misi...</p>
+              </>
+            )}
 
-                </ul>) : ""}
+            {openModal === "kepsek" && (
+              <>
+                <h2 className="text-xl font-bold mb-2">
+                  Sambutan Kepala Sekolah
+                </h2>
+                <p>Ini isi sambutan kepala sekolah...</p>
+              </>
+            )}
+
+            {openModal === "fasilitas" && (
+              <>
+                <h2 className="text-xl font-bold mb-2">Fasilitas Sekolah</h2>
+                <p>Ini isi fasilitas sekolah...</p>
+              </>
+            )}
+
+            {openModal === "kurikulum" && (
+              <>
+                <h2 className="text-xl font-bold mb-2">Program Unggulan</h2>
+                <p>Ini isi program unggulan</p>
+              </>
+            )}
+
+            {openModal === "guru" && (
+              <>
+                <h2 className="text-xl font-bold mb-2">Ekstrkurikuler</h2>
+                <p>Ini isi data ekstrakurikuler...</p>
+              </>
+            )}
+
+            {openModal === "kurikulum" && (
+              <>
+                <h2 className="text-xl font-bold mb-2">Prestasi Siswa</h2>
+                <p>Ini isi Prestasi Siswa</p>
+              </>
+            )}
+          </div>
         </div>
-    </NavLink></li>)
+      )}
+    </>
+  );
 }
+
+export default Navbar;
