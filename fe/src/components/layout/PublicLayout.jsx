@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Footer } from "@components/ui/ui"; // kalau memang begitu
+import Footer from "@components/common/Footer"; // kalau memang begitu
 import Navbar from "@components/common/Navbar";
 import { getPublicProfile } from "@services/profileService.js";
 
-export default function PublicLayout({ children, hideFooter = false, hideNav = false }) {
+export default function PublicLayout({
+  children,
+  hideFooter = false,
+  hideNav = false,
+}) {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    getPublicProfile().then(setProfile).catch(() => setProfile(null));
+    getPublicProfile()
+      .then(setProfile)
+      .catch(() => setProfile(null));
   }, []);
 
   return (
