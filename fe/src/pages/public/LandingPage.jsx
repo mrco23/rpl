@@ -1,6 +1,9 @@
 import PublicLayout from "@components/layout/PublicLayout.jsx";
 import hero from "@assets/hero.jpg";
 import AboutSection from "./AboutSection";
+import QuotePage from "./QuotePage";
+import AchievementsPage from "./AchievementsPage";
+import NewsPage from "./NewsPage";
 
 export default function LandingPage() {
   return (
@@ -37,6 +40,9 @@ export default function LandingPage() {
           </div>
         </section>
         <AboutSection />
+        <QuotePage />
+        <AchievementsPage />
+        <NewsPage />
       </main>
     </PublicLayout>
   );

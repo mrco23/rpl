@@ -1,25 +1,66 @@
-import React, { useEffect, useState } from "react";
-import PublicLayout from "@components/layout/PublicLayout.jsx";
-import { ImageCard, SectionTitle } from "@components/ui/ui";
-import { achievementApi } from "@services/siteContentService.js";
+import img from "@assets/prestasi.jpg"; // ganti dengan gambar asli nanti
 
 export default function AchievementsPage() {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    achievementApi.getPublicList().then(setItems).catch(() => setItems([]));
-  }, []);
+  const achievements = [
+    {
+      title: "Juara 1 Lomba Sains",
+      desc: "Tingkat Kota Manado",
+      img: img,
+    },
+    {
+      title: "Juara Basket",
+      desc: "Kompetisi Antar Sekolah",
+      img: img,
+    },
+    {
+      title: "Juara Paduan Suara",
+      desc: "Festival Nasional",
+      img: img,
+    },
+  ];
 
   return (
-    <PublicLayout>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <SectionTitle eyebrow="Prestasi Lengkap" title="Deretan Pencapaian yang Menginspirasi" description="Prestasi merupakan hasil dari kultur belajar yang disiplin, pendampingan yang kuat, dan semangat juang siswa." />
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {items.map((item) => (
-            <ImageCard key={item.id_prestasi} image={item.gambar} title={item.judul} description={item.deskripsi} />
+    <section className="w-full py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-10 md:px-16">
+        
+        {/* TITLE */}
+        <div className="mb-10">
+          <h2 className="text-xl md:text-2xl font-semibold border-l-4 border-blue-600 pl-4">
+            Prestasi Sekolah Kami
+          </h2>
+        </div>
+
+        {/* CARD GRID */}
+        <div className="grid md:grid-cols-3 gap-6">
+          {achievements.map((item, index) => (
+            <div
+              key={index}
+              className="relative rounded-xl overflow-hidden shadow-md group"
+            >
+              {/* IMAGE */}
+              <img
+                src={item.img}
+                alt={item.title}
+                className="w-full h-96 object-cover"
+              />
+
+              {/* OVERLAY */}
+              <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-4 text-white">
+                <h3 className="font-semibold">{item.title}</h3>
+                <p className="text-sm">{item.desc}</p>
+              </div>
+            </div>
           ))}
         </div>
-      </main>
-    </PublicLayout>
+
+        {/* BUTTON */}
+        <div className="flex justify-center mt-10">
+          <button className="border border-gray-400 px-6 py-2 rounded-lg text-sm hover:bg-gray-100">
+            Lihat Semua
+          </button>
+        </div>
+
+      </div>
+    </section>
   );
 }

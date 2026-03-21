@@ -23,7 +23,7 @@ function Navbar() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img src={logo} alt="logo" className="w-10 h-10 object-contain" />
+            <img src={logo} alt="logo" className="w-17 h-17 object-contain" />
           </div>
 
           {/* Menu */}
