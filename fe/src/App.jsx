@@ -6,7 +6,7 @@ import AchievementsPage from "./pages/public/AchievementsPage";
 import FacilitiesPage from "./pages/public/FacilitiesPage";
 import NewsPage from "./pages/public/NewsPage";
 import GuidePage from "./pages/public/GuidePage";
-import LoginPage from "./pages/public/LoginPage";
+import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/public/RegisterPage";
 import AdminOverviewPage from "./pages/admin/AdminOverviewPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
