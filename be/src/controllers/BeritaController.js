@@ -36,8 +36,7 @@ export const create = async (req, res) => {
       payload.gambar = req.file.filename;
     }
 
-    const token = req.headers['authorization'].split(' ')[1]
-    const {id, role} = verifyToken(token);
+    const {id} = verifyToken(req);
 
     const created = await BeritaService.createBerita(id, payload);
     res.status(201).json({ message: "Berhasil membuat Berita", data: BeritaService.serialize(req, created) });

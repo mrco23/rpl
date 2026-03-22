@@ -7,7 +7,8 @@ export const generateToken = (payload) => {
     return jwt.sign(payload, SECRET_KEY, {expiresIn: '3 days'})
 }
 
-export const verifyToken = (token)=>{
+export const verifyToken = (req)=>{
+    const token = req.headers['authorization'].split(' ')[1]
     return jwt.verify(token, SECRET_KEY)
 }
 

@@ -14,11 +14,10 @@ import upload from "../middleware/uploadMiddleware.js";
 const beritaRoutes = express.Router();
 
 // PUBLIC
-beritaRoutes.get("/public", getPublic);
-beritaRoutes.get("/public/:id", getDetailPublic);
+beritaRoutes.get("/", getPublic);
+beritaRoutes.get("/:id", getDetailPublic);
 
 // PRIVATE
-beritaRoutes.get("", verifyToken, getAll);
 beritaRoutes.post("", verifyToken, upload.single("gambar"), create);
 beritaRoutes.put("/:id", verifyToken, updateData);
 beritaRoutes.patch("/:id/image", verifyToken, upload.single("gambar"), updateImage);
