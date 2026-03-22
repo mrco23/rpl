@@ -1,4 +1,5 @@
 import * as BeritaService from "../services/BeritaService.js";
+import {verifyToken} from "../utils/jwt.js";
 
 export const getAll = async (req, res) => {
   try {
@@ -35,7 +36,10 @@ export const create = async (req, res) => {
       payload.gambar = req.file.filename;
     }
 
-    const created = await BeritaService.createBerita(req.user.id, payload);
+    const token = req.headers['authorization'].split(' ')[1]
+    const {id, role} = verifyToken(token);
+
+    const created = await BeritaService.createBerita(id, payload);
     res.status(201).json({ message: "Berhasil membuat Berita", data: BeritaService.serialize(req, created) });
   } catch (error) {
     res.status(400).json({ message: error.message || "Gagal membuat Berita" });
@@ -44,7 +48,10 @@ export const create = async (req, res) => {
 
 export const updateData = async (req, res) => {
   try {
-    const updated = await BeritaService.updateBeritaData(req.user.id, req.params.id, req.body);
+    const token = req.headers['authorization'].split(' ')[1]
+    const {id, role} = verifyToken(token);
+
+    const updated = await BeritaService.updateBeritaData(id, req.params.id, req.body);
     res.json({ message: "Data berhasil diperbarui", data: BeritaService.serialize(req, updated) });
   } catch (error) {
     res.status(400).json({ message: error.message || "Gagal update data Berita" });

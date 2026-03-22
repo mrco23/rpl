@@ -32,7 +32,8 @@ class AdminController {
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) return res.status(400).json({message: "Nama Pengguna atau Kata Sandi salah"});
 
-            const token = generateToken({id: user.id});
+            const payload = {id: user.id_admin, role: 'admin'}
+            const token = generateToken(payload);
 
             res.json({
                 message: "Login berhasil",

@@ -29,9 +29,6 @@ export const createBerita = async (id_admin, payload) => {
     data: {
       judul: payload.judul,
       deskripsi: payload.deskripsi,
-      isi: payload.isi,
-      status: payload.status || "published",
-      published_at: payload.published_at ? new Date(payload.published_at) : new Date(),
       gambar: payload.gambar || null,
       id_admin: Number(id_admin),
     },
