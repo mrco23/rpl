@@ -33,7 +33,7 @@ class User {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) return res.status(400).json({ message: "Nama Pengguna atau Kata Sandi salah" });
 
-      const token = generateToken({ id: user.id, role: user.role });
+      const token = generateToken({ id: user.id});
 
       res.json({
         message: "Login berhasil",

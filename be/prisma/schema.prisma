@@ -9,7 +9,7 @@ datasource db {
 
 model Admin {
   id_admin    Int      @id @default(autoincrement())
-  username    String   @unique
+  username    String?  @unique
   password    String
   foto_profil String?
   created_at  DateTime @default(now())
@@ -175,6 +175,7 @@ model Pendaftar {
   id_pendaftar       Int       @id @default(autoincrement())
   no_pendaftaran     String    @unique
   nama_lengkap       String
+  kata_sandi         String?
   nisn               String?   @unique
   nik                String?   @unique
   jenis_kelamin      String?

@@ -8,6 +8,7 @@ async function main() {
 
     const hashedAdminPass = await bcrypt.hash("Admin123!", 10);
     const hashedVerifPass = await bcrypt.hash("Verif123!", 10);
+    const hashedPendaftarPass = await bcrypt.hash('Maltrian123!', 10);
 
     /* ──────────────────── ADMIN ──────────────────── */
     const admin = await prisma.admin.upsert({
@@ -257,6 +258,7 @@ async function main() {
         create: {
             no_pendaftaran: "RPL-2024-001",
             nama_lengkap: "Maltrian Ahmad Terok",
+            kata_sandi: hashedPendaftarPass,
             nisn: "0012345678",
             nik: "6371010102120001",
             jenis_kelamin: "L",
@@ -299,6 +301,7 @@ async function main() {
     console.log("  Login Akun:");
     console.log(`  Admin        → username: admin       | password: Admin123!`);
     console.log(`  Verifikator  → username: verifikator | password: Verif123!`);
+    console.log(`  Pendaftar    → username: Maltrian    | password: Maltrian123!`);
     console.log("──────────────────────────────");
 }
 

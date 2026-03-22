@@ -1,20 +1,19 @@
 meta {
-  name: Pendaftar Register
+  name: Login
   type: http
-  seq: 3
+  seq: 2
 }
 
 post {
-  url: {{base_url}}/pendaftar/register
+  url: {{base_url}}/pendaftar/login
   body: json
   auth: none
 }
 
 body:json {
   {
-    "nama_lengkap": "Elegantia Bardien Makarawung",
-    "alamat": "Pineleng sana dikit",
-    "no_hp": "086666666666"
+    "nisn": "0012345678",
+    "password": "Maltrian123!"
   }
 }
 

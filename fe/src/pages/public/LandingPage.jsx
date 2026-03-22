@@ -25,15 +25,16 @@ export default function LandingPage() {
               SMP KATOLIK <br /> ST.RAFAEL MANADO
             </h1>
             <p className="text-lg md:text-xl mb-6 max-w-xl">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation
+              Selamat datang di SMP Katolik St. Rafael Manado, sekolah yang
+              berkomitmen membentuk generasi berkarakter, berprestasi, dan
+              berlandaskan nilai-nilai iman. Bergabunglah bersama kami untuk
+              masa depan yang lebih baik.
             </p>
             <div className="flex gap-4">
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition cursor-pointer">
                 Daftar Sekarang
               </button>
-              <button className="border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition">
+              <button className="border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition cursor-pointer">
                 Pelajari Lebih Lanjut
               </button>
             </div>
