@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import logo from "@assets/logo.jpeg";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { useLocation } from "react-router";
+import { useNavigate } from "react-router"; //for login
 
 function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [openModal, setOpenModal] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleDropdown = (menu) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
@@ -15,6 +18,7 @@ function Navbar() {
   const handleModal = (content) => {
     setOpenModal(content);
     setOpenDropdown(null);
+    setIsOpen(false);
   };
 
   return (
@@ -23,7 +27,7 @@ function Navbar() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img src={logo} alt="logo" className="w-17 h-17 object-contain" />
+            <img src={logo} alt="logo" className="w-16 h-16 object-contain" />
           </div>
 
           {/* Menu */}
@@ -112,7 +116,7 @@ function Navbar() {
                     Ekstrakurikuler
                   </p>
                   <p
-                    onClick={() => handleModal("guru")}
+                    onClick={() => handleModal("prestasi")}
                     className="p-2 hover:bg-gray-100 cursor-pointer"
                   >
                     Prestasi Siswa
@@ -141,16 +145,81 @@ function Navbar() {
             </li>
           </ul>
 
-          {/* Button */}
+          {/* Button DESKTOP*/}
           <div className="hidden md:flex space-x-4">
-            <button className="text-blue-900 border border-blue-900 p-3 rounded-2xl font-medium hover:underline">
+            <button
+              onClick={() => navigate("/login")}
+              className="text-blue-900 border border-blue-900 p-3 rounded-2xl font-medium hover:underline cursor-pointer"
+            >
               Masuk
             </button>
-            <button className="bg-blue-800 text-white px-4 py-2 border rounded-2xl hover:bg-blue-900 transition">
+            <button className="bg-blue-800 text-white px-4 py-2 border rounded-2xl hover:bg-blue-900 transition cursor-pointer">
               Daftar Sekarang
             </button>
           </div>
+
+          {/* ✅ HAMBURGER BUTTON (MOBILE) */}
+          <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
+
+        {isOpen && (
+          <div className="md:hidden px-6 pb-4 space-y-4 text-gray-700 font-medium">
+            <p className="cursor-pointer">Beranda</p>
+
+            <div>
+              <p
+                onClick={() => handleDropdown("tentang")}
+                className="flex justify-between cursor-pointer"
+              >
+                Tentang <ChevronDown size={16} />
+              </p>
+              {openDropdown === "tentang" && (
+                <div className="ml-4 mt-2 space-y-2 text-sm">
+                  <p onClick={() => handleModal("sejarah")}>Sejarah Sekolah</p>
+                  <p onClick={() => handleModal("visi")}>Visi Misi</p>
+                  <p onClick={() => handleModal("kepsek")}>Sambutan Kepsek</p>
+                  <p onClick={() => handleModal("fasilitas")}>Fasilitas</p>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <p
+                onClick={() => handleDropdown("akademik")}
+                className="flex justify-between cursor-pointer"
+              >
+                Akademik <ChevronDown size={16} />
+              </p>
+              {openDropdown === "akademik" && (
+                <div className="ml-4 mt-2 space-y-2 text-sm">
+                  <p onClick={() => handleModal("kurikulum")}>
+                    Program Unggulan
+                  </p>
+                  <p onClick={() => handleModal("guru")}>Ekstrakurikuler</p>
+                  <p onClick={() => handleModal("prestasi")}>Prestasi</p>
+                </div>
+              )}
+            </div>
+
+            <p className="cursor-pointer">Panduan</p>
+            <p className="cursor-pointer">Berita</p>
+
+            {/* BUTTON MOBILE */}
+            <div className="flex flex-col gap-2 pt-2">
+              <button
+                onClick={() => navigate("/login")}
+                className="border border-blue-900 py-2 rounded-xl"
+              >
+                Masuk
+              </button>
+              <button className="bg-blue-800 text-white py-2 rounded-xl">
+                Daftar Sekarang
+              </button>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* MODAL */}
@@ -209,7 +278,7 @@ function Navbar() {
               </>
             )}
 
-            {openModal === "kurikulum" && (
+            {openModal === "prestasi" && (
               <>
                 <h2 className="text-xl font-bold mb-2">Prestasi Siswa</h2>
                 <p>Ini isi Prestasi Siswa</p>
