@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PublicLayout from "@components/layout/PublicLayout";
-import hero from "@assets/login.jpg";
+import hero from "@assets/hero.jpg";
 import { Eye, EyeOff } from "lucide-react";
 import { loginService } from "@services/authService.js";
 import useAuth from "@contexts/useAuth.js";
@@ -64,17 +64,17 @@ export default function LoginPage() {
 
   return (
     <PublicLayout hideFooter>
-      <div className="min-h-screen flex">
+      <div className="flex min-h-full">
         {/* LEFT SIDE */}
         <div className="hidden md:flex w-1/2 min-h-screen relative overflow-hidden">
           {/* ✅ BACKGROUND IMAGE (BLUR) */}
           <div
-            className="absolute inset-0 bg-cover bg-center blur-sm scale-105"
+            className="absolute inset-0 bg-cover bg-center blur-[2px] scale-105"
             style={{ backgroundImage: `url(${hero})` }}
           ></div>
 
           {/* ✅ OVERLAY GELAP */}
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-black/35"></div>
 
           {/* ✅ CONTENT (TIDAK BLUR) */}
           <div className="relative z-10 w-full flex flex-col justify-center p-16 text-white">
@@ -92,20 +92,24 @@ export default function LoginPage() {
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="flex w-full md:w-1/2 items-center justify-center px-6">
-          <form onSubmit={handleLogin} className="w-full max-w-md">
-            <h2 className="text-3xl font-bold mb-6">Masuk ke Akun</h2>
+        <div className="flex w-full  md:w-1/2 items-start justify-center px-14 pt-8">
+          <form
+            onSubmit={handleLogin}
+            className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-9"
+          >
+            <h2 className="text-4xl font-bold mb-8">Masuk ke Akun</h2>
 
             {/* ROLE */}
-            <div className="mb-4">
-              <label className="text-sm">Masuk sebagai</label>
+            <div className="mb-5">
+              <label className="text-lg">Masuk sebagai</label>
               <select
                 value={role}
                 onChange={(e) => {
                   setRole(e.target.value);
                   setIdentifier(e.target.value);
                 }}
-                className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-blue-200 rounded-lg px-3 py-4 mt-1 
+                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
               >
                 <option value="pendaftar">Pendaftar</option>
                 <option value="verifikator">Verifikator</option>
@@ -114,8 +118,8 @@ export default function LoginPage() {
             </div>
 
             {/* EMAIL */}
-            <div className="mb-4">
-              <label className="text-sm">
+            <div className="mb-5">
+              <label className="text-lg">
                 {role === "pendaftar" ? "NISN" : "username  "}
               </label>
               <input
@@ -126,27 +130,33 @@ export default function LoginPage() {
                 }
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                className="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-blue-400 rounded-lg px-3 py-4 mt-1 
+                focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition"
               />
             </div>
 
             {/* PASSWORD */}
-            <div className="mb-4 relative">
-              <label className="text-sm">Kata Sandi</label>
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                placeholder="Masukkan kata sandi"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border rounded-lg px-3 py-2 mt-1 pr-10 focus:ring-2 focus:ring-blue-500"
-              />
-              <span
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-9 cursor-pointer text-gray-500"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </span>
+            <div className="mb-4">
+              <label className="text-lg">Kata Sandi</label>
+
+              <div className="relative mt-1">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  placeholder="Masukkan kata sandi"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full border border-slate-300 rounded-lg px-3 py-4 pr-10 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-blue-500 transition"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </span>
+              </div>
             </div>
 
             {error && (
@@ -158,7 +168,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition"
+              className="w-full bg-blue-700 text-white py-3 rounded-lg hover:bg-blue-800 transition"
             >
               {submitting ? "Memproses..." : "Masuk"}
             </button>

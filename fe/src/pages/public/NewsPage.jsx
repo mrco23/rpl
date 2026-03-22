@@ -1,5 +1,6 @@
 import img from "@assets/berita.jpg";
 import { ArrowRight } from "lucide-react";
+import PublicLayout from "@components/layout/PublicLayout";
 
 export default function NewsPage() {
   const news = [
@@ -42,57 +43,59 @@ export default function NewsPage() {
   ];
 
   return (
-    <section className="w-full py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-10 md:px-10">
-        {/* TITLE */}
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-            Berita Terbaru
-          </h2>
-          <p className="text-gray-600 text-sm md:text-base">
-            Ikuti terus aktivitas perkembangan sekolah kami
-          </p>
-        </div>
+    <PublicLayout>
+      <section className="w-full py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-10 md:px-10">
+          {/* TITLE */}
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+              Berita Terbaru
+            </h2>
+            <p className="text-gray-600 text-sm md:text-base">
+              Ikuti terus aktivitas perkembangan sekolah kami
+            </p>
+          </div>
 
-        {/* GRID */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
-          {news.map((item, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
-            >
-              {/* IMAGE */}
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-40 object-cover gap"
-              />
+          {/* GRID */}
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
+            {news.map((item, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
+              >
+                {/* IMAGE */}
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-full h-40 object-cover gap"
+                />
 
-              {/* CONTENT */}
-              <div className="p-4">
-                <p className="text-xs text-gray-500 mb-1">{item.date}</p>
-                <h3 className="font-semibold text-sm mb-2 line-clamp-2">
-                  {item.title}
-                </h3>
-                <p className="text-xs text-gray-600 line-clamp-2">
-                  {item.desc}
-                </p>
+                {/* CONTENT */}
+                <div className="p-4">
+                  <p className="text-xs text-gray-500 mb-1">{item.date}</p>
+                  <h3 className="font-semibold text-sm mb-2 line-clamp-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 line-clamp-2">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        {/* BUTTON */}
-        <div className="flex justify-center mt-10">
-          <button className="flex items-center gap-2 group border-2 p-4 rounded-2xl">
-            Lihat Semua
-            <ArrowRight
-              size={16}
-              className="group-hover:translate-x-1 transition"
-            />
-          </button>
+          {/* BUTTON */}
+          <div className="flex justify-center mt-10">
+            <button className="flex items-center gap-2 group border-2 p-4 rounded-2xl">
+              Lihat Semua
+              <ArrowRight
+                size={16}
+                className="group-hover:translate-x-1 transition"
+              />
+            </button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </PublicLayout>
   );
 }
