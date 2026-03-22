@@ -3,6 +3,7 @@ import logo from "@assets/logo.jpeg";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router"; //for login
+import { Link } from "react-router";
 
 function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -24,22 +25,25 @@ function Navbar() {
   return (
     <>
       <nav className="w-full bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img src={logo} alt="logo" className="w-16 h-16 object-contain" />
+            <img src={logo} alt="logo" className="w-12 h-12 object-contain" />
           </div>
 
           {/* Menu */}
           <ul className="hidden md:flex space-x-8 text-gray-600 font-medium">
-            <li
-              className={`cursor-pointer ${
-                location.pathname === "/"
-                  ? "text-black font-bold"
-                  : "text-gray-600 hover:text-blue-600"
-              }`}
-            >
-              Beranda
+            <li className="cursor-pointer">
+              <Link
+                to="/"
+                className={`${
+                  location.pathname === "/"
+                    ? "text-black font-bold"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
+                Beranda
+              </Link>
             </li>
 
             {/* Tentang */}
@@ -125,23 +129,29 @@ function Navbar() {
               )}
             </li>
 
-            <li
-              className={`cursor-pointer ${
-                location.pathname === "/Panduan"
-                  ? "text-black font-bold"
-                  : "text-gray-600 hover:text-blue-600"
-              }`}
-            >
-              Panduan
+            <li>
+              <Link
+                to="/panduan"
+                className={`${
+                  location.pathname === "/panduan"
+                    ? "text-black font-bold"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
+                Panduan
+              </Link>
             </li>
-            <li
-              className={`cursor-pointer ${
-                location.pathname === "/Berita"
-                  ? "text-black font-bold"
-                  : "text-gray-600 hover:text-blue-600"
-              }`}
-            >
-              Berita
+            <li>
+              <Link
+                to="/berita"
+                className={`${
+                  location.pathname === "/berita"
+                    ? "text-black font-bold"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
+                Berita
+              </Link>
             </li>
           </ul>
 
@@ -166,7 +176,9 @@ function Navbar() {
 
         {isOpen && (
           <div className="md:hidden px-6 pb-4 space-y-4 text-gray-700 font-medium">
-            <p className="cursor-pointer">Beranda</p>
+            <Link to="/" className="block">
+              Beranda
+            </Link>
 
             <div>
               <p
@@ -203,8 +215,13 @@ function Navbar() {
               )}
             </div>
 
-            <p className="cursor-pointer">Panduan</p>
-            <p className="cursor-pointer">Berita</p>
+            <Link to="/panduan" className="block">
+              Panduan
+            </Link>
+
+            <Link to="/berita" className="block">
+              Berita
+            </Link>
 
             {/* BUTTON MOBILE */}
             <div className="flex flex-col gap-2 pt-2">
