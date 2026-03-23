@@ -1,46 +1,59 @@
 import img from "@assets/berita.jpg";
 import { ArrowRight } from "lucide-react";
 import PublicLayout from "@components/layout/PublicLayout";
+import { useEffect, useState } from "react";
 
 export default function NewsPage() {
-  const news = [
-    {
-      title: "Kegiatan Belajar Mengajar Tatap Muka Dimulai",
-      date: "12 Jan 2025",
-      desc: "Sekolah kembali membuka kegiatan belajar secara langsung dengan protokol kesehatan.",
-      img: img,
-    },
-    {
-      title: "Siswa Raih Juara Olimpiade",
-      date: "10 Jan 2025",
-      desc: "Prestasi membanggakan diraih oleh siswa dalam kompetisi tingkat nasional.",
-      img: img,
-    },
-    {
-      title: "Workshop Digital Learning",
-      date: "5 Jan 2025",
-      desc: "Guru mengikuti pelatihan untuk meningkatkan kualitas pembelajaran digital.",
-      img: img,
-    },
-    {
-      title: "Kegiatan Ekstrakurikuler Aktif Kembali",
-      date: "2 Jan 2025",
-      desc: "Berbagai kegiatan ekstrakurikuler kembali berjalan dengan antusias siswa.",
-      img: img,
-    },
-    {
-      title: "Perayaan Natal Sekolah",
-      date: "25 Des 2024",
-      desc: "Seluruh warga sekolah merayakan Natal bersama dengan penuh sukacita.",
-      img: img,
-    },
-    {
-      title: "Lomba Antar Kelas",
-      date: "20 Des 2024",
-      desc: "Kegiatan lomba antar kelas berlangsung meriah dan penuh semangat.",
-      img: img,
-    },
-  ];
+  // const news = [
+  //   {
+  //     title: "Kegiatan Belajar Mengajar Tatap Muka Dimulai",
+  //     date: "12 Jan 2025",
+  //     desc: "Sekolah kembali membuka kegiatan belajar secara langsung dengan protokol kesehatan.",
+  //     img: img,
+  //   },
+  //   {
+  //     title: "Siswa Raih Juara Olimpiade",
+  //     date: "10 Jan 2025",
+  //     desc: "Prestasi membanggakan diraih oleh siswa dalam kompetisi tingkat nasional.",
+  //     img: img,
+  //   },
+  //   {
+  //     title: "Workshop Digital Learning",
+  //     date: "5 Jan 2025",
+  //     desc: "Guru mengikuti pelatihan untuk meningkatkan kualitas pembelajaran digital.",
+  //     img: img,
+  //   },
+  //   {
+  //     title: "Kegiatan Ekstrakurikuler Aktif Kembali",
+  //     date: "2 Jan 2025",
+  //     desc: "Berbagai kegiatan ekstrakurikuler kembali berjalan dengan antusias siswa.",
+  //     img: img,
+  //   },
+  //   {
+  //     title: "Perayaan Natal Sekolah",
+  //     date: "25 Des 2024",
+  //     desc: "Seluruh warga sekolah merayakan Natal bersama dengan penuh sukacita.",
+  //     img: img,
+  //   },
+  //   {
+  //     title: "Lomba Antar Kelas",
+  //     date: "20 Des 2024",
+  //     desc: "Kegiatan lomba antar kelas berlangsung meriah dan penuh semangat.",
+  //     img: img,
+  //   },
+  // ];
+
+  const [news, setNews] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/berita")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setNews(data.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <PublicLayout>
@@ -58,26 +71,28 @@ export default function NewsPage() {
 
           {/* GRID */}
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
-            {news.map((item, index) => (
+            {news.map((item) => (
               <div
-                key={index}
+                key={item.id_berita}
                 className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
               >
                 {/* IMAGE */}
                 <img
-                  src={item.img}
-                  alt={item.title}
+                  src={item.gambar || img}
+                  alt={item.judul}
                   className="w-full h-40 object-cover gap"
                 />
 
                 {/* CONTENT */}
                 <div className="p-4">
-                  <p className="text-xs text-gray-500 mb-1">{item.date}</p>
+                  <p className="text-xs text-gray-500 mb-1">
+                    {item.created_at}
+                  </p>
                   <h3 className="font-semibold text-sm mb-2 line-clamp-2">
-                    {item.title}
+                    {item.judul}
                   </h3>
                   <p className="text-xs text-gray-600 line-clamp-2">
-                    {item.desc}
+                    {item.deskripsi}
                   </p>
                 </div>
               </div>
