@@ -3,6 +3,30 @@ import {nanoid} from "nanoid";
 
 
 export const register = async (payload) => {
+    const now = new Date();
+    const activeGelombang = await prisma.gelombang.findFirst({
+        where: {
+            tanggal_mulai: { lte: now },
+            tanggal_selesai: { gte: now }
+        }
+    });
+
+    if (!activeGelombang) {
+        const error = new Error("Pendaftaran saat ini ditutup");
+        error.statusCode = 400;
+        throw error;
+    }
+
+    const count = await prisma.pendaftar.count({
+        where: { id_gelombang: activeGelombang.id_gelombang }
+    });
+
+    if (count >= activeGelombang.kuota) {
+        const error = new Error("Kuota pendaftaran gelombang ini sudah penuh");
+        error.statusCode = 400;
+        throw error;
+    }
+
     const no_pendaftaran = payload.no_pendaftaran || `REG-${nanoid(8).toUpperCase()}`;
 
     if (payload.nisn) {
@@ -31,7 +55,8 @@ export const register = async (payload) => {
         nama_ibu: payload.nama_ibu || null,
         nama_wali: payload.nama_wali || null,
         tahun_ajaran: payload.tahun_ajaran || null,
-        status_pendaftaran: "draft",
+        id_gelombang: activeGelombang.id_gelombang,
+        status_pendaftaran: "menunggu_verifikasi",
     };
 
     return prisma.pendaftar.create({data});
