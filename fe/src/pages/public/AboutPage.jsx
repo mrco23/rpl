@@ -1,6 +1,6 @@
 import labImg from "@assets/about.jpg";
 
-export default function AboutSection() {
+export default function AboutPage() {
   const stats = [
     { value: "20", label: "Tenaga Pengajar" },
     { value: "300", label: "Peserta Didik" },

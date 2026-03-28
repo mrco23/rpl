@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 /* Pages */
 import LandingPage from "./pages/public/LandingPage";
 import ExtracurricularPage from "./pages/public/ExtracurricularPage";
@@ -25,15 +25,20 @@ import ApplicantStatusPage from "./pages/pendaftar/ApplicantStatusPage";
 import ApplicantAnnouncementPage from "./pages/pendaftar/ApplicantAnnouncementPage";
 import NotFoundPage from "./pages/public/NotFoundPage";
 
+/* scrool */
+import ScrolTop from "./components/common/ScrolTop";
+
 function App() {
   return (
     <>
+      <ScrolTop />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/ekstrakurikuler" element={<ExtracurricularPage />} />
         <Route path="/prestasi" element={<AchievementsPage />} />
         <Route path="/fasilitas" element={<FacilitiesPage />} />
         <Route path="/berita" element={<NewsPage />} />
+
         <Route path="/panduan" element={<GuidePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

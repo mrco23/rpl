@@ -15,7 +15,7 @@ function Footer({ profile }) {
           <div>
             <h2 className="text-lg font-bold mb-2">
               {profile?.nama_sekolah || "Website Sekolah"}
-            </h2>
+            </h2> 
             <p className="text-sm text-gray-700 leading-relaxed mb-4">
               {profile?.deskripsi ||
                 "Mendidik generasi beriman, berkarakter, dan berprestasi untuk masa depan yang lebih baik."}

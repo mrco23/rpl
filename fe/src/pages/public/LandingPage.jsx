@@ -1,9 +1,9 @@
 import PublicLayout from "@components/layout/PublicLayout.jsx";
 import hero from "@assets/hero.jpg";
-import AboutSection from "./AboutSection";
+import AboutPage from "./AboutPage";
 import QuotePage from "./QuotePage";
 import AchievementsPage from "./AchievementsPage";
-import NewsPage from "./NewsPage";
+import NewsPreview from "./NewsPreview";
 
 export default function LandingPage() {
   return (
@@ -40,10 +40,10 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        <AboutSection />
+        <AboutPage />
         <QuotePage />
         <AchievementsPage />
-        <NewsPage />
+        <NewsPreview />
       </main>
     </PublicLayout>
   );
