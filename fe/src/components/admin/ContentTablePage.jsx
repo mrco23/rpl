@@ -24,13 +24,15 @@ export default function ContentTablePage({
   service,
   fields,
   rowRenderer,
+  idField = "id",
+  initialForm = emptyForm,
 }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [open, setOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState(initialForm);
   const [error, setError] = useState("");
 
   const modalTitle = useMemo(() => editingItem ? `Ubah ${resourceLabel}` : `Tambah ${resourceLabel}`, [editingItem, resourceLabel]);
@@ -52,7 +54,7 @@ export default function ContentTablePage({
   }, []);
 
   const resetForm = () => {
-    setForm(emptyForm);
+    setForm(initialForm);
     setEditingItem(null);
     setError("");
   };
@@ -64,15 +66,25 @@ export default function ContentTablePage({
 
   const handleEdit = (item) => {
     setEditingItem(item);
-    setForm({
-      judul: item.judul || "",
-      nama: item.nama || "",
-      deskripsi: item.deskripsi || "",
-      isi: item.isi || "",
-      mentor: item.mentor || "",
-      jadwal: item.jadwal || "",
-      gambar: null,
+    
+    // Fill form dynamically based on initialForm structure
+    const editForm = { ...initialForm };
+    Object.keys(initialForm).forEach((key) => {
+      if (item[key] !== undefined && item[key] !== null) {
+        // Automatically handle datetime formatting if necessary
+        if (typeof item[key] === "string" && item[key].includes("T") && (key.includes("tanggal") || key.includes("date"))) {
+          editForm[key] = item[key].substring(0, 16);
+        } else {
+          editForm[key] = item[key];
+        }
+      }
     });
+
+    if ('gambar' in editForm) {
+      editForm.gambar = null;
+    }
+
+    setForm(editForm);
     setOpen(true);
   };
 
@@ -80,7 +92,7 @@ export default function ContentTablePage({
     const ok = window.confirm(`Hapus ${resourceLabel.toLowerCase()} ini?`);
     if (!ok) return;
     try {
-      await service.remove(item.id_ekstrakurikuler || item.id_berita || item.id_prestasi);
+      await service.remove(item[idField] || item.id_ekstrakurikuler || item.id_berita || item.id_prestasi);
       await loadItems();
     } catch (err) {
       setError(err.response?.data?.message || `Gagal menghapus ${resourceLabel.toLowerCase()}`);
@@ -93,7 +105,8 @@ export default function ContentTablePage({
     setError("");
     try {
       if (editingItem) {
-        await service.update(editingItem.id_ekstrakurikuler || editingItem.id_berita || editingItem.id_prestasi, form);
+        const id = editingItem[idField] || editingItem.id_ekstrakurikuler || editingItem.id_berita || editingItem.id_prestasi;
+        await service.update(id, form);
       } else {
         await service.create(form);
       }
@@ -130,6 +143,10 @@ export default function ContentTablePage({
                 <textarea rows={field.rows || 4} value={form[field.name]} onChange={(e) => setForm((prev) => ({ ...prev, [field.name]: e.target.value }))} className="w-full px-5 py-4 rounded-2xl border border-slate-200" required={field.required !== false} />
               ) : field.type === "file" ? (
                 <input type="file" accept="image/*" onChange={(e) => setForm((prev) => ({ ...prev, [field.name]: e.target.files?.[0] || null }))} className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white" />
+              ) : field.type === "datetime-local" ? (
+                <input type="datetime-local" value={form[field.name]} onChange={(e) => setForm((prev) => ({ ...prev, [field.name]: e.target.value }))} className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white" required={field.required !== false} />
+              ) : field.type === "number" ? (
+                <input type="number" min={field.min || 0} value={form[field.name]} onChange={(e) => setForm((prev) => ({ ...prev, [field.name]: e.target.value }))} className="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white" required={field.required !== false} />
               ) : (
                 <input type="text" value={form[field.name]} onChange={(e) => setForm((prev) => ({ ...prev, [field.name]: e.target.value }))} className="w-full px-5 py-4 rounded-2xl border border-slate-200" required={field.required !== false} />
               )}
