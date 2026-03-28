@@ -7,7 +7,7 @@ import FacilitiesPage from "./pages/public/FacilitiesPage";
 import NewsPage from "./pages/public/NewsPage";
 import GuidePage from "./pages/public/GuidePage";
 import LoginPage from "./pages/auth/LoginPage";
-import RegisterPage from "./pages/public/RegisterPage";
+import RegisterPage from "./pages/pendaftar/ApplicantRegisterPage";
 import AdminOverviewPage from "./pages/admin/AdminOverviewPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import AdminAchievementsPage from "./pages/admin/AdminAchievementsPage";
@@ -43,34 +43,35 @@ function App() {
         <Route path="/panduan" element={<GuidePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/admin" element={<AdminOverviewPage />} />
-        <Route path="/admin/profile" element={<AdminProfilePage />} />
-        <Route path="/admin/waves" element={<AdminWavesPage />} />
-        <Route path="/admin/achievements" element={<AdminAchievementsPage />} />
-        <Route
-          path="/admin/extracurriculars"
-          element={<AdminExtracurricularsPage />}
-        />
-        <Route path="/admin/news" element={<AdminNewsPage />} />
-        <Route path="/admin/validation" element={<AdminValidationPage />} />
-        <Route
-          path="/admin/notifications"
-          element={<AdminNotificationsPage />}
-        />
-        <Route path="/admin/accounts" element={<AdminAccountsPage />} />
-        <Route path="/verifier" element={<VerifierOverviewPage />} />
-        <Route path="/verifier/documents" element={<VerifierDocumentsPage />} />
-        <Route path="/applicant" element={<ApplicantOverviewPage />} />
-        <Route
-          path="/applicant/registration"
-          element={<ApplicantRegistrationPage />}
-        />
-        <Route path="/applicant/upload" element={<ApplicantUploadPage />} />
-        <Route path="/applicant/status" element={<ApplicantStatusPage />} />
-        <Route
-          path="/applicant/announcement"
-          element={<ApplicantAnnouncementPage />}
-        />
+
+        {/* Admin Routes */}
+        <Route path="/admin">
+          <Route index element={<AdminOverviewPage />} />
+          <Route path="profile" element={<AdminProfilePage />} />
+          <Route path="waves" element={<AdminWavesPage />} />
+          <Route path="achievements" element={<AdminAchievementsPage />} />
+          <Route path="extracurriculars" element={<AdminExtracurricularsPage />} />
+          <Route path="news" element={<AdminNewsPage />} />
+          <Route path="validation" element={<AdminValidationPage />} />
+          <Route path="notifications" element={<AdminNotificationsPage />} />
+          <Route path="accounts" element={<AdminAccountsPage />} />
+        </Route>
+
+        {/* Verifier Routes */}
+        <Route path="/verifier">
+          <Route index element={<VerifierOverviewPage />} />
+          <Route path="documents" element={<VerifierDocumentsPage />} />
+        </Route>
+
+        {/* Applicant Routes */}
+        <Route path="/applicant">
+          <Route index element={<ApplicantOverviewPage />} />
+          <Route path="registration" element={<ApplicantRegistrationPage />} />
+          <Route path="upload" element={<ApplicantUploadPage />} />
+          <Route path="status" element={<ApplicantStatusPage />} />
+          <Route path="announcement" element={<ApplicantAnnouncementPage />} />
+        </Route>
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
