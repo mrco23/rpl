@@ -18,12 +18,13 @@ const storage = multer.diskStorage({
     },
 });
 
-// 3. Filter (Hanya gambar)
+// 3. Filter (Hanya PDF, JPG, PNG)
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) {
+    const allowedMimeTypes = ["application/pdf", "image/jpeg", "image/png"];
+    if (allowedMimeTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
-        cb(new Error("Hanya boleh upload file gambar!"), false);
+        cb(new Error("Format file tidak didukung. Hanya PDF, JPG, dan PNG"), false);
     }
 };
 

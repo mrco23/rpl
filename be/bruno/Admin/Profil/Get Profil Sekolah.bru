@@ -1,5 +1,5 @@
 meta {
-  name: Get Admin Profil
+  name: Get Profil Sekolah
   type: http
   seq: 1
 }
@@ -7,9 +7,5 @@ meta {
 get {
   url: {{base_url}}/profile
   body: none
-  auth: bearer
-}
-
-auth:bearer {
-  token: {{token}}
+  auth: none
 }

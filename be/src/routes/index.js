@@ -10,6 +10,7 @@ import pengumumanRoutes from "./pengumumanRoutes.js";
 import programUnggulanRoutes from "./programUnggulanRoutes.js";
 import ekstrakurikulerRoutes from "./ekstrakurikulerRoutes.js";
 import fasilitasRoutes from "./fasilitasRoutes.js";
+import gelombangRoutes from "./gelombangRoutes.js";
 
 const routes = express.Router();
 
@@ -22,6 +23,7 @@ routes.use("/pengumuman", pengumumanRoutes);
 routes.use("/program-unggulan", programUnggulanRoutes);
 routes.use("/ekstrakurikuler", ekstrakurikulerRoutes);
 routes.use("/fasilitas", fasilitasRoutes);
+routes.use("", gelombangRoutes);
 
 routes.use("/pendaftar", pendaftarRoute);
 routes.use("/dokumen", dokumenRoute);

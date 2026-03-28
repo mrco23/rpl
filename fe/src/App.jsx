@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router";
 /* Pages */
 import LandingPage from "./pages/public/LandingPage";
 import ExtracurricularPage from "./pages/public/ExtracurricularPage";
@@ -16,6 +16,7 @@ import AdminNewsPage from "./pages/admin/AdminNewsPage";
 import AdminValidationPage from "./pages/admin/AdminValidationPage";
 import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
 import AdminAccountsPage from "./pages/admin/AdminAccountsPage";
+import AdminWavesPage from "./pages/admin/AdminWavesPage";
 import VerifierOverviewPage from "./pages/verifikator/VerifierOverviewPage";
 import VerifierDocumentsPage from "./pages/verifikator/VerifierDocumentsPage";
 import ApplicantOverviewPage from "./pages/pendaftar/ApplicantOverviewPage";
@@ -44,6 +45,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin" element={<AdminOverviewPage />} />
         <Route path="/admin/profile" element={<AdminProfilePage />} />
+        <Route path="/admin/waves" element={<AdminWavesPage />} />
         <Route path="/admin/achievements" element={<AdminAchievementsPage />} />
         <Route
           path="/admin/extracurriculars"
