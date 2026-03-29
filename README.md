@@ -25,7 +25,8 @@ Folder `be` menangani logika bisnis, akses database, dan manajemen file.
 
 ### Manajemen Database (Prisma):
 
-- **Migrasi Database:** `npx prisma migrate dev`
+- **Migrasi Database:** `npx prisma migrate dev --name init_db`
+- **Generate:** `npx prisma generate`
 - **Isi Data Dummy (Seed):** `npm run db:seed`
 - **Kosongkan Semua Tabel (Reset):** `npm run db:reset`
 

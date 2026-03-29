@@ -1,6 +1,7 @@
 export const adminSidebar = [
   { label: 'Beranda', route: '/admin' },
   { label: 'Profil Sekolah', route: '/admin/profile' },
+  { label: 'Kelola Gelombang', route: '/admin/waves' },
   { label: 'Kelola Prestasi', route: '/admin/achievements' },
   { label: 'Kelola Ekstrakurikuler', route: '/admin/extracurriculars' },
   { label: 'Kelola Berita', route: '/admin/news' },

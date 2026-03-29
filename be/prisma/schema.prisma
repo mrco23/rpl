@@ -9,7 +9,7 @@ datasource db {
 
 model Admin {
   id_admin    Int      @id @default(autoincrement())
-  username    String   @unique
+  username    String?  @unique
   password    String
   foto_profil String?
   created_at  DateTime @default(now())
@@ -175,6 +175,7 @@ model Pendaftar {
   id_pendaftar       Int       @id @default(autoincrement())
   no_pendaftaran     String    @unique
   nama_lengkap       String
+  kata_sandi         String?
   nisn               String?   @unique
   nik                String?   @unique
   jenis_kelamin      String?
@@ -188,11 +189,13 @@ model Pendaftar {
   nama_ibu           String?
   nama_wali          String?
   tahun_ajaran       String?
-  status_pendaftaran String    @default("seleksi")
+  status_pendaftaran String    @default("menunggu_verifikasi")
   created_at         DateTime  @default(now())
   updated_at         DateTime  @updatedAt
+  id_gelombang       Int?
 
-  dokumen Dokumen[]
+  dokumen   Dokumen[]
+  gelombang Gelombang? @relation(fields: [id_gelombang], references: [id_gelombang])
 
   @@index([status_pendaftaran], map: "pendaftar_status_idx")
   @@map("pendaftar")
@@ -220,4 +223,18 @@ model Dokumen {
   @@index([id_verifikator], map: "dokumen_id_verifikator_idx")
   @@index([status_verifikasi], map: "dokumen_status_idx")
   @@map("dokumen")
+}
+
+model Gelombang {
+  id_gelombang    Int      @id @default(autoincrement())
+  nama            String
+  tanggal_mulai   DateTime
+  tanggal_selesai DateTime
+  kuota           Int
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  pendaftar Pendaftar[]
+
+  @@map("gelombang")
 }

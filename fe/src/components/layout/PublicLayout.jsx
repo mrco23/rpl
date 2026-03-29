@@ -17,9 +17,12 @@ export default function PublicLayout({
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen flex flex-col bg-white text-slate-900">
       {!hideNav && <Navbar />}
-      {children}
+
+      {/* ✅ INI KUNCI */}
+      <main className="flex-1">{children}</main>
+
       {!hideFooter && <Footer profile={profile} />}
     </div>
   );
