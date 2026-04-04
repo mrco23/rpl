@@ -27,46 +27,45 @@ function Navbar() {
       <nav className="w-full bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ml-7">
             <img src={logo} alt="logo" className="w-12 h-12 object-contain" />
           </div>
 
           {/* Menu */}
-          <ul className="hidden md:flex space-x-8 text-gray-600 font-medium">
-            <li className="cursor-pointer">
+          <ul className="hidden md:flex space-x-10 text-gray-600 font-medium items-center">
+            {/* Beranda */}
+            <li>
               <Link
                 to="/"
-                className={`${
+                className={`px-3 py-2 border-2 rounded transition-colors ${
                   location.pathname === "/"
-                    ? "text-black font-bold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
+                    ? "border-transparent  text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Beranda
               </Link>
             </li>
 
             {/* Tentang */}
-            <li className="relative flex items-center gap-1">
-              <div
+            <li className="relative">
+              <button
                 onClick={() => handleDropdown("tentang")}
-                className={`flex items-center gap-1 cursor-pointer ${
+                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${
                   location.pathname.includes("/tentang")
-                    ? "text-black font-bold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
+                    ? "border-transparent text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Tentang
                 <ChevronDown
                   size={16}
-                  className={
-                    location.pathname.includes("/tentang") ? "rotate-180" : ""
-                  }
+                  className={openDropdown === "tentang" ? "rotate-180" : ""}
                 />
-              </div>
+              </button>
 
               {openDropdown === "tentang" && (
-                <div className="absolute top-8 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
+                <div className="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
                   <p
                     onClick={() => handleModal("sejarah")}
                     className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -96,17 +95,24 @@ function Navbar() {
             </li>
 
             {/* Akademik */}
-            <li className="relative flex items-center gap-1">
-              <div
+            <li className="relative">
+              <button
                 onClick={() => handleDropdown("akademik")}
-                className="flex items-center gap-1 hover:text-blue-600 cursor-pointer"
+                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${
+                  location.pathname.includes("/akademik")
+                    ? "border-transparent text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Akademik
-                <ChevronDown size={16} />
-              </div>
+                <ChevronDown
+                  size={16}
+                  className={openDropdown === "akademik" ? "rotate-180" : ""}
+                />
+              </button>
 
               {openDropdown === "akademik" && (
-                <div className="absolute top-8 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
+                <div className="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
                   <p
                     onClick={() => handleModal("kurikulum")}
                     className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -129,26 +135,29 @@ function Navbar() {
               )}
             </li>
 
+            {/* Panduan */}
             <li>
               <Link
                 to="/panduan"
-                className={`${
+                className={`px-3 py-2 border-2 rounded transition-colors ${
                   location.pathname === "/panduan"
-                    ? "text-black font-bold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
+                    ? "border-transparent text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Panduan
               </Link>
             </li>
+
+            {/* Berita */}
             <li>
               <Link
                 to="/berita"
-                className={`${
+                className={`px-3 py-2 border-2 rounded transition-colors ${
                   location.pathname === "/berita"
-                    ? "text-black font-bold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
+                    ? "border-transparent text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Berita
               </Link>
@@ -159,11 +168,15 @@ function Navbar() {
           <div className="hidden md:flex space-x-4">
             <button
               onClick={() => navigate("/login")}
-              className="text-blue-900 border border-blue-900 p-3 rounded-2xl font-medium hover:underline cursor-pointer"
+              className="px-3 py-2 border border-blue-300 text-blue-600 rounded-md font-normal hover:bg-blue-50 transition-colors duration-200 cursor-pointer"
             >
               Masuk
             </button>
-            <button className="bg-blue-800 text-white px-4 py-2 border rounded-2xl hover:bg-blue-900 transition cursor-pointer">
+
+            <button
+              onClick={() => navigate("/register")}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 cursor-pointer"
+            >
               Daftar Sekarang
             </button>
           </div>
@@ -227,11 +240,14 @@ function Navbar() {
             <div className="flex flex-col gap-2 pt-2">
               <button
                 onClick={() => navigate("/login")}
-                className="border border-blue-900 py-2 rounded-xl"
+                className="border border-blue-900 py-2 rounded-md"
               >
                 Masuk
               </button>
-              <button className="bg-blue-800 text-white py-2 rounded-xl">
+              <button
+                onClick={() => navigate("/register")}
+                className="bg-blue-800 text-white py-2 rounded-md"
+              >
                 Daftar Sekarang
               </button>
             </div>

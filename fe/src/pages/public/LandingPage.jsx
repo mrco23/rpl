@@ -6,41 +6,81 @@ import AchievementsPage from "./AchievementsPage";
 import NewsPreview from "./NewsPreview";
 
 export default function LandingPage() {
+  const stats = [
+    { value: "10", label: "Program Unggulan" },
+    { value: "10", label: "Fasilitas" },
+    { value: "12", label: "Ekstrakurikuler" },
+    { value: "25", label: "Prestasi" },
+  ];
+
   return (
     <PublicLayout>
       <main>
+        {/* HERO SECTION */}
         <section className="relative w-full h-[80vh]">
           {/* Background Image */}
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-center rounded-b-3xl overflow-hidden"
             style={{ backgroundImage: `url(${hero})` }}
           >
-            <div className="absolute inset-0 bg-black/40"></div>{" "}
-            {/* overlay gelap */}
+            <div className="absolute inset-0 bg-black/20"></div>
           </div>
 
-          {/* Content */}
-          <div className="relative z-10 flex flex-col justify-center items-start h-full max-w-6xl mx-auto px-6 text-white">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+          {/* Hero Content */}
+          <div className="relative z-10 flex flex-col justify-start pt-32 h-full max-w-7xl mx-auto px-8 text-white">
+            <h1 className="text-5xl md:text-6xl font-semibold mb-4 leading-tight">
               SMP KATOLIK <br /> ST.RAFAEL MANADO
             </h1>
-            <p className="text-lg md:text-xl mb-6 max-w-xl">
-              Selamat datang di SMP Katolik St. Rafael Manado, sekolah yang
-              berkomitmen membentuk generasi berkarakter, berprestasi, dan
-              berlandaskan nilai-nilai iman. Bergabunglah bersama kami untuk
-              masa depan yang lebih baik.
+            <p className="text-base md:text-lg mb-5 max-w-lg">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <div className="flex gap-4">
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition cursor-pointer">
+            <div className="flex gap-3">
+              <button className="bg-blue-600 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-700 transition">
                 Daftar Sekarang
               </button>
-              <button className="border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition cursor-pointer">
+
+              <button className="border border-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-white hover:text-black transition">
                 Pelajari Lebih Lanjut
               </button>
             </div>
           </div>
+
+          {/* Statistik Cards */}
+          {/* Statistik Cards */}
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-[-100px] w-full max-w-6xl px-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-24">
+              {stats.map((item, idx) => (
+                <div key={idx} className="flex flex-col">
+                  {/* CARD */}
+                  <div className="bg-white rounded-lg py-8 px-8 text-center shadow-lg relative w-full">
+                    {/* Icon */}
+                    <span className="absolute top-3 right-4 text-blue-900 text-5xl">
+                      ✦
+                    </span>
+
+                    {/* Angka */}
+                    <h1 className="text-5xl font-bold text-blue-900">
+                      {item.value}
+                    </h1>
+
+                    {/* Label */}
+                    <p className="text-blue-900 text-sm mt-2">{item.label}</p>
+                  </div>
+
+                  {/* GARIS FULL WIDTH (SAMA DENGAN CARD) */}
+                  <div className="w-full h-1 bg-blue-900 rounded mt-3"></div>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
-        <AboutPage />
+
+        {/* OTHER SECTIONS */}
+        <div className="mt-32 md:mt-40">
+          <AboutPage />
+        </div>
+
         <QuotePage />
         <AchievementsPage />
         <NewsPreview />
