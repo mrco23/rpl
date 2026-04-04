@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-
+import { IoArrowBackSharp } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 export default function ApplicantRegisterPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     namaLengkap: "",
     nisn: "",
@@ -23,6 +25,14 @@ export default function ApplicantRegisterPage() {
   return (
     <main className="min-h-screen bg-slate-50 py-16 px-4 flex justify-center">
       <div className="w-full max-w-4xl">
+        <div className="flex items-center gap-3 mb-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-slate-700 hover:text-blue-800 transition"
+          >
+            <IoArrowBackSharp className="text-lg" />
+          </button>
+        </div>
         {/* Header */}
         <h1 className="text-3xl font-bold mb-2">PENDAFTARAN</h1>
         <p className="text-slate-600 mb-6">
@@ -42,7 +52,10 @@ export default function ApplicantRegisterPage() {
             </span>
 
             {/* Garis horizontal pendek dari step 1 */}
-            <div className="absolute left-full w-40 h-[2px] bg-gray-400 top-1/2 -translate-y-1/2"></div>
+            <div
+              className={`absolute left-full w-40 h-[2px] top-1/2 -translate-y-1/2 
+              ${step === 2 ? "bg-blue-800" : "bg-gray-400"}`}
+            ></div>
           </div>
 
           {/* Step 2 */}
@@ -87,7 +100,7 @@ export default function ApplicantRegisterPage() {
               {/* Nama Lengkap */}
               <div>
                 <label className="block mb-1 font-semibold">
-                  Nama Lengkap *
+                  Nama Lengkap <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="namaLengkap"
@@ -100,7 +113,9 @@ export default function ApplicantRegisterPage() {
 
               {/* NISN */}
               <div>
-                <label className="block mb-1 font-semibold">NISN *</label>
+                <label className="block mb-1 font-semibold">
+                  NISN <span className="text-red-500">*</span>
+                </label>
                 <input
                   name="nisn"
                   value={formData.nisn}
@@ -113,7 +128,7 @@ export default function ApplicantRegisterPage() {
               {/* Alamat Domisili */}
               <div>
                 <label className="block mb-1 font-semibold">
-                  Alamat Domisili *
+                  Alamat Domisili <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   name="alamat"
@@ -125,13 +140,12 @@ export default function ApplicantRegisterPage() {
                 />
               </div>
 
-              {/* Tanggal Lahir + Icon Kalender dan Jenis Kelamin */}
               {/* Tanggal Lahir + Tempat Lahir + Jenis Kelamin + Nomor HP */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Tempat Lahir */}
                 <div>
                   <label className="block mb-1 font-semibold">
-                    Tempat Lahir *
+                    Tempat Lahir <span className="text-red-500">*</span>
                   </label>
                   <input
                     name="tempatLahir"
@@ -145,7 +159,7 @@ export default function ApplicantRegisterPage() {
                 {/* Tanggal Lahir + Icon Kiri */}
                 <div>
                   <label className="block mb-1 font-semibold">
-                    Tanggal Lahir *
+                    Tanggal Lahir <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="date"
@@ -159,7 +173,7 @@ export default function ApplicantRegisterPage() {
                 {/* Jenis Kelamin */}
                 <div>
                   <label className="block mb-1 font-semibold">
-                    Jenis Kelamin *
+                    Jenis Kelamin <span className="text-red-500">*</span>
                   </label>
                   <select
                     name="jenisKelamin"
@@ -176,7 +190,8 @@ export default function ApplicantRegisterPage() {
                 {/* Nomor HP */}
                 <div>
                   <label className="block mb-1 font-semibold">
-                    Nomor Handphone (WhatsApp) *
+                    Nomor Handphone (WhatsApp){" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     name="noHp"
@@ -195,13 +210,14 @@ export default function ApplicantRegisterPage() {
                 Informasi Orang Tua/Wali
               </h2>
               <p className="text-sm text-gray-600 mb-4">
-                Lengkapi form bertanda bintang (*) karena wajib diisi.
+                Lengkapi form bertanda bintang{" "}
+                <span className="text-red-500">*</span> karena wajib diisi.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block mb-1 font-semibold">
-                    Nama Orangtua/Wali *
+                    Nama Orangtua/Wali <span className="text-red-500">*</span>
                   </label>
                   <input
                     name="namaWali"
@@ -213,7 +229,8 @@ export default function ApplicantRegisterPage() {
                 </div>
                 <div>
                   <label className="block mb-1 font-semibold">
-                    Alamat Email Orangtua/Wali *
+                    Alamat Email Orangtua/Wali{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     name="emailWali"
@@ -237,6 +254,72 @@ export default function ApplicantRegisterPage() {
               </button>
             </div>
           </form>
+        )}
+        {/* Form Step 2 */}
+        {step === 2 && (
+          <div className="space-y-6">
+            {/* Judul */}
+            <div>
+              <h2 className="text-lg font-semibold">Buat Kata Sandi Akun</h2>
+              <p className="text-sm text-gray-600">
+                Buat password yang kuat untuk menjaga privasi data Anda.
+              </p>
+            </div>
+
+            {/* NISN */}
+            <div>
+              <label className="block mb-1 font-semibold">
+                Nama Pengguna (NISN)
+              </label>
+              <input
+                value={formData.nisn}
+                disabled
+                className="w-full px-4 py-3 bg-gray-200 rounded-xl"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                NISN akan otomatis digunakan sebagai username.
+              </p>
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block mb-1 font-semibold">
+                Kata Sandi <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="password"
+                placeholder="Minimal 6 karakter"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl  focus:border-blue-400 focus:outline-none"
+              />
+            </div>
+
+            {/* Konfirmasi Password */}
+            <div>
+              <label className="block mb-1 font-semibold">
+                Konfirmasi Kata Sandi <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="password"
+                placeholder="Ulangi kata sandi"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl  focus:border-blue-700 focus:outline-none"
+              />
+            </div>
+
+            {/* Tombol */}
+            <div className="flex justify-end gap-12 mt-6">
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="px-10 py-3 bg-gray-300 rounded-md"
+              >
+                ← Kembali
+              </button>
+
+              <button className="px-10 py-3 border border-[#350d85] bg-[#544dd8] text-white rounded-md">
+                Selesaikan
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </main>

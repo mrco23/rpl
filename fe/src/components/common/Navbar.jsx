@@ -168,14 +168,14 @@ function Navbar() {
           <div className="hidden md:flex space-x-4">
             <button
               onClick={() => navigate("/login")}
-              className="px-3 py-2 border-2 border-blue-300 text-blue-600 rounded-2xl font-normal hover:bg-blue-50 transition-colors duration-200 cursor-pointer"
+              className="px-3 py-2 border border-blue-300 text-blue-600 rounded-md font-normal hover:bg-blue-50 transition-colors duration-200 cursor-pointer"
             >
               Masuk
             </button>
 
             <button
               onClick={() => navigate("/register")}
-              className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors duration-200 cursor-pointer"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 cursor-pointer"
             >
               Daftar Sekarang
             </button>
@@ -240,13 +240,13 @@ function Navbar() {
             <div className="flex flex-col gap-2 pt-2">
               <button
                 onClick={() => navigate("/login")}
-                className="border border-blue-900 py-2 rounded-xl"
+                className="border border-blue-900 py-2 rounded-md"
               >
                 Masuk
               </button>
               <button
                 onClick={() => navigate("/register")}
-                className="bg-blue-800 text-white py-2 rounded-xl"
+                className="bg-blue-800 text-white py-2 rounded-md"
               >
                 Daftar Sekarang
               </button>
