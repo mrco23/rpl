@@ -69,12 +69,12 @@ model Kontak {
 }
 
 model Berita {
-  id_berita    Int      @id @default(autoincrement())
-  judul_berita String
-  deskripsi    String   @db.Text
-  gambar       String?
-  id_admin     Int
-  created_at   DateTime @default(now())
+  id_berita      Int      @id @default(autoincrement())
+  judul_berita   String
+  deskripsi      String   @db.Text
+  gambar         String?
+  id_admin       Int
+  tanggal_dibuat DateTime @default(now())
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -142,7 +142,7 @@ model Prestasi {
   peraih         String
   gambar         String?
   id_admin       Int
-  created_at     DateTime @default(now())
+  tanggal_diraih DateTime @default(now())
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
