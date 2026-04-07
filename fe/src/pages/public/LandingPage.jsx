@@ -1,7 +1,7 @@
 import PublicLayout from "@components/layout/PublicLayout.jsx";
 import hero from "@assets/hero.jpg";
 import AboutPage from "./AboutPage";
-import QuotePage from "./QuotePage";
+import QuotePage from "./Sambutan";
 import AchievementsPage from "./AchievementsPage";
 import NewsPreview from "./NewsPreview";
 import { useNavigate } from "react-router";
@@ -40,11 +40,11 @@ export default function LandingPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => navigate("/register")}
-                className="bg-blue-800 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-900 transition"
+                className="bg-[#1d3890] px-3 py-1.5 rounded-md text-sm font-medium hover:bg-[#172c73]  transition"
               >
                 Daftar Sekarang
               </button>
-              <button className="border border-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-white hover:text-black transition">
+              <button className="border border-gray-400 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-[#172c73]  transition">
                 Pelajari Lebih Lanjut
               </button>
             </div>
