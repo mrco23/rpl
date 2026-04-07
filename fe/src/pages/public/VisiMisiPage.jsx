@@ -39,11 +39,6 @@ function VisiMisiPage() {
           </p>
         </section>
         <section className="relative bg-blue-950 text-white pt-24 pb-16 px-6">
-          <div
-            className="absolute top-0 left-[70%] -translate-x-1/2 -translate-y-1/2 
-                  w-32 h-14 bg-white rounded-b-full"
-          ></div>
-
           <h2 className="text-3xl font-semibold text-center mb-12">Misi</h2>
 
           <div className="max-w-4xl ml-10 space-y-10">

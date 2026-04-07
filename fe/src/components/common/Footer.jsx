@@ -66,8 +66,8 @@ function Footer({ profile }) {
 
           {/* KOLOM 3: Kontak */}
           <div>
-            <h3 className="font-semibold mb-4">Kontak</h3>
-            <ul className="space-y-3 text-sm text-gray-700">
+            <h3 className="font-semibold text-center mb-4">Kontak</h3>
+            <ul className="space-y-3  text-sm text-gray-700">
               <li className="flex items-center gap-2">
                 <Mail size={16} className="text-blue-600" />
                 <span>{profile?.email || "info@sekolah.sch.id"}</span>
