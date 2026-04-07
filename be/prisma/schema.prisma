@@ -57,9 +57,12 @@ model Profil {
 model Kontak {
   id_kontak Int     @id @default(autoincrement())
   no_telpon String
+  instagram String
+  tiktok    String
+  facebook  String
+  youtube   String
   email     String
   whatsapp  String?
-  link_maps String?
   id_admin  Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
@@ -136,13 +139,12 @@ model Ekstrakurikuler {
 }
 
 model Prestasi {
-  id_prestasi    Int      @id @default(autoincrement())
+  id_prestasi    Int     @id @default(autoincrement())
   judul_prestasi String
-  deskripsi      String   @db.Text
+  deskripsi      String  @db.Text
   peraih         String
   gambar         String?
   id_admin       Int
-  tanggal_diraih DateTime @default(now())
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -165,7 +167,7 @@ model Pendaftar {
   email              String?
   nama_orangtua      String?
   status_pendaftaran String    @default("menunggu_verifikasi")
-  created_at         DateTime  @default(now())
+  tanggal_daftar     DateTime  @default(now())
   id_gelombang       Int?
 
   dokumen   Dokumen[]
