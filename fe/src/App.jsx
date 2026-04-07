@@ -7,7 +7,7 @@ import FacilitiesPage from "./pages/public/FacilitiesPage";
 import NewsPage from "./pages/public/NewsPage";
 import GuidePage from "./pages/public/GuidePage";
 import LoginPage from "./pages/auth/LoginPage";
-import RegisterPage from "./pages/pendaftar/ApplicantRegisterPage";
+import Register from "./pages/pendaftar/Register";
 import AdminOverviewPage from "./pages/admin/AdminOverviewPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import AdminAchievementsPage from "./pages/admin/AdminAchievementsPage";
@@ -44,7 +44,7 @@ function App() {
 
         <Route path="/panduan" element={<GuidePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}
         <Route path="/admin">
