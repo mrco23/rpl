@@ -7,7 +7,7 @@ import FacilitiesPage from "./pages/public/FacilitiesPage";
 import NewsPage from "./pages/public/NewsPage";
 import GuidePage from "./pages/public/GuidePage";
 import LoginPage from "./pages/auth/LoginPage";
-import RegisterPage from "./pages/pendaftar/ApplicantRegisterPage";
+import Register from "./pages/pendaftar/Register";
 import AdminOverviewPage from "./pages/admin/AdminOverviewPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import AdminAchievementsPage from "./pages/admin/AdminAchievementsPage";
@@ -25,6 +25,7 @@ import ApplicantUploadPage from "./pages/pendaftar/ApplicantUploadPage";
 import ApplicantStatusPage from "./pages/pendaftar/ApplicantStatusPage";
 import ApplicantAnnouncementPage from "./pages/pendaftar/ApplicantAnnouncementPage";
 import NotFoundPage from "./pages/public/NotFoundPage";
+import VisiMisiPage from "./pages/public/VisiMisiPage";
 
 /* scrool */
 import ScrolTop from "./components/common/ScrolTop";
@@ -39,10 +40,11 @@ function App() {
         <Route path="/prestasi" element={<AchievementsPage />} />
         <Route path="/fasilitas" element={<FacilitiesPage />} />
         <Route path="/berita" element={<NewsPage />} />
+        <Route path="/visi-misi" element={<VisiMisiPage />} />
 
         <Route path="/panduan" element={<GuidePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}
         <Route path="/admin">
@@ -50,7 +52,10 @@ function App() {
           <Route path="profile" element={<AdminProfilePage />} />
           <Route path="waves" element={<AdminWavesPage />} />
           <Route path="achievements" element={<AdminAchievementsPage />} />
-          <Route path="extracurriculars" element={<AdminExtracurricularsPage />} />
+          <Route
+            path="extracurriculars"
+            element={<AdminExtracurricularsPage />}
+          />
           <Route path="news" element={<AdminNewsPage />} />
           <Route path="validation" element={<AdminValidationPage />} />
           <Route path="notifications" element={<AdminNotificationsPage />} />

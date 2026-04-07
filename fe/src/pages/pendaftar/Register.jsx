@@ -52,10 +52,14 @@ export default function ApplicantRegisterPage() {
             </span>
 
             {/* Garis horizontal pendek dari step 1 */}
-            <div
-              className={`absolute left-full w-40 h-[2px] top-1/2 -translate-y-1/2 
-              ${step === 2 ? "bg-blue-800" : "bg-gray-400"}`}
-            ></div>
+            <div className="absolute left-full w-40 h-[2px] top-1/2 -translate-y-1/2 bg-gray-400">
+              {/* 🔥 Progress biru */}
+              <div
+                className={`h-full bg-blue-800 transition-all duration-500 ${
+                  step === 1 ? "w-0" : step === 2 ? "w-[90%]" : "w-full"
+                }`}
+              ></div>
+            </div>
           </div>
 
           {/* Step 2 */}
@@ -248,7 +252,7 @@ export default function ApplicantRegisterPage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="px-6 py-3 bg-blue-600 text-white rounded-2xl hover:bg-blue-800 transition"
+                className="px-6 py-3 border-[#350d85] bg-[#544dd8]  text-white rounded-md hover:bg-blue-800 transition"
               >
                 LANJUT →
               </button>

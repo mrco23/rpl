@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "@assets/logo.jpeg";
+import logo from "@assets/logo.jpg";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router"; //for login
@@ -25,10 +25,10 @@ function Navbar() {
   return (
     <>
       <nav className="w-full bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2 ml-7">
-            <img src={logo} alt="logo" className="w-12 h-12 object-contain" />
+          <div className="flex items-center gap-2 ml-2">
+            <img src={logo} alt="logo" className="w-14 h-14  object-contain" />
           </div>
 
           {/* Menu */}
@@ -72,12 +72,12 @@ function Navbar() {
                   >
                     Sejarah Sekolah
                   </p>
-                  <p
-                    onClick={() => handleModal("visi")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  <Link
+                    to="/visi-misi"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Visi dan Misi Sekolah
-                  </p>
+                  </Link>
                   <p
                     onClick={() => handleModal("kepsek")}
                     className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -168,14 +168,14 @@ function Navbar() {
           <div className="hidden md:flex space-x-4">
             <button
               onClick={() => navigate("/login")}
-              className="px-3 py-2 border border-blue-300 text-blue-600 rounded-md font-normal hover:bg-blue-50 transition-colors duration-200 cursor-pointer"
+              className="px-3 py-2 border-2 border-blue-800 text-blue-900 rounded-md font-normal hover:bg-blue-50 transition-colors duration-200 cursor-pointer"
             >
               Masuk
             </button>
 
             <button
               onClick={() => navigate("/register")}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 cursor-pointer"
+              className="px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 transition-colors duration-200 cursor-pointer"
             >
               Daftar Sekarang
             </button>

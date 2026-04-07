@@ -4,8 +4,10 @@ import AboutPage from "./AboutPage";
 import QuotePage from "./QuotePage";
 import AchievementsPage from "./AchievementsPage";
 import NewsPreview from "./NewsPreview";
+import { useNavigate } from "react-router";
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   const stats = [
     { value: "10", label: "Program Unggulan" },
     { value: "10", label: "Fasilitas" },
@@ -36,10 +38,12 @@ export default function LandingPage() {
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
             <div className="flex gap-3">
-              <button className="bg-blue-600 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-700 transition">
+              <button
+                onClick={() => navigate("/register")}
+                className="bg-blue-800 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-900 transition"
+              >
                 Daftar Sekarang
               </button>
-
               <button className="border border-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-white hover:text-black transition">
                 Pelajari Lebih Lanjut
               </button>
