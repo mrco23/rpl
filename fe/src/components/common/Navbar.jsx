@@ -66,12 +66,12 @@ function Navbar() {
 
               {openDropdown === "tentang" && (
                 <div className="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
-                  <p
-                    onClick={() => handleModal("sejarah")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  <Link
+                    to="/sejarah"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Sejarah Sekolah
-                  </p>
+                  </Link>
                   <Link
                     to="/visi-misi"
                     className="p-2 hover:bg-gray-100 block cursor-pointer"
@@ -84,12 +84,12 @@ function Navbar() {
                   >
                     Sambutan Kepala Sekolah
                   </p>
-                  <p
-                    onClick={() => handleModal("fasilitas")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  <Link
+                    to="/fasilitas"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Fasilitas Sekolah
-                  </p>
+                  </Link>
                 </div>
               )}
             </li>
@@ -113,18 +113,18 @@ function Navbar() {
 
               {openDropdown === "akademik" && (
                 <div className="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
-                  <p
-                    onClick={() => handleModal("kurikulum")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  <Link
+                    to="/program"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Program Unggulan
-                  </p>
-                  <p
-                    onClick={() => handleModal("guru")}
+                  </Link>
+                  <Link
+                    to="/ekstrakurikuler"
                     className="p-2 hover:bg-gray-100 cursor-pointer"
                   >
                     Ekstrakurikuler
-                  </p>
+                  </Link>
                   <p
                     onClick={() => handleModal("prestasi")}
                     className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -175,7 +175,7 @@ function Navbar() {
 
             <button
               onClick={() => navigate("/register")}
-              className="px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 transition-colors duration-200 cursor-pointer"
+              className="px-4 py-2 bg-[#1d3890] text-white rounded-md hover:bg-[#172c73] transition-colors duration-200 cursor-pointer"
             >
               Daftar Sekarang
             </button>

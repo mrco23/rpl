@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router";
 import LandingPage from "./pages/public/LandingPage";
 import ExtracurricularPage from "./pages/public/ExtracurricularPage";
 import AchievementsPage from "./pages/public/AchievementsPage";
-import FacilitiesPage from "./pages/public/FacilitiesPage";
 import NewsPage from "./pages/public/NewsPage";
 import GuidePage from "./pages/public/GuidePage";
 import LoginPage from "./pages/auth/LoginPage";
@@ -26,6 +25,9 @@ import ApplicantStatusPage from "./pages/pendaftar/ApplicantStatusPage";
 import ApplicantAnnouncementPage from "./pages/pendaftar/ApplicantAnnouncementPage";
 import NotFoundPage from "./pages/public/NotFoundPage";
 import VisiMisiPage from "./pages/public/VisiMisiPage";
+import SejarahPage from "./pages/public/SejarahPage";
+import FasilitasPage from "./pages/public/FasilitasPage";
+import Program from "./pages/public/ProgramPage";
 
 /* scrool */
 import ScrolTop from "./components/common/ScrolTop";
@@ -38,9 +40,11 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/ekstrakurikuler" element={<ExtracurricularPage />} />
         <Route path="/prestasi" element={<AchievementsPage />} />
-        <Route path="/fasilitas" element={<FacilitiesPage />} />
         <Route path="/berita" element={<NewsPage />} />
         <Route path="/visi-misi" element={<VisiMisiPage />} />
+        <Route path="/sejarah" element={<SejarahPage />} />
+        <Route path="/fasilitas" element={<FasilitasPage />} />
+        <Route path="/program" element={<Program />} />
 
         <Route path="/panduan" element={<GuidePage />} />
         <Route path="/login" element={<LoginPage />} />

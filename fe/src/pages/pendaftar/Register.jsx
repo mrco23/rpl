@@ -252,7 +252,7 @@ export default function ApplicantRegisterPage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="px-6 py-3 border-[#350d85] bg-[#544dd8]  text-white rounded-md hover:bg-blue-800 transition"
+                className="px-6 py-3 border-[#274ac0] bg-[#274ac0]  text-white rounded-md hover:bg-[#2343ad] transition"
               >
                 LANJUT →
               </button>
@@ -319,7 +319,7 @@ export default function ApplicantRegisterPage() {
                 ← Kembali
               </button>
 
-              <button className="px-10 py-3 border border-[#350d85] bg-[#544dd8] text-white rounded-md">
+              <button className="px-10 py-3 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md">
                 Selesaikan
               </button>
             </div>
