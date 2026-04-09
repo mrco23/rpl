@@ -24,7 +24,7 @@ function SejarahPage() {
       </section>
 
       {/* NAV TAB */}
-      <div className="bg-gray-100 px-20 py-5 text-sm text-gray-600 flex gap-10">
+      <div className=" px-20 py-5 text-sm text-gray-600 flex gap-10">
         <span className="font-semibold">Tentang</span>
         <p className="font-semibold">{">"}</p>
         <span className="text-blue-600 font-medium">Sejarah Sekolah</span>
