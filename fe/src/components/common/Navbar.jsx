@@ -125,12 +125,13 @@ function Navbar() {
                   >
                     Ekstrakurikuler
                   </Link>
-                  <p
-                    onClick={() => handleModal("prestasi")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+
+                  <Link
+                    to="/prestasi"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Prestasi Siswa
-                  </p>
+                  </Link>
                 </div>
               )}
             </li>
