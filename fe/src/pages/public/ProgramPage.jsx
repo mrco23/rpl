@@ -1,6 +1,7 @@
 import React from "react";
 import PublicLayout from "@components/layout/PublicLayout.jsx";
 import labImg from "@assets/kepsek.jpg";
+import { Link } from "react-router";
 
 function Program() {
   return (
@@ -12,9 +13,12 @@ function Program() {
         <span className="font-semibold text-black">Akademik</span>
         <p className="font-semibold">{">"}</p>
         <span className="text-blue-600 font-medium">Program Unggulan</span>
-        <span className="text-gray-600 hover:text-blue-600 font-medium">
-          Ekstrakurikuler
-        </span>
+        <Link
+          to="/ekstrakurikuler"
+          className=" text-gray-600 hover:text-blue-600 font-medium block cursor-pointer"
+        >
+          ekstrakurikuler
+        </Link>
         <span className=" text-gray-600 hover:text-blue-600 font-medium">
           Prestasi Siswa
         </span>

@@ -202,8 +202,18 @@ function Navbar() {
               </p>
               {openDropdown === "tentang" && (
                 <div className="ml-4 mt-2 space-y-2 text-sm">
-                  <p onClick={() => handleModal("sejarah")}>Sejarah Sekolah</p>
-                  <p onClick={() => handleModal("visi")}>Visi Misi</p>
+                  <Link
+                    to="/sejarah"
+                    className=" hover:bg-gray-100 block cursor-pointer"
+                  >
+                    Sejarah Sekolah
+                  </Link>
+                  <Link
+                    to="/visi-misi"
+                    className=" hover:bg-gray-100 block cursor-pointer"
+                  >
+                    Visi dan Misi Sekolah
+                  </Link>
                   <p onClick={() => handleModal("kepsek")}>Sambutan Kepsek</p>
                   <p onClick={() => handleModal("fasilitas")}>Fasilitas</p>
                 </div>
@@ -219,9 +229,12 @@ function Navbar() {
               </p>
               {openDropdown === "akademik" && (
                 <div className="ml-4 mt-2 space-y-2 text-sm">
-                  <p onClick={() => handleModal("kurikulum")}>
+                  <Link
+                    to="/program"
+                    className=" hover:bg-gray-100 block cursor-pointer"
+                  >
                     Program Unggulan
-                  </p>
+                  </Link>
                   <p onClick={() => handleModal("guru")}>Ekstrakurikuler</p>
                   <p onClick={() => handleModal("prestasi")}>Prestasi</p>
                 </div>
