@@ -3,6 +3,12 @@ import PublicLayout from "@components/layout/PublicLayout.jsx";
 import { Link } from "react-router";
 
 export default function AchievementsPage() {
+  const data = Array(6).fill({
+    title: "Judul Prestasi",
+    category: "Peraih Prestasi",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
+    image: img,
+  });
   return (
     <PublicLayout>
       <section className="w-full bg-blue-900 text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
@@ -26,10 +32,39 @@ export default function AchievementsPage() {
         </Link>
         <Link
           to="/prestasi"
-          className=" text-gray-600 hover:text-blue-600 font-medium block cursor-pointer"
+          className=" text-blue-600 hover:text-blue-600 font-medium block cursor-pointer"
         >
           Prestasi Siswa
         </Link>
+      </div>
+      {/* Card Grid */}
+      <div className="px-20 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {data.map((item, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden w-full max-w-[420px]"
+          >
+            {/* Image */}
+            <div className="p-3 pb-0">
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-full h-72 object-cover rounded-xl"
+              />
+            </div>
+
+            {/* Content */}
+            <div className="p-4">
+              <h3 className="text-blue-900 font-semibold text-xl">
+                {item.title}
+              </h3>
+              <p className="text-xs text-blue-800 font-medium">{item.category}</p>
+              <p className="text-sm text-blue-800  font-medium mt-2 leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </PublicLayout>
   );

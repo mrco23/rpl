@@ -1,6 +1,7 @@
 import React from "react";
 import PublicLayout from "@components/layout/PublicLayout.jsx";
 import hero from "@assets/hero.jpg";
+import { Link } from "react-router";
 
 function SejarahPage() {
   return (
@@ -25,12 +26,18 @@ function SejarahPage() {
 
       {/* NAV TAB */}
       <div className=" px-20 py-5 text-sm text-gray-600 flex gap-10">
-        <span className="font-semibold">Tentang</span>
+        <span className="text-black font-semibold">Tentang</span>
         <p className="font-semibold">{">"}</p>
-        <span className="text-blue-600 font-medium">Sejarah Sekolah</span>
-        <span className="hover:text-blue-600">Visi dan Misi</span>
-        <span className="hover:text-blue-600">Sambutan Kepala Sekolah</span>
-        <span className="hover:text-blue-600">Fasilitas Sekolah</span>
+        <Link to="/sejarah" className="text-blue-800 font-semibold">
+          Sejarah Sekolah
+        </Link>
+        <Link to="/visi-misi" className="hover:text-blue-800 font-semibold">
+          Visi Misi
+        </Link>
+
+        <Link to="/fasilitas" className="hover:text-blue-800 font-semibold">
+          Fasilitas sekolah
+        </Link>
       </div>
 
       {/* CONTENT */}
