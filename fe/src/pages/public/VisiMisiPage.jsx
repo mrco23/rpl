@@ -6,9 +6,9 @@ function VisiMisiPage() {
   return (
     <PublicLayout>
       <main>
-        <section className="w-full bg-blue-900 text-white rounded-b-3xl py-6 px-6 md:px-10 mb-8">
-          <h2 className="text-xl md:text-2xl font-bold">Visi dan Misi</h2>
-        </section>
+        <section className="w-full bg-blue-900 text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
+        <h2 className="text-2xl font-medium translate-y-4">Visi dan Misi</h2>
+      </section>
         <div className="max-w-7xl mx-auto px-6 mt-6">
           <div className="flex items-center gap-7 text-sm text-gray-500">
             {/* Tentang */}

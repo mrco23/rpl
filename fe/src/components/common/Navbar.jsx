@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState, useRef, useEffect } from "react";
 import logo from "@assets/logo.jpg";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useLocation } from "react-router";
@@ -9,6 +10,7 @@ function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [openModal, setOpenModal] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -21,10 +23,23 @@ function Navbar() {
     setOpenDropdown(null);
     setIsOpen(false);
   };
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
-      <nav className="w-full bg-white shadow-sm">
+      <nav ref={dropdownRef} className="w-full bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2 ml-2">
@@ -52,7 +67,9 @@ function Navbar() {
               <button
                 onClick={() => handleDropdown("tentang")}
                 className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${
-                  location.pathname.includes("/tentang")
+                  location.pathname === "/sejarah" ||
+                  location.pathname === "/visi-misi" ||
+                  location.pathname === "/fasilitas"
                     ? "border-transparent text-gray-950 font-semibold"
                     : "border-transparent"
                 } hover:bg-gray-100`}
@@ -78,12 +95,7 @@ function Navbar() {
                   >
                     Visi dan Misi Sekolah
                   </Link>
-                  <p
-                    onClick={() => handleModal("kepsek")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    Sambutan Kepala Sekolah
-                  </p>
+
                   <Link
                     to="/fasilitas"
                     className="p-2 hover:bg-gray-100 block cursor-pointer"
@@ -99,7 +111,9 @@ function Navbar() {
               <button
                 onClick={() => handleDropdown("akademik")}
                 className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${
-                  location.pathname.includes("/akademik")
+                  location.pathname === "/program" ||
+                  location.pathname === "/ekstrakurikuler" ||
+                  location.pathname === "/prestasi"
                     ? "border-transparent text-gray-950 font-semibold"
                     : "border-transparent"
                 } hover:bg-gray-100`}
@@ -125,12 +139,13 @@ function Navbar() {
                   >
                     Ekstrakurikuler
                   </Link>
-                  <p
-                    onClick={() => handleModal("prestasi")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+
+                  <Link
+                    to="/prestasi"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Prestasi Siswa
-                  </p>
+                  </Link>
                 </div>
               )}
             </li>

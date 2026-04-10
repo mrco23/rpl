@@ -47,9 +47,12 @@ export default function ExtracurricularPage() {
         </Link>
 
         <span className="text-blue-600  font-medium">Ekstrakurikuler</span>
-        <span className=" text-gray-600 hover:text-blue-600 font-medium">
+        <Link
+          to="/prestasi"
+          className=" hover:text-blue-600 block cursor-pointer"
+        >
           Prestasi Siswa
-        </span>
+        </Link>
       </div>
       <div className="px-20 py-6 text-gray-700">
         <section className="text-center max-w-7xl mx-auto px-6 mb-12 mt-10">

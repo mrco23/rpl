@@ -19,9 +19,12 @@ function Program() {
         >
           ekstrakurikuler
         </Link>
-        <span className=" text-gray-600 hover:text-blue-600 font-medium">
+        <Link
+          to="/prestasi"
+          className=" hover:text-blue-600 font-medium block cursor-pointer"
+        >
           Prestasi Siswa
-        </span>
+        </Link>
       </div>
       <section className="text-center max-w-7xl mx-auto px-6 mb-12 mt-10">
         <p className="text-gray-900 text-3xl leading-relaxed font-semibold">
