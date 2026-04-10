@@ -7,8 +7,8 @@ function VisiMisiPage() {
     <PublicLayout>
       <main>
         <section className="w-full bg-blue-900 text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
-        <h2 className="text-2xl font-medium translate-y-4">Visi dan Misi</h2>
-      </section>
+          <h2 className="text-2xl font-medium translate-y-4">Visi dan Misi</h2>
+        </section>
         <div className="max-w-7xl mx-auto px-6 mt-6">
           <div className="flex items-center gap-7 text-sm text-gray-500">
             {/* Tentang */}
@@ -24,52 +24,70 @@ function VisiMisiPage() {
             </Link>
 
             {/* Visi Misi (active) */}
-            <span className="text-blue-800 font-semibold">Visi dan Misi</span>
+            <span className="text-blue-800 font-semibold">Visi Misi</span>
 
             <Link to="/fasilitas" className="hover:text-blue-800 font-semibold">
               Fasilitas sekolah
             </Link>
           </div>
         </div>
-        <section className="text-center py-16 px-6">
-          <h2 className="text-4xl font-semibold mb-4">Visi</h2>
-          <p className="max-w-3xl text-2xl mx-auto text-black-700 leading-relaxed font-semibold">
+        <section className="text-center py-20 px-6">    
+          <h2 className="text-5xl font-semibold mb-4">Visi</h2>
+          <p className="max-w-3xl text-3xl mx-auto text-black-700 leading-relaxed font-semibold">
             Membentuk peserta didik menjadi manusia yang seutuhnya, beriman,
             unggul, bijaksana dan pancasilais sesuai semangat Santo Rafael
           </p>
         </section>
-        <section className="relative bg-blue-950 text-white pt-24 pb-16 px-6">
-          <h2 className="text-3xl font-semibold text-center mb-12">Misi</h2>
+        <section className="relative -mt-2">
+          {/* 🔵 LENGKUNGAN (bagian atas Misi) */}
+          <div className="flex">
+            <div className="bg-blue-900 h-16 w-[70%] rounded-tr-[120px]"></div>
+            <div className="bg-blue-900 h-16 w-[30%] rounded-tl-[120px]"></div>
+          </div>
 
-          <div className="max-w-4xl ml-10 space-y-10">
-            <div className="flex items-start gap-16">
-              <span className="text-7xl font-bold text-gray-300 w-16">01</span>
-              <p className="text-2xl">
-                Membentuk peserta didik menjadi manusia yang seutuhnya, beriman,
-                unggul, bijaksana dan pancasilais sesuai semangat Santo Rafael
-              </p>
-            </div>
+          {/* 🔵 ISI MISI */}
+          <div className="bg-blue-900 text-white pt-10 pb-16 px-6">
+            <h2 className="text-5xl font-semibold text-center mb-12">Misi</h2>
 
-            <div className="flex items-start gap-16">
-              <span className="text-7xl font-bold text-gray-300 w-16">02</span>
-              <p className="text-2xl">
-                Meningkatkan profesionalisme tenaga pendidik dan kependidikan
-                dengan etos kerja tinggi
-              </p>
-            </div>
+            <div className="max-w-4xl ml-10 space-y-10">
+              <div className="flex items-start gap-16">
+                <span className="text-7xl font-bold text-gray-300 w-16">
+                  01
+                </span>
+                <p className="text-2xl">
+                  Membentuk peserta didik menjadi manusia yang seutuhnya,
+                  beriman, unggul, bijaksana dan pancasilais sesuai semangat
+                  Santo Rafael
+                </p>
+              </div>
 
-            <div className="flex items-start gap-16">
-              <span className="text-7xl font-bold text-gray-300 w-16 gap">
-                03
-              </span>
-              <p className="text-2xl">Mewujudkan lingkungan berwawasan IPTEK</p>
-            </div>
+              <div className="flex items-start gap-16">
+                <span className="text-7xl font-bold text-gray-300 w-16">
+                  02
+                </span>
+                <p className="text-2xl">
+                  Meningkatkan profesionalisme tenaga pendidik dan kependidikan
+                  dengan etos kerja tinggi
+                </p>
+              </div>
 
-            <div className="flex items-start gap-16">
-              <span className="text-7xl font-bold text-gray-300 w-16">04</span>
-              <p className="text-2xl">
-                Menciptakan sekolah sehat, bersih dan nyaman
-              </p>
+              <div className="flex items-start gap-16">
+                <span className="text-7xl font-bold text-gray-300 w-16">
+                  03
+                </span>
+                <p className="text-2xl">
+                  Mewujudkan lingkungan berwawasan IPTEK
+                </p>
+              </div>
+
+              <div className="flex items-start gap-16">
+                <span className="text-7xl font-bold text-gray-300 w-16">
+                  04
+                </span>
+                <p className="text-2xl">
+                  Menciptakan sekolah sehat, bersih dan nyaman
+                </p>
+              </div>
             </div>
           </div>
         </section>

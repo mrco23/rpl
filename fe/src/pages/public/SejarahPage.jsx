@@ -81,28 +81,35 @@ function SejarahPage() {
       </section>
 
       {/* BLUE SECTION */}
-      <section className="bg-blue-900 text-white px-6 md:px-20 py-12 relative">
-        {/* curve atas */}
-
-        {/* BAGIAN ATAS (FULL WIDTH) */}
-        <div className="px-6 md:px-20">
-          <p className=" md:text-4xl font-medium leading-loose text-center">
-            St. Rafael didirikan untuk menyediakan pendidikan berkualitas yang
-            mengedepankan nilai-nilai Kristiani (Katolik) serta pembentukan
-            karakter (character building) bagi masyarakat di sekitar wilayah
-            Manado.
-          </p>
+      <section className="relative">
+        <div className="flex">
+          <div className="bg-blue-900 h-20 w-[70%] rounded-tr-[100px]"></div>
+          <div className="bg-blue-900 h-20 w-[30%] rounded-tl-[100px]"></div>
         </div>
 
-        {/* BAGIAN BAWAH (TETAP DI TENGAH) */}
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="border-t border-white/30 mt-6 pt-4 text-sm text-white/80">
-            Berlandaskan nilai kasih, pelayanan, dan kejujuran, kami berupaya
-            mendampingi setiap siswa untuk bertumbuh menjadi pribadi yang tidak
-            hanya berpengetahuan luas, tetapi juga memiliki hati yang peduli dan
-            berintegritas.
+        <section className="bg-blue-900 text-white px-6 md:px-20 py-12">
+          {/* curve atas */}
+
+          {/* BAGIAN ATAS (FULL WIDTH) */}
+          <div className="px-6 md:px-20">
+            <p className=" md:text-4xl font-medium leading-loose text-center">
+              St. Rafael didirikan untuk menyediakan pendidikan berkualitas yang
+              mengedepankan nilai-nilai Kristiani (Katolik) serta pembentukan
+              karakter (character building) bagi masyarakat di sekitar wilayah
+              Manado.
+            </p>
           </div>
-        </div>
+
+          {/* BAGIAN BAWAH (TETAP DI TENGAH) */}
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="border-t border-white/30 mt-6 pt-4 text-sm text-white/80">
+              Berlandaskan nilai kasih, pelayanan, dan kejujuran, kami berupaya
+              mendampingi setiap siswa untuk bertumbuh menjadi pribadi yang
+              tidak hanya berpengetahuan luas, tetapi juga memiliki hati yang
+              peduli dan berintegritas.
+            </div>
+          </div>
+        </section>
       </section>
     </PublicLayout>
   );
