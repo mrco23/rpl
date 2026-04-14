@@ -20,7 +20,7 @@ export default function PanduanPage() {
 
   return (
     <PublicLayout>
-      <div className="w-full bg-blue-900 text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
+      <div className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">Panduan</h2>
       </div>
       <main className="px-6 md:px-10 pb-10 md:pl-16">
