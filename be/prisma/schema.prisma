@@ -8,12 +8,9 @@ datasource db {
 }
 
 model Admin {
-  id_admin    Int      @id @default(autoincrement())
-  username    String?  @unique
-  password    String
-  foto_profil String?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id_admin Int     @id @default(autoincrement())
+  username String? @unique
+  password String
 
   profil           Profil[]
   kontak           Kontak[]
@@ -75,9 +72,9 @@ model Berita {
   id_berita      Int      @id @default(autoincrement())
   judul_berita   String
   deskripsi      String   @db.Text
-  gambar         String?
-  id_admin       Int
+  gambar_berita  String?
   tanggal_dibuat DateTime @default(now())
+  id_admin       Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -86,24 +83,27 @@ model Berita {
 }
 
 model Pengumuman {
-  id_pengumuman  Int      @id @default(autoincrement())
-  judul          String
-  deksripsi      String?  @db.Text
-  id_admin       Int
-  tanggal_dibuat DateTime @default(now())
+  id_pengumuman    Int      @id @default(autoincrement())
+  judul_pengumuman String
+  deksripsi        String?  @db.Text
+  tanggal_dibuat   DateTime @default(now())
+  id_admin         Int
+  id_pendaftar     Int?
 
-  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+  admin     Admin      @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+  pendaftar Pendaftar? @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
 
   @@index([id_admin], map: "pengumuman_id_admin_idx")
+  @@index([id_pendaftar], map: "pengumuman_id_pendaftar_idx")
   @@map("pengumuman")
 }
 
 model Fasilitas {
-  id_fasilitas   Int     @id @default(autoincrement())
-  nama_fasilitas String
-  deskripsi      String  @db.Text
-  gambar         String?
-  id_admin       Int
+  id_fasilitas     Int     @id @default(autoincrement())
+  nama_fasilitas   String
+  deskripsi        String  @db.Text
+  gambar_fasilitas String?
+  id_admin         Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -125,12 +125,12 @@ model ProgramUnggulan {
 }
 
 model Ekstrakurikuler {
-  id_ekstrakurikuler   Int     @id @default(autoincrement())
-  nama_ekstrakurikuler String
-  pembina              String
-  deskripsi            String  @db.Text
-  gambar               String?
-  id_admin             Int
+  id_ekstrakurikuler Int     @id @default(autoincrement())
+  nama_ekskul        String
+  p_jwb_ekskul       String
+  gambar_ekskul      String?
+  deskripsi          String  @db.Text
+  id_admin           Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -139,12 +139,12 @@ model Ekstrakurikuler {
 }
 
 model Prestasi {
-  id_prestasi    Int     @id @default(autoincrement())
-  judul_prestasi String
-  deskripsi      String  @db.Text
-  peraih         String
-  gambar         String?
-  id_admin       Int
+  id_prestasi     Int     @id @default(autoincrement())
+  judul_prestasi  String
+  deskripsi       String  @db.Text
+  peraih_prestasi String
+  gambar_prestasi String?
+  id_admin        Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -154,7 +154,6 @@ model Prestasi {
 
 model Pendaftar {
   id_pendaftar       Int       @id @default(autoincrement())
-  no_pendaftaran     String    @unique
   nama_lengkap       String
   kata_sandi         String?
   nisn               String?   @unique
@@ -163,30 +162,28 @@ model Pendaftar {
   tanggal_lahir      DateTime? @db.Date
   jenis_kelamin      String?
   no_hp              String
-  asal_sekolah       String?
+  asal_sekolah       String
   email              String?
-  nama_orangtua      String?
+  nama_wali          String?
   status_pendaftaran String    @default("menunggu_verifikasi")
+  catatan_dokumen    String?   @db.Text
   tanggal_daftar     DateTime  @default(now())
   id_gelombang       Int?
 
-  dokumen   Dokumen[]
-  gelombang Gelombang? @relation(fields: [id_gelombang], references: [id_gelombang])
+  dokumen     Dokumen[]
+  gelombang   Gelombang?   @relation(fields: [id_gelombang], references: [id_gelombang])
+  pengumumans Pengumuman[]
 
   @@index([status_pendaftaran], map: "pendaftar_status_idx")
   @@map("pendaftar")
 }
 
 model Dokumen {
-  id_dokumen         Int      @id @default(autoincrement())
-  nama_dokumen       String
-  jenis_dokumen      String
-  status_verifikasi  String   @default("menunggu_verifikasi")
-  catatan_verifikasi String?  @db.Text
-  id_pendaftar       Int
-  id_verifikator     Int?
-  created_at         DateTime @default(now())
-  updated_at         DateTime @updatedAt
+  id_dokumen     Int    @id @default(autoincrement())
+  nama_dokumen   String
+  jenis_dokumen  String
+  id_pendaftar   Int
+  id_verifikator Int?
 
   pendaftar   Pendaftar    @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
   verifikator Verifikator? @relation(fields: [id_verifikator], references: [id_verifikator], onDelete: SetNull)
@@ -194,7 +191,6 @@ model Dokumen {
   @@unique([id_pendaftar, nama_dokumen], map: "dokumen_unique")
   @@index([id_pendaftar], map: "dokumen_id_pendaftar_idx")
   @@index([id_verifikator], map: "dokumen_id_verifikator_idx")
-  @@index([status_verifikasi], map: "dokumen_status_idx")
   @@map("dokumen")
 }
 
@@ -204,8 +200,6 @@ model Gelombang {
   tanggal_mulai   DateTime
   tanggal_selesai DateTime
   kuota           Int
-  created_at      DateTime @default(now())
-  updated_at      DateTime @updatedAt
 
   pendaftar Pendaftar[]
 
