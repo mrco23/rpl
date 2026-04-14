@@ -160,7 +160,7 @@ model Pendaftar {
   alamat             String    @db.Text
   tempat_lahir       String?
   tanggal_lahir      DateTime? @db.Date
-  jenis_kelamin      String?
+  jenis_kelamin      String
   no_hp              String
   asal_sekolah       String
   email              String?

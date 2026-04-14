@@ -1,4 +1,4 @@
-import * as ProfilService from "../services/ProfilService.js";
+import * as ProfilService from "../services/profilService.js";
 
 /* 
   POST: Create Profil (Pertama kali isi, boleh dengan gambar)
@@ -98,5 +98,17 @@ export const getPublicProfil = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getLandingPage = async (req, res) => {
+  try {
+    const data = await ProfilService.getLandingPageData();
+    return res.status(200).json({
+      message: "success",
+      data: ProfilService.serializeLandingPage(req, data),
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message || "Gagal mengambil data landing page" });
   }
 };
