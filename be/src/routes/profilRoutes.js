@@ -6,7 +6,8 @@ import {
 	upsertKontak,
 	getProfil,
 	getPublicProfil,
-} from "../controllers/ProfilController.js";
+	getLandingPage,
+} from "../controllers/profilController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 
@@ -14,6 +15,7 @@ const profilRoute = express.Router();
 
 // PUBLIC
 profilRoute.get("", getPublicProfil);
+profilRoute.get("/landing-page", getLandingPage);
 
 // PRIVATE
 profilRoute.get("", verifyToken, getProfil);
