@@ -28,13 +28,10 @@ model Admin {
 }
 
 model Verifikator {
-  id_verifikator Int      @id @default(autoincrement())
-  username       String   @unique
+  id_verifikator Int    @id @default(autoincrement())
+  username       String @unique
   password       String
   nama           String
-  foto_profil    String?
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
 
   dokumen Dokumen[]
 
@@ -42,18 +39,14 @@ model Verifikator {
 }
 
 model Profil {
-  id_profil               Int      @id @default(autoincrement())
-  nama_sekolah            String   @unique
-  visi                    String   @db.Text
-  misi                    String   @db.Text
-  deskripsi               String   @db.Text
-  logo                    String?
-  nama_kepala_sekolah     String?
-  foto_kepala_sekolah     String?
-  sambutan_kepala_sekolah String?  @db.Text
-  id_admin                Int
-  created_at              DateTime @default(now())
-  updated_at              DateTime @updatedAt
+  id_profil           Int    @id @default(autoincrement())
+  nama_sekolah        String @unique
+  visi                String @db.Text
+  misi                String @db.Text
+  nama_kepala_sekolah String
+  foto_kepala_sekolah String
+  kata_sambutan       String @db.Text
+  id_admin            Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -62,16 +55,15 @@ model Profil {
 }
 
 model Kontak {
-  id_kontak    Int      @id @default(autoincrement())
-  alamat       String   @db.Text
-  no_telpon    String
-  email        String
-  media_sosial String?  @db.Text
-  whatsapp     String?
-  link_maps    String?
-  id_admin     Int
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  id_kontak Int     @id @default(autoincrement())
+  no_telpon String
+  instagram String
+  tiktok    String
+  facebook  String
+  youtube   String
+  email     String
+  whatsapp  String?
+  id_admin  Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -80,13 +72,12 @@ model Kontak {
 }
 
 model Berita {
-  id_berita  Int      @id @default(autoincrement())
-  judul      String
-  deskripsi  String   @db.Text
-  gambar     String?
-  id_admin   Int
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id_berita      Int      @id @default(autoincrement())
+  judul_berita   String
+  deskripsi      String   @db.Text
+  gambar         String?
+  id_admin       Int
+  tanggal_dibuat DateTime @default(now())
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -95,12 +86,11 @@ model Berita {
 }
 
 model Pengumuman {
-  id_pengumuman Int      @id @default(autoincrement())
-  judul         String
-  deksripsi     String?  @db.Text
-  id_admin      Int
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  id_pengumuman  Int      @id @default(autoincrement())
+  judul          String
+  deksripsi      String?  @db.Text
+  id_admin       Int
+  tanggal_dibuat DateTime @default(now())
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -109,13 +99,11 @@ model Pengumuman {
 }
 
 model Fasilitas {
-  id_fasilitas Int      @id @default(autoincrement())
-  nama         String
-  deskripsi    String   @db.Text
-  gambar       String?
-  id_admin     Int
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  id_fasilitas   Int     @id @default(autoincrement())
+  nama_fasilitas String
+  deskripsi      String  @db.Text
+  gambar         String?
+  id_admin       Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -124,13 +112,11 @@ model Fasilitas {
 }
 
 model ProgramUnggulan {
-  id_program Int      @id @default(autoincrement())
+  id_program Int     @id @default(autoincrement())
   nama       String
-  deskripsi  String   @db.Text
+  deskripsi  String  @db.Text
   gambar     String?
   id_admin   Int
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -139,15 +125,12 @@ model ProgramUnggulan {
 }
 
 model Ekstrakurikuler {
-  id_ekstrakurikuler Int      @id @default(autoincrement())
-  nama               String
-  deskripsi          String   @db.Text
-  pembina            String?  @db.Text
-  jadwal             String?
-  gambar             String?
-  id_admin           Int
-  created_at         DateTime @default(now())
-  updated_at         DateTime @updatedAt
+  id_ekstrakurikuler   Int     @id @default(autoincrement())
+  nama_ekstrakurikuler String
+  pembina              String
+  deskripsi            String  @db.Text
+  gambar               String?
+  id_admin             Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -156,14 +139,12 @@ model Ekstrakurikuler {
 }
 
 model Prestasi {
-  id_prestasi Int      @id @default(autoincrement())
-  judul       String
-  deskripsi   String   @db.Text
-  gambar      String?
-  peraih      String
-  id_admin    Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id_prestasi    Int     @id @default(autoincrement())
+  judul_prestasi String
+  deskripsi      String  @db.Text
+  peraih         String
+  gambar         String?
+  id_admin       Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
@@ -177,21 +158,16 @@ model Pendaftar {
   nama_lengkap       String
   kata_sandi         String?
   nisn               String?   @unique
-  nik                String?   @unique
-  jenis_kelamin      String?
+  alamat             String    @db.Text
   tempat_lahir       String?
   tanggal_lahir      DateTime? @db.Date
-  alamat             String    @db.Text
+  jenis_kelamin      String?
   no_hp              String
-  email              String?
   asal_sekolah       String?
-  nama_ayah          String?
-  nama_ibu           String?
-  nama_wali          String?
-  tahun_ajaran       String?
+  email              String?
+  nama_orangtua      String?
   status_pendaftaran String    @default("menunggu_verifikasi")
-  created_at         DateTime  @default(now())
-  updated_at         DateTime  @updatedAt
+  tanggal_daftar     DateTime  @default(now())
   id_gelombang       Int?
 
   dokumen   Dokumen[]
@@ -202,23 +178,20 @@ model Pendaftar {
 }
 
 model Dokumen {
-  id_dokumen         Int       @id @default(autoincrement())
+  id_dokumen         Int      @id @default(autoincrement())
   nama_dokumen       String
-  mime_type          String
-  ukuran_file        Int
-  versi_upload       Int       @default(1)
-  status_verifikasi  String    @default("menunggu_verifikasi")
-  catatan_verifikasi String?   @db.Text
-  verified_at        DateTime?
+  jenis_dokumen      String
+  status_verifikasi  String   @default("menunggu_verifikasi")
+  catatan_verifikasi String?  @db.Text
   id_pendaftar       Int
   id_verifikator     Int?
-  created_at         DateTime  @default(now())
-  updated_at         DateTime  @updatedAt
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
 
   pendaftar   Pendaftar    @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
   verifikator Verifikator? @relation(fields: [id_verifikator], references: [id_verifikator], onDelete: SetNull)
 
-  @@unique([id_pendaftar, nama_dokumen, versi_upload], map: "dokumen_versi_unique")
+  @@unique([id_pendaftar, nama_dokumen], map: "dokumen_unique")
   @@index([id_pendaftar], map: "dokumen_id_pendaftar_idx")
   @@index([id_verifikator], map: "dokumen_id_verifikator_idx")
   @@index([status_verifikasi], map: "dokumen_status_idx")

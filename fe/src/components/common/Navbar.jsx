@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import logo from "@assets/logo.jpeg";
+import React from "react";
+import { useState, useRef, useEffect } from "react";
+import logo from "@assets/logo.jpg";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router"; //for login
@@ -9,6 +10,7 @@ function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [openModal, setOpenModal] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -21,134 +23,156 @@ function Navbar() {
     setOpenDropdown(null);
     setIsOpen(false);
   };
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
-      <nav className="w-full bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
+      <nav ref={dropdownRef} className="w-full bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <img src={logo} alt="logo" className="w-12 h-12 object-contain" />
+          <div className="flex items-center gap-2 ml-2">
+            <img src={logo} alt="logo" className="w-14 h-14  object-contain" />
           </div>
 
           {/* Menu */}
-          <ul className="hidden md:flex space-x-8 text-gray-600 font-medium">
-            <li className="cursor-pointer">
+          <ul className="hidden md:flex space-x-10 text-gray-600 font-medium items-center">
+            {/* Beranda */}
+            <li>
               <Link
                 to="/"
-                className={`${
+                className={`px-3 py-2 border-2 rounded transition-colors ${
                   location.pathname === "/"
-                    ? "text-black font-bold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
+                    ? "border-transparent  text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Beranda
               </Link>
             </li>
 
             {/* Tentang */}
-            <li className="relative flex items-center gap-1">
-              <div
+            <li className="relative">
+              <button
                 onClick={() => handleDropdown("tentang")}
-                className={`flex items-center gap-1 cursor-pointer ${
-                  location.pathname.includes("/tentang")
-                    ? "text-black font-bold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
+                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${
+                  location.pathname === "/sejarah" ||
+                  location.pathname === "/visi-misi" ||
+                  location.pathname === "/fasilitas"
+                    ? "border-transparent text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Tentang
                 <ChevronDown
                   size={16}
-                  className={
-                    location.pathname.includes("/tentang") ? "rotate-180" : ""
-                  }
+                  className={openDropdown === "tentang" ? "rotate-180" : ""}
                 />
-              </div>
+              </button>
 
               {openDropdown === "tentang" && (
-                <div className="absolute top-8 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
-                  <p
-                    onClick={() => handleModal("sejarah")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                <div className="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
+                  <Link
+                    to="/sejarah"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Sejarah Sekolah
-                  </p>
-                  <p
-                    onClick={() => handleModal("visi")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  </Link>
+                  <Link
+                    to="/visi-misi"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Visi dan Misi Sekolah
-                  </p>
-                  <p
-                    onClick={() => handleModal("kepsek")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    Sambutan Kepala Sekolah
-                  </p>
-                  <p
-                    onClick={() => handleModal("fasilitas")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  </Link>
+
+                  <Link
+                    to="/fasilitas"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Fasilitas Sekolah
-                  </p>
+                  </Link>
                 </div>
               )}
             </li>
 
             {/* Akademik */}
-            <li className="relative flex items-center gap-1">
-              <div
+            <li className="relative">
+              <button
                 onClick={() => handleDropdown("akademik")}
-                className="flex items-center gap-1 hover:text-blue-600 cursor-pointer"
+                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${
+                  location.pathname === "/program" ||
+                  location.pathname === "/ekstrakurikuler" ||
+                  location.pathname === "/prestasi"
+                    ? "border-transparent text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Akademik
-                <ChevronDown size={16} />
-              </div>
+                <ChevronDown
+                  size={16}
+                  className={openDropdown === "akademik" ? "rotate-180" : ""}
+                />
+              </button>
 
               {openDropdown === "akademik" && (
-                <div className="absolute top-8 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
-                  <p
-                    onClick={() => handleModal("kurikulum")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                <div className="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg p-2 w-48 z-50">
+                  <Link
+                    to="/program"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Program Unggulan
-                  </p>
-                  <p
-                    onClick={() => handleModal("guru")}
+                  </Link>
+                  <Link
+                    to="/ekstrakurikuler"
                     className="p-2 hover:bg-gray-100 cursor-pointer"
                   >
                     Ekstrakurikuler
-                  </p>
-                  <p
-                    onClick={() => handleModal("prestasi")}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                  </Link>
+
+                  <Link
+                    to="/prestasi"
+                    className="p-2 hover:bg-gray-100 block cursor-pointer"
                   >
                     Prestasi Siswa
-                  </p>
+                  </Link>
                 </div>
               )}
             </li>
 
+            {/* Panduan */}
             <li>
               <Link
                 to="/panduan"
-                className={`${
+                className={`px-3 py-2 border-2 rounded transition-colors ${
                   location.pathname === "/panduan"
-                    ? "text-black font-bold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
+                    ? "border-transparent text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Panduan
               </Link>
             </li>
+
+            {/* Berita */}
             <li>
               <Link
                 to="/berita"
-                className={`${
+                className={`px-3 py-2 border-2 rounded transition-colors ${
                   location.pathname === "/berita"
-                    ? "text-black font-bold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
+                    ? "border-transparent text-gray-950 font-semibold"
+                    : "border-transparent"
+                } hover:bg-gray-100`}
               >
                 Berita
               </Link>
@@ -159,11 +183,15 @@ function Navbar() {
           <div className="hidden md:flex space-x-4">
             <button
               onClick={() => navigate("/login")}
-              className="text-blue-900 border border-blue-900 p-3 rounded-2xl font-medium hover:underline cursor-pointer"
+              className="px-3 py-2 border-2 border-blue-800 text-blue-900 rounded-md font-normal hover:bg-blue-50 transition-colors duration-200 cursor-pointer"
             >
               Masuk
             </button>
-            <button className="bg-blue-800 text-white px-4 py-2 border rounded-2xl hover:bg-blue-900 transition cursor-pointer">
+
+            <button
+              onClick={() => navigate("/register")}
+              className="px-4 py-2 bg-[#1d3890] text-white rounded-md hover:bg-[#172c73] transition-colors duration-200 cursor-pointer"
+            >
               Daftar Sekarang
             </button>
           </div>
@@ -189,8 +217,18 @@ function Navbar() {
               </p>
               {openDropdown === "tentang" && (
                 <div className="ml-4 mt-2 space-y-2 text-sm">
-                  <p onClick={() => handleModal("sejarah")}>Sejarah Sekolah</p>
-                  <p onClick={() => handleModal("visi")}>Visi Misi</p>
+                  <Link
+                    to="/sejarah"
+                    className=" hover:bg-gray-100 block cursor-pointer"
+                  >
+                    Sejarah Sekolah
+                  </Link>
+                  <Link
+                    to="/visi-misi"
+                    className=" hover:bg-gray-100 block cursor-pointer"
+                  >
+                    Visi dan Misi Sekolah
+                  </Link>
                   <p onClick={() => handleModal("kepsek")}>Sambutan Kepsek</p>
                   <p onClick={() => handleModal("fasilitas")}>Fasilitas</p>
                 </div>
@@ -206,9 +244,12 @@ function Navbar() {
               </p>
               {openDropdown === "akademik" && (
                 <div className="ml-4 mt-2 space-y-2 text-sm">
-                  <p onClick={() => handleModal("kurikulum")}>
+                  <Link
+                    to="/program"
+                    className=" hover:bg-gray-100 block cursor-pointer"
+                  >
                     Program Unggulan
-                  </p>
+                  </Link>
                   <p onClick={() => handleModal("guru")}>Ekstrakurikuler</p>
                   <p onClick={() => handleModal("prestasi")}>Prestasi</p>
                 </div>
@@ -227,11 +268,14 @@ function Navbar() {
             <div className="flex flex-col gap-2 pt-2">
               <button
                 onClick={() => navigate("/login")}
-                className="border border-blue-900 py-2 rounded-xl"
+                className="border border-blue-900 py-2 rounded-md"
               >
                 Masuk
               </button>
-              <button className="bg-blue-800 text-white py-2 rounded-xl">
+              <button
+                onClick={() => navigate("/register")}
+                className="bg-blue-800 text-white py-2 rounded-md"
+              >
                 Daftar Sekarang
               </button>
             </div>
