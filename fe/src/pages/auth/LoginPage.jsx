@@ -27,6 +27,18 @@ export default function LoginPage() {
     setSubmitting(true);
     setError("");
 
+    // ✅ LOGIN DUMMY VERIFIKATOR
+    if (role === "verifikator") {
+      if (identifier === "verifikator" && password === "12345") {
+        navigate("/verifikator");
+      } else {
+        setError("Username atau password verifikator salah");
+      }
+
+      setSubmitting(false);
+      return;
+    }
+
     try {
       // ✅ buat payload sesuai role
       let payload = {
