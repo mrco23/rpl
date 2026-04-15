@@ -35,6 +35,7 @@ import Program from "./pages/public/ProgramPage";
 import VerifikatorLayout from "./components/layout/VerifikatorLayout";
 import BerandaVerifikator from "./pages/verifikator/BerandaVerifikator";
 import VerifikasiDokumen from "./pages/verifikator/VerifikasiDokumen";
+import DetailPendaftarPage from "./pages/verifikator/DetailPendaftar";
 
 /* scrool */
 import ScrolTop from "./components/common/ScrolTop";
@@ -78,6 +79,7 @@ function App() {
         <Route path="/verifikator" element={<VerifikatorLayout />}>
           <Route index element={<BerandaVerifikator />} />
           <Route path="verifikasiDokumen" element={<VerifikasiDokumen />} />
+          <Route path="verifikasiDokumen/:nisn" element={<DetailPendaftarPage />} />
         </Route>
 
         {/* Applicant Routes */}

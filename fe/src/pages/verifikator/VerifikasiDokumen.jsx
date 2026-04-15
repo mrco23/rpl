@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import DetailPendaftarPage from "./DetailPendaftar";
+import { useNavigate } from "react-router-dom";
 import {
   Search,
   Eye,
@@ -10,12 +12,8 @@ import {
   UserCircle,
 } from "lucide-react";
 
-function VerifikasiDokumen({ totalPages = 5 }) {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const goPrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const goNext = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-
+function VerifikasiDokumen() {
+  const navigate = useNavigate();
   const applicants = [
     {
       name: "Elegantia Makarawung",
@@ -29,6 +27,12 @@ function VerifikasiDokumen({ totalPages = 5 }) {
       nisn: "00812346",
       status: "Menunggu Verifikasi",
       date: "24 Mar 2026",
+    },
+    {
+      name: "Marcois Makalew",
+      nisn: "00812347",
+      status: "Perlu Revisi",
+      date: "24 Jan 2026",
     },
     {
       name: "Marcois Makalew",
@@ -73,9 +77,9 @@ function VerifikasiDokumen({ totalPages = 5 }) {
           Selamat datang di sistem verifikasi dokumen PPDB
         </p>
       </div>
-      <div className="grid grid-cols-12 gap-6 mt-8">
+      <div className="grid grid-cols-12 gap-6 mt-8 auto-rows-fr">
         {/* LEFT */}
-        <div className="col-span-5 bg-white rounded-2xl shadow-sm p-5">
+        <div className="col-span-5 bg-white rounded-2xl shadow-sm p-5 flex flex-col h-full max-h-[900px]">
           <div className="flex justify-between items-start">
             <div>
               <h2 className="text-xl font-bold text-slate-800">
@@ -119,41 +123,8 @@ function VerifikasiDokumen({ totalPages = 5 }) {
             </button>
           </div>
 
-          <div className="flex gap-2 justify-center mt-5">
-            {/* Tombol prev */}
-            <button
-              onClick={goPrev}
-              className="px-3 py-2 border rounded hover:bg-gray-100"
-            >
-              {"<<"}
-            </button>
-
-            {/* Angka halaman */}
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`px-4 py-2 border rounded ${
-                  currentPage === i + 1
-                    ? "bg-blue-100 border-blue-500"
-                    : "bg-white border-gray-300"
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
-
-            {/* Tombol next */}
-            <button
-              onClick={goNext}
-              className="px-3 py-2 border rounded hover:bg-gray-100"
-            >
-              {">>"}
-            </button>
-          </div>
-
           {/* List */}
-          <div className="space-y-3 mt-5">
+          <div className="space-y-3 mt-5 flex-1 overflow-y-auto pr-2 min-h-0">
             {applicants.map((item, index) => (
               <div
                 key={index}
@@ -163,8 +134,8 @@ function VerifikasiDokumen({ totalPages = 5 }) {
               >
                 <div className="flex items-center gap-4">
                   {/* Avatar */}
-                  <div className="w-14 h-14 rounded-full bg-pink-100 flex items-center justify-center">
-                    <UserCircle size={34} className="text-pink-500" />
+                  <div className="w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center">
+                    <UserCircle size={34} className="text-yellow-900" />
                   </div>
 
                   {/* Info */}
@@ -185,7 +156,7 @@ function VerifikasiDokumen({ totalPages = 5 }) {
                   </div>
                 </div>
 
-                <button className="text-xs border px-3 py-1 rounded-lg text-blue-700">
+                <button className="text-xs border px-3 py-1 rounded-lg text-blue-700 cursor-pointer">
                   Periksa
                 </button>
               </div>
@@ -194,12 +165,17 @@ function VerifikasiDokumen({ totalPages = 5 }) {
         </div>
 
         {/* RIGHT */}
-        <div className="col-span-7 bg-white rounded-2xl shadow-sm p-5">
+        <div className="col-span-7 bg-white rounded-2xl shadow-sm p-5 h-full">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold text-slate-800">Data Pendaftar</h2>
 
-            <button className="border px-3 py-2 rounded-lg text-sm text-blue-700">
-              Lihat Data Lengkap
+            <button
+              onClick={() =>
+                navigate(`/verifikator/verifikasiDokumen/00812345`)
+              }
+              className="text-xs border px-3 py-1 rounded-lg text-blue-700 cursor-pointer"
+            >
+              Lihat data lengkap →
             </button>
           </div>
 
@@ -254,7 +230,7 @@ function VerifikasiDokumen({ totalPages = 5 }) {
                   </div>
 
                   <div className="flex gap-2">
-                    <button className="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+                    <button className="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2 cursor-pointer">
                       <Eye size={16} />
                       Lihat
                     </button>

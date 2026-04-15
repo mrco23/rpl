@@ -68,7 +68,7 @@ function SidebarVerifikator() {
             <Link
               key={index}
               to={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-all
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[16px] font-medium transition-all
                 ${
                   isActive(item.path)
                     ? "bg-blue-700 text-white"
