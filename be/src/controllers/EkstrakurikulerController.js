@@ -35,7 +35,7 @@ export const create = async (req, res) => {
   try {
     const payload = { ...req.body };
     if (req.file) {
-      payload.gambar = req.file.filename;
+      payload.gambar_ekskul = req.file.filename;
     }
 
     const created = await EkstrakurikulerService.createEkstrakurikuler(req.user.id, payload);
@@ -46,29 +46,19 @@ export const create = async (req, res) => {
 };
 
 /* 
-  PUT: Update khusus teks saja (judul, deskripsi, dsb.).
+  PUT: Update khusus teks dan file opsional.
 */
 export const updateData = async (req, res) => {
   try {
-    const updated = await EkstrakurikulerService.updateEkstrakurikulerData(req.user.id, req.params.id, req.body);
+    const payload = { ...req.body };
+    if (req.file) {
+      payload.gambar_ekskul = req.file.filename;
+    }
+
+    const updated = await EkstrakurikulerService.updateEkstrakurikulerData(req.user.id, req.params.id, payload);
     res.json({ message: "Data berhasil diperbarui", data: EkstrakurikulerService.serialize(req, updated) });
   } catch (error) {
     res.status(400).json({ message: error.message || "Gagal update data Ekstrakurikuler" });
-  }
-};
-
-/* 
-  PATCH: Khusus update gambar, otomatis hapus file lama di Service.
-*/
-export const updateImage = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "Gambar belum diupload" });
-    }
-    const updated = await EkstrakurikulerService.updateEkstrakurikulerImage(req.user.id, req.params.id, req.file.filename);
-    res.json({ message: "Gambar berhasil diperbarui", data: EkstrakurikulerService.serialize(req, updated) });
-  } catch (error) {
-    res.status(400).json({ message: error.message || "Gagal update gambar Ekstrakurikuler" });
   }
 };
 

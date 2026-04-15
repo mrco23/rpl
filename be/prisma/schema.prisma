@@ -113,9 +113,9 @@ model Fasilitas {
 
 model ProgramUnggulan {
   id_program Int     @id @default(autoincrement())
-  nama       String
+  nama_pu    String
   deskripsi  String  @db.Text
-  gambar     String?
+  gambar_pu  String?
   id_admin   Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)

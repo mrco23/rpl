@@ -6,7 +6,7 @@ meta {
 
 put {
   url: {{base_url}}/prestasi/1
-  body: json
+  body: multipartForm
   auth: bearer
 }
 
@@ -14,10 +14,9 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "judul": "Juara 1 Lomba",
-    "deskripsi": "Tingkat Provinsi",
-    "tahun": "2024"
-  }
+body:multipart-form {
+  judul_prestasi: Juara 1 Lomba Web
+  deskripsi: Tingkat Nasional
+  peraih_prestasi: Tim Sukses
+  gambar_prestasi: @file(path/to/image.jpg)
 }

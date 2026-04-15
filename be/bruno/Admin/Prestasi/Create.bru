@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{base_url}}/prestasi
-  body: json
+  body: multipartForm
   auth: bearer
 }
 
@@ -14,10 +14,9 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "judul": "Juara 1 Lomba",
-    "deskripsi": "Tingkat Provinsi",
-    "tahun": "2024"
-  }
+body:multipart-form {
+  judul_prestasi: Juara Olimpiade Matematika
+  deskripsi: Tingkat Nasional 2026
+  peraih_prestasi: Budi Santoso
+  gambar_prestasi: @file(path/to/mock/image.jpg)
 }

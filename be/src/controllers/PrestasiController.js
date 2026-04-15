@@ -32,7 +32,7 @@ export const create = async (req, res) => {
   try {
     const payload = { ...req.body };
     if (req.file) {
-      payload.gambar = req.file.filename;
+      payload.gambar_prestasi = req.file.filename;
     }
 
     const created = await PrestasiService.createPrestasi(req.user.id, payload);
@@ -44,22 +44,15 @@ export const create = async (req, res) => {
 
 export const updateData = async (req, res) => {
   try {
-    const updated = await PrestasiService.updatePrestasiData(req.user.id, req.params.id, req.body);
+    const payload = { ...req.body };
+    if (req.file) {
+      payload.gambar_prestasi = req.file.filename;
+    }
+
+    const updated = await PrestasiService.updatePrestasiData(req.user.id, req.params.id, payload);
     res.json({ message: "Data berhasil diperbarui", data: PrestasiService.serialize(req, updated) });
   } catch (error) {
     res.status(400).json({ message: error.message || "Gagal update data Prestasi" });
-  }
-};
-
-export const updateImage = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "Gambar belum diupload" });
-    }
-    const updated = await PrestasiService.updatePrestasiImage(req.user.id, req.params.id, req.file.filename);
-    res.json({ message: "Gambar berhasil diperbarui", data: PrestasiService.serialize(req, updated) });
-  } catch (error) {
-    res.status(400).json({ message: error.message || "Gagal update gambar Prestasi" });
   }
 };
 

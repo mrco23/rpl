@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{base_url}}/program-unggulan
-  body: json
+  body: multipartForm
   auth: bearer
 }
 
@@ -14,9 +14,8 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "nama": "Tahfidz Quran",
-    "deskripsi": "Hafalan Al Quran"
-  }
+body:multipart-form {
+  nama_pu: Bootcamp Pemrograman
+  deskripsi: Pelatihan coding 12 minggu
+  gambar_pu: @file(path/to/mock/image.jpg)
 }

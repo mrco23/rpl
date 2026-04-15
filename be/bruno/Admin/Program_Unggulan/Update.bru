@@ -1,12 +1,12 @@
 meta {
   name: Update
   type: http
-  seq: 4
+  seq: 1
 }
 
 put {
   url: {{base_url}}/program-unggulan/1
-  body: json
+  body: multipartForm
   auth: bearer
 }
 
@@ -14,9 +14,8 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "nama": "Tahfidz Quran",
-    "deskripsi": "Hafalan Al Quran"
-  }
+body:multipart-form {
+  nama_pu: Program Unggulan
+  deskripsi: Program yang diunggulkan
+  gambar_pu: @file(path/to/image.jpg)
 }

@@ -59,3 +59,83 @@ const res = {
 		},
 	},
 };
+
+const visiMisi = {
+	visi: "",
+	misi: `
+	1. example
+	2. example
+	3. example
+	`,
+};
+
+const programUnggulan = [
+	{
+		gambar_pu: "",
+		nama_pu: "example",
+		deskripsi: "example",
+	},
+	{
+		gambar_pu: "",
+		nama_pu: "example",
+		deskripsi: "example",
+	},
+];
+
+const ekstrakurikuler = [
+	{
+		gambar_ekskul: "",
+		nama_ekskul: "example",
+		p_jwb_ekskul: "example",
+		deskripsi: "example",
+	},
+	{
+		gambar_ekskul: "",
+		nama_ekskul: "example",
+		p_jwb_ekskul: "example",
+		deskripsi: "example",
+	},
+];
+
+const fasilitas = [
+	{
+		gambar_fasilitas: "",
+		nama_fasilitas: "example",
+		deskripsi: "example",
+	},
+	{
+		gambar_fasilitas: "",
+		nama_fasilitas: "example",
+		deskripsi: "example",
+	},
+];
+
+const prestasi = [
+	{
+		gambar_prestasi: "",
+		nama_prestasi: "example",
+		deskripsi: "example",
+		peraih_prestasi: "example",
+	},
+	{
+		gambar_prestasi: "",
+		nama_prestasi: "example",
+		deskripsi: "example",
+		peraih_prestasi: "example",
+	},
+];
+
+const berita = [
+	{
+		gambar_berita: "",
+		judul_berita: "example",
+		deskripsi: "example",
+		tanggal_dibuat: "example",
+	},
+	{
+		gambar_berita: "",
+		judul_berita: "example",
+		deskripsi: "example",
+		tanggal_dibuat: "example",
+	},
+];

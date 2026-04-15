@@ -5,7 +5,6 @@ import {
   getDetailPublic,
   create,
   updateData,
-  updateImage,
   remove,
 } from "../controllers/ProgramUnggulanController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
@@ -17,9 +16,8 @@ programUnggulanRoutes.get("/public", getPublic);
 programUnggulanRoutes.get("/public/:id", getDetailPublic);
 
 programUnggulanRoutes.get("", verifyToken, getAll);
-programUnggulanRoutes.post("", verifyToken, upload.single("gambar"), create);
-programUnggulanRoutes.put("/:id", verifyToken, updateData);
-programUnggulanRoutes.patch("/:id/image", verifyToken, upload.single("gambar"), updateImage);
+programUnggulanRoutes.post("", verifyToken, upload.single("gambar_pu"), create);
+programUnggulanRoutes.put("/:id", verifyToken, upload.single("gambar_pu"), updateData);
 programUnggulanRoutes.delete("/:id", verifyToken, remove);
 
 export default programUnggulanRoutes;

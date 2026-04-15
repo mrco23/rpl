@@ -33,7 +33,7 @@ export const create = async (req, res) => {
   try {
     const payload = { ...req.body };
     if (req.file) {
-      payload.gambar = req.file.filename;
+      payload.gambar_berita = req.file.filename;
     }
 
     const {id} = verifyToken(req);
@@ -50,22 +50,15 @@ export const updateData = async (req, res) => {
     const token = req.headers['authorization'].split(' ')[1]
     const {id, role} = verifyToken(token);
 
-    const updated = await BeritaService.updateBeritaData(id, req.params.id, req.body);
+    const payload = { ...req.body };
+    if (req.file) {
+      payload.gambar_berita = req.file.filename;
+    }
+
+    const updated = await BeritaService.updateBeritaData(id, req.params.id, payload);
     res.json({ message: "Data berhasil diperbarui", data: BeritaService.serialize(req, updated) });
   } catch (error) {
     res.status(400).json({ message: error.message || "Gagal update data Berita" });
-  }
-};
-
-export const updateImage = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "Gambar belum diupload" });
-    }
-    const updated = await BeritaService.updateBeritaImage(req.user.id, req.params.id, req.file.filename);
-    res.json({ message: "Gambar berhasil diperbarui", data: BeritaService.serialize(req, updated) });
-  } catch (error) {
-    res.status(400).json({ message: error.message || "Gagal update gambar Berita" });
   }
 };
 

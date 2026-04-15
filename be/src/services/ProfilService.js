@@ -40,11 +40,9 @@ export const createProfil = async (id_admin, payload) => {
 			nama_sekolah: payload.nama_sekolah,
 			visi: payload.visi,
 			misi: payload.misi,
-			deskripsi: payload.deskripsi,
-			logo: payload.logo || undefined,
 			nama_kepala_sekolah: payload.nama_kepala_sekolah,
 			foto_kepala_sekolah: payload.foto_kepala_sekolah || undefined,
-			sambutan_kepala_sekolah: payload.sambutan_kepala_sekolah,
+			kata_sambutan: payload.kata_sambutan,
 			id_admin: Number(id_admin),
 		},
 	});
@@ -66,9 +64,8 @@ export const updateProfilData = async (id_admin, payload) => {
 			nama_sekolah: payload.nama_sekolah,
 			visi: payload.visi,
 			misi: payload.misi,
-			deskripsi: payload.deskripsi,
 			nama_kepala_sekolah: payload.nama_kepala_sekolah,
-			sambutan_kepala_sekolah: payload.sambutan_kepala_sekolah,
+			kata_sambutan: payload.kata_sambutan,
 		},
 	});
 };
@@ -84,14 +81,6 @@ export const updateProfilImage = async (id_admin, newFiles) => {
 	if (!profil) throw new Error("Profil belum dibuat.");
 
 	const dataToUpdate = {};
-
-	if (newFiles.logo) {
-		// Hapus logo lama jika ada
-		if (profil.logo) {
-			deleteFile(profil.logo);
-		}
-		dataToUpdate.logo = newFiles.logo;
-	}
 
 	if (newFiles.foto_kepala_sekolah) {
 		// Hapus foto lama jika ada
@@ -150,11 +139,9 @@ export const serialize = (req, data) => {
 		nama_sekolah: profil.nama_sekolah || "",
 		visi: profil.visi || "",
 		misi: profil.misi || "",
-		deskripsi: profil.deskripsi || "",
-		logo: buildFileUrl(req, profil.logo),
 		nama_kepala_sekolah: profil.nama_kepala_sekolah || "",
 		foto_kepala_sekolah: buildFileUrl(req, profil.foto_kepala_sekolah),
-		sambutan_kepala_sekolah: profil.sambutan_kepala_sekolah || "",
+		kata_sambutan: profil.kata_sambutan || "",
 		id_kontak: kontak.id_kontak,
 		alamat: kontak.alamat || "",
 		no_telpon: kontak.no_telpon || "",

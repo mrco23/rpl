@@ -5,7 +5,6 @@ import {
   getDetailPublic,
   create,
   updateData,
-  updateImage,
   remove,
 } from "../controllers/BeritaController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
@@ -18,9 +17,8 @@ beritaRoutes.get("/", getPublic);
 beritaRoutes.get("/:id", getDetailPublic);
 
 // PRIVATE
-beritaRoutes.post("", verifyToken, upload.single("gambar"), create);
-beritaRoutes.put("/:id", verifyToken, updateData);
-beritaRoutes.patch("/:id/image", verifyToken, upload.single("gambar"), updateImage);
+beritaRoutes.post("", verifyToken, upload.single("gambar_berita"), create);
+beritaRoutes.put("/:id", verifyToken, upload.single("gambar_berita"), updateData);
 beritaRoutes.delete("/:id", verifyToken, remove);
 
 export default beritaRoutes;

@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{base_url}}/profile
-  body: json
+  body: multipartForm
   auth: bearer
 }
 
@@ -14,10 +14,10 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "nama_sekolah": "SMK Hebat",
-    "visi": "Visi Unggul",
-    "misi": "Misi Cerdas"
-  }
+body:multipart-form {
+  nama_sekolah: SMK Hebat
+  visi: Visi Unggul
+  misi: Misi Cerdas
+  nama_kepala_sekolah: Budi
+  kata_sambutan: Selamat datang semua
 }
