@@ -4,6 +4,7 @@ import LandingPage from "./pages/public/LandingPage";
 import ExtracurricularPage from "./pages/public/ExtracurricularPage";
 import AchievementsPage from "./pages/public/AchievementsPage";
 import NewsPage from "./pages/public/NewsPage";
+import DetailBerita from "./pages/public/DetailBerita";
 
 import PanduanPage from "./pages/public/PanduanPage";
 import LoginPage from "./pages/auth/LoginPage";
@@ -42,6 +43,7 @@ function App() {
         <Route path="/ekstrakurikuler" element={<ExtracurricularPage />} />
         <Route path="/prestasi" element={<AchievementsPage />} />
         <Route path="/berita" element={<NewsPage />} />
+        <Route path="/berita/:id" element={<DetailBerita />} />
         <Route path="/visi-misi" element={<VisiMisiPage />} />
         <Route path="/sejarah" element={<SejarahPage />} />
         <Route path="/fasilitas" element={<FasilitasPage />} />

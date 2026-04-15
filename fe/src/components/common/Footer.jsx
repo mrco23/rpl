@@ -9,7 +9,7 @@ function Footer({ profile }) {
   const whatsappHref = whatsapp ? `https://wa.me/${whatsapp}` : null;
 
   return (
-    <footer className="bg-blue-200 text-black pt-16 pb-8">
+    <footer className="bg-[#dfe4f6] text-black pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6 md:px-16">
         {/* GRID */}
         <div className="grid md:grid-cols-3 gap-10 mb-10">

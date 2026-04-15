@@ -54,7 +54,7 @@ function SejarahPage() {
           <div className="w-full h-[200px] bg-black rounded-lg"></div>
 
           {/* Paragraf 1 */}
-          <div className="text-left text-gray-600 text-lg leading-relaxed">
+          <div className="text-left text-gray-600 text-xl leading-relaxed">
             <p>
               Yayasan ini merupakan lembaga resmi yang mengelola sekolah-sekolah
               Katolik di wilayah kerja Keuskupan Manado, yang meliputi Sulawesi
@@ -74,7 +74,7 @@ function SejarahPage() {
           </p>
         </div>
 
-        <p className="text-gray-500 mt-6 max-w-3xl mx-auto">
+        <p className="text-gray-500 mt-6 max-w-3xl text-xl mx-auto">
           Namun, sekolah ini memperbarui atau mempertegas status operasionalnya
           melalui SK yang diterbitkan pada 18 Juli 1985.
         </p>
@@ -83,11 +83,11 @@ function SejarahPage() {
       {/* BLUE SECTION */}
       <section className="relative">
         <div className="flex">
-          <div className="bg-blue-900 h-20 w-[70%] rounded-tr-[100px]"></div>
-          <div className="bg-blue-900 h-20 w-[30%] rounded-tl-[100px]"></div>
+          <div className="bg-[#1f3b9a] h-20 w-[70%] rounded-tr-[100px]"></div>
+          <div className="bg-[#1f3b9a] h-20 w-[30%] rounded-tl-[100px]"></div>
         </div>
 
-        <section className="bg-blue-900 text-white px-6 md:px-20 py-12">
+        <section className="bg-[#1f3b9a] text-white px-6 md:px-20 py-12">
           {/* curve atas */}
 
           {/* BAGIAN ATAS (FULL WIDTH) */}
@@ -102,7 +102,7 @@ function SejarahPage() {
 
           {/* BAGIAN BAWAH (TETAP DI TENGAH) */}
           <div className="max-w-4xl mx-auto text-center">
-            <div className="border-t border-white/30 mt-6 pt-4 text-sm text-white/80">
+            <div className="border-t border-white/30 mt-6 pt-4 text-md text-white/80">
               Berlandaskan nilai kasih, pelayanan, dan kejujuran, kami berupaya
               mendampingi setiap siswa untuk bertumbuh menjadi pribadi yang
               tidak hanya berpengetahuan luas, tetapi juga memiliki hati yang
