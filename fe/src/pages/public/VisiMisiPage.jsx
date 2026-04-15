@@ -41,12 +41,12 @@ function VisiMisiPage() {
         <section className="relative -mt-2">
           {/* 🔵 LENGKUNGAN (bagian atas Misi) */}
           <div className="flex">
-            <div className="bg-blue-900 h-16 w-[70%] rounded-tr-[120px]"></div>
-            <div className="bg-blue-900 h-16 w-[30%] rounded-tl-[120px]"></div>
+            <div className="bg-[#1f3b9a] h-16 w-[70%] rounded-tr-[120px]"></div>
+            <div className="bg-[#1f3b9a] h-16 w-[30%] rounded-tl-[120px]"></div>
           </div>
 
           {/* 🔵 ISI MISI */}
-          <div className="bg-blue-900 text-white pt-10 pb-16 px-6">
+          <div className="bg-[#1f3b9a] text-white pt-10 pb-16 px-6">
             <h2 className="text-5xl font-semibold text-center mb-12">Misi</h2>
 
             <div className="max-w-4xl ml-10 space-y-10">
