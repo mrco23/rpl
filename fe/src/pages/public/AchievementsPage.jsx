@@ -28,7 +28,7 @@ export default function AchievementsPage() {
           to="/ekstrakurikuler"
           className=" text-gray-600 hover:text-blue-600 font-medium block cursor-pointer"
         >
-          ekstrakurikuler
+          Ekstrakurikuler
         </Link>
         <Link
           to="/prestasi"
