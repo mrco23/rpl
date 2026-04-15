@@ -5,14 +5,14 @@ import { buildFileUrl, deleteFile } from "../utils/file.js";
 export const getAllEkstrakurikuler = async (id_admin) => {
   return prisma.ekstrakurikuler.findMany({
     where: { id_admin: Number(id_admin) },
-    orderBy: { created_at: "desc" },
+    orderBy: { id_ekstrakurikuler: "desc" },
   });
 };
 
 // GET ALL PUBLIC
 export const getPublicEkstrakurikuler = async () => {
   return prisma.ekstrakurikuler.findMany({
-    orderBy: { created_at: "desc" },
+    orderBy: { id_ekstrakurikuler: "desc" },
   });
 };
 
@@ -27,49 +27,38 @@ export const getOnePublicEkstrakurikuler = async (id) => {
 export const createEkstrakurikuler = async (id_admin, payload) => {
   return prisma.ekstrakurikuler.create({
     data: {
-      nama: payload.nama,
+      nama_ekskul: payload.nama_ekskul,
       deskripsi: payload.deskripsi,
-      mentor: payload.mentor || null,
-      jadwal: payload.jadwal || null,
-      gambar: payload.gambar || null,
+      p_jwb_ekskul: payload.p_jwb_ekskul,
+      gambar_ekskul: payload.gambar_ekskul || null,
       id_admin: Number(id_admin),
     },
   });
 };
 
-// PUT: Update data teks saja (tanpa mengubah gambar)
+// PUT: Update khusus teks dan file opsional.
 export const updateEkstrakurikulerData = async (id_admin, id, payload) => {
   const existing = await prisma.ekstrakurikuler.findFirst({
     where: { id_ekstrakurikuler: Number(id), id_admin: Number(id_admin) },
   });
   if (!existing) throw new Error("Data tidak ditemukan");
 
-  return prisma.ekstrakurikuler.update({
-    where: { id_ekstrakurikuler: Number(id) },
-    data: {
-      nama: payload.nama,
-      deskripsi: payload.deskripsi,
-      mentor: payload.mentor || null,
-      jadwal: payload.jadwal || null,
-    },
-  });
-};
+  const dataToUpdate = {
+    nama_ekskul: payload.nama_ekskul,
+    deskripsi: payload.deskripsi,
+    p_jwb_ekskul: payload.p_jwb_ekskul,
+  };
 
-// PATCH: Update khusus gambar saja
-export const updateEkstrakurikulerImage = async (id_admin, id, filename) => {
-  const existing = await prisma.ekstrakurikuler.findFirst({
-    where: { id_ekstrakurikuler: Number(id), id_admin: Number(id_admin) },
-  });
-  if (!existing) throw new Error("Data tidak ditemukan");
-
-  // Format lama dihapus (kalau ada)
-  if (existing.gambar) {
-    deleteFile(existing.gambar);
+  if (payload.gambar_ekskul) {
+    if (existing.gambar_ekskul) {
+      deleteFile(existing.gambar_ekskul);
+    }
+    dataToUpdate.gambar_ekskul = payload.gambar_ekskul;
   }
 
   return prisma.ekstrakurikuler.update({
     where: { id_ekstrakurikuler: Number(id) },
-    data: { gambar: filename },
+    data: dataToUpdate,
   });
 };
 
@@ -80,8 +69,8 @@ export const deleteEkstrakurikuler = async (id_admin, id) => {
   });
   if (!existing) throw new Error("Data tidak ditemukan");
 
-  if (existing.gambar) {
-    deleteFile(existing.gambar);
+  if (existing.gambar_ekskul) {
+    deleteFile(existing.gambar_ekskul);
   }
 
   return prisma.ekstrakurikuler.delete({
@@ -94,6 +83,6 @@ export const serialize = (req, item) => {
   if (!item) return item;
   return {
     ...item,
-    gambar: buildFileUrl(req, item.gambar),
+    gambar_ekskul: buildFileUrl(req, item.gambar_ekskul),
   };
 };

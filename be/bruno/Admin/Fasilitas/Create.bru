@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{base_url}}/fasilitas
-  body: json
+  body: multipartForm
   auth: bearer
 }
 
@@ -14,9 +14,8 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "nama": "Perpustakaan",
-    "deskripsi": "Tempat siswa mengembangkan literasi."
-  }
+body:multipart-form {
+  nama_fasilitas: Perpustakaan Modern
+  deskripsi: Ratusan buku tersedia
+  gambar_fasilitas: @file(path/to/mock/image.jpg)
 }

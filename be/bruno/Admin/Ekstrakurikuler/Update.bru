@@ -6,7 +6,7 @@ meta {
 
 put {
   url: {{base_url}}/ekstrakurikuler/1
-  body: json
+  body: multipartForm
   auth: bearer
 }
 
@@ -14,9 +14,9 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "nama": "Pramuka",
-    "deskripsi": "Kegiatan kepramukaan"
-  }
+body:multipart-form {
+  nama_ekskul: Futsal
+  deskripsi: Ekskul olahraga sepakbola ruangan
+  p_jwb_ekskul: Budi Santoso
+  gambar_ekskul: @file(path/to/image.jpg)
 }

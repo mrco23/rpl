@@ -5,7 +5,6 @@ import {
   getDetailPublic,
   create,
   updateData,
-  updateImage,
   remove,
 } from "../controllers/EkstrakurikulerController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
@@ -26,27 +25,18 @@ ekstrakurikulerRoutes.get("", verifyToken, getAll);
 ekstrakurikulerRoutes.post(
   "",
   verifyToken,
-  upload.single("gambar"),
+  upload.single("gambar_ekskul"),
   create
 );
 
 /* 
-  PUT /:id : Update data non-file.
+  PUT /:id : Update data teks dan opsional gambar terintegrasi.
 */
 ekstrakurikulerRoutes.put(
   "/:id",
   verifyToken,
+  upload.single("gambar_ekskul"),
   updateData
-);
-
-/* 
-  PATCH /:id/image : Khusus update gambar (gambar lama dihapus otomatis di logic).
-*/
-ekstrakurikulerRoutes.patch(
-  "/:id/image",
-  verifyToken,
-  upload.single("gambar"),
-  updateImage
 );
 
 /* 

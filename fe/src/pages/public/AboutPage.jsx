@@ -1,62 +1,39 @@
 import labImg from "@assets/about.jpg";
 
 export default function AboutPage() {
-  const stats = [
-    { value: "20", label: "Tenaga Pengajar" },
-    { value: "300", label: "Peserta Didik" },
-    { value: "12", label: "Ekstrakurikuler" },
-    { value: "25", label: "Prestasi Sekolah" },
-  ];
-
   const fasilitas = [
-    { title: "Laboratorium Komputer", img: labImg },
-    { title: "Sarana Olahraga & Ekstrakurikuler", img: labImg },
+    { title: "Laboratorium", img: labImg },
+    { title: "Lapangan Olahraga", img: labImg },
     { title: "Perpustakaan", img: labImg },
-    { title: "Lingkungan Sekolah Hijau", img: labImg },
-    { title: "Laboratorium IPA Lengkap", img: labImg },
   ];
 
   return (
     <section className="w-full py-20 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        {/* STATISTIK */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {stats.map((item, index) => (
-            <div
-              key={index}
-              className="relative bg-white rounded-xl px-6 py-8 text-center 
-              shadow-[0_10px_25px_rgba(0,0,0,0.08)]"
-            >
-              <span className="absolute top-3 right-4 text-blue-900 text-lg">
-                ✦
-              </span>
-
-              <h3 className="text-3xl font-bold text-blue-900">{item.value}</h3>
-
-              <p className="text-gray-600 text-sm mt-1">{item.label}</p>
-
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-900 rounded-b-xl"></div>
-            </div>
-          ))}
-        </div>
-
         {/* TITLE */}
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
           Lingkungan Belajar Mendukung Masa Depan
         </h2>
 
         {/* GRID FASILITAS */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {fasilitas.map((item, index) => (
             <div key={index} className="text-center">
               <img
                 src={item.img}
                 alt={item.title}
-                className="w-full h-52 object-cover rounded-xl shadow-md mb-4"
+                className="w-full h-48 object-cover rounded-lg shadow-sm mb-2"
               />
               <p className="text-gray-700 text-sm">{item.title}</p>
             </div>
           ))}
+        </div>
+
+        {/* CTA BUTTON */}
+        <div className="text-center mt-6">
+          <button className="px-4 py-2 border border-gray-400 text-gray-700 rounded-md flex items-center gap-1 mx-auto hover:bg-gray-100 transition">
+            Lihat Fasilitas Lainnya <span>→</span>
+          </button>
         </div>
       </div>
     </section>

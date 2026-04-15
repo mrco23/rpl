@@ -62,9 +62,9 @@ export default function NewsPage() {
   return (
     <PublicLayout>
       {/* HEADER BIRU */}
-      <div className="w-full bg-blue-900 text-white rounded-b-3xl py-6 px-6 md:px-10 mb-8">
-        <h2 className="text-xl md:text-2xl font-bold">Berita</h2>
-      </div>  
+      <section className="w-full bg-blue-900 text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
+        <h2 className="text-2xl font-medium translate-y-4">Berita</h2>
+      </section>
       <section className="w-full py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-10 md:px-10">
           {/* TITLE */}

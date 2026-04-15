@@ -5,7 +5,6 @@ import {
   getDetailPublic,
   create,
   updateData,
-  updateImage,
   remove,
 } from "../controllers/PrestasiController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
@@ -17,9 +16,8 @@ prestasiRoutes.get("/public", getPublic);
 prestasiRoutes.get("/public/:id", getDetailPublic);
 
 prestasiRoutes.get("", verifyToken, getAll);
-prestasiRoutes.post("", verifyToken, upload.single("gambar"), create);
-prestasiRoutes.put("/:id", verifyToken, updateData);
-prestasiRoutes.patch("/:id/image", verifyToken, upload.single("gambar"), updateImage);
+prestasiRoutes.post("", verifyToken, upload.single("gambar_prestasi"), create);
+prestasiRoutes.put("/:id", verifyToken, upload.single("gambar_prestasi"), updateData);
 prestasiRoutes.delete("/:id", verifyToken, remove);
 
 export default prestasiRoutes;

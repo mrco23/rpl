@@ -1,4 +1,4 @@
-import * as ProfilService from "../services/ProfilService.js";
+import * as ProfilService from "../services/profilService.js";
 
 /* 
   POST: Create Profil (Pertama kali isi, boleh dengan gambar)
@@ -7,9 +7,6 @@ export const createProfil = async (req, res) => {
   try {
     const idAdmin = req.user.id;
     // Tambahkan nama file ke body jika ada file yang diunggah
-    if (req.files?.logo?.[0]) {
-      req.body.logo = req.files.logo[0].filename;
-    }
     if (req.files?.foto_kepala_sekolah?.[0]) {
       req.body.foto_kepala_sekolah = req.files.foto_kepala_sekolah[0].filename;
     }
@@ -46,9 +43,6 @@ export const updateProfilImage = async (req, res) => {
   try {
     const idAdmin = req.user.id;
     const newFiles = {};
-    if (req.files?.logo?.[0]) {
-      newFiles.logo = req.files.logo[0].filename;
-    }
     if (req.files?.foto_kepala_sekolah?.[0]) {
       newFiles.foto_kepala_sekolah = req.files.foto_kepala_sekolah[0].filename;
     }
@@ -98,5 +92,17 @@ export const getPublicProfil = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getLandingPage = async (req, res) => {
+  try {
+    const data = await ProfilService.getLandingPageData();
+    return res.status(200).json({
+      message: "success",
+      data: ProfilService.serializeLandingPage(req, data),
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message || "Gagal mengambil data landing page" });
   }
 };

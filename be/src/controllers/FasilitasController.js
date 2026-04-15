@@ -33,7 +33,7 @@ export const create = async (req, res) => {
     try {
         const payload = {...req.body};
         if (req.file) {
-            payload.gambar = req.file.filename;
+            payload.gambar_fasilitas = req.file.filename;
         }
         const {id} = verifyToken(req)
         const created = await FasilitasService.createFasilitas(id, payload);
@@ -47,24 +47,15 @@ export const updateData = async (req, res) => {
     try {
         const {id} = verifyToken(req)
 
-        const updated = await FasilitasService.updateFasilitasData(id, req.params.id, req.body);
+        const payload = {...req.body};
+        if (req.file) {
+            payload.gambar_fasilitas = req.file.filename;
+        }
+
+        const updated = await FasilitasService.updateFasilitasData(id, req.params.id, payload);
         res.json({message: "Data berhasil diperbarui", data: FasilitasService.serialize(req, updated)});
     } catch (error) {
         res.status(400).json({message: error.message || "Gagal update data Fasilitas"});
-    }
-};
-
-export const updateImage = async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({message: "Gambar belum diupload"});
-        }
-        const {id} = verifyToken(req)
-
-        const updated = await FasilitasService.updateFasilitasImage(id, req.params.id, req.file.filename);
-        res.json({message: "Gambar berhasil diperbarui", data: FasilitasService.serialize(req, updated)});
-    } catch (error) {
-        res.status(400).json({message: error.message || "Gagal update gambar Fasilitas"});
     }
 };
 

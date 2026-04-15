@@ -5,7 +5,6 @@ import {
   getDetailPublic,
   create,
   updateData,
-  updateImage,
   remove,
 } from "../controllers/FasilitasController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
@@ -16,9 +15,8 @@ const fasilitasRoutes = express.Router();
 fasilitasRoutes.get("", getPublic);
 fasilitasRoutes.get("/:id", getDetailPublic);
 
-fasilitasRoutes.post("", verifyToken, upload.single("gambar"), create);
-fasilitasRoutes.put("/:id", verifyToken, updateData);
-fasilitasRoutes.patch("/:id/image", verifyToken, upload.single("gambar"), updateImage);
+fasilitasRoutes.post("", verifyToken, upload.single("gambar_fasilitas"), create);
+fasilitasRoutes.put("/:id", verifyToken, upload.single("gambar_fasilitas"), updateData);
 fasilitasRoutes.delete("/:id", verifyToken, remove);
 
 export default fasilitasRoutes;

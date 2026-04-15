@@ -1,12 +1,12 @@
 meta {
   name: Update
   type: http
-  seq: 5
+  seq: 1
 }
 
 put {
-  url: {{base_url}}/fasilitas/79
-  body: json
+  url: {{base_url}}/fasilitas/1
+  body: multipartForm
   auth: bearer
 }
 
@@ -14,9 +14,8 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "nama": "Perpustakaan revisi",
-    "deskripsi": "Tempat siswa mengembangkan literasi."
-  }
+body:multipart-form {
+  nama_fasilitas: Fasilitas Utama
+  deskripsi: Fasilitas yang memadai
+  gambar_fasilitas: @file(path/to/image.jpg)
 }

@@ -4,22 +4,21 @@ import prisma from "../config/prisma.js";
 export const getAllPengumuman = async (id_admin) => {
   return prisma.pengumuman.findMany({
     where: { id_admin: Number(id_admin) },
-    orderBy: { created_at: "desc" },
+    orderBy: { tanggal_dibuat: "desc" },
   });
 };
 
 // GET ALL PUBLIC
 export const getPublicPengumuman = async () => {
   return prisma.pengumuman.findMany({
-    where: { status: "published" },
-    orderBy: { created_at: "desc" },
+    orderBy: { tanggal_dibuat: "desc" },
   });
 };
 
 // GET ONE PUBLIC
 export const getOnePublicPengumuman = async (id) => {
   return prisma.pengumuman.findUnique({
-    where: { id_pengumuman: Number(id), status: "published" },
+    where: { id_pengumuman: Number(id) },
   });
 };
 
@@ -27,12 +26,8 @@ export const getOnePublicPengumuman = async (id) => {
 export const createPengumuman = async (id_admin, payload) => {
   return prisma.pengumuman.create({
     data: {
-      judul: payload.judul,
-      isi: payload.isi,
-      status: payload.status || "draft",
-      tampil_mulai: payload.tampil_mulai ? new Date(payload.tampil_mulai) : null,
-      tampil_sampai: payload.tampil_sampai ? new Date(payload.tampil_sampai) : null,
-      tahun_ajaran: payload.tahun_ajaran || null,
+      judul_pengumuman: payload.judul_pengumuman,
+      deksripsi: payload.deksripsi,
       id_admin: Number(id_admin),
     },
   });
@@ -48,12 +43,8 @@ export const updatePengumumanData = async (id_admin, id, payload) => {
   return prisma.pengumuman.update({
     where: { id_pengumuman: Number(id) },
     data: {
-      judul: payload.judul,
-      isi: payload.isi,
-      status: payload.status || existing.status,
-      tampil_mulai: payload.tampil_mulai ? new Date(payload.tampil_mulai) : existing.tampil_mulai,
-      tampil_sampai: payload.tampil_sampai ? new Date(payload.tampil_sampai) : existing.tampil_sampai,
-      tahun_ajaran: payload.tahun_ajaran || existing.tahun_ajaran,
+      judul_pengumuman: payload.judul_pengumuman,
+      deksripsi: payload.deksripsi,
     },
   });
 };

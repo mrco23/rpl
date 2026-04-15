@@ -4,13 +4,13 @@ import { buildFileUrl, deleteFile } from "../utils/file.js";
 export const getAllProgram = async (id_admin) => {
   return prisma.programUnggulan.findMany({
     where: { id_admin: Number(id_admin) },
-    orderBy: { created_at: "desc" },
+    orderBy: { id_program: "desc" },
   });
 };
 
 export const getPublicProgram = async () => {
   return prisma.programUnggulan.findMany({
-    orderBy: { created_at: "desc" },
+    orderBy: { id_program: "desc" },
   });
 };
 
@@ -23,9 +23,9 @@ export const getOnePublicProgram = async (id) => {
 export const createProgram = async (id_admin, payload) => {
   return prisma.programUnggulan.create({
     data: {
-      nama: payload.nama,
+      nama_pu: payload.nama_pu,
       deskripsi: payload.deskripsi,
-      gambar: payload.gambar || null,
+      gambar_pu: payload.gambar_pu || null,
       id_admin: Number(id_admin),
     },
   });
@@ -37,28 +37,21 @@ export const updateProgramData = async (id_admin, id, payload) => {
   });
   if (!existing) throw new Error("Data tidak ditemukan");
 
-  return prisma.programUnggulan.update({
-    where: { id_program: Number(id) },
-    data: {
-      nama: payload.nama,
-      deskripsi: payload.deskripsi,
-    },
-  });
-};
+  const dataToUpdate = {
+    nama_pu: payload.nama_pu,
+    deskripsi: payload.deskripsi,
+  };
 
-export const updateProgramImage = async (id_admin, id, filename) => {
-  const existing = await prisma.programUnggulan.findFirst({
-    where: { id_program: Number(id), id_admin: Number(id_admin) },
-  });
-  if (!existing) throw new Error("Data tidak ditemukan");
-
-  if (existing.gambar) {
-    deleteFile(existing.gambar);
+  if (payload.gambar_pu) {
+    if (existing.gambar_pu) {
+      deleteFile(existing.gambar_pu);
+    }
+    dataToUpdate.gambar_pu = payload.gambar_pu;
   }
 
   return prisma.programUnggulan.update({
     where: { id_program: Number(id) },
-    data: { gambar: filename },
+    data: dataToUpdate,
   });
 };
 
@@ -68,8 +61,8 @@ export const deleteProgram = async (id_admin, id) => {
   });
   if (!existing) throw new Error("Data tidak ditemukan");
 
-  if (existing.gambar) {
-    deleteFile(existing.gambar);
+  if (existing.gambar_pu) {
+    deleteFile(existing.gambar_pu);
   }
 
   return prisma.programUnggulan.delete({
@@ -81,6 +74,6 @@ export const serialize = (req, item) => {
   if (!item) return item;
   return {
     ...item,
-    gambar: buildFileUrl(req, item.gambar),
+    gambar_pu: buildFileUrl(req, item.gambar_pu),
   };
 };
