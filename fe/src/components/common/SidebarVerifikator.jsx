@@ -1,10 +1,19 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { House, FileText, LogOut } from "lucide-react";
 import logo from "@assets/logo.jpg";
 
 function SidebarVerifikator() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Apakah Anda yakin ingin keluar?");
+
+    if (confirmLogout) {
+      navigate("/login");
+    }
+  };
 
   const menus = [
     {
@@ -14,7 +23,7 @@ function SidebarVerifikator() {
     },
     {
       name: "Verifikasi Dokumen",
-      path: "/verifikator/verifikasi",
+      path: "/verifikator/verifikasiDokumen",
       icon: FileText,
     },
   ];
@@ -32,11 +41,7 @@ function SidebarVerifikator() {
       {/* Header */}
       <div className="pb-5 border-b border-gray-300">
         <div className="flex items-start gap-3">
-          <img
-            src={logo}
-            alt="Logo"
-            className="w-14 h-14 object-contain"
-          />
+          <img src={logo} alt="Logo" className="w-14 h-14 object-contain" />
 
           <div>
             <h2 className="text-[15px] font-bold text-slate-700 uppercase leading-tight">
@@ -64,11 +69,11 @@ function SidebarVerifikator() {
               key={index}
               to={item.path}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[15px] font-medium transition-all
-              ${
-                isActive(item.path)
-                  ? "bg-blue-700 text-white"
-                  : "text-slate-600 hover:bg-gray-200"
-              }`}
+                ${
+                  isActive(item.path)
+                    ? "bg-blue-700 text-white"
+                    : "text-slate-600 hover:bg-gray-200"
+                }`}
             >
               <Icon size={18} />
               {item.name}
@@ -79,7 +84,10 @@ function SidebarVerifikator() {
 
       {/* Logout */}
       <div className="mt-6 pt-5 border-t border-gray-300">
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all"
+        >
           <LogOut size={18} />
           Keluar
         </button>
