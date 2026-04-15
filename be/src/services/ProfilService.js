@@ -164,3 +164,93 @@ export const serialize = (req, data) => {
 		link_maps: kontak.link_maps || "",
 	};
 };
+
+export const getLandingPageData = async () => {
+	const [total_program, total_fasilitas, total_ekstrakurikuler, total_prestasi] = await Promise.all(
+		[
+			prisma.programUnggulan.count(),
+			prisma.fasilitas.count(),
+			prisma.ekstrakurikuler.count(),
+			prisma.prestasi.count(),
+		],
+	);
+
+	const fasilitas = await prisma.fasilitas.findMany({
+		orderBy: { id_fasilitas: "desc" },
+		take: 3,
+		select: {
+			nama_fasilitas: true,
+			gambar_fasilitas: true,
+		},
+	});
+
+	const prestasi = await prisma.prestasi.findMany({
+		orderBy: { id_prestasi: "desc" },
+		take: 3,
+		select: {
+			gambar_prestasi: true,
+			judul_prestasi: true,
+			deskripsi: true,
+		},
+	});
+
+	const profil = await prisma.profil.findFirst({
+		select: {
+			kata_sambutan: true,
+			foto_kepala_sekolah: true,
+			nama_kepala_sekolah: true,
+		},
+	});
+
+	const berita = await prisma.berita.findMany({
+		orderBy: { tanggal_dibuat: "desc" },
+		take: 3,
+		select: {
+			gambar_berita: true,
+			tanggal_dibuat: true,
+			judul_berita: true,
+			deskripsi: true,
+		},
+	});
+
+	return {
+		total_data: {
+			program_unggulan: total_program,
+			fasilitas: total_fasilitas,
+			ekstrakurikuler: total_ekstrakurikuler,
+			prestasi: total_prestasi,
+		},
+		fasilitas: fasilitas,
+		prestasi: prestasi,
+		profil_kepala_sekolah: profil,
+		berita_terbaru: berita,
+	};
+};
+
+export const serializeLandingPage = (req, data) => {
+	return {
+		total_data: data.total_data,
+		fasilitas: data.fasilitas.map((f) => ({
+			gambar: buildFileUrl(req, f.gambar_fasilitas),
+			nama_fasilitas: f.nama_fasilitas,
+		})),
+		prestasi: data.prestasi.map((p) => ({
+			gambar: buildFileUrl(req, p.gambar_prestasi),
+			nama_prestasi: p.judul_prestasi,
+			deskripsi: p.deskripsi,
+		})),
+		berita: data.berita_terbaru.map((b) => ({
+			gambar: buildFileUrl(req, b.gambar_berita),
+			judul: b.judul_berita,
+			deskripsi: b.deskripsi,
+			tanggal: b.tanggal_dibuat,
+		})),
+		kepala_sekolah: data.profil_kepala_sekolah
+			? {
+					gambar: buildFileUrl(req, data.profil_kepala_sekolah.foto_kepala_sekolah),
+					nama: data.profil_kepala_sekolah.nama_kepala_sekolah,
+					kata_sambutan: data.profil_kepala_sekolah.kata_sambutan,
+				}
+			: null,
+	};
+};
