@@ -31,6 +31,10 @@ import SejarahPage from "./pages/public/SejarahPage";
 import FasilitasPage from "./pages/public/FasilitasPage";
 import Program from "./pages/public/ProgramPage";
 
+// verifikator
+import VerifikatorLayout from "./components/layout/VerifikatorLayout";
+import BerandaVerifikator from "./pages/verifikator/BerandaVerifikator";
+
 /* scrool */
 import ScrolTop from "./components/common/ScrolTop";
 
@@ -70,9 +74,8 @@ function App() {
         </Route>
 
         {/* Verifier Routes */}
-        <Route path="/verifier">
-          <Route index element={<VerifierOverviewPage />} />
-          <Route path="documents" element={<VerifierDocumentsPage />} />
+        <Route path="/verifikator" element={<VerifikatorLayout />}>
+          <Route index element={<BerandaVerifikator />} />
         </Route>
 
         {/* Applicant Routes */}
