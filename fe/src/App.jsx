@@ -4,6 +4,7 @@ import LandingPage from "./pages/public/LandingPage";
 import ExtracurricularPage from "./pages/public/ExtracurricularPage";
 import AchievementsPage from "./pages/public/AchievementsPage";
 import NewsPage from "./pages/public/NewsPage";
+import DetailBerita from "./pages/public/DetailBerita";
 
 import PanduanPage from "./pages/public/PanduanPage";
 import LoginPage from "./pages/auth/LoginPage";
@@ -30,6 +31,10 @@ import SejarahPage from "./pages/public/SejarahPage";
 import FasilitasPage from "./pages/public/FasilitasPage";
 import Program from "./pages/public/ProgramPage";
 
+// verifikator
+import VerifikatorLayout from "./components/layout/VerifikatorLayout";
+import BerandaVerifikator from "./pages/verifikator/BerandaVerifikator";
+
 /* scrool */
 import ScrolTop from "./components/common/ScrolTop";
 
@@ -42,6 +47,7 @@ function App() {
         <Route path="/ekstrakurikuler" element={<ExtracurricularPage />} />
         <Route path="/prestasi" element={<AchievementsPage />} />
         <Route path="/berita" element={<NewsPage />} />
+        <Route path="/berita/:id" element={<DetailBerita />} />
         <Route path="/visi-misi" element={<VisiMisiPage />} />
         <Route path="/sejarah" element={<SejarahPage />} />
         <Route path="/fasilitas" element={<FasilitasPage />} />
@@ -68,9 +74,8 @@ function App() {
         </Route>
 
         {/* Verifier Routes */}
-        <Route path="/verifier">
-          <Route index element={<VerifierOverviewPage />} />
-          <Route path="documents" element={<VerifierDocumentsPage />} />
+        <Route path="/verifikator" element={<VerifikatorLayout />}>
+          <Route index element={<BerandaVerifikator />} />
         </Route>
 
         {/* Applicant Routes */}

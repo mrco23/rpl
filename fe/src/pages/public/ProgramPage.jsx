@@ -6,7 +6,7 @@ import { Link } from "react-router";
 function Program() {
   return (
     <PublicLayout>
-      <section className="w-full bg-blue-900 text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
+      <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-20 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">Program Unggulan</h2>
       </section>
       <div className=" px-20 py-2 text-md text-gray-600 flex gap-6 -mt-5">
@@ -17,7 +17,7 @@ function Program() {
           to="/ekstrakurikuler"
           className=" text-gray-600 hover:text-blue-600 font-medium block cursor-pointer"
         >
-          ekstrakurikuler
+          Ekstrakurikuler
         </Link>
         <Link
           to="/prestasi"
@@ -26,7 +26,7 @@ function Program() {
           Prestasi Siswa
         </Link>
       </div>
-      <section className="text-center max-w-7xl mx-auto px-6 mb-12 mt-10">
+      <section className="text-center max-w-7xl mx-auto px-6 mb-12 mt-14">
         <p className="text-gray-900 text-3xl leading-relaxed font-semibold">
           SMP Katolik St. Rafael Manado, proses belajar tidak hanya berfokus
           pada penguasaan materi, tetapi juga pada pemahaman yang mendalam,
