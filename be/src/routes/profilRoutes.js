@@ -7,7 +7,7 @@ import {
 	getProfil,
 	getPublicProfil,
 	getLandingPage,
-} from "../controllers/profilController.js";
+} from "../controllers/ProfilController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 
@@ -18,7 +18,7 @@ profilRoute.get("", getPublicProfil);
 profilRoute.get("/landing-page", getLandingPage);
 
 // PRIVATE
-profilRoute.get("", verifyToken, getProfil);
+profilRoute.get("/admin", verifyToken, getProfil);
 
 /* 
   POST: Membuat profil pertama kali beserta gambar.
@@ -27,7 +27,6 @@ profilRoute.post(
 	"",
 	verifyToken,
 	upload.fields([
-		{ name: "logo", maxCount: 1 },
 		{ name: "foto_kepala_sekolah", maxCount: 1 },
 	]),
 	createProfil,
@@ -39,13 +38,12 @@ profilRoute.post(
 profilRoute.put("", verifyToken, updateProfilData);
 
 /* 
-  PATCH: Khusus mengganti gambar logo / foto_kepala_sekolah.
+  PATCH: Khusus mengganti gambar foto_kepala_sekolah.
 */
 profilRoute.patch(
 	"/image",
 	verifyToken,
 	upload.fields([
-		{ name: "logo", maxCount: 1 },
 		{ name: "foto_kepala_sekolah", maxCount: 1 },
 	]),
 	updateProfilImage,

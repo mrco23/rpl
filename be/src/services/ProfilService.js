@@ -26,7 +26,7 @@ export const getPublicProfil = async () => {
 };
 
 /* 
-  POST: Membuat profil baru beserta gambar (logo & foto) di awal.
+  POST: Membuat profil baru beserta gambar (foto_kepala_sekolah) di awal.
   Jika sudah ada, fungsi akan throw error.
 */
 export const createProfil = async (id_admin, payload) => {
@@ -40,11 +40,9 @@ export const createProfil = async (id_admin, payload) => {
 			nama_sekolah: payload.nama_sekolah,
 			visi: payload.visi,
 			misi: payload.misi,
-			deskripsi: payload.deskripsi,
-			logo: payload.logo || undefined,
 			nama_kepala_sekolah: payload.nama_kepala_sekolah,
-			foto_kepala_sekolah: payload.foto_kepala_sekolah || undefined,
-			sambutan_kepala_sekolah: payload.sambutan_kepala_sekolah,
+			foto_kepala_sekolah: payload.foto_kepala_sekolah,
+			kata_sambutan: payload.kata_sambutan,
 			id_admin: Number(id_admin),
 		},
 	});
@@ -52,7 +50,7 @@ export const createProfil = async (id_admin, payload) => {
 
 /* 
   PUT: Update profil untuk data teks saja (non-file). 
-  Gambar (logo / foto) tidak diupdate di fungsi ini.
+  Gambar (foto) tidak diupdate di fungsi ini.
 */
 export const updateProfilData = async (id_admin, payload) => {
 	const profil = await prisma.profil.findFirst({
@@ -66,15 +64,14 @@ export const updateProfilData = async (id_admin, payload) => {
 			nama_sekolah: payload.nama_sekolah,
 			visi: payload.visi,
 			misi: payload.misi,
-			deskripsi: payload.deskripsi,
 			nama_kepala_sekolah: payload.nama_kepala_sekolah,
-			sambutan_kepala_sekolah: payload.sambutan_kepala_sekolah,
+			kata_sambutan: payload.kata_sambutan,
 		},
 	});
 };
 
 /* 
-  PATCH: Khusus update gambar (bisa logo, foto_kepala_sekolah, atau keduanya).
+  PATCH: Khusus update gambar foto_kepala_sekolah.
   Fungsi ini otomatis menghapus file lama dari server jika ada pergantian.
 */
 export const updateProfilImage = async (id_admin, newFiles) => {
@@ -84,14 +81,6 @@ export const updateProfilImage = async (id_admin, newFiles) => {
 	if (!profil) throw new Error("Profil belum dibuat.");
 
 	const dataToUpdate = {};
-
-	if (newFiles.logo) {
-		// Hapus logo lama jika ada
-		if (profil.logo) {
-			deleteFile(profil.logo);
-		}
-		dataToUpdate.logo = newFiles.logo;
-	}
 
 	if (newFiles.foto_kepala_sekolah) {
 		// Hapus foto lama jika ada
@@ -116,12 +105,13 @@ export const upsertKontak = async (id_admin, payload) => {
 	});
 
 	const data = {
-		alamat: payload.alamat,
 		no_telpon: payload.no_telpon,
 		email: payload.email,
-		media_sosial: payload.media_sosial,
-		whatsapp: payload.whatsapp,
-		link_maps: payload.link_maps,
+		whatsapp: payload.whatsapp || null,
+		instagram: payload.instagram || "",
+		tiktok: payload.tiktok || "",
+		facebook: payload.facebook || "",
+		youtube: payload.youtube || "",
 	};
 
 	if (kontak) {
@@ -150,18 +140,17 @@ export const serialize = (req, data) => {
 		nama_sekolah: profil.nama_sekolah || "",
 		visi: profil.visi || "",
 		misi: profil.misi || "",
-		deskripsi: profil.deskripsi || "",
-		logo: buildFileUrl(req, profil.logo),
 		nama_kepala_sekolah: profil.nama_kepala_sekolah || "",
 		foto_kepala_sekolah: buildFileUrl(req, profil.foto_kepala_sekolah),
-		sambutan_kepala_sekolah: profil.sambutan_kepala_sekolah || "",
+		kata_sambutan: profil.kata_sambutan || "",
 		id_kontak: kontak.id_kontak,
-		alamat: kontak.alamat || "",
 		no_telpon: kontak.no_telpon || "",
 		email: kontak.email || "",
-		media_sosial: kontak.media_sosial || "",
 		whatsapp: kontak.whatsapp || "",
-		link_maps: kontak.link_maps || "",
+		instagram: kontak.instagram || "",
+		tiktok: kontak.tiktok || "",
+		facebook: kontak.facebook || "",
+		youtube: kontak.youtube || "",
 	};
 };
 

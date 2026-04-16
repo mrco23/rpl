@@ -1,7 +1,7 @@
 meta {
   name: Update Image
   type: http
-  seq: 4
+  seq: 2
 }
 
 patch {
@@ -15,6 +15,5 @@ auth:bearer {
 }
 
 body:multipart-form {
-  logo: @file(path/to/logo.png)
-  foto_kepala_sekolah: @file(path/to/foto.jpg)
+  foto_kepala_sekolah: @file()
 }

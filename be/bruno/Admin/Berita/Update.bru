@@ -1,11 +1,11 @@
 meta {
   name: Update
   type: http
-  seq: 1
+  seq: 2
 }
 
 put {
-  url: {{base_url}}/berita/72
+  url: {{base_url}}/berita/1
   body: json
   auth: bearer
 }
@@ -16,7 +16,7 @@ auth:bearer {
 
 body:json {
   {
-    "judul": "Berita Baru Revisi",
-    "deskripsi": "Deskripsi Singkat"
+    "judul_berita": "Berita Baru Revisi",
+    "deskripsi": "Deskripsi Singkat yang diperbarui"
   }
 }

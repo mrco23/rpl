@@ -4,13 +4,13 @@ import { buildFileUrl, deleteFile } from "../utils/file.js";
 export const getAllPrestasi = async (id_admin) => {
   return prisma.prestasi.findMany({
     where: { id_admin: Number(id_admin) },
-    orderBy: { created_at: "desc" },
+    orderBy: { id_prestasi: "desc" },
   });
 };
 
 export const getPublicPrestasi = async () => {
   return prisma.prestasi.findMany({
-    orderBy: { created_at: "desc" },
+    orderBy: { id_prestasi: "desc" },
   });
 };
 
@@ -23,10 +23,10 @@ export const getOnePublicPrestasi = async (id) => {
 export const createPrestasi = async (id_admin, payload) => {
   return prisma.prestasi.create({
     data: {
-      judul: payload.judul,
+      judul_prestasi: payload.judul_prestasi,
       deskripsi: payload.deskripsi,
-      tahun: payload.tahun || null,
-      gambar: payload.gambar || null,
+      peraih_prestasi: payload.peraih_prestasi,
+      gambar_prestasi: payload.gambar || null,
       id_admin: Number(id_admin),
     },
   });
@@ -41,9 +41,9 @@ export const updatePrestasiData = async (id_admin, id, payload) => {
   return prisma.prestasi.update({
     where: { id_prestasi: Number(id) },
     data: {
-      judul: payload.judul,
+      judul_prestasi: payload.judul_prestasi,
       deskripsi: payload.deskripsi,
-      tahun: payload.tahun || null,
+      peraih_prestasi: payload.peraih_prestasi,
     },
   });
 };
@@ -54,13 +54,13 @@ export const updatePrestasiImage = async (id_admin, id, filename) => {
   });
   if (!existing) throw new Error("Data tidak ditemukan");
 
-  if (existing.gambar) {
-    deleteFile(existing.gambar);
+  if (existing.gambar_prestasi) {
+    deleteFile(existing.gambar_prestasi);
   }
 
   return prisma.prestasi.update({
     where: { id_prestasi: Number(id) },
-    data: { gambar: filename },
+    data: { gambar_prestasi: filename },
   });
 };
 
@@ -70,8 +70,8 @@ export const deletePrestasi = async (id_admin, id) => {
   });
   if (!existing) throw new Error("Data tidak ditemukan");
 
-  if (existing.gambar) {
-    deleteFile(existing.gambar);
+  if (existing.gambar_prestasi) {
+    deleteFile(existing.gambar_prestasi);
   }
 
   return prisma.prestasi.delete({
@@ -83,6 +83,6 @@ export const serialize = (req, item) => {
   if (!item) return item;
   return {
     ...item,
-    gambar: buildFileUrl(req, item.gambar),
+    gambar_prestasi: buildFileUrl(req, item.gambar_prestasi),
   };
 };

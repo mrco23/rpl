@@ -1,4 +1,4 @@
-import * as ProfilService from "../services/profilService.js";
+import * as ProfilService from "../services/ProfilService.js";
 
 /* 
   POST: Create Profil (Pertama kali isi, boleh dengan gambar)
@@ -7,9 +7,6 @@ export const createProfil = async (req, res) => {
   try {
     const idAdmin = req.user.id;
     // Tambahkan nama file ke body jika ada file yang diunggah
-    if (req.files?.logo?.[0]) {
-      req.body.logo = req.files.logo[0].filename;
-    }
     if (req.files?.foto_kepala_sekolah?.[0]) {
       req.body.foto_kepala_sekolah = req.files.foto_kepala_sekolah[0].filename;
     }
@@ -40,15 +37,12 @@ export const updateProfilData = async (req, res) => {
 };
 
 /* 
-  PATCH: Update Logo / Foto (Hanya gambar)
+  PATCH: Update Foto Kepala Sekolah (Hanya gambar)
 */
 export const updateProfilImage = async (req, res) => {
   try {
     const idAdmin = req.user.id;
     const newFiles = {};
-    if (req.files?.logo?.[0]) {
-      newFiles.logo = req.files.logo[0].filename;
-    }
     if (req.files?.foto_kepala_sekolah?.[0]) {
       newFiles.foto_kepala_sekolah = req.files.foto_kepala_sekolah[0].filename;
     }

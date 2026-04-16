@@ -1,11 +1,11 @@
 meta {
   name: Update
   type: http
-  seq: 5
+  seq: 2
 }
 
 put {
-  url: {{base_url}}/fasilitas/79
+  url: {{base_url}}/fasilitas/1
   body: json
   auth: bearer
 }
@@ -16,7 +16,7 @@ auth:bearer {
 
 body:json {
   {
-    "nama": "Perpustakaan revisi",
-    "deskripsi": "Tempat siswa mengembangkan literasi."
+    "nama_fasilitas": "Laboratorium Komputer (Revisi)",
+    "deskripsi": "Deskripsi fasilitas yang diperbarui"
   }
 }

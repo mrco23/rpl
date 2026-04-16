@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{base_url}}/ekstrakurikuler
-  body: json
+  body: multiFormData
   auth: bearer
 }
 
@@ -14,9 +14,9 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "nama": "Pramuka",
-    "deskripsi": "Kegiatan kepramukaan"
-  }
+body:multipart-form {
+  nama_ekskul: Basket
+  deskripsi: Ekstrakurikuler basket untuk siswa putra dan putri
+  p_jwb_ekskul: Budi Santoso S.Pd.
+  gambar: @file()
 }

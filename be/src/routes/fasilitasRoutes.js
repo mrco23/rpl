@@ -13,9 +13,12 @@ import upload from "../middleware/uploadMiddleware.js";
 
 const fasilitasRoutes = express.Router();
 
-fasilitasRoutes.get("", getPublic);
-fasilitasRoutes.get("/:id", getDetailPublic);
+// PUBLIC
+fasilitasRoutes.get("/public", getPublic);
+fasilitasRoutes.get("/public/:id", getDetailPublic);
 
+// PRIVATE
+fasilitasRoutes.get("", verifyToken, getAll);
 fasilitasRoutes.post("", verifyToken, upload.single("gambar"), create);
 fasilitasRoutes.put("/:id", verifyToken, updateData);
 fasilitasRoutes.patch("/:id/image", verifyToken, upload.single("gambar"), updateImage);

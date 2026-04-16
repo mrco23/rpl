@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{base_url}}/berita
-  body: json
+  body: multiFormData
   auth: bearer
 }
 
@@ -14,9 +14,8 @@ auth:bearer {
   token: {{token}}
 }
 
-body:json {
-  {
-    "judul": "Berita Baru",
-    "deskripsi": "Deskripsi Singkat"
-  }
+body:multipart-form {
+  judul_berita: Berita Baru
+  deskripsi: Deskripsi Singkat
+  gambar: @file()
 }

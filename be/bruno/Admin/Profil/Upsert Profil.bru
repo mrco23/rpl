@@ -1,10 +1,10 @@
 meta {
   name: Upsert Profil
   type: http
-  seq: 3
+  seq: 1
 }
 
-post {
+put {
   url: {{base_url}}/profile
   body: json
   auth: bearer
@@ -16,8 +16,10 @@ auth:bearer {
 
 body:json {
   {
-    "nama_sekolah": "SMK Hebat",
-    "visi": "Visi Unggul",
-    "misi": "Misi Cerdas"
+    "nama_sekolah": "SMP Katolik St. Rafael Manado",
+    "visi": "Membentuk peserta didik menjadi manusia yang seutuhnya",
+    "misi": "1. Mewujudkan religiusitas\n2. Meningkatkan profesionalisme",
+    "nama_kepala_sekolah": "Herman Ventje Dien, S.Fils",
+    "kata_sambutan": "Selamat datang di website resmi SMP Katolik St. Rafael."
   }
 }

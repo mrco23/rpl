@@ -4,13 +4,13 @@ import { buildFileUrl, deleteFile } from "../utils/file.js";
 export const getAllProgram = async (id_admin) => {
   return prisma.programUnggulan.findMany({
     where: { id_admin: Number(id_admin) },
-    orderBy: { created_at: "desc" },
+    orderBy: { id_program: "desc" },
   });
 };
 
 export const getPublicProgram = async () => {
   return prisma.programUnggulan.findMany({
-    orderBy: { created_at: "desc" },
+    orderBy: { id_program: "desc" },
   });
 };
 
