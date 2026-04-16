@@ -17,7 +17,7 @@ import logo from "@assets/logo.jpg";
 const menu = [
   {
     title: "Beranda",
-    icon: <LayoutDashboard size={18} />,
+    icon: <LayoutDashboard size={16} />,
     path: "/admin",
   },
   {
@@ -25,32 +25,32 @@ const menu = [
   },
   {
     title: "Profil Sekolah",
-    icon: <User size={18} />,
+    icon: <User size={16} />,
     path: "/admin/profil",
   },
   {
     title: "Ekstrakurikuler",
-    icon: <Users size={18} />,
+    icon: <Users size={16} />,
     path: "/admin/ekstrakurikuler",
   },
   {
     title: "Prestasi",
-    icon: <Trophy size={18} />,
+    icon: <Trophy size={16} />,
     path: "/admin/prestasi",
   },
   {
     title: "Berita",
-    icon: <Newspaper size={18} />,
+    icon: <Newspaper size={16} />,
     path: "/admin/berita",
   },
   {
     title: "Fasilitas",
-    icon: <Building size={18} />,
+    icon: <Building size={16} />,
     path: "/admin/fasilitas",
   },
   {
     title: "Program Unggulan",
-    icon: <Megaphone size={18} />,
+    icon: <Megaphone size={16} />,
     path: "/admin/program",
   },
   {
@@ -58,17 +58,17 @@ const menu = [
   },
   {
     title: "Akun Verifikator",
-    icon: <UserCheck size={18} />,
+    icon: <UserCheck size={16} />,
     path: "/admin/verifikator",
   },
   {
     title: "PPDB",
-    icon: <FileText size={18} />,
+    icon: <FileText size={16} />,
     path: "/admin/ppdb",
   },
   {
     title: "Pengumuman PPDB",
-    icon: <Megaphone size={18} />,
+    icon: <Megaphone size={16} />,
     path: "/admin/pengumuman",
   },
 ];
@@ -98,7 +98,7 @@ function SidebarAdmin() {
             return (
               <div key={index} className="mt-4">
                 <p className="text-xs opacity-70 mb-1">{item.section}</p>
-                <hr className="border-white/30" />
+                <hr className="border-gray-500/80" />
               </div>
             );
           }
@@ -116,15 +116,16 @@ function SidebarAdmin() {
               }
             >
               {item.icon}
-              <span>{item.title}</span>
+              <span className="text-sm">{item.title}</span>
             </NavLink>
           );
         })}
       </div>
+      <hr className="border-white/30" />
 
       {/* LOGOUT */}
       <button className="flex items-center gap-3 px-3 py-2 mt-4 hover:bg-white/10 rounded-lg">
-        <LogOut size={18} />
+        <LogOut size={16} />
         Keluar
       </button>
     </div>

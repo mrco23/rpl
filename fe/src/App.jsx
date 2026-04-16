@@ -37,9 +37,13 @@ import BerandaVerifikator from "./pages/verifikator/BerandaVerifikator";
 import VerifikasiDokumen from "./pages/verifikator/VerifikasiDokumen";
 import DetailPendaftarPage from "./pages/verifikator/DetailPendaftar";
 
-/* scrool */
+/* Admin */
 import AdminLayout from "./components/layout/AdminLayout";
 import DashboardAdmin from "./pages/admin/BerandaAdmin";
+
+/* Pendaftar */
+import PendaftarLayout from "./components/layout/PendaftarLayout";
+import BerandaPendaftar from "./pages/pendaftar/BerandaPendaftar";
 
 /* scrool */
 import ScrolTop from "./components/common/ScrolTop";
@@ -84,6 +88,12 @@ function App() {
           <Route index element={<BerandaVerifikator />} />
           <Route path="verifikasiDokumen" element={<VerifikasiDokumen />} />
           <Route path="verifikasiDokumen/:nisn" element={<DetailPendaftarPage />} />
+        </Route>
+
+        {/* Verifier Routes */}
+        <Route path="/pendaftar" element={<PendaftarLayout />}>
+          <Route index element={<BerandaPendaftar />} />
+          <Route path="beranda" element={<BerandaPendaftar />} />
         </Route>
 
         {/* Applicant Routes */}
