@@ -2,7 +2,7 @@ import PublicLayout from "@components/layout/PublicLayout.jsx";
 import hero from "@assets/hero.jpg";
 import AboutPage from "./AboutPage";
 import QuotePage from "./Sambutan";
-import AchievementsPage from "./AchievementsPage";
+import AchievementsPreview from "./AchievementsPreview";
 import NewsPreview from "./NewsPreview";
 import { useNavigate } from "react-router";
 
@@ -86,7 +86,7 @@ export default function LandingPage() {
         </div>
 
         <QuotePage />
-        <AchievementsPage />
+        <AchievementsPreview />
         <NewsPreview />
       </main>
     </PublicLayout>

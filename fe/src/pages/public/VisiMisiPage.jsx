@@ -6,7 +6,7 @@ function VisiMisiPage() {
   return (
     <PublicLayout>
       <main>
-        <section className="w-full bg-blue-900 text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
+        <section className="w-full bg-[#172c73] text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
           <h2 className="text-2xl font-medium translate-y-4">Visi dan Misi</h2>
         </section>
         <div className="max-w-7xl mx-auto px-6 mt-6">
@@ -41,12 +41,12 @@ function VisiMisiPage() {
         <section className="relative -mt-2">
           {/* 🔵 LENGKUNGAN (bagian atas Misi) */}
           <div className="flex">
-            <div className="bg-blue-900 h-16 w-[70%] rounded-tr-[120px]"></div>
-            <div className="bg-blue-900 h-16 w-[30%] rounded-tl-[120px]"></div>
+            <div className="bg-[#122156] h-16 w-[70%] rounded-tr-[120px]"></div>
+            <div className="bg-[#122156] h-16 w-[30%] rounded-tl-[120px]"></div>
           </div>
 
           {/* 🔵 ISI MISI */}
-          <div className="bg-blue-900 text-white pt-10 pb-16 px-6">
+          <div className="bg-[#122156] text-white pt-10 pb-16 px-6">
             <h2 className="text-5xl font-semibold text-center mb-12">Misi</h2>
 
             <div className="max-w-4xl ml-10 space-y-10">
