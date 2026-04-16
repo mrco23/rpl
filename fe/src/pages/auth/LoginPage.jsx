@@ -24,6 +24,7 @@ export default function LoginPage() {
       setSubmitting(false);
       return;
     }
+
     setSubmitting(true);
     setError("");
 
@@ -39,6 +40,18 @@ export default function LoginPage() {
       return;
     }
 
+    // ✅ LOGIN DUMMY PENDAFTAR
+    if (role === "pendaftar") {
+      if (identifier === "1" && password === "12") {
+        navigate("/pendaftar");
+      } else {
+        setError("NISN atau password pendaftar salah");
+      }
+
+      setSubmitting(false);
+      return;
+    }
+
     try {
       // ✅ buat payload sesuai role
       let payload = {
@@ -46,11 +59,7 @@ export default function LoginPage() {
         role,
       };
 
-      if (role === "pendaftar") {
-        payload.nisn = identifier;
-      } else {
-        payload.username = identifier;
-      }
+      payload.username = identifier;
 
       const data = await loginService(payload);
 
@@ -62,7 +71,7 @@ export default function LoginPage() {
       const roleRedirect = {
         admin: "/admin",
         verifikator: "/verifier",
-        pendaftar: "/applicant",
+        pendaftar: "/pendaftar",
       };
 
       navigate(roleRedirect[userRole] || "/");
