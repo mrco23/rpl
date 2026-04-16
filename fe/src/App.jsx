@@ -38,6 +38,10 @@ import VerifikasiDokumen from "./pages/verifikator/VerifikasiDokumen";
 import DetailPendaftarPage from "./pages/verifikator/DetailPendaftar";
 
 /* scrool */
+import AdminLayout from "./components/layout/AdminLayout";
+import DashboardAdmin from "./pages/admin/BerandaAdmin";
+
+/* scrool */
 import ScrolTop from "./components/common/ScrolTop";
 
 function App() {
@@ -61,8 +65,8 @@ function App() {
 
         {/* Admin Routes */}
         <Route path="/admin">
-          <Route index element={<AdminOverviewPage />} />
-          <Route path="profile" element={<AdminProfilePage />} />
+          <Route index element={<AdminLayout />} />
+          <Route path="beranda" element={<DashboardAdmin />} />
           <Route path="waves" element={<AdminWavesPage />} />
           <Route path="achievements" element={<AdminAchievementsPage />} />
           <Route
