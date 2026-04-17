@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   UserCircle,
   FileText,
@@ -11,6 +11,15 @@ import logo from "@assets/logo.jpg";
 
 function SidebarPendaftar() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Apakah Anda yakin ingin keluar?");
+
+    if (confirmLogout) {
+      navigate("/login");
+    }
+  };
 
   const menu = [
     {
@@ -26,7 +35,7 @@ function SidebarPendaftar() {
     {
       title: "Status Verifikasi",
       icon: <ShieldCheck size={18} />,
-      path: "/pendaftar/status",
+      path: "/pendaftar/status-verifikasi",
     },
     {
       title: "Pengumuman",
@@ -51,9 +60,7 @@ function SidebarPendaftar() {
 
         <div>
           <h2 className="text-base font-semibold">PPDB</h2>
-          <p className="text-xs text-white/80">
-            SMP Katolik St. Rafael
-          </p>
+          <p className="text-xs text-white/80">SMP Katolik St. Rafael</p>
           <p className="text-xs text-white/80">Manado</p>
         </div>
       </div>
@@ -77,7 +84,10 @@ function SidebarPendaftar() {
 
         {/* LOGOUT */}
         <div className="pt-3 mt-3 border-t border-white/20">
-          <button className="flex items-center gap-3 px-3 py-3 text-sm w-full hover:bg-white/10 rounded-lg transition">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-3 text-sm w-full hover:bg-white/10 rounded-lg transition"
+          >
             <LogOut size={18} />
             Keluar
           </button>

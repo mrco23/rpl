@@ -45,6 +45,8 @@ import DashboardAdmin from "./pages/admin/BerandaAdmin";
 import PendaftarLayout from "./components/layout/PendaftarLayout";
 import BerandaPendaftar from "./pages/pendaftar/BerandaPendaftar";
 import UnggahDokumen from "./pages/pendaftar/UnggahDokumen";
+import StatusVerifikasi from "./pages/pendaftar/StatusVerifikasi";
+import Pengumuman from "./pages/pendaftar/Pengumuman";
 
 /* scrool */
 import ScrolTop from "./components/common/ScrolTop";
@@ -95,6 +97,8 @@ function App() {
         <Route path="/pendaftar" element={<PendaftarLayout />}>
           <Route index element={<BerandaPendaftar />} />
           <Route path="unggah-dokumen" element={<UnggahDokumen />} />
+          <Route path="status-verifikasi" element={<StatusVerifikasi />} />
+          <Route path="pengumuman" element={<Pengumuman />} />
         </Route>
 
         {/* Applicant Routes */}
