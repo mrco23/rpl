@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   UserCircle,
   FileText,
@@ -9,30 +9,36 @@ import {
 } from "lucide-react";
 import logo from "@assets/logo.jpg";
 
-const menu = [
-  {
-    title: "Biodata",
-    icon: <UserCircle size={18} />,
-    path: "/pendaftar",
-  },
-  {
-    title: "Unggah Dokumen",
-    icon: <FileText size={18} />,
-    path: "/pendaftar/dokumen",
-  },
-  {
-    title: "Status Verifikasi",
-    icon: <ShieldCheck size={18} />,
-    path: "/pendaftar/status",
-  },
-  {
-    title: "Pengumuman",
-    icon: <Megaphone size={18} />,
-    path: "/pendaftar/pengumuman",
-  },
-];
-
 function SidebarPendaftar() {
+  const location = useLocation();
+
+  const menu = [
+    {
+      title: "Biodata",
+      icon: <UserCircle size={18} />,
+      path: "/pendaftar",
+    },
+    {
+      title: "Unggah Dokumen",
+      icon: <FileText size={18} />,
+      path: "/pendaftar/unggah-dokumen",
+    },
+    {
+      title: "Status Verifikasi",
+      icon: <ShieldCheck size={18} />,
+      path: "/pendaftar/status",
+    },
+    {
+      title: "Pengumuman",
+      icon: <Megaphone size={18} />,
+      path: "/pendaftar/pengumuman",
+    },
+  ];
+
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
   return (
     <div className="w-64 bg-[#1f3fa6] text-white flex flex-col px-4 py-5 rounded-r-2xl">
       {/* HEADER */}
@@ -44,8 +50,8 @@ function SidebarPendaftar() {
         />
 
         <div>
-          <h2 className="text-base font-semibold leading-tight">PPDB</h2>
-          <p className="text-xs text-white/80 leading-tight">
+          <h2 className="text-base font-semibold">PPDB</h2>
+          <p className="text-xs text-white/80">
             SMP Katolik St. Rafael
           </p>
           <p className="text-xs text-white/80">Manado</p>
@@ -55,20 +61,18 @@ function SidebarPendaftar() {
       {/* MENU */}
       <div className="space-y-2">
         {menu.map((item, index) => (
-          <NavLink
+          <Link
             key={index}
             to={item.path}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
-                isActive
-                  ? "bg-white text-[#1f3fa6] font-medium"
-                  : "text-white hover:bg-white/10"
-              }`
-            }
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
+              isActive(item.path)
+                ? "bg-white text-[#1f3fa6] font-medium"
+                : "text-white hover:bg-white/10"
+            }`}
           >
             {item.icon}
             <span>{item.title}</span>
-          </NavLink>
+          </Link>
         ))}
 
         {/* LOGOUT */}
