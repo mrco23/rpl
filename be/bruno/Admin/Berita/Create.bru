@@ -14,8 +14,15 @@ auth:bearer {
   token: {{token}}
 }
 
+body:json {
+  {
+    "judul_berita": "upacara ",
+    "deskripsi" : "Hari ini sekolah melakukan upacara tapi panas"
+  }
+}
+
 body:multipart-form {
-  judul_berita: Berita Sekolah Terbaru
-  deskripsi: Mengadakan acara tahunan
-  gambar_berita: @file(path/to/mock/image.jpg)
+  judul_berita: Berita Baru
+  deskripsi: Deskripsi Singkat
+  gambar: @file()
 }

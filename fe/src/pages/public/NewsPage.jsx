@@ -22,7 +22,7 @@ export default function NewsPage() {
   }, []);
 
   return (
-    <PublicLayout>
+    <>
       {/* HEADER BIRU */}
       <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 mb-10">
         <div className="max-w-7xl mx-auto px-6">
@@ -76,6 +76,6 @@ export default function NewsPage() {
           {/* BUTTON */}
         </div>
       </section>
-    </PublicLayout>
+    </>
   );
 }

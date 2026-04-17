@@ -5,7 +5,7 @@ import { Link } from "react-router";
 
 function SejarahPage() {
   return (
-    <PublicLayout>
+    <>
       <section className="relative h-[300px] overflow-hidden rounded-b-3xl">
         {/* Background Image */}
         <div
@@ -111,7 +111,7 @@ function SejarahPage() {
           </div>
         </section>
       </section>
-    </PublicLayout>
+    </>
   );
 }
 

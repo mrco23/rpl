@@ -32,7 +32,7 @@ export default function ExtracurricularPage() {
   ];
 
   return (
-    <PublicLayout>
+    <>
       <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-20 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">Ekstrakurikuler</h2>
       </section>
@@ -96,6 +96,6 @@ export default function ExtracurricularPage() {
           </div>
         ))}
       </div>
-    </PublicLayout>
+    </>
   );
 }

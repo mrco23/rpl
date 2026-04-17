@@ -1,12 +1,12 @@
 meta {
   name: Update
   type: http
-  seq: 1
+  seq: 3
 }
 
 put {
   url: {{base_url}}/berita/72
-  body: multipartForm
+  body: json
   auth: bearer
 }
 
@@ -14,8 +14,9 @@ auth:bearer {
   token: {{token}}
 }
 
-body:multipart-form {
-  judul_berita: Berita Baru Revisi
-  deskripsi: Deskripsi Singkat
-  gambar_berita: @file(path/to/image.jpg)
+body:json {
+  {
+    "judul_berita": "Berita Baru Revisi",
+    "deskripsi": "Deskripsi Singkat yang diperbarui"
+  }
 }

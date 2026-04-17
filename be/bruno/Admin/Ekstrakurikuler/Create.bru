@@ -14,9 +14,25 @@ auth:bearer {
   token: {{token}}
 }
 
+<<<<<<< HEAD
 body:multipart-form {
   nama_ekskul: Robotika
   deskripsi: Ekstrakurikuler merakit robot
   p_jwb_ekskul: Pak Budi
   gambar_ekskul: @file(path/to/mock/image.jpg)
+=======
+body:json {
+  {
+    "nama_ekskul": "Kolintang",
+    "p_jwb_ekskul" : "Marco",
+    "deskripsi": "example deskripsi"
+  }
+>>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
+}
+
+body:multipart-form {
+  nama_ekskul: Basket
+  deskripsi: Ekstrakurikuler basket untuk siswa putra dan putri
+  p_jwb_ekskul: Budi Santoso S.Pd.
+  gambar: @file()
 }

@@ -38,7 +38,7 @@ function FasilitasPage() {
     },
   ];
   return (
-    <PublicLayout>
+    <>
       <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-35 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">
           Fasilitas Sekolah
@@ -73,9 +73,8 @@ function FasilitasPage() {
         {fasilitas.map((item, index) => (
           <div
             key={index}
-            className={`flex flex-col md:flex-row items-center gap-8 ${
-              index % 2 === 1 ? "md:flex-row-reverse" : ""
-            }`}
+            className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
+              }`}
           >
             {/* IMAGE */}
             <div className="w-full md:w-1/2">
@@ -96,7 +95,7 @@ function FasilitasPage() {
           </div>
         ))}
       </div>
-    </PublicLayout>
+    </>
   );
 }
 

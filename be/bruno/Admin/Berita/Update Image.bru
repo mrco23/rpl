@@ -1,0 +1,19 @@
+meta {
+  name: Update Image
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{base_url}}/berita/5/image
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  gambar: @file(path/to/image.jpg)
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Update Image
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{base_url}}/profile/image
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  foto_kepala_sekolah: @file()
+}

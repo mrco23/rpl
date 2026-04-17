@@ -1,12 +1,20 @@
 meta {
   name: Update
   type: http
+<<<<<<< HEAD
   seq: 1
+=======
+  seq: 3
+>>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
 }
 
 put {
   url: {{base_url}}/fasilitas/1
+<<<<<<< HEAD
   body: multipartForm
+=======
+  body: json
+>>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
   auth: bearer
 }
 
@@ -14,8 +22,16 @@ auth:bearer {
   token: {{token}}
 }
 
+<<<<<<< HEAD
 body:multipart-form {
   nama_fasilitas: Fasilitas Utama
   deskripsi: Fasilitas yang memadai
   gambar_fasilitas: @file(path/to/image.jpg)
+=======
+body:json {
+  {
+    "nama_fasilitas": "Laboratorium Komputer (Revisi)",
+    "deskripsi": "Deskripsi fasilitas yang diperbarui"
+  }
+>>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
 }

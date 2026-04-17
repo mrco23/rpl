@@ -20,13 +20,22 @@ export const getPublicProfil = async () => {
 	if (profil) {
 		kontak = await prisma.kontak.findFirst({
 			where: { id_admin: profil.id_admin },
+			select: {
+				no_telpon: true,
+				instagram: true,
+				tiktok: true,
+				facebook: true,
+				youtube: true,
+				email: true,
+				whatsapp: true,
+			},
 		});
 	}
 	return { profil, kontak };
 };
 
 /* 
-  POST: Membuat profil baru beserta gambar (logo & foto) di awal.
+  POST: Membuat profil baru beserta gambar (foto_kepala_sekolah) di awal.
   Jika sudah ada, fungsi akan throw error.
 */
 export const createProfil = async (id_admin, payload) => {
@@ -41,7 +50,7 @@ export const createProfil = async (id_admin, payload) => {
 			visi: payload.visi,
 			misi: payload.misi,
 			nama_kepala_sekolah: payload.nama_kepala_sekolah,
-			foto_kepala_sekolah: payload.foto_kepala_sekolah || undefined,
+			foto_kepala_sekolah: payload.foto_kepala_sekolah,
 			kata_sambutan: payload.kata_sambutan,
 			id_admin: Number(id_admin),
 		},
@@ -50,7 +59,7 @@ export const createProfil = async (id_admin, payload) => {
 
 /* 
   PUT: Update profil untuk data teks saja (non-file). 
-  Gambar (logo / foto) tidak diupdate di fungsi ini.
+  Gambar (foto) tidak diupdate di fungsi ini.
 */
 export const updateProfilData = async (id_admin, payload) => {
 	const profil = await prisma.profil.findFirst({
@@ -71,7 +80,7 @@ export const updateProfilData = async (id_admin, payload) => {
 };
 
 /* 
-  PATCH: Khusus update gambar (bisa logo, foto_kepala_sekolah, atau keduanya).
+  PATCH: Khusus update gambar foto_kepala_sekolah.
   Fungsi ini otomatis menghapus file lama dari server jika ada pergantian.
 */
 export const updateProfilImage = async (id_admin, newFiles) => {
@@ -105,12 +114,13 @@ export const upsertKontak = async (id_admin, payload) => {
 	});
 
 	const data = {
-		alamat: payload.alamat,
 		no_telpon: payload.no_telpon,
 		email: payload.email,
-		media_sosial: payload.media_sosial,
-		whatsapp: payload.whatsapp,
-		link_maps: payload.link_maps,
+		whatsapp: payload.whatsapp || null,
+		instagram: payload.instagram || "",
+		tiktok: payload.tiktok || "",
+		facebook: payload.facebook || "",
+		youtube: payload.youtube || "",
 	};
 
 	if (kontak) {
@@ -143,12 +153,13 @@ export const serialize = (req, data) => {
 		foto_kepala_sekolah: buildFileUrl(req, profil.foto_kepala_sekolah),
 		kata_sambutan: profil.kata_sambutan || "",
 		id_kontak: kontak.id_kontak,
-		alamat: kontak.alamat || "",
 		no_telpon: kontak.no_telpon || "",
 		email: kontak.email || "",
-		media_sosial: kontak.media_sosial || "",
 		whatsapp: kontak.whatsapp || "",
-		link_maps: kontak.link_maps || "",
+		instagram: kontak.instagram || "",
+		tiktok: kontak.tiktok || "",
+		facebook: kontak.facebook || "",
+		youtube: kontak.youtube || "",
 	};
 };
 

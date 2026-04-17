@@ -14,8 +14,22 @@ auth:bearer {
   token: {{token}}
 }
 
+<<<<<<< HEAD
 body:multipart-form {
   nama_fasilitas: Perpustakaan Modern
   deskripsi: Ratusan buku tersedia
   gambar_fasilitas: @file(path/to/mock/image.jpg)
+=======
+body:json {
+  {
+    "nama_fasilitas": "Kolam Renang",
+    "deskripsi": "berenang bosque"
+  }
+>>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
+}
+
+body:multipart-form {
+  nama_fasilitas: Ruang Multimedia
+  deskripsi: Ruang multimedia modern dengan perlengkapan audio visual.
+  gambar: @file()
 }

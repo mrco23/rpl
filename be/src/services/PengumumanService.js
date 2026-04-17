@@ -27,7 +27,11 @@ export const createPengumuman = async (id_admin, payload) => {
   return prisma.pengumuman.create({
     data: {
       judul_pengumuman: payload.judul_pengumuman,
+<<<<<<< HEAD
       deksripsi: payload.deksripsi,
+=======
+      deksripsi: payload.deksripsi || null,
+>>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
       id_admin: Number(id_admin),
     },
   });
