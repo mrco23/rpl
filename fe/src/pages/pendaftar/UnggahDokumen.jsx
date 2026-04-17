@@ -102,7 +102,7 @@ function UnggahDokumen() {
             Kirim Untuk Diverifikasi
           </button>
           <p className="text-sm text-gray-500 max-w-xs">
-            Pastikan semua dokumen sudah benar sebelum dikirim  
+            Pastikan semua dokumen sudah benar sebelum dikirim
           </p>
         </div>
       </div>
