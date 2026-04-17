@@ -6,12 +6,20 @@ meta {
 
 post {
   url: {{base_url}}/ekstrakurikuler
-  body: multiFormData
+  body: json
   auth: bearer
 }
 
 auth:bearer {
   token: {{token}}
+}
+
+body:json {
+  {
+    "nama_ekskul": "Kolintang",
+    "p_jwb_ekskul" : "Marco",
+    "deskripsi": "example deskripsi"
+  }
 }
 
 body:multipart-form {

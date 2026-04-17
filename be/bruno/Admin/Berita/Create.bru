@@ -6,12 +6,19 @@ meta {
 
 post {
   url: {{base_url}}/berita
-  body: multiFormData
+  body: json
   auth: bearer
 }
 
 auth:bearer {
   token: {{token}}
+}
+
+body:json {
+  {
+    "judul_berita": "upacara ",
+    "deskripsi" : "Hari ini sekolah melakukan upacara tapi panas"
+  }
 }
 
 body:multipart-form {
