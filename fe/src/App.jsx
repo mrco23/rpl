@@ -70,9 +70,9 @@ function App() {
           <Route path="/fasilitas" element={<FasilitasPage />} />
           <Route path="/program" element={<Program />} />
           <Route path="/panduan" element={<PanduanPage />} />
-          <Route path="/register" element={<Register />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}
         <Route path="/admin">

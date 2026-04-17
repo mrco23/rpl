@@ -1,12 +1,12 @@
 meta {
   name: Update
   type: http
-  seq: 2
+  seq: 5
 }
 
 put {
   url: {{base_url}}/prestasi/1
-  body: multipartForm
+  body: json
   auth: bearer
 }
 
@@ -14,18 +14,10 @@ auth:bearer {
   token: {{token}}
 }
 
-<<<<<<< HEAD
-body:multipart-form {
-  judul_prestasi: Juara 1 Lomba Web
-  deskripsi: Tingkat Nasional
-  peraih_prestasi: Tim Sukses
-  gambar_prestasi: @file(path/to/image.jpg)
-=======
 body:json {
   {
     "judul_prestasi": "Juara 1 Lomba Pidato (Revisi)",
     "deskripsi": "Deskripsi diperbarui",
     "peraih_prestasi": "John Doe"
   }
->>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
 }

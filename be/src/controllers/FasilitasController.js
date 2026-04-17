@@ -1,73 +1,95 @@
 import * as FasilitasService from "../services/FasilitasService.js";
 
 export const getAll = async (req, res) => {
-    try {
-        const data = await FasilitasService.getAllFasilitas(req.user.id);
-        res.json({message: "success", data: data.map((item) => FasilitasService.serialize(req, item))});
-    } catch (error) {
-        res.status(400).json({message: error.message});
-    }
+	try {
+		const data = await FasilitasService.getAllFasilitas(req.user.id);
+		res.json({
+			message: "success",
+			data: data.map((item) => FasilitasService.serialize(req, item)),
+		});
+	} catch (error) {
+		res.status(400).json({ message: error.message });
+	}
 };
 
 export const getPublic = async (req, res) => {
-    try {
-        const data = await FasilitasService.getPublicFasilitas();
-        res.json({message: "success", data: data.map((item) => FasilitasService.serialize(req, item))});
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
+	try {
+		const data = await FasilitasService.getPublicFasilitas();
+		res.json({
+			message: "success",
+			data: data.map((item) => FasilitasService.serialize(req, item)),
+		});
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
 };
 
 export const getDetailPublic = async (req, res) => {
-    try {
-        const data = await FasilitasService.getOnePublicFasilitas(req.params.id);
-        if (!data) return res.status(404).json({message: "Data tidak ditemukan"});
-        res.json({message: "success", data: FasilitasService.serialize(req, data)});
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
+	try {
+		const data = await FasilitasService.getOnePublicFasilitas(req.params.id);
+		if (!data) return res.status(404).json({ message: "Data tidak ditemukan" });
+		res.json({ message: "success", data: FasilitasService.serialize(req, data) });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
 };
 
 export const create = async (req, res) => {
-    try {
-        const payload = {...req.body};
-        if (req.file) {
-            payload.gambar_fasilitas = req.file.filename;
-        }
-        const created = await FasilitasService.createFasilitas(req.user.id, payload);
-        res.status(201).json({message: "Berhasil membuat Fasilitas", data: FasilitasService.serialize(req, created)});
-    } catch (error) {
-        res.status(400).json({message: error.message || "Gagal membuat Fasilitas"});
-    }
+	try {
+		const payload = { ...req.body };
+		if (req.file) {
+			payload.gambar = req.file.filename;
+		}
+		const created = await FasilitasService.createFasilitas(req.user.id, payload);
+		res.status(201).json({
+			message: "Berhasil membuat Fasilitas",
+			data: FasilitasService.serialize(req, created),
+		});
+	} catch (error) {
+		res.status(400).json({ message: error.message || "Gagal membuat Fasilitas" });
+	}
 };
 
 export const updateData = async (req, res) => {
-    try {
-        const updated = await FasilitasService.updateFasilitasData(req.user.id, req.params.id, req.body);
-        res.json({message: "Data berhasil diperbarui", data: FasilitasService.serialize(req, updated)});
-    } catch (error) {
-        res.status(400).json({message: error.message || "Gagal update data Fasilitas"});
-    }
+	try {
+		const updated = await FasilitasService.updateFasilitasData(
+			req.user.id,
+			req.params.id,
+			req.body,
+		);
+		res.json({
+			message: "Data berhasil diperbarui",
+			data: FasilitasService.serialize(req, updated),
+		});
+	} catch (error) {
+		res.status(400).json({ message: error.message || "Gagal update data Fasilitas" });
+	}
 };
 
-<<<<<<< HEAD
-=======
 export const updateImage = async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({message: "Gambar belum diupload"});
-        }
-        const updated = await FasilitasService.updateFasilitasImage(req.user.id, req.params.id, req.file.filename);
-        res.json({message: "Gambar berhasil diperbarui", data: FasilitasService.serialize(req, updated)});
-    } catch (error) {
-        res.status(400).json({message: error.message || "Gagal update gambar Fasilitas"});
+	try {
+		if (!req.file) {
+			return res.status(400).json({ message: "Gambar belum diupload" });
+		}
+		const updated = await FasilitasService.updateFasilitasImage(
+			req.user.id,
+			req.params.id,
+			req.file.filename,
+		);
+		res.json({
+			message: "Gambar berhasil diperbarui",
+			data: FasilitasService.serialize(req, updated),
+		});
+	} catch (error) {
+		res.status(400).json({ message: error.message || "Gagal update gambar Fasilitas" });
+	}
+};
 
->>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
 export const remove = async (req, res) => {
-    try {
-        await FasilitasService.deleteFasilitas(req.user.id, req.params.id);
-        res.json({message: "Data berhasil dihapus"});
-    } catch (error) {
-        res.status(400).json({message: error.message || "Gagal menghapus data"});
-    }
+	try {
+		await FasilitasService.deleteFasilitas(req.user.id, req.params.id);
+		res.json({ message: "Data berhasil dihapus" });
+	} catch (error) {
+		res.status(400).json({ message: error.message || "Gagal menghapus data" });
+	}
 };

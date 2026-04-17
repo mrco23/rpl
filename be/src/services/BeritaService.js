@@ -8,15 +8,8 @@ export const getAll = async () => {
 	});
 };
 
-// GET ALL PUBLIC
-export const getPublicBerita = async () => {
-	return prisma.berita.findMany({
-		orderBy: { created_at: "desc" },
-	});
-};
-
-// GET ONE PUBLIC
-export const getOnePublicBerita = async (id) => {
+// GET DETAIL
+export const getDetail = async (id) => {
 	return prisma.berita.findUnique({
 		where: { id_berita: Number(id) },
 	});
@@ -26,15 +19,15 @@ export const getOnePublicBerita = async (id) => {
 export const createBerita = async (id_admin, payload) => {
 	return prisma.berita.create({
 		data: {
-			judul: payload.judul,
+			judul_berita: payload.judul_berita,
 			deskripsi: payload.deskripsi,
-			gambar: payload.gambar || null,
+			gambar_berita: payload.gambar || null,
 			id_admin: Number(id_admin),
 		},
 	});
 };
 
-// PUT/PATCH: Update data beserta kondisional upload gambar
+// PUT: Update data teks saja (tanpa mengubah gambar)
 export const updateBeritaData = async (id_admin, id, payload) => {
 	const existing = await prisma.berita.findFirst({
 		where: { id_berita: Number(id), id_admin: Number(id_admin) },
@@ -44,11 +37,8 @@ export const updateBeritaData = async (id_admin, id, payload) => {
 	return prisma.berita.update({
 		where: { id_berita: Number(id) },
 		data: {
-			judul: payload.judul,
+			judul_berita: payload.judul_berita,
 			deskripsi: payload.deskripsi,
-			isi: payload.isi,
-			status: payload.status || existing.status,
-			published_at: payload.published_at ? new Date(payload.published_at) : existing.published_at,
 		},
 	});
 };
@@ -60,13 +50,13 @@ export const updateBeritaImage = async (id_admin, id, filename) => {
 	});
 	if (!existing) throw new Error("Data tidak ditemukan");
 
-	if (existing.gambar) {
-		deleteFile(existing.gambar);
+	if (existing.gambar_berita) {
+		deleteFile(existing.gambar_berita);
 	}
 
 	return prisma.berita.update({
 		where: { id_berita: Number(id) },
-		data: { gambar: filename },
+		data: { gambar_berita: filename },
 	});
 };
 
@@ -77,8 +67,8 @@ export const deleteBerita = async (id_admin, id) => {
 	});
 	if (!existing) throw new Error("Data tidak ditemukan");
 
-	if (existing.gambar) {
-		deleteFile(existing.gambar);
+	if (existing.gambar_berita) {
+		deleteFile(existing.gambar_berita);
 	}
 
 	return prisma.berita.delete({
@@ -91,6 +81,6 @@ export const serialize = (req, item) => {
 	if (!item) return item;
 	return {
 		...item,
-		gambar: buildFileUrl(req, item.gambar),
+		gambar_berita: buildFileUrl(req, item.gambar_berita),
 	};
 };
