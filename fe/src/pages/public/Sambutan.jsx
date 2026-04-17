@@ -1,10 +1,10 @@
-import labImg from "@assets/kepsek.jpg"; 
+import labImg from "@assets/kepsek.jpg";
 
 export default function QuotePage() {
   return (
     <section className="w-full py-20 bg-[#e9edf5]">
       <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
-        
+
         {/* IMAGE */}
         <div className="w-full h-64 md:h-80 bg-gray-300 rounded-2xl overflow-hidden shadow-md">
           <img

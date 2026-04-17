@@ -25,7 +25,7 @@ export default function NewsDetail() {
   if (!data) return <div className="text-center py-20">Loading...</div>;
 
   return (
-    <PublicLayout>
+    <>
       <section className="w-full py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-6">
           {/* IMAGE */}
@@ -61,6 +61,6 @@ export default function NewsDetail() {
           </p>
         </div>
       </section>
-    </PublicLayout>
+    </>
   );
 }

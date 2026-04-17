@@ -5,7 +5,7 @@ import { Link } from "react-router";
 
 function Program() {
   return (
-    <PublicLayout>
+    <>
       <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-20 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">Program Unggulan</h2>
       </section>
@@ -154,7 +154,7 @@ function Program() {
           <div className="absolute left-1/2 top-0 h-48 w-[2px] bg-gray-400 -translate-x-1/2"></div>
         </div>
       </section>
-    </PublicLayout>
+    </>
   );
 }
 

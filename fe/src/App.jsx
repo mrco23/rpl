@@ -1,4 +1,12 @@
 import { Route, Routes } from "react-router";
+
+/* Layouts */
+import PublicLayout from "./components/layout/PublicLayout";
+import VerifikatorLayout from "./components/layout/VerifikatorLayout";
+import AdminLayout from "./components/layout/AdminLayout";
+import PendaftarLayout from "./components/layout/PendaftarLayout";
+
+
 /* Pages */
 import LandingPage from "./pages/public/LandingPage";
 import ExtracurricularPage from "./pages/public/ExtracurricularPage";
@@ -32,17 +40,14 @@ import FasilitasPage from "./pages/public/FasilitasPage";
 import Program from "./pages/public/ProgramPage";
 
 // verifikator
-import VerifikatorLayout from "./components/layout/VerifikatorLayout";
 import BerandaVerifikator from "./pages/verifikator/BerandaVerifikator";
 import VerifikasiDokumen from "./pages/verifikator/VerifikasiDokumen";
 import DetailPendaftarPage from "./pages/verifikator/DetailPendaftar";
 
 /* Admin */
-import AdminLayout from "./components/layout/AdminLayout";
 import DashboardAdmin from "./pages/admin/BerandaAdmin";
 
 /* Pendaftar */
-import PendaftarLayout from "./components/layout/PendaftarLayout";
 import BerandaPendaftar from "./pages/pendaftar/BerandaPendaftar";
 import UnggahDokumen from "./pages/pendaftar/UnggahDokumen";
 
@@ -54,19 +59,20 @@ function App() {
     <>
       <ScrolTop />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/ekstrakurikuler" element={<ExtracurricularPage />} />
-        <Route path="/prestasi" element={<AchievementsPage />} />
-        <Route path="/berita" element={<NewsPage />} />
-        <Route path="/berita/:id" element={<DetailBerita />} />
-        <Route path="/visi-misi" element={<VisiMisiPage />} />
-        <Route path="/sejarah" element={<SejarahPage />} />
-        <Route path="/fasilitas" element={<FasilitasPage />} />
-        <Route path="/program" element={<Program />} />
-
-        <Route path="/panduan" element={<PanduanPage />} />
+        <Route path={"/"} element={<PublicLayout />}>
+          <Route index element={<LandingPage />} />
+          <Route path="/ekstrakurikuler" element={<ExtracurricularPage />} />
+          <Route path="/prestasi" element={<AchievementsPage />} />
+          <Route path="/berita" element={<NewsPage />} />
+          <Route path="/berita/:id" element={<DetailBerita />} />
+          <Route path="/visi-misi" element={<VisiMisiPage />} />
+          <Route path="/sejarah" element={<SejarahPage />} />
+          <Route path="/fasilitas" element={<FasilitasPage />} />
+          <Route path="/program" element={<Program />} />
+          <Route path="/panduan" element={<PanduanPage />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}
         <Route path="/admin">
@@ -91,7 +97,7 @@ function App() {
           <Route path="verifikasiDokumen/:nisn" element={<DetailPendaftarPage />} />
         </Route>
 
-        {/* Verifier Routes */}
+        {/* pendaftar Routes */}
         <Route path="/pendaftar" element={<PendaftarLayout />}>
           <Route index element={<BerandaPendaftar />} />
           <Route path="unggah-dokumen" element={<UnggahDokumen />} />

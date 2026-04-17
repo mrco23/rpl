@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 function VisiMisiPage() {
   return (
-    <PublicLayout>
+    <>
       <main>
         <section className="w-full bg-[#172c73] text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
           <h2 className="text-2xl font-medium translate-y-4">Visi dan Misi</h2>
@@ -31,7 +31,7 @@ function VisiMisiPage() {
             </Link>
           </div>
         </div>
-        <section className="text-center py-20 px-6">    
+        <section className="text-center py-20 px-6">
           <h2 className="text-5xl font-semibold mb-4">Visi</h2>
           <p className="max-w-3xl text-3xl mx-auto text-black-700 leading-relaxed font-semibold">
             Membentuk peserta didik menjadi manusia yang seutuhnya, beriman,
@@ -92,7 +92,7 @@ function VisiMisiPage() {
           </div>
         </section>
       </main>
-    </PublicLayout>
+    </>
   );
 }
 

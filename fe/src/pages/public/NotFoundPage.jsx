@@ -4,7 +4,7 @@ import PublicLayout from '@components/layout/PublicLayout';
 
 export default function NotFoundPage() {
   return (
-    <PublicLayout>
+    <>
       <main className="min-h-[70vh] flex items-center justify-center px-4">
         <div className="text-center max-w-2xl">
           <div className="text-7xl font-extrabold text-blue-normal mb-4">404</div>
@@ -13,6 +13,6 @@ export default function NotFoundPage() {
           <Link to="/" className="px-7 py-4 rounded-2xl bg-yellow-normal text-yellow-dark-darker font-bold">Kembali ke Beranda</Link>
         </div>
       </main>
-    </PublicLayout>
+    </>
   );
 }

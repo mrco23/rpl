@@ -52,11 +52,10 @@ function Navbar() {
             <li>
               <Link
                 to="/"
-                className={`px-3 py-2 border-2 rounded transition-colors ${
-                  location.pathname === "/"
-                    ? "border-transparent  text-gray-950 font-semibold"
-                    : "border-transparent"
-                } hover:bg-gray-100`}
+                className={`px-3 py-2 border-2 rounded transition-colors ${location.pathname === "/"
+                  ? "border-transparent  text-gray-950 font-semibold"
+                  : "border-transparent"
+                  } hover:bg-gray-100`}
               >
                 Beranda
               </Link>
@@ -66,13 +65,12 @@ function Navbar() {
             <li className="relative">
               <button
                 onClick={() => handleDropdown("tentang")}
-                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${
-                  location.pathname === "/sejarah" ||
+                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${location.pathname === "/sejarah" ||
                   location.pathname === "/visi-misi" ||
                   location.pathname === "/fasilitas"
-                    ? "border-transparent text-gray-950 font-semibold"
-                    : "border-transparent"
-                } hover:bg-gray-100`}
+                  ? "border-transparent text-gray-950 font-semibold"
+                  : "border-transparent"
+                  } hover:bg-gray-100`}
               >
                 Tentang
                 <ChevronDown
@@ -110,13 +108,12 @@ function Navbar() {
             <li className="relative">
               <button
                 onClick={() => handleDropdown("akademik")}
-                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${
-                  location.pathname === "/program" ||
+                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${location.pathname === "/program" ||
                   location.pathname === "/ekstrakurikuler" ||
                   location.pathname === "/prestasi"
-                    ? "border-transparent text-gray-950 font-semibold"
-                    : "border-transparent"
-                } hover:bg-gray-100`}
+                  ? "border-transparent text-gray-950 font-semibold"
+                  : "border-transparent"
+                  } hover:bg-gray-100`}
               >
                 Akademik
                 <ChevronDown
@@ -154,11 +151,10 @@ function Navbar() {
             <li>
               <Link
                 to="/panduan"
-                className={`px-3 py-2 border-2 rounded transition-colors ${
-                  location.pathname === "/panduan"
-                    ? "border-transparent text-gray-950 font-semibold"
-                    : "border-transparent"
-                } hover:bg-gray-100`}
+                className={`px-3 py-2 border-2 rounded transition-colors ${location.pathname === "/panduan"
+                  ? "border-transparent text-gray-950 font-semibold"
+                  : "border-transparent"
+                  } hover:bg-gray-100`}
               >
                 Panduan
               </Link>
@@ -168,11 +164,10 @@ function Navbar() {
             <li>
               <Link
                 to="/berita"
-                className={`px-3 py-2 border-2 rounded transition-colors ${
-                  location.pathname === "/berita"
-                    ? "border-transparent text-gray-950 font-semibold"
-                    : "border-transparent"
-                } hover:bg-gray-100`}
+                className={`px-3 py-2 border-2 rounded transition-colors ${location.pathname === "/berita"
+                  ? "border-transparent text-gray-950 font-semibold"
+                  : "border-transparent"
+                  } hover:bg-gray-100`}
               >
                 Berita
               </Link>
@@ -183,14 +178,14 @@ function Navbar() {
           <div className="hidden md:flex space-x-4">
             <button
               onClick={() => navigate("/login")}
-              className="px-3 py-2 border-2 border-blue-800 text-blue-900 rounded-md font-normal hover:bg-blue-50 transition-colors duration-200 cursor-pointer"
+              className="px-3 py-1 border-2 border-blue-800 text-blue-900 rounded-md font-normal hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
             >
               Masuk
             </button>
 
             <button
               onClick={() => navigate("/register")}
-              className="px-4 py-2 bg-[#1d3890] text-white rounded-md hover:bg-[#172c73] transition-colors duration-200 cursor-pointer"
+              className="px-4 py-1 bg-blue-dark text-white rounded-md hover:bg-blue-dark-hover transition-colors duration-200 cursor-pointer"
             >
               Daftar Sekarang
             </button>
