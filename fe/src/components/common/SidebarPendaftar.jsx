@@ -7,7 +7,7 @@ import {
   Megaphone,
   LogOut,
 } from "lucide-react";
-import logo from "@assets/logo.jpg";
+import logo from "@assets/logo.png";
 
 function SidebarPendaftar() {
   const location = useLocation();
@@ -64,11 +64,10 @@ function SidebarPendaftar() {
           <Link
             key={index}
             to={item.path}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
-              isActive(item.path)
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${isActive(item.path)
                 ? "bg-white text-[#1f3fa6] font-medium"
                 : "text-white hover:bg-white/10"
-            }`}
+              }`}
           >
             {item.icon}
             <span>{item.title}</span>

@@ -1,10 +1,8 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import logo from "@assets/logo.jpg";
+import logo from "@assets/logo.png";
 import { ChevronDown, Menu, X } from "lucide-react";
-import { useLocation } from "react-router";
-import { useNavigate } from "react-router"; //for login
-import { Link } from "react-router";
+import { useLocation, useNavigate, Link } from "react-router";
 
 function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);

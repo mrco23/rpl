@@ -12,7 +12,7 @@ import {
   FileText,
   LogOut,
 } from "lucide-react";
-import logo from "@assets/logo.jpg";
+import logo from "@assets/logo.png";
 
 const menu = [
   {
@@ -108,10 +108,9 @@ function SidebarAdmin() {
               key={index}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
-                  isActive
-                    ? "bg-white text-[#2f4aa0] font-medium"
-                    : "hover:bg-white/10"
+                `flex items-center gap-3 px-3 py-2 rounded-lg transition ${isActive
+                  ? "bg-white text-[#2f4aa0] font-medium"
+                  : "hover:bg-white/10"
                 }`
               }
             >

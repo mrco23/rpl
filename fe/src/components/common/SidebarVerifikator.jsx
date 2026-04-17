@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { House, FileText, LogOut } from "lucide-react";
-import logo from "@assets/logo.jpg";
+import logo from "@assets/logo.png";
 
 function SidebarVerifikator() {
   const location = useLocation();
@@ -69,10 +69,9 @@ function SidebarVerifikator() {
               key={index}
               to={item.path}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-[16px] font-medium transition-all
-                ${
-                  isActive(item.path)
-                    ? "bg-blue-700 text-white"
-                    : "text-slate-600 hover:bg-gray-200"
+                ${isActive(item.path)
+                  ? "bg-blue-700 text-white"
+                  : "text-slate-600 hover:bg-gray-200"
                 }`}
             >
               <Icon size={18} />
