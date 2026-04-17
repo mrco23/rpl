@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 function Pengumuman() {
-  // DATA DUMMY (siap backend)
+  // DATA DUMMY
   const dataPengumuman = [
     {
       id: 1,
@@ -32,7 +32,6 @@ function Pengumuman() {
       tanggal: "24 Maret 2026",
       waktu: "14:00 WITA",
       lokasi: "Ruang Multimedia",
-      deskripsi: "Orang tua/wali diwajibkan hadir sesuai jadwal.",
     },
     {
       id: 3,
@@ -40,7 +39,7 @@ function Pengumuman() {
       title: "Daftar Ulang",
       icon: ClipboardList,
       tanggal: "27-30 Maret 2026",
-      waktu: "14:00 WITA",
+      waktu: "08:00 - 14:00 WITA",
       lokasi: "Tata Usaha",
       deskripsi: "Peserta yang lulus wajib melakukan daftar ulang.",
     },
@@ -61,7 +60,7 @@ function Pengumuman() {
           Informasi penting terkait proses seleksi PPDB dapat anda lihat disini.
         </p>
 
-        {/* LIST CARD */}
+        {/* LIST */}
         <div className="space-y-7">
           {dataPengumuman.map((item) => {
             const Icon = item.icon;
@@ -105,7 +104,6 @@ function Pengumuman() {
                     </div>
                   </div>
 
-                  {/* ARROW */}
                   <ChevronDown
                     className={`transition-transform ${
                       isOpen ? "rotate-180" : ""
@@ -116,14 +114,13 @@ function Pengumuman() {
                 {/* BODY */}
                 {isOpen && (
                   <div className="px-4 pb-5 pt-3 text-sm text-gray-600 space-y-4">
-                    {/* KHUSUS HASIL SELEKSI */}
-                    {item.key === "hasil" ? (
+                    {/* HASIL SELEKSI */}
+                    {item.key === "hasil" && (
                       <>
                         <p>
                           Selamat! Berdasarkan hasil seleksi, Anda dinyatakan :
                         </p>
 
-                        {/* BOX STATUS */}
                         <div className="flex items-center gap-3 bg-white rounded-lg p-3">
                           <div className="bg-green-100 p-2 rounded-full">
                             <CheckCircle className="text-green-600" />
@@ -141,26 +138,102 @@ function Pengumuman() {
 
                         <p>
                           Terima kasih atas kepercayaan Anda. Silahkan lanjutkan
-                          ke tahap berikutnya
+                          ke tahap berikutnya.
+                        </p>
+                      </>
+                    )}
+
+                    {/* WAWANCARA */}
+                    {item.key === "wawancara" && (
+                      <>
+                        <p>
+                          Kehadiran Orang Tua / Wali sangat diharapkan sesuai
+                          jadwal yang ditentukan.
                         </p>
 
-                        {/* CATATAN */}
-                        <div>
-                          <p className="font-medium">Catatan:</p>
-                          <ul className="list-disc ml-5 text-gray-500">
-                            <li>
-                              Informasi selanjutnya mengenai jadwal wawancara,
-                              daftar ulang, dan mulai masuk sekolah dapat Anda
-                              lihat di bawah ini.
-                            </li>
-                          </ul>
+                        <div className="bg-white rounded-lg p-4">
+                          <h3 className="font-semibold mb-4">
+                            Detail Wawancara
+                          </h3>
+
+                          <div className="grid md:grid-cols-3 gap-4">
+                            <div>
+                              <p className="text-gray-500 text-xs">
+                                Hari / Tanggal
+                              </p>
+                              <p className="font-medium">
+                                Selasa, 24 Maret 2026
+                              </p>
+                            </div>
+
+                            <div>
+                              <p className="text-gray-500 text-xs">Waktu</p>
+                              <p className="font-medium">14:00 WITA</p>
+                            </div>
+
+                            <div>
+                              <p className="text-gray-500 text-xs">Tempat</p>
+                              <p className="font-medium">
+                                Ruang Multimedia
+                              </p>
+                            </div>
+                          </div>
                         </div>
+
+                        <p>
+                          Mohon hadir 10 menit sebelum jadwal dan membawa
+                          dokumen yang diperlukan.
+                        </p>
                       </>
-                    ) : (
-                      <p>{item.deskripsi}</p>
+                    )}
+
+                    
+
+                    {/* WAWANCARA */}
+                    {item.key === "daftar_ulang" && (
+                      <>
+                        <p>
+                          Lakukan daftar ulang dengan membawa berkas yang telah ditentukan
+                        </p>
+
+                        <div className="bg-white rounded-lg p-4">
+                          <h3 className="font-semibold mb-4">
+                            Daftar Ulang
+                          </h3>
+
+                          <div className="grid md:grid-cols-3 gap-4">
+                            <div>
+                              <p className="text-gray-500 text-xs">
+                                Periode
+                              </p>
+                              <p className="font-medium">
+                                 24-27 Maret 2026
+                              </p>
+                            </div>
+
+                            <div>
+                              <p className="text-gray-500 text-xs">Waktu</p>
+                              <p className="font-medium">14:00 WITA</p>
+                            </div>
+
+                            <div>
+                              <p className="text-gray-500 text-xs">Tempat</p>
+                              <p className="font-medium">
+                                Tata usaha  
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <p>
+                          Bawa berkas fotokopi sesuai daftar persyaratan yang diberikan
+                        </p>
+                      </>
                     )}
                   </div>
                 )}
+
+                
               </div>
             );
           })}
