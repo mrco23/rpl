@@ -15,7 +15,7 @@ const ekstrakurikulerRoutes = express.Router();
 
 // PUBLIC
 ekstrakurikulerRoutes.get("/", getPublic);
-ekstrakurikulerRoutes.get("/public/:id", getDetailPublic);
+ekstrakurikulerRoutes.get("/:id", getDetailPublic);
 
 /* 
   POST /: Membuat data baru beserta upload gambar awal.

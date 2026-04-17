@@ -6,12 +6,19 @@ meta {
 
 post {
   url: {{base_url}}/fasilitas
-  body: multiFormData
+  body: json
   auth: bearer
 }
 
 auth:bearer {
   token: {{token}}
+}
+
+body:json {
+  {
+    "nama_fasilitas": "Kolam Renang",
+    "deskripsi": "berenang bosque"
+  }
 }
 
 body:multipart-form {
