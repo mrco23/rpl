@@ -1,16 +1,7 @@
 import img from "@assets/prestasi.jpg";
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router";
+import MoreButton from "../ui/MoreButton";
 
-export default function AchievementsPreview() {
-  const data = Array(6).fill({
-    id: 1,
-    title: "Judul Prestasi",
-    category: "Peraih Prestasi",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
-    image: img,
-  });
-
+export default function AchievementsPreview({ data = [] }) {
   return (
     <section className="w-full py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-10">
@@ -33,22 +24,22 @@ export default function AchievementsPreview() {
               {/* Image */}
               <div className="p-3 pb-0">
                 <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-72 object-cover rounded-xl"
+                  src={item.gambar || img}
+                  alt={item.nama_prestasi || "Prestasi"}
+                  className="w-full aspect-[4/3] object-cover rounded-xl"
                 />
               </div>
 
               {/* Content */}
               <div className="p-4">
                 <h3 className="text-blue-900 font-semibold text-xl">
-                  {item.title}
+                  {item.nama_prestasi}
                 </h3>
                 <p className="text-xs text-blue-800 font-medium">
-                  {item.category}
+                  Peraih Prestasi
                 </p>
-                <p className="text-sm text-blue-800 font-medium mt-2 leading-relaxed">
-                  {item.desc}
+                <p className="text-sm text-blue-800 font-medium mt-2 leading-relaxed line-clamp-3">
+                  {item.deskripsi}
                 </p>
               </div>
             </div>
@@ -56,15 +47,7 @@ export default function AchievementsPreview() {
         </div>
 
         {/* BUTTON */}
-        <div className="flex justify-center mt-10">
-          <Link
-            to="/prestasi"
-            className="flex items-center gap-2 border-2 p-4 rounded-2xl hover:bg-gray-100"
-          >
-            Lihat Semua
-            <ArrowRight size={16} />
-          </Link>
-        </div>
+        <MoreButton text={'Lihat Semua Prestasi'} to={'/prestasi'} />
       </div>
     </section>
   );

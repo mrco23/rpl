@@ -75,7 +75,7 @@ const menu = [
 
 function SidebarAdmin() {
   return (
-    <div className="w-64 h-screen bg-[#1f3b9a] text-white flex flex-col p-4 rounded-r-2xl">
+    <div className="w-64 h-screen bg-blue-dark text-white flex flex-col p-4 rounded-r-2xl">
       {/* HEADER */}
       <div className="mb-6 flex items-center gap-3">
         {/* LOGO */}

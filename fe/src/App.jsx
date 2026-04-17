@@ -17,6 +17,7 @@ import DetailBerita from "./pages/public/DetailBerita";
 import PanduanPage from "./pages/public/PanduanPage";
 import LoginPage from "./pages/auth/LoginPage";
 import Register from "./pages/pendaftar/Register";
+import AdminBeranda from "./pages/admin/BerandaAdmin";
 import AdminOverviewPage from "./pages/admin/AdminOverviewPage";
 import AdminProfilePage from "./pages/admin/AdminProfilePage";
 import AdminAchievementsPage from "./pages/admin/AdminAchievementsPage";
@@ -77,9 +78,8 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}
-        <Route path="/admin">
-          <Route index element={<AdminLayout />} />
-          <Route path="beranda" element={<DashboardAdmin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminBeranda />} />
           <Route path="waves" element={<AdminWavesPage />} />
           <Route path="achievements" element={<AdminAchievementsPage />} />
           <Route

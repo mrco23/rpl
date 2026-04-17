@@ -1,24 +1,10 @@
 import img from "@assets/berita.jpg";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
-import { requestAPI } from "../../services/api";
 import { Link } from "react-router";
 import { FiCalendar } from "react-icons/fi";
+import MoreButton from "../ui/MoreButton";
 
-export default function NewsPreview() {
-  const [news, setNews] = useState([]);
-
-  useEffect(() => {
-    requestAPI({
-      method: "get",
-      url: "/berita",
-    })
-      .then((res) => {
-        setNews(res.data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
-
+export default function NewsPreview({ data = [] }) {
   return (
     <section className="w-full py-20 bg-gray-50 font-sans">
       <div className="max-w-7xl mx-auto px-10">
@@ -31,15 +17,15 @@ export default function NewsPreview() {
         </div>
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
-          {news.slice(0, 3).map((item) => (
-            <Link to={`/berita/${item.id_berita}`} key={item.id_berita}>
-              <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition overflow-hidden cursor-pointer">
+          {data.slice(0, 3).map((item, index) => (
+            <Link to={`/berita/${item.id_berita || ''}`} key={index}>
+              <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition overflow-hidden p-2 cursor-pointer">
                 {/* IMAGE */}
 
                 <img
                   src={item.gambar || img}
                   alt={item.judul}
-                  className="w-full h-52 object-cover rounded-2xl"
+                  className="w-full aspect-[3.5/2.5] object-cover rounded-2xl"
                 />
 
                 {/* CONTENT */}
@@ -48,11 +34,11 @@ export default function NewsPreview() {
                   <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
                     <FiCalendar className="text-gray-400 text-[14px]" />
                     <span>
-                      {new Date(item.created_at).toLocaleDateString("id-ID", {
+                      {item.tanggal ? new Date(item.tanggal).toLocaleDateString("id-ID", {
                         day: "2-digit",
                         month: "long",
                         year: "numeric",
-                      })}
+                      }) : "Tanggal tidak tersedia"}
                     </span>
                   </div>
 
@@ -72,15 +58,7 @@ export default function NewsPreview() {
         </div>
 
         {/* BUTTON */}
-        <div className="flex justify-center mt-10">
-          <Link
-            to="/berita"
-            className="flex items-center gap-2 border-2 p-4 rounded-2xl hover:bg-gray-100"
-          >
-            Lihat Semua
-            <ArrowRight size={16} />
-          </Link>
-        </div>
+        <MoreButton text={'Lihat Semua Berita'} to={'/berita'} />
       </div>
     </section>
   );

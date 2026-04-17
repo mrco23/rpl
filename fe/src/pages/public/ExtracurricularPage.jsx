@@ -1,35 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PublicLayout from "@components/layout/PublicLayout.jsx";
 import ekstrakurikler from "@assets/about.jpg";
 import { Link } from "react-router";
+import extracurricularService from "../../services/extracurricularService";
+import CardSkeleton from "../../components/features/CardSkeleton";
 
 export default function ExtracurricularPage() {
-  const extracurriculars = [
-    {
-      title: "Dance Club",
-      description:
-        "Mengembangkan bakat dan kreativitas siswa dalam seni tari sekaligus melatih kepercayaan diri dan kekompakan tim.",
-      pembina: ["Elegantia Makarawung", "Lalisa Manoban", "Jeon Jungkook"],
-      jadwal: "Senin & Selasa",
-      image: ekstrakurikler, // ganti dengan path image mu
-    },
-    {
-      title: "Paduan Suara",
-      description:
-        "Mengembangkan kemampuan vokal siswa serta membangun kebersamaan melalui harmoni dan kerja sama dalam bernyanyi.",
-      pembina: ["Selomitha Nong", "Bruno Mars", "Henry Cavil"],
-      jadwal: "Senin & Selasa",
-      image: ekstrakurikler, // ganti dengan path image mu
-    },
-    {
-      title: "Pramuka",
-      description:
-        "Membentuk karakter disiplin, kemandirian, dan kepemimpinan melalui berbagai kegiatan kepramukaan yang edukatif dan menantang.",
-      pembina: ["Marcois Makalew", "Reins Maindjanga"],
-      jadwal: "Senin & Selasa",
-      image: ekstrakurikler, // ganti dengan path image mu
-    },
-  ];
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      const res = await extracurricularService.getEkstrakurikuler();
+      if (res.success) {
+        setData(res.data || []);
+      } else {
+        setError(res.message);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -70,32 +64,66 @@ export default function ExtracurricularPage() {
           Mari Jelajahi!
         </h2>
       </div>
-      {/* Cards */}
-      <div className="px-20 py-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {extracurriculars.map((item) => (
-          <div key={item.title} className=" flex flex-col">
-            {item.image && (
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-full object-cover"
-              />
-            )}
-            <div className="p-4 flex-1 flex flex-col">
-              <h4 className="text-lg font-semibold mb-2">{item.title}</h4>
-              <p className="text-gray-900 mb-4 flex-1">{item.description}</p>
-              <p className="text-black font-medium mb-1">
-                <span className="font-semibold text-blue-800">Pembina:</span>{" "}
-                {item.pembina.join(", ")}
-              </p>
-              <p className="text-black font-medium">
-                <span className="font-semibold text-blue-800">Jadwal:</span>{" "}
-                {item.jadwal}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+      
+      {/* Dynamic Data States */}
+      {loading ? (
+        <div className="px-20 py-4 grid grid-cols-1 md:grid-cols-3 gap-8 pb-32">
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+        </div>
+      ) : error ? (
+        <div className="px-20 py-10 text-center flex flex-col items-center">
+          <p className="text-xl text-red-600 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-blue-900 px-4 py-2 text-white rounded-md hover:bg-blue-800 transition"
+          >
+            Coba Lagi
+          </button>
+        </div>
+      ) : data.length === 0 ? (
+        <div className="px-20 py-10 text-center text-xl text-gray-600">
+          Belum ada data ekstrakurikuler.
+        </div>
+      ) : (
+        <div className="px-20 py-4 grid grid-cols-1 md:grid-cols-3 gap-8 pb-32">
+          {/* Cards */}
+          {data.map((item, index) => {
+            const displayTitle = item.nama_ekskul || item.nama || "Tanpa Judul";
+            const displayImage = item.gambar_ekskul || item.gambar || ekstrakurikler;
+            const displayDesc = item.deskripsi || "Tidak ada deskripsi";
+            const displayJadwal = item.jadwal || "-";
+            const displayPembina = Array.isArray(item.mentor) 
+              ? item.mentor.join(", ") 
+              : item.mentor || "-";
+
+            return (
+              <div key={index} className=" flex flex-col">
+                {displayImage && (
+                  <img
+                    src={displayImage}
+                    alt={displayTitle}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+                <div className="p-4 flex-1 flex flex-col">
+                  <h4 className="text-lg font-semibold mb-2">{displayTitle}</h4>
+                  <p className="text-gray-900 mb-4 flex-1">{displayDesc}</p>
+                  <p className="text-black font-medium mb-1">
+                    <span className="font-semibold text-blue-800">Pembina:</span>{" "}
+                    {displayPembina}
+                  </p>
+                  <p className="text-black font-medium">
+                    <span className="font-semibold text-blue-800">Jadwal:</span>{" "}
+                    {displayJadwal}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }
