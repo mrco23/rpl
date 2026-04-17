@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IoArrowBackSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 export default function ApplicantRegisterPage() {
   const navigate = useNavigate();
@@ -252,9 +253,23 @@ export default function ApplicantRegisterPage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="px-6 py-3 border-[#274ac0] bg-[#274ac0]  text-white rounded-md hover:bg-[#2343ad] transition"
+                className="
+    px-6 py-2 bg-[#274ac0] text-white rounded-md 
+    hover:bg-[#2343ad] 
+    transition-all duration-300 
+    flex items-center gap-2 group cursor-pointer
+  "
               >
-                LANJUT →
+                <span className="flex items-center gap-2">
+                  LANJUT
+                  <ArrowRight
+                    size={14}
+                    className="
+        transition-transform duration-300
+        group-hover:translate-x-1
+      "
+                  />
+                </span>
               </button>
             </div>
           </form>
@@ -314,12 +329,12 @@ export default function ApplicantRegisterPage() {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="px-10 py-3 bg-gray-300 rounded-md"
+                className="px-10 py-2 bg-gray-300 rounded-md"
               >
                 ← Kembali
               </button>
 
-              <button className="px-10 py-3 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md">
+              <button className="px-10 py-2 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md">
                 Selesaikan
               </button>
             </div>

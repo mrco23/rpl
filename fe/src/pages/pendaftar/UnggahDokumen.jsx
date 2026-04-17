@@ -24,10 +24,10 @@ function UnggahDokumen() {
         <div className="bg-gray-300 text-md text-gray-700 p-7 rounded-lg flex gap-2 items-start max-w-4xl">
           <AlertCircle size={20} />
           <p>
-            Setelah semua dokumen diunggah, klik tombol{" "}
+            Setelah semua dokumen diunggah klik tombol{" "}
             <span className="font-medium text-black">
               "Kirim untuk Diverifikasi"
-            </span>
+            </span>{" "}
             agar dokumen dapat diperiksa oleh panitia PPDB
           </p>
         </div>
@@ -81,27 +81,30 @@ function UnggahDokumen() {
       </div>
 
       {/* Catatan */}
-      <div className="mt-6 bg-yellow-100 p-4 rounded-lg flex gap-2">
-        <AlertCircle className="text-yellow-600" size={18} />
-        <div>
-          <p className="font-semibold">Catatan Verifikator</p>
-          <p className="text-sm">
-            Pas foto kurang jelas. Mohon unggah ulang dengan foto yang lebih
-            terang dan fokus.
-          </p>
-          <span className="text-xs text-gray-600">30 Mei 2026 10:30</span>
+      <div className="mt-6 flex justify-between items-start gap-6">
+        {/* KIRI */}
+        <div className="bg-yellow-100 p-4 rounded-lg flex gap-2 flex-1">
+          <AlertCircle className="text-yellow-600" size={18} />
+          <div>
+            <p className="font-semibold">Catatan Verifikator</p>
+            <p className="text-sm">
+              Pas foto kurang jelas. Mohon unggah ulang dengan foto yang lebih
+              terang dan fokus.
+            </p>
+            <span className="text-xs text-gray-600">30 Mei 2026 10:30</span>
+          </div>
         </div>
-      </div>
 
-      {/* Action */}
-      <div className="mt-6 flex items-center gap-4">
-        <button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg">
-          <Send size={16} />
-          Kirim Untuk Diverifikasi
-        </button>
-        <p className="text-sm text-gray-500">
-          Pastikan semua dokumen sudah benar sebelum dikirim
-        </p>
+        {/* KANAN */}
+        <div className="flex flex-col gap-4">
+          <button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg w-70">
+            <Send size={16} />
+            Kirim Untuk Diverifikasi
+          </button>
+          <p className="text-sm text-gray-500 max-w-xs">
+            Pastikan semua dokumen sudah benar sebelum dikirim  
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -110,9 +113,9 @@ function UnggahDokumen() {
 function DokumenCard({ title, status, deskcripsi, fileName }) {
   return (
     <div
-      className={`w-56 p-4 rounded-xl border bg-white
-      ${status === "success" && "border-green-500"}
-      ${status === "error" && "border-orange-400 bg-orange-50"}
+      className={`w-56 p-4 rounded-xl border bg-white shadow-2xl
+      ${status === "success" && "border-gray-300"}
+      ${status === "error" && "border-gray-300 bg-orange-50"}
       ${status === "empty" && "border-gray-300"}
     `}
     >
@@ -133,28 +136,30 @@ function DokumenCard({ title, status, deskcripsi, fileName }) {
 
       {/* Buttons */}
       <div className="mt-2 space-y-1">
-        <div className="mt-2 space-y-1">
-          <button className="w-full text-sm bg-gray-200 py-1 rounded">
-            Lihat File
-          </button>
+        {status === "success" && (
+          <>
+            <button className="w-full text-sm text-blue-600 bg-gray-200 py-1 rounded-lg border border-b-blue-600 cursor-pointer">
+              Lihat File
+            </button>
 
-          <button className="w-full text-sm bg-blue-600 text-white py-1 rounded">
-            Unduh File
-          </button>
-        </div>
+            <button className="w-full text-sm bg-gray-400  text-white py-1 rounded-lg cursor-pointer">
+              Ganti File
+            </button>
+          </>
+        )}
 
         {status === "empty" && (
-          <button className="w-full text-sm bg-blue-600 text-white py-1 rounded">
+          <button className="w-full text-sm bg-blue-600 text-white py-1 rounded-lg cursor-pointer">
             Unggah File
           </button>
         )}
 
         {status === "error" && (
           <>
-            <button className="w-full text-sm bg-orange-400 text-white py-1 rounded">
+            <button className="w-full text-sm bg-orange-400 text-white py-1 rounded-lg cursor-pointer">
               Lihat Catatan
             </button>
-            <button className="w-full text-sm bg-blue-600 text-white py-1 rounded">
+            <button className="w-full text-sm bg-blue-600 text-white py-1 rounded-lg cursor-pointer">
               Unggah Ulang
             </button>
           </>
