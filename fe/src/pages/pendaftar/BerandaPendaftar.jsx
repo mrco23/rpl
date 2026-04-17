@@ -85,7 +85,7 @@ function BerandaPendaftar() {
             <span className="text-sm font-medium text-blue-800 ml-2">
               (dapat diedit)
             </span>
-          </h2>
+          </h2>w
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
