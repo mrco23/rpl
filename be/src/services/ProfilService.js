@@ -20,6 +20,15 @@ export const getPublicProfil = async () => {
 	if (profil) {
 		kontak = await prisma.kontak.findFirst({
 			where: { id_admin: profil.id_admin },
+			select: {
+				no_telpon: true,
+				instagram: true,
+				tiktok: true,
+				facebook: true,
+				youtube: true,
+				email: true,
+				whatsapp: true,
+			},
 		});
 	}
 	return { profil, kontak };
