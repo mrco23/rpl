@@ -1,5 +1,5 @@
 import PublicLayout from "@components/layout/PublicLayout.jsx";
-import hero from "@assets/hero.jpg";
+import hero from "@assets/hero.png";
 import AboutPage from "./AboutPage";
 import QuotePage from "./Sambutan";
 import AchievementsPreview from "./AchievementsPreview";
@@ -22,7 +22,7 @@ export default function LandingPage() {
       <section className="relative w-full h-[80vh]">
         {/* Background Image */}
         <div
-          className="absolute inset-0 bg-cover bg-center rounded-b-3xl overflow-hidden"
+          className="absolute inset-0 bg-cover bg-center rounded-b-3xl overflow-hidden brightness-50"
           style={{ backgroundImage: `url(${hero})` }}
         >
           <div className="absolute inset-0 bg-black/20"></div>

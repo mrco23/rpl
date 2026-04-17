@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PublicLayout from "@components/layout/PublicLayout";
-import hero from "@assets/hero.jpg";
+import hero from "@assets/hero.png";
 import { Eye, EyeOff } from "lucide-react";
 import { loginService } from "@services/authService.js";
 import useAuth from "@contexts/useAuth.js";
@@ -89,7 +89,7 @@ export default function LoginPage() {
       <div className="hidden md:flex w-1/2 min-h-screen relative overflow-hidden">
         {/* ✅ BACKGROUND IMAGE (BLUR) */}
         <div
-          className="absolute inset-0 bg-cover bg-center blur-[2px] scale-105"
+          className="absolute inset-0 bg-cover bg-center blur-[2px] scale-105 brightness-50"
           style={{ backgroundImage: `url(${hero})` }}
         ></div>
 
