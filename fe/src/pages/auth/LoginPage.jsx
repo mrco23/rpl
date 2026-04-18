@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PublicLayout from "@components/layout/PublicLayout";
 import hero from "@assets/hero.png";
 import { Eye, EyeOff } from "lucide-react";
-import { loginService } from "@services/authService.js";
+import { loginService, loginVerifikatorService } from "@services/authService.js";
 import useAuth from "@contexts/useAuth.js";
 import { useNavigate, Link } from "react-router";
 
@@ -28,17 +28,6 @@ export default function LoginPage() {
     setSubmitting(true);
     setError("");
 
-    // ✅ LOGIN DUMMY VERIFIKATOR
-    if (role === "verifikator") {
-      if (identifier === "verifikator" && password === "12345") {
-        navigate("/verifikator");
-      } else {
-        setError("Username atau password verifikator salah");
-      }
-
-      setSubmitting(false);
-      return;
-    }
 
     // ✅ LOGIN DUMMY PENDAFTAR
     if (role === "pendaftar") {
@@ -61,7 +50,12 @@ export default function LoginPage() {
 
       payload.username = identifier;
 
-      const data = await loginService(payload);
+      let data;
+      if (role === "verifikator") {
+        data = await loginVerifikatorService(payload);
+      } else {
+        data = await loginService(payload);
+      }
 
       console.log(data);
       login(data);
@@ -70,7 +64,7 @@ export default function LoginPage() {
 
       const roleRedirect = {
         admin: "/admin",
-        verifikator: "/verifier",
+        verifikator: "/verifikator",
         pendaftar: "/pendaftar",
       };
 

@@ -140,3 +140,107 @@ const berita = [
 		tanggal_dibuat: "example",
 	},
 ];
+
+const berandaVerifikator = {
+	card: [
+		{
+			status: "Menunggu Verifikasi",
+			jumlah: 100,
+		},
+		{
+			status: "Ditolak",
+			jumlah: 100,
+		},
+		{
+			status: "Diterima",
+			jumlah: 100,
+		},
+		{
+			status: "Total Pendaftar",
+			jumlah: 100,
+		},
+	] /* max 3 data */,
+	pendaftarTerbaru: [
+		{
+			nama: "Elegantia",
+			nisn: 2401303,
+			tanggalDaftar: "2026-04-19",
+			status: "Menunggu Verifikasi",
+		},
+		{
+			nama: "Elegantia",
+			nisn: 2401303,
+			tanggalDaftar: "2026-04-19",
+			status: "Menunggu Verifikasi",
+		},
+	] /* max 3 data */,
+	pendaftarYangPerluRevisi: [
+		{
+			nama: "Elegantia",
+			nisn: 2401303,
+			tanggalDaftar: "2026-04-19",
+			status: "Perlu Perbaikan",
+		},
+		{
+			nama: "Elegantia",
+			nisn: 2401303,
+			tanggalDaftar: "2026-04-19",
+			status: "Perlu Perbaikan",
+		},
+		{
+			nama: "Elegantia",
+			nisn: 2401303,
+			tanggalDaftar: "2026-04-19",
+			status: "Perlu Perbaikan",
+		},
+	],
+};
+
+const berandaAdmin = {
+	card: [
+		{
+			totalFasilitas: 10,
+		},
+		{
+			totalEkstrakurikuler: 10,
+		},
+		{
+			totalPrestasi: 10,
+		},
+		{
+			totalBerita: 10,
+		},
+		{
+			totalProgramUnggulan: 10,
+		},
+	] /* max 3 data */,
+	pendaftarTerbaru: [
+		{
+			nama: "Elegantia",
+			nisn: 2401303,
+			tanggalDaftar: "2026-04-19",
+			status: "Menunggu Verifikasi",
+		},
+		{
+			nama: "Elegantia",
+			nisn: 2401303,
+			tanggalDaftar: "2026-04-19",
+			status: "Menunggu Verifikasi",
+		},
+	],
+	/* max 3 data */
+	DaftarVerifikator: [
+		{
+			nama: "Elegantia",
+			username: "esya",
+		},
+		{
+			nama: "Elegantia",
+			username: "esya",
+		},
+		{
+			nama: "Elegantia",
+			username: "esya",
+		},
+	],
+};

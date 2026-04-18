@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import img from "@assets/prestasi.jpg"; // ganti dengan gambar asli nanti
-import PublicLayout from "@components/layout/PublicLayout.jsx";
 import { Link } from "react-router";
 import achievementService from "../../services/achievementService";
 import CardSkeleton from "../../components/features/CardSkeleton";
@@ -27,7 +25,7 @@ export default function AchievementsPage() {
 
   return (
     <>
-      <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-20 mb-10">
+      <section className="w-full bg-blue-dark text-white rounded-b-3xl py-8 px-6 md:px-20 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">Prestasi siswa</h2>
       </section>
       <div className=" px-20 py-2 text-md text-gray-600 flex gap-6 -mt-5">
@@ -53,7 +51,7 @@ export default function AchievementsPage() {
           Prestasi Siswa
         </Link>
       </div>
-      
+
       {/* State Renderings */}
       {loading ? (
         <div className="px-20 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pb-32">
@@ -64,8 +62,8 @@ export default function AchievementsPage() {
       ) : error ? (
         <div className="px-20 py-10 text-center flex flex-col items-center">
           <p className="text-xl text-red-600 mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="bg-blue-900 px-4 py-2 text-white rounded-md hover:bg-blue-800 transition"
           >
             Coba Lagi
@@ -81,7 +79,7 @@ export default function AchievementsPage() {
           {data.map((item, index) => {
             const displayTitle = item.judul_prestasi || item.nama_prestasi || "Tanpa Judul";
             const displayDesc = item.deskripsi || "Tidak ada deskripsi";
-            const displayImage = item.gambar_prestasi || item.gambar || img;
+            const displayImage = item.gambar_prestasi || item.gambar || null;
             const displayKategori = item.kategori || "Peraih Prestasi";
 
             return (

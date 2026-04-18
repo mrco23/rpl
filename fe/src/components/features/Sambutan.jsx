@@ -1,9 +1,8 @@
-import labImg from "@assets/kepsek.jpg";
 import MoreButton from "../ui/MoreButton";
 
 export default function QuotePage({ data = null }) {
-  const gambar = data?.gambar || labImg;
-  const nama = data?.nama || "Marcois Sol S.T.";
+  const gambar = data?.gambar || "";
+  const nama = data?.nama || "Kepala Sekolah";
   const sambutan = data?.kata_sambutan || "Kami Bertekad membentuk generasi beriman, berkarakter, dan mencintai tanah air, serta membekali mereka dengan ilmu, keterampilan, dan sikap agar mandiri, ulet, dan berprestasi.";
 
   return (

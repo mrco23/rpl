@@ -1,9 +1,8 @@
-import img from "@assets/berita.jpg";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FiCalendar } from "react-icons/fi";
-import newsService from "../../services/newsService";
-import CardSkeleton from "../../components/features/CardSkeleton";
+import newsService from "@services/newsService";
+import CardSkeleton from "@components/features/CardSkeleton";
 
 export default function NewsPage() {
   const [news, setNews] = useState([]);
@@ -75,7 +74,7 @@ export default function NewsPage() {
                       {/* IMAGE */}
 
                       <img
-                        src={item.gambar_berita || item.gambar || img}
+                        src={item.gambar_berita || item.gambar || null}
                         alt={item.judul_berita || item.judul || "Berita"}
                         className="w-full h-52 object-cover rounded-2xl"
                       />

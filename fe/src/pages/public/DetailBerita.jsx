@@ -1,8 +1,6 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import newsService from "../../services/newsService";
-import PublicLayout from "@components/layout/PublicLayout.jsx";
-import img from "@assets/berita.jpg";
+import newsService from "@services/newsService";
 
 export default function NewsDetail() {
   const { id } = useParams();
@@ -74,7 +72,7 @@ export default function NewsDetail() {
   if (!data) return <div className="text-center py-20 text-gray-600">Berita tidak ditemukan.</div>;
 
   const displayTitle = data.judul_berita || data.judul || "Tanpa Judul";
-  const displayImage = data.gambar_berita || data.gambar || img;
+  const displayImage = data.gambar_berita || data.gambar || null;
   const displayDesc = data.deskripsi || data.isi || "Tidak ada rincian berita.";
   const dateRaw = data.tanggal_dibuat || data.created_at;
   const displayDate = dateRaw

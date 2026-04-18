@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import PublicLayout from "@components/layout/PublicLayout.jsx";
-import ekstrakurikler from "@assets/about.jpg";
 import { Link } from "react-router";
-import extracurricularService from "../../services/extracurricularService";
-import CardSkeleton from "../../components/features/CardSkeleton";
+import extracurricularService from "@services/extracurricularService";
+import CardSkeleton from "@components/features/CardSkeleton";
 
 export default function ExtracurricularPage() {
   const [data, setData] = useState([]);
@@ -27,7 +25,7 @@ export default function ExtracurricularPage() {
 
   return (
     <>
-      <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-20 mb-10">
+      <section className="w-full bg-blue-dark text-white rounded-b-3xl py-8 px-6 md:px-20 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">Ekstrakurikuler</h2>
       </section>
       <div className=" px-20 py-2 text-md text-gray-600 flex gap-6 -mt-5">
@@ -64,7 +62,7 @@ export default function ExtracurricularPage() {
           Mari Jelajahi!
         </h2>
       </div>
-      
+
       {/* Dynamic Data States */}
       {loading ? (
         <div className="px-20 py-4 grid grid-cols-1 md:grid-cols-3 gap-8 pb-32">
@@ -75,8 +73,8 @@ export default function ExtracurricularPage() {
       ) : error ? (
         <div className="px-20 py-10 text-center flex flex-col items-center">
           <p className="text-xl text-red-600 mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="bg-blue-900 px-4 py-2 text-white rounded-md hover:bg-blue-800 transition"
           >
             Coba Lagi
@@ -91,11 +89,11 @@ export default function ExtracurricularPage() {
           {/* Cards */}
           {data.map((item, index) => {
             const displayTitle = item.nama_ekskul || item.nama || "Tanpa Judul";
-            const displayImage = item.gambar_ekskul || item.gambar || ekstrakurikler;
+            const displayImage = item.gambar_ekskul || item.gambar || null;
             const displayDesc = item.deskripsi || "Tidak ada deskripsi";
             const displayJadwal = item.jadwal || "-";
-            const displayPembina = Array.isArray(item.mentor) 
-              ? item.mentor.join(", ") 
+            const displayPembina = Array.isArray(item.mentor)
+              ? item.mentor.join(", ")
               : item.mentor || "-";
 
             return (

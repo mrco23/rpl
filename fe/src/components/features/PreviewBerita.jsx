@@ -1,10 +1,8 @@
-import img from "@assets/berita.jpg";
-import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import { FiCalendar } from "react-icons/fi";
 import MoreButton from "../ui/MoreButton";
 
-export default function NewsPreview({ data = [] }) {
+export default function PreviewBerita({ data = [] }) {
   return (
     <section className="w-full py-1 font-sans mb-7">
       <div className="max-w-7xl mx-auto px-10">
@@ -25,7 +23,7 @@ export default function NewsPreview({ data = [] }) {
                 {/* IMAGE */}
 
                 <img
-                  src={item.gambar || img}
+                  src={item.gambar || null}
                   alt={item.judul}
                   className="w-full aspect-[3.5/2.5] object-cover rounded-2xl"
                 />

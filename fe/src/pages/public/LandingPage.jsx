@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import hero from "@assets/hero.png";
-import AboutPage from "@components/features/AboutPage";
+import PreviewFasilitas from "@components/features/PreviewFasilitas.jsx";
 import QuotePage from "@components/features/Sambutan";
-import AchievementsPreview from "@components/features/AchievementsPreview";
-import NewsPreview from "@components/features/NewsPreview";
+import PreviewPrestasi from "@components/features/PreviewPrestasi.jsx";
+import PreviewBerita from "@components/features/PreviewBerita.jsx";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import profileService from "../../services/profileService";
@@ -179,12 +179,12 @@ export default function LandingPage() {
       </section>
 
       <div className="mt-32 md:mt-40">
-        <AboutPage data={fasilitas || []} />
+        <PreviewFasilitas data={fasilitas || []} />
       </div>
 
       <QuotePage data={kepala_sekolah} />
-      <AchievementsPreview data={prestasi || []} />
-      <NewsPreview data={berita || []} />
+      <PreviewPrestasi data={prestasi || []} />
+      <PreviewBerita data={berita || []} />
     </main>
   );
 }

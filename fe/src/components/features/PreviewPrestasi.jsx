@@ -1,7 +1,6 @@
-import img from "@assets/prestasi.jpg";
 import MoreButton from "../ui/MoreButton";
 
-export default function CardsPrestasi({ data = [] }) {
+export default function PreviewPrestasi({ data = [] }) {
   return (
     <section className="w-full py-20 bg-gray-50">
       <div className="max-w-screen-2xl mx-auto px-10">
@@ -24,9 +23,9 @@ export default function CardsPrestasi({ data = [] }) {
               {/* IMAGE */}
               <div className="p-3 pb-0 overflow-hidden">
                 <img
-                  src={item.gambar || img}
+                  src={item.gambar || null}
                   alt={item.nama_prestasi || "Prestasi"}
-                  className="w-full aspect-[4/3] object-cover rounded-xl"
+                  className="w-full aspect-4/3 object-cover rounded-xl"
                 />
               </div>
 

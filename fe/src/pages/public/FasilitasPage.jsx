@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import PublicLayout from "@components/layout/PublicLayout.jsx";
 import { Link } from "react-router";
-import fasilitasImg from "@assets/fasilitas.jpg";
-import fasilitasService from "../../services/fasilitasService";
+import fasilitasService from "@services/fasilitasService";
 
 function FasilitasPage() {
   const [data, setData] = useState([]);
@@ -56,16 +54,15 @@ function FasilitasPage() {
           </Link>
         </div>
       </div>
-      
+
       {/* State Renderings */}
       {loading ? (
         <div className="max-w-7xl mx-auto px-6 py-14 space-y-36">
           {[1, 2, 3].map((_, index) => (
             <div
               key={index}
-              className={`flex flex-col md:flex-row items-center gap-8 ${
-                index % 2 === 1 ? "md:flex-row-reverse" : ""
-              }`}
+              className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
+                }`}
             >
               {/* IMAGE SKELETON */}
               <div className="w-full md:w-1/2">
@@ -85,8 +82,8 @@ function FasilitasPage() {
       ) : error ? (
         <div className="max-w-7xl mx-auto px-6 py-20 text-center flex flex-col items-center">
           <p className="text-xl text-red-600 mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-800 transition"
           >
             Coba Lagi
@@ -101,8 +98,8 @@ function FasilitasPage() {
           {data.map((item, index) => {
             const displayTitle = item.nama_fasilitas || item.nama || "Tanpa Judul";
             const displayDesc = item.deskripsi || "Tidak ada deskripsi";
-            const displayImage = item.gambar_fasilitas || item.gambar || fasilitasImg;
-            
+            const displayImage = item.gambar_fasilitas || item.gambar || null;
+
             return (
               <div
                 key={index}

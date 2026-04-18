@@ -1,6 +1,5 @@
 import React from "react";
-import PublicLayout from "@components/layout/PublicLayout.jsx";
-import hero from "@assets/hero.jpg";
+import hero from "@assets/hero.png";
 import { Link } from "react-router";
 
 function SejarahPage() {
