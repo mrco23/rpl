@@ -173,9 +173,7 @@ function Pengumuman() {
 
                             <div>
                               <p className="text-gray-500 text-xs">Tempat</p>
-                              <p className="font-medium">
-                                Ruang Multimedia
-                              </p>
+                              <p className="font-medium">Ruang Multimedia</p>
                             </div>
                           </div>
                         </div>
@@ -187,28 +185,21 @@ function Pengumuman() {
                       </>
                     )}
 
-                    
-
                     {/* WAWANCARA */}
                     {item.key === "daftar_ulang" && (
                       <>
                         <p>
-                          Lakukan daftar ulang dengan membawa berkas yang telah ditentukan
+                          Lakukan daftar ulang dengan membawa berkas yang telah
+                          ditentukan
                         </p>
 
                         <div className="bg-white rounded-lg p-4">
-                          <h3 className="font-semibold mb-4">
-                            Daftar Ulang
-                          </h3>
+                          <h3 className="font-semibold mb-4"> Daftar Ulang</h3>
 
                           <div className="grid md:grid-cols-3 gap-4">
                             <div>
-                              <p className="text-gray-500 text-xs">
-                                Periode
-                              </p>
-                              <p className="font-medium">
-                                 24-27 Maret 2026
-                              </p>
+                              <p className="text-gray-500 text-xs">Periode</p>
+                              <p className="font-medium">24-27 Maret 2026</p>
                             </div>
 
                             <div>
@@ -218,22 +209,19 @@ function Pengumuman() {
 
                             <div>
                               <p className="text-gray-500 text-xs">Tempat</p>
-                              <p className="font-medium">
-                                Tata usaha  
-                              </p>
+                              <p className="font-medium">Tata usaha</p>
                             </div>
                           </div>
                         </div>
 
                         <p>
-                          Bawa berkas fotokopi sesuai daftar persyaratan yang diberikan
+                          Bawa berkas fotokopi sesuai daftar persyaratan yang
+                          diberikan
                         </p>
                       </>
                     )}
                   </div>
                 )}
-
-                
               </div>
             );
           })}

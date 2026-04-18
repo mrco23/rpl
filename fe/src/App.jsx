@@ -6,7 +6,6 @@ import VerifikatorLayout from "./components/layout/VerifikatorLayout";
 import AdminLayout from "./components/layout/AdminLayout";
 import PendaftarLayout from "./components/layout/PendaftarLayout";
 
-
 /* Pages */
 import LandingPage from "./pages/public/LandingPage";
 import ExtracurricularPage from "./pages/public/ExtracurricularPage";
@@ -46,7 +45,12 @@ import VerifikasiDokumen from "./pages/verifikator/VerifikasiDokumen";
 import DetailPendaftarPage from "./pages/verifikator/DetailPendaftar";
 
 /* Admin */
-import DashboardAdmin from "./pages/admin/BerandaAdmin";
+import DashboardAdmin from "./pages/admin/AdminBeranda";
+import AdminProfil from "./pages/admin/AdminProfil";
+import AdminPrestasi from "./pages/admin/AdminPrestasi";
+import AdminBerita from "./pages/admin/AdminBerita";
+import AdminProgram from "./pages/admin/AdminProgram";
+import AdminToVerifikator from "./pages/admin/AdminToVerifikator";
 
 /* Pendaftar */
 import BerandaPendaftar from "./pages/pendaftar/BerandaPendaftar";
@@ -96,7 +100,10 @@ function App() {
         <Route path="/verifikator" element={<VerifikatorLayout />}>
           <Route index element={<BerandaVerifikator />} />
           <Route path="verifikasiDokumen" element={<VerifikasiDokumen />} />
-          <Route path="verifikasiDokumen/:nisn" element={<DetailPendaftarPage />} />
+          <Route
+            path="verifikasiDokumen/:nisn"
+            element={<DetailPendaftarPage />}
+          />
         </Route>
 
         {/* pendaftar Routes */}

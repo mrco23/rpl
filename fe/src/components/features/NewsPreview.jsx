@@ -6,14 +6,16 @@ import MoreButton from "../ui/MoreButton";
 
 export default function NewsPreview({ data = [] }) {
   return (
-    <section className="w-full py-20 bg-gray-50 font-sans">
+    <section className="w-full py-1 font-sans mb-7">
       <div className="max-w-7xl mx-auto px-10">
         {/* TITLE */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-medium text-gray-800">
             Berita Terbaru
           </h2>
-          <p className="p-6 text-2xl">Ikuti Terus Perkembangan Aktivitas Sekolah Kami</p>
+          <p className="p-6 text-2xl">
+            Ikuti Terus Perkembangan Aktivitas Sekolah Kami
+          </p>
         </div>
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
@@ -58,7 +60,15 @@ export default function NewsPreview({ data = [] }) {
         </div>
 
         {/* BUTTON */}
+<<<<<<< HEAD:fe/src/components/features/NewsPreview.jsx
         <MoreButton text={'Lihat Semua Berita'} to={'/berita'} />
+=======
+        <div className="text-center mt-6">
+          <button className="px-4 py-2 border border-gray-400 text-gray-700 rounded-md flex items-center gap-1 mx-auto hover:bg-gray-100 transition">
+            Lihat Semua <span>→</span>
+          </button>
+        </div>
+>>>>>>> 0ae1bb4f6537b43538b96f8acea4140c07b2bf86:fe/src/pages/public/NewsPreview.jsx
       </div>
     </section>
   );
