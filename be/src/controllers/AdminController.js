@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import {generateToken, verifyToken} from "../utils/jwt.js";
-import {getAdminProfil, putAdminProfil, createAdmin, getAdmin} from "../services/AdminService.js";
+import {getAdminProfil, putAdminProfil, createAdmin, getAdmin, getBerandaData} from "../services/AdminService.js";
 import {getUser} from "../services/UserService.js";
 
 class AdminController {
@@ -47,6 +47,14 @@ class AdminController {
     getProfile = (req, res) => {
     }
     updateProfile = (req, res) => {
+    }
+    getBeranda = async (req, res) => {
+        try {
+            const data = await getBerandaData();
+            res.status(200).json(data);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 }
 
