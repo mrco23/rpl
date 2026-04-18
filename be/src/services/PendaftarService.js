@@ -1,6 +1,5 @@
 import prisma from "../config/prisma.js";
-import {nanoid} from "nanoid";
-
+import bcrypt from "bcryptjs";
 
 export const register = async (payload) => {
     const now = new Date();
@@ -27,34 +26,33 @@ export const register = async (payload) => {
         throw error;
     }
 
-    const no_pendaftaran = payload.no_pendaftaran || `REG-${nanoid(8).toUpperCase()}`;
+    if (!payload.nama_lengkap || !payload.alamat || !payload.jenis_kelamin || !payload.no_hp || !payload.asal_sekolah) {
+        throw new Error("Field wajib belum lengkap. Pastikan nama_lengkap, alamat, jenis_kelamin, no_hp, asal_sekolah terisi.");
+    }
 
     if (payload.nisn) {
         const existingNisn = await prisma.pendaftar.findUnique({where: {nisn: payload.nisn}});
         if (existingNisn) throw new Error("NISN sudah digunakan");
     }
 
-    if (payload.nik) {
-        const existingNik = await prisma.pendaftar.findUnique({where: {nik: payload.nik}});
-        if (existingNik) throw new Error("NIK sudah digunakan");
+    let hashedKataSandi = null;
+    if (payload.kata_sandi) {
+        const salt = await bcrypt.genSalt(10);
+        hashedKataSandi = await bcrypt.hash(payload.kata_sandi, salt);
     }
 
     const data = {
-        no_pendaftaran,
         nama_lengkap: payload.nama_lengkap,
+        kata_sandi: hashedKataSandi,
         nisn: payload.nisn || null,
-        nik: payload.nik || null,
-        jenis_kelamin: payload.jenis_kelamin || null,
+        alamat: payload.alamat,
         tempat_lahir: payload.tempat_lahir || null,
         tanggal_lahir: payload.tanggal_lahir ? new Date(payload.tanggal_lahir) : null,
-        alamat: payload.alamat,
+        jenis_kelamin: payload.jenis_kelamin,
         no_hp: payload.no_hp,
+        asal_sekolah: payload.asal_sekolah,
         email: payload.email || null,
-        asal_sekolah: payload.asal_sekolah || null,
-        nama_ayah: payload.nama_ayah || null,
-        nama_ibu: payload.nama_ibu || null,
         nama_wali: payload.nama_wali || null,
-        tahun_ajaran: payload.tahun_ajaran || null,
         id_gelombang: activeGelombang.id_gelombang,
         status_pendaftaran: "menunggu_verifikasi",
     };
@@ -68,4 +66,8 @@ export const getPendaftar = async (nisn) => {
         return {...pendaftar, id: pendaftar.id_pendaftar};
     }
     return null;
+};
+
+export const getAllPendaftar = async () => {
+    return await prisma.pendaftar.findMany();
 };

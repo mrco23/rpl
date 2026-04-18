@@ -1,19 +1,112 @@
-import PublicLayout from "@components/layout/PublicLayout.jsx";
-import hero from "@assets/hero.jpg";
-import AboutPage from "./AboutPage";
-import QuotePage from "./Sambutan";
-import AchievementsPreview from "./AchievementsPreview";
-import NewsPreview from "./NewsPreview";
+import React, { useEffect, useState } from "react";
+import hero from "@assets/hero.png";
+import PreviewFasilitas from "@components/features/PreviewFasilitas.jsx";
+import QuotePage from "@components/features/Sambutan";
+import PreviewPrestasi from "@components/features/PreviewPrestasi.jsx";
+import PreviewBerita from "@components/features/PreviewBerita.jsx";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import profileService from "../../services/profileService";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      const res = await profileService.getLandingPageData();
+      if (res.success) {
+        setData(res.data);
+      } else {
+        setError(res.message);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="animate-pulse">
+        <section className="relative w-full h-[80vh] bg-gray-600 rounded-b-3xl">
+          <div className="relative z-10 flex flex-col justify-start pt-32 h-full max-w-7xl mx-auto px-8">
+            <div className="w-1/2 h-12 md:h-16 bg-slate-200 rounded mb-4"></div>
+            <div className="w-2/3 h-12 md:h-16 bg-slate-200 rounded mb-4"></div>
+            <div className="w-full max-w-lg h-6 bg-slate-200 rounded mb-2"></div>
+            <div className="w-3/4 max-w-md h-6 bg-slate-200 rounded mb-5"></div>
+            <div className="flex gap-3">
+              <div className="w-32 h-10 bg-slate-200 rounded-md"></div>
+              <div className="w-40 h-10 bg-slate-200 rounded-md"></div>
+            </div>
+          </div>
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-[-100px] w-full max-w-6xl px-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-24">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="bg-white border text-center border-gray-100 rounded-lg py-8 px-8 shadow-md relative w-full h-40">
+                  <div className="w-16 h-12 bg-gray-200 mx-auto rounded mt-2 mb-3"></div>
+                  <div className="w-24 h-4 bg-gray-200 mx-auto rounded"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <div className="mt-40 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10">
+          <div className="aspect-[4/3] bg-slate-200 rounded-2xl w-full"></div>
+          <div className="flex flex-col justify-center space-y-4">
+            <div className="w-1/2 h-8 bg-slate-200 rounded"></div>
+            <div className="w-full h-4 bg-slate-200 rounded"></div>
+            <div className="w-full h-4 bg-slate-200 rounded"></div>
+            <div className="w-3/4 h-4 bg-slate-200 rounded"></div>
+          </div>
+        </div>
+
+        <div className="py-20 mt-10 max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
+          <div className="w-full aspect-[3/4] bg-slate-200 rounded-2xl"></div>
+          <div className="space-y-4">
+            <div className="w-full h-4 bg-slate-200 rounded"></div>
+            <div className="w-full h-4 bg-slate-200 rounded"></div>
+            <div className="w-3/4 h-4 bg-slate-200 rounded"></div>
+            <div className="w-1/2 h-6 bg-slate-200 rounded mt-6"></div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="min-h-screen flex flex-col items-center justify-center">
+        <p className="text-xl text-red-600 mb-4">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="bg-blue-900 px-4 py-2 text-white rounded-md hover:bg-blue-800 transition"
+        >
+          Coba Lagi
+        </button>
+      </main>
+    );
+  }
+
+  if (!data) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-xl text-gray-600">Tidak ada data</p>
+      </main>
+    );
+  }
+
+  const { total_data, fasilitas, prestasi, berita, kepala_sekolah } = data;
+
   const stats = [
-    { value: "10", label: "Program Unggulan", path: "/program" },
-    { value: "10", label: "Fasilitas", path: "/fasilitas" },
-    { value: "12", label: "Ekstrakurikuler", path: "/ekstrakurikuler" },
-    { value: "25", label: "Prestasi", path: "/prestasi" },
+    { value: total_data?.program_unggulan?.toString() || "0", label: "Program Unggulan", path: "/program" },
+    { value: total_data?.fasilitas?.toString() || "0", label: "Fasilitas", path: "/fasilitas" },
+    { value: total_data?.ekstrakurikuler?.toString() || "0", label: "Ekstrakurikuler", path: "/ekstrakurikuler" },
+    { value: total_data?.prestasi?.toString() || "0", label: "Prestasi", path: "/prestasi" },
   ];
 
   return (
@@ -22,7 +115,7 @@ export default function LandingPage() {
       <section className="relative w-full h-[80vh]">
         {/* Background Image */}
         <div
-          className="absolute inset-0 bg-cover bg-center rounded-b-3xl overflow-hidden"
+          className="absolute inset-0 bg-cover bg-center rounded-b-3xl overflow-hidden brightness-40"
           style={{ backgroundImage: `url(${hero})` }}
         >
           <div className="absolute inset-0 bg-black/20"></div>
@@ -50,26 +143,18 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Statistik Cards */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-[-100px] w-full max-w-6xl px-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-24">
-            {stats.map((item) => (
-              <div className="flex flex-col group">
+            {stats.map((item, index) => (
+              <div key={index} className="flex flex-col group">
                 <Link to={item.path}>
                   <div
-                    className="
-      bg-white rounded-lg py-8 px-8 text-center shadow-md relative w-full
-      cursor-pointer transition-all duration-300
-      hover:shadow-xl hover:-translate-y-2
-      overflow-hidden
-    "
+                    className="bg-white rounded-lg py-8 px-8 text-center shadow-md relative w-full cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden"
                   >
-                    {/* Icon */}
                     <span className="absolute top-3 right-4 text-blue-900 text-4xl opacity-100">
                       ✦
                     </span>
 
-                    {/* Angka */}
                     <h1 className="text-5xl font-bold text-blue-900">
                       {item.value}
                     </h1>
@@ -79,29 +164,13 @@ export default function LandingPage() {
                       {item.label}
                     </p>
 
-                    {/* GARIS DALAM */}
                     <div
-                      className="
-        absolute bottom-0 left-0 w-full h-1 bg-blue-900
-        
-        transform scale-x-0 origin-left
-        transition-all duration-300
-        
-        group-hover:scale-x-100
-      "
+                      className="absolute bottom-0 left-0 w-full h-1 bg-blue-900 transform scale-x-0 origin-left transition-all duration-300 group-hover:scale-x-100"
                     ></div>
                   </div>
                 </Link>
-
-                {/* GARIS LUAR */}
                 <div
-                  className="
-    w-full h-1 bg-blue-900 rounded mt-3
-    
-    transition-all duration-300
-    group-hover:opacity-0
-    group-hover:scale-x-0
-  "
+                  className="w-full h-1 bg-blue-900 rounded mt-3 transition-all duration-300 group-hover:opacity-0 group-hover:scale-x-0"
                 ></div>
               </div>
             ))}
@@ -109,14 +178,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* OTHER SECTIONS */}
       <div className="mt-32 md:mt-40">
-        <AboutPage />
+        <PreviewFasilitas data={fasilitas || []} />
       </div>
 
-      <QuotePage />
-      <AchievementsPreview />
-      <NewsPreview />
+      <QuotePage data={kepala_sekolah} />
+      <PreviewPrestasi data={prestasi || []} />
+      <PreviewBerita data={berita || []} />
     </main>
   );
 }
