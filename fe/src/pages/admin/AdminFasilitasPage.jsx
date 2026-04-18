@@ -4,15 +4,15 @@ import AdminHeader from '@components/features/AdminHeader';
 import Modal from '../../components/ui/Modal.jsx';
 import Skeleton from '../../components/ui/Skeleton.jsx';
 import {
-  getAllBerita,
-  createBerita,
-  updateBeritaData,
-  updateBeritaImage,
-  deleteBerita
-} from '../../services/adminNewsService.js';
+  getAllFasilitas,
+  createFasilitas,
+  updateFasilitasData,
+  updateFasilitasImage,
+  deleteFasilitas
+} from '../../services/adminFasilitasService.js';
 
-export default function AdminNewsPage() {
-  const [newsList, setNewsList] = useState([]);
+export default function AdminFasilitasPage() {
+  const [facilities, setFacilities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -20,22 +20,22 @@ export default function AdminNewsPage() {
   const [modalMode, setModalMode] = useState('add'); // 'add', 'edit', 'detail'
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const [formData, setFormData] = useState({ judul_berita: '', deskripsi: '' });
+  const [formData, setFormData] = useState({ nama_fasilitas: '', deskripsi: '' });
   const [formImage, setFormImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetchNews();
+    fetchFacilities();
   }, []);
 
-  const fetchNews = async () => {
+  const fetchFacilities = async () => {
     try {
       setLoading(true);
-      const res = await getAllBerita();
-      setNewsList(res.data || []);
+      const res = await getAllFasilitas();
+      setFacilities(res.data || []);
     } catch (err) {
       console.error(err);
-      alert("Gagal memuat berita");
+      alert("Gagal memuat daftar fasilitas");
     } finally {
       setLoading(false);
     }
@@ -43,7 +43,7 @@ export default function AdminNewsPage() {
 
   const handleOpenAdd = () => {
     setModalMode('add');
-    setFormData({ judul_berita: '', deskripsi: '' });
+    setFormData({ nama_fasilitas: '', deskripsi: '' });
     setFormImage(null);
     setIsModalOpen(true);
   };
@@ -51,7 +51,10 @@ export default function AdminNewsPage() {
   const handleOpenEdit = (item) => {
     setModalMode('edit');
     setSelectedItem(item);
-    setFormData({ judul_berita: item.judul_berita || '', deskripsi: item.deskripsi || '' });
+    setFormData({ 
+      nama_fasilitas: item.nama_fasilitas || '', 
+      deskripsi: item.deskripsi || '' 
+    });
     setFormImage(null);
     setIsModalOpen(true);
   };
@@ -63,12 +66,12 @@ export default function AdminNewsPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Yakin ingin menghapus berita ini?")) return;
+    if (!window.confirm("Yakin ingin menghapus fasilitas ini?")) return;
     try {
-      await deleteBerita(id);
-      fetchNews();
+      await deleteFasilitas(id);
+      fetchFacilities();
     } catch (err) {
-      alert("Gagal menghapus berita");
+      alert("Gagal menghapus fasilitas");
     }
   };
 
@@ -78,44 +81,44 @@ export default function AdminNewsPage() {
     try {
       if (modalMode === 'add') {
         const payload = new FormData();
-        payload.append('judul_berita', formData.judul_berita);
+        payload.append('nama_fasilitas', formData.nama_fasilitas);
         payload.append('deskripsi', formData.deskripsi);
         if (formImage) payload.append('gambar', formImage);
         
-        await createBerita(payload);
+        await createFasilitas(payload);
       } else if (modalMode === 'edit') {
-        // Update Data Text (berdasarkan response model)
-        await updateBeritaData(selectedItem.id_berita, {
-          judul_berita: formData.judul_berita,
+        // Update Data Text secara terpisah 
+        await updateFasilitasData(selectedItem.id_fasilitas, {
+          nama_fasilitas: formData.nama_fasilitas,
           deskripsi: formData.deskripsi
         });
         
-        // Update Image independently if changed
+        // Update Foto khusus jika ada file baru terpilih
         if (formImage) {
           const payloadImg = new FormData();
           payloadImg.append('gambar', formImage);
-          await updateBeritaImage(selectedItem.id_berita, payloadImg);
+          await updateFasilitasImage(selectedItem.id_fasilitas, payloadImg);
         }
       }
       setIsModalOpen(false);
-      fetchNews();
+      fetchFacilities();
     } catch (err) {
       console.error(err);
-      alert(`Gagal ${modalMode === 'add' ? 'menambah' : 'mengubah'} berita`);
+      alert(`Gagal ${modalMode === 'add' ? 'menambah' : 'mengubah'} fasilitas`);
     } finally {
       setSubmitting(false);
     }
   };
 
-  const filteredNews = newsList.filter(item => 
-    item.judul_berita?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredFacilities = facilities.filter(item => 
+    item.nama_fasilitas?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <>
       <AdminHeader
-        text="Berita"
-        subText="Kelola seluruh berita sekolah di sini."
+        text="Fasilitas"
+        subText="Kelola data infrastruktur dan fasilitas unggulan sekolah."
       />
 
       <div className="max-w-7xl mx-auto">
@@ -128,7 +131,7 @@ export default function AdminNewsPage() {
             />
             <input
               type="text"
-              placeholder="Cari Berita ..."
+              placeholder="Cari Fasilitas ..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full border border-gray-300 rounded-md pl-10 pr-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white shadow-sm"
@@ -143,24 +146,22 @@ export default function AdminNewsPage() {
           </button>
         </div>
 
-        {/* Tabel Berita */}
+        {/* Tabel Fasilitas */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-max">
             <thead>
               <tr className="bg-[#e2e8f0] border-b border-gray-200 text-sm font-bold text-gray-800">
-                <th className="p-4 w-1/4">Berita</th>
+                <th className="p-4 w-1/3">Nama Fasilitas</th>
                 <th className="p-4 w-1/3">Deskripsi</th>
-                <th className="p-4 w-1/4">Tanggal Dibuat</th>
-                <th className="p-4 text-center">Aksi</th>
+                <th className="p-4 w-1/3 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                Array.from({ length: 5 }).map((_, i) => (
+                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="border-b border-gray-100">
                     <td className="p-4"><Skeleton className="h-4 w-3/4" /></td>
                     <td className="p-4"><Skeleton className="h-4 w-full" /></td>
-                    <td className="p-4"><Skeleton className="h-4 w-1/2" /></td>
                     <td className="p-4 flex justify-center gap-2">
                        <Skeleton className="h-8 w-8 rounded" />
                        <Skeleton className="h-8 w-8 rounded" />
@@ -168,21 +169,18 @@ export default function AdminNewsPage() {
                     </td>
                   </tr>
                 ))
-              ) : filteredNews.length === 0 ? (
+              ) : filteredFacilities.length === 0 ? (
                 <tr>
-                   <td colSpan={4} className="p-8 text-center text-gray-500">Tidak ada berita ditemukan</td>
+                   <td colSpan={3} className="p-8 text-center text-gray-500">Tidak ada fasilitas ditemukan</td>
                 </tr>
               ) : (
-                filteredNews.map((item) => (
-                  <tr key={item.id_berita} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="p-4 text-sm text-gray-800 font-semibold truncate max-w-[200px]">
-                      {item.judul_berita}
+                filteredFacilities.map((item) => (
+                  <tr key={item.id_fasilitas} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td className="p-4 text-sm text-gray-800 font-semibold truncate max-w-[250px]">
+                      {item.nama_fasilitas}
                     </td>
-                    <td className="p-4 text-sm text-gray-800 font-semibold text-gray-600 truncate max-w-[300px]">
+                    <td className="p-4 text-sm text-gray-600 font-medium truncate max-w-[300px]">
                       {item.deskripsi}
-                    </td>
-                    <td className="p-4 text-sm text-gray-800 font-semibold">
-                      {item.tanggal_dibuat ? new Date(item.tanggal_dibuat).toLocaleDateString('id-ID') : '-'}
                     </td>
                     <td className="p-4">
                       <div className="flex items-center justify-center gap-2">
@@ -198,7 +196,7 @@ export default function AdminNewsPage() {
                         {/* Tombol Edit */}
                         <button
                           onClick={() => handleOpenEdit(item)}
-                          title="Edit Berita"
+                          title="Edit Fasilitas"
                           className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300"
                         >
                           <Edit2 size={16} />
@@ -206,8 +204,8 @@ export default function AdminNewsPage() {
 
                         {/* Tombol Hapus */}
                         <button
-                          onClick={() => handleDelete(item.id_berita)}
-                          title="Hapus Berita"
+                          onClick={() => handleDelete(item.id_fasilitas)}
+                          title="Hapus Fasilitas"
                           className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors"
                         >
                           <Trash2 size={16} />
@@ -226,16 +224,15 @@ export default function AdminNewsPage() {
       <Modal 
         open={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-        title={modalMode === 'add' ? 'Tambah Berita Baru' : modalMode === 'edit' ? 'Edit Berita' : 'Detail Berita'}
+        title={modalMode === 'add' ? 'Tambah Fasilitas Baru' : modalMode === 'edit' ? 'Edit Fasilitas' : 'Detail Fasilitas'}
       >
         {modalMode === 'detail' ? (
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
-             {selectedItem?.gambar_berita && (
-                <img src={selectedItem.gambar_berita} alt="Berita" className="w-full h-auto rounded-lg max-h-60 object-cover" />
+             {(selectedItem?.gambar_fasilitas || selectedItem?.gambar) && (
+                <img src={selectedItem?.gambar_fasilitas || selectedItem?.gambar} alt="Fasilitas" className="w-full h-auto rounded-lg max-h-60 object-cover" />
              )}
              <div>
-               <h3 className="font-bold text-lg">{selectedItem?.judul_berita}</h3>
-               <p className="text-sm text-gray-500">{selectedItem?.tanggal_dibuat ? new Date(selectedItem.tanggal_dibuat).toLocaleDateString('id-ID') : '-'}</p>
+               <h3 className="font-bold text-lg">{selectedItem?.nama_fasilitas}</h3>
              </div>
              <p className="whitespace-pre-wrap">{selectedItem?.deskripsi}</p>
              <div className="pt-4 flex justify-end">
@@ -245,12 +242,12 @@ export default function AdminNewsPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 max-h-[80vh] overflow-y-auto pr-1">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Judul Berita</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nama Fasilitas</label>
               <input 
                 type="text" 
                 required 
-                value={formData.judul_berita}
-                onChange={(e) => setFormData({...formData, judul_berita: e.target.value})}
+                value={formData.nama_fasilitas}
+                onChange={(e) => setFormData({...formData, nama_fasilitas: e.target.value})}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" 
               />
             </div>
@@ -272,8 +269,8 @@ export default function AdminNewsPage() {
                 onChange={(e) => setFormImage(e.target.files[0])}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" 
               />
-              {modalMode === 'edit' && selectedItem?.gambar_berita && !formImage && (
-                <p className="text-xs text-gray-500 mt-1">Gambar saat ini sudah ada. Upload gambar baru untuk mengganti.</p>
+              {modalMode === 'edit' && (selectedItem?.gambar_fasilitas || selectedItem?.gambar) && !formImage && (
+                <p className="text-xs text-gray-500 mt-1">Gambar saat ini sudah ada. Upload gambar baru untuk menggantikan.</p>
               )}
             </div>
             <div className="pt-4 flex justify-end gap-3 border-t">

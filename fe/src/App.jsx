@@ -15,11 +15,6 @@ import DetailBerita from "./pages/public/DetailBerita";
 import PanduanPage from "./pages/public/PanduanPage";
 import LoginPage from "./pages/auth/LoginPage";
 import Register from "./pages/pendaftar/Register";
-import AdminAchievementsPage from "./pages/admin/AdminAchievementsPage";
-import AdminExtracurricularsPage from "./pages/admin/AdminEkstrakurikulerPage";
-import AdminNewsPage from "./pages/admin/AdminNewsPage";
-import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
-import AdminAccountsPage from "./pages/admin/AdminAccountsPage";
 import NotFoundPage from "./pages/public/NotFoundPage";
 import VisiMisiPage from "./pages/public/VisiMisiPage";
 import SejarahPage from "./pages/public/SejarahPage";
@@ -34,6 +29,12 @@ import VerifikatorVerifikasiPage from './pages/verifikator/VerifikatorVerifikasi
 import AdminBeranda from "./pages/admin/AdminBeranda";
 import AdminProgram from "./pages/admin/AdminProgram";
 import AdminToVerifikator from "./pages/admin/AdminToVerifikator";
+import AdminFasilitasPage from "./pages/admin/AdminFasilitasPage";
+import AdminAchievementsPage from "./pages/admin/AdminAchievementsPage";
+import AdminExtracurricularsPage from "./pages/admin/AdminEkstrakurikulerPage";
+import AdminNewsPage from "./pages/admin/AdminNewsPage";
+import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
+import AdminPendaftarPage from "./pages/admin/AdminPendaftarPage";
 
 /* Pendaftar */
 import BerandaPendaftar from "./pages/pendaftar/BerandaPendaftar";
@@ -84,7 +85,8 @@ function App() {
           <Route path="program" element={<AdminProgram />} />
           <Route path="pengumuman" element={<AdminNotificationsPage />} />
           <Route path="verifikator" element={<AdminToVerifikator />} />
-          <Route path="accounts" element={<AdminAccountsPage />} />
+          <Route path="fasilitas" element={<AdminFasilitasPage />} />
+          <Route path="ppdb" element={<AdminPendaftarPage />} />
         </Route>
 
         {/* Verifier Routes */}

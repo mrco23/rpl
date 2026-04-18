@@ -81,3 +81,36 @@ export const getBerandaData = async () => {
         pendaftarYangPerluRevisi
     };
 };
+
+export const getAllVerifikator = async () => {
+    return await prisma.verifikator.findMany({
+        orderBy: { id_verifikator: 'desc' },
+        select: {
+            id_verifikator: true,
+            username: true,
+            nama: true,
+            foto_profil: true
+        }
+    });
+};
+
+export const updateVerifikator = async (id, data) => {
+    const { username, password, nama } = data;
+    const updateData = { username, nama };
+    
+    if (password) {
+        const salt = await bcrypt.genSalt(10);
+        updateData.password = await bcrypt.hash(password, salt);
+    }
+
+    return await prisma.verifikator.update({
+        where: { id_verifikator: Number(id) },
+        data: updateData
+    });
+};
+
+export const deleteVerifikator = async (id) => {
+    return await prisma.verifikator.delete({
+        where: { id_verifikator: Number(id) }
+    });
+};
