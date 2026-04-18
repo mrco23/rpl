@@ -1,7 +1,7 @@
 import img from "@assets/prestasi.jpg";
 import MoreButton from "../ui/MoreButton";
 
-export default function AchievementsPreview({ data = [] }) {
+export default function CardsPrestasi({ data = [] }) {
   return (
     <section className="w-full py-20 bg-gray-50">
       <div className="max-w-screen-2xl mx-auto px-10">

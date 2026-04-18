@@ -60,15 +60,7 @@ export default function NewsPreview({ data = [] }) {
         </div>
 
         {/* BUTTON */}
-<<<<<<< HEAD:fe/src/components/features/NewsPreview.jsx
         <MoreButton text={'Lihat Semua Berita'} to={'/berita'} />
-=======
-        <div className="text-center mt-6">
-          <button className="px-4 py-2 border border-gray-400 text-gray-700 rounded-md flex items-center gap-1 mx-auto hover:bg-gray-100 transition">
-            Lihat Semua <span>→</span>
-          </button>
-        </div>
->>>>>>> 0ae1bb4f6537b43538b96f8acea4140c07b2bf86:fe/src/pages/public/NewsPreview.jsx
       </div>
     </section>
   );
