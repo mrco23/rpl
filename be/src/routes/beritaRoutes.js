@@ -7,7 +7,7 @@ import {
 	updateImage,
 	remove,
 } from "../controllers/BeritaController.js";
-import { verifyToken } from "../middleware/authMiddleware.js";
+import { verifyToken, authorizeRole } from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 
 const beritaRoutes = express.Router();
@@ -17,9 +17,9 @@ beritaRoutes.get("", getAll);
 beritaRoutes.get("/:id", getDetail);
 
 // PRIVATE
-beritaRoutes.post("", verifyToken, upload.single("gambar"), create);
-beritaRoutes.put("/:id", verifyToken, updateData);
-beritaRoutes.patch("/:id/image", verifyToken, upload.single("gambar"), updateImage);
-beritaRoutes.delete("/:id", verifyToken, remove);
+beritaRoutes.post("", verifyToken, authorizeRole("admin"), upload.single("gambar"), create);
+beritaRoutes.put("/:id", verifyToken, authorizeRole("admin"), updateData);
+beritaRoutes.patch("/:id/image", verifyToken, authorizeRole("admin"), upload.single("gambar"), updateImage);
+beritaRoutes.delete("/:id", verifyToken, authorizeRole("admin"), remove);
 
 export default beritaRoutes;
