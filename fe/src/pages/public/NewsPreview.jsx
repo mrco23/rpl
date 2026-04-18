@@ -20,14 +20,16 @@ export default function NewsPreview() {
   }, []);
 
   return (
-    <section className="w-full py-20 bg-gray-50 font-sans">
+    <section className="w-full py-1 font-sans mb-7">
       <div className="max-w-7xl mx-auto px-10">
         {/* TITLE */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-medium text-gray-800">
             Berita Terbaru
           </h2>
-          <p className="p-6 text-2xl">Ikuti Terus Perkembangan Aktivitas Sekolah Kami</p>
+          <p className="p-6 text-2xl">
+            Ikuti Terus Perkembangan Aktivitas Sekolah Kami
+          </p>
         </div>
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
@@ -72,14 +74,10 @@ export default function NewsPreview() {
         </div>
 
         {/* BUTTON */}
-        <div className="flex justify-center mt-10">
-          <Link
-            to="/berita"
-            className="flex items-center gap-2 border-2 p-4 rounded-2xl hover:bg-gray-100"
-          >
-            Lihat Semua
-            <ArrowRight size={16} />
-          </Link>
+        <div className="text-center mt-6">
+          <button className="px-4 py-2 border border-gray-400 text-gray-700 rounded-md flex items-center gap-1 mx-auto hover:bg-gray-100 transition">
+            Lihat Semua <span>→</span>
+          </button>
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 import labImg from "@assets/kepsek.jpg";
 
-export default function QuotePage() {
+export default function Sambutan() {
   return (
     <section className="w-full py-20 bg-[#e9edf5]">
       <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">

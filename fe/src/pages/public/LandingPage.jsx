@@ -1,7 +1,7 @@
 import PublicLayout from "@components/layout/PublicLayout.jsx";
 import hero from "@assets/hero.png";
 import AboutPage from "./AboutPage";
-import QuotePage from "./Sambutan";
+import Sambutan from "./Sambutan";
 import AchievementsPreview from "./AchievementsPreview";
 import NewsPreview from "./NewsPreview";
 import { useNavigate } from "react-router";
@@ -114,7 +114,7 @@ export default function LandingPage() {
         <AboutPage />
       </div>
 
-      <QuotePage />
+      <Sambutan />
       <AchievementsPreview />
       <NewsPreview />
     </main>
