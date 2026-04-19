@@ -8,6 +8,9 @@ const pendaftarRoute = express.Router();
 pendaftarRoute.post("/register", PendaftarController.register);
 pendaftarRoute.post("/login", PendaftarController.login);
 
+// Endpoint Biodata Pendaftar yang sedang login (ambil id dari token)
+pendaftarRoute.get("/me", verifyToken, authorizeRole("pendaftar"), PendaftarController.getMe);
+
 // Endpoint Ambil Semua Pendaftar
 pendaftarRoute.get("/", verifyToken, authorizeRole("admin", "verifikator"), PendaftarController.getAllPendaftar);
 

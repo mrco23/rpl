@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import {getPendaftar, register, getAllPendaftar} from "../services/PendaftarService.js";
+import {getPendaftar, getPendaftarById, register, getAllPendaftar} from "../services/PendaftarService.js";
 import {generateToken} from '../utils/jwt.js'
 
 class PendaftarController {
@@ -45,6 +45,17 @@ class PendaftarController {
             return res.status(500).json({message: "Terjadi kesalahan pada server", error: err.message});
         }
     }
+
+    getMe = async (req, res) => {
+        try {
+            const id = req.user.id;
+            const pendaftar = await getPendaftarById(id);
+            if (!pendaftar) return res.status(404).json({ message: "Data pendaftar tidak ditemukan" });
+            return res.status(200).json({ message: "success", data: pendaftar });
+        } catch (error) {
+            return res.status(500).json({ message: "Gagal mengambil biodata", error: error.message });
+        }
+    };
 
     getAllPendaftar = async (req, res) => {
         try {

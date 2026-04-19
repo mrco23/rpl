@@ -34,7 +34,12 @@ export default function LoginPage() {
         role,
       };
 
-      payload.username = identifier;
+      // Pendaftar login menggunakan nisn, admin/verifikator menggunakan username
+      if (role === "pendaftar") {
+        payload.nisn = identifier;
+      } else {
+        payload.username = identifier;
+      }
 
       let data;
       if (role === "verifikator") {
@@ -219,6 +224,14 @@ export default function LoginPage() {
               Daftar disini
             </Link>
           </p>
+          <div className="mt-3 text-center">
+            <Link
+              to="/"
+              className="text-sm text-gray-500 hover:text-[#253b80] transition-colors"
+            >
+              ← Kembali ke Landing Page
+            </Link>
+          </div>
         </form>
       </div>
     </div>

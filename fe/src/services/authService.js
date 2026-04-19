@@ -1,13 +1,13 @@
 import { requestAPI } from "./api.js";
 
 /**
- * Login untuk Pendaftar (pengguna biasa)
- * Token dari endpoint ini TIDAK memiliki field role dalam payload.
+ * Login untuk Pendaftar.
+ * Endpoint /pendaftar/login menggunakan field nisn + password.
  */
 export const loginService = async (payload) => {
   return await requestAPI({
     method: "POST",
-    url: "/login",
+    url: "/pendaftar/login",
     data: payload,
   });
 };

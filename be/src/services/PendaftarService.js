@@ -68,6 +68,12 @@ export const getPendaftar = async (nisn) => {
     return null;
 };
 
+export const getPendaftarById = async (id) => {
+    return await prisma.pendaftar.findUnique({
+        where: { id_pendaftar: Number(id) }
+    });
+};
+
 export const getAllPendaftar = async () => {
     return await prisma.pendaftar.findMany();
 };

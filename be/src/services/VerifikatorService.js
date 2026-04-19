@@ -88,8 +88,7 @@ export const getAllVerifikator = async () => {
         select: {
             id_verifikator: true,
             username: true,
-            nama: true,
-            foto_profil: true
+            nama: true
         }
     });
 };
