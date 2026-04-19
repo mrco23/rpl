@@ -4,14 +4,15 @@ export default function ProtectedRoute({ allowedRoles, children }) {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
+    // Tidak ada token -> redirect ke login
     if (!token) {
         return <Navigate to="/login" replace />;
     }
 
-    if (allowedRoles && (!role || !allowedRoles.includes(role))) {
+    // Ada token tapi role tidak sesuai -> redirect ke login
+    if (allowedRoles && allowedRoles.length > 0 && !allowedRoles.includes(role)) {
         return <Navigate to="/login" replace />;
     }
 
     return children ? children : <Outlet />;
 }
-

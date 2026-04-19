@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import PublicLayout from "@components/layout/PublicLayout";
 import hero from "@assets/hero.png";
 import { Eye, EyeOff } from "lucide-react";
-import { loginService, loginVerifikatorService } from "@services/authService.js";
+import { loginService, loginAdminService, loginVerifikatorService } from "@services/authService.js";
 import useAuth from "@contexts/useAuth.js";
 import { useNavigate, Link } from "react-router";
 
@@ -29,20 +28,7 @@ export default function LoginPage() {
     setError("");
 
 
-    // ✅ LOGIN DUMMY PENDAFTAR
-    if (role === "pendaftar") {
-      if (identifier === "1" && password === "12") {
-        navigate("/pendaftar");
-      } else {
-        setError("NISN atau password pendaftar salah");
-      }
-
-      setSubmitting(false);
-      return;
-    }
-
     try {
-      // ✅ buat payload sesuai role
       let payload = {
         password,
         role,
@@ -53,14 +39,53 @@ export default function LoginPage() {
       let data;
       if (role === "verifikator") {
         data = await loginVerifikatorService(payload);
+      } else if (role === "admin") {
+        // Admin harus menggunakan /admin/login agar token mengandung role: 'admin'
+        // Token dari /login (User controller) TIDAK punya field role di payload JWT
+        data = await loginAdminService(payload);
       } else {
+        // pendaftar menggunakan /login
         data = await loginService(payload);
       }
 
       console.log(data);
-      login(data);
+      
+      const token = data?.token;
+      let finalRole = data?.role;
 
-      const userRole = data.role.toLowerCase();
+      // Helper decode JWT murni tanpa library
+      const decodeJwtRole = (jwtBlob) => {
+        try {
+          const payloadB64 = jwtBlob.split('.')[1];
+          if (!payloadB64) return null;
+          const decodedStr = atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/'));
+          return JSON.parse(decodedStr)?.role || null;
+        } catch (e) {
+          console.error("Gagal mendecode token:", e);
+          return null;
+        }
+      };
+
+      // 1. Coba ambil role dari token jika di response tidak ada (fallback)
+      if (!finalRole && token) {
+        finalRole = decodeJwtRole(token);
+      }
+
+      // 2. Fallback terakhir jika masih gagal (ambil dari state dropdown user)
+      if (!finalRole) {
+        finalRole = role;
+      }
+
+      // 3. Simpan ke localStorage dengan key ketat
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+      if (finalRole) {
+        localStorage.setItem("role", finalRole);
+      }
+
+      // Melanjutkan ke auth context dan redirect
+      login({ ...data, role: finalRole, token });
 
       const roleRedirect = {
         admin: "/admin",
@@ -68,7 +93,7 @@ export default function LoginPage() {
         pendaftar: "/pendaftar",
       };
 
-      navigate(roleRedirect[userRole] || "/");
+      navigate(roleRedirect[finalRole] || "/");
     } catch (err) {
       console.log("ERROR:", err.response?.data);
       setError(err.response?.data?.message || "Login gagal");

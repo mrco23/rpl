@@ -74,6 +74,12 @@ const menu = [
 ];
 
 function SidebarAdmin() {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    window.location.href = "/login";
+  };
+
   return (
     <div className="w-64 h-screen bg-blue-dark text-white flex flex-col p-4 rounded-r-2xl">
       {/* HEADER */}
@@ -123,7 +129,10 @@ function SidebarAdmin() {
       <hr className="border-white/30" />
 
       {/* LOGOUT */}
-      <button className="flex items-center gap-3 px-3 py-2 mt-4 hover:bg-white/10 rounded-lg">
+      <button 
+        onClick={handleLogout}
+        className="flex items-center gap-3 px-3 py-2 mt-4 hover:bg-white/10 rounded-lg w-full text-left"
+      >
         <LogOut size={16} />
         Keluar
       </button>
