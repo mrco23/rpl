@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Plus, Eye, Edit2, Trash2, UserCircle2 } from 'lucide-react';
-import AdminHeader from '@components/features/AdminHeader';
-import Modal from '../../components/ui/Modal.jsx';
-import Skeleton from '../../components/ui/Skeleton.jsx';
-import { 
-  getAllVerifikator, 
-  createVerifikator, 
-  updateVerifikator, 
-  deleteVerifikator 
-} from '../../services/adminVerifikatorService.js';
+import React, { useState, useEffect } from "react";
+import { Search, Plus, Eye, Edit2, Trash2, UserCircle2 } from "lucide-react";
+import AdminHeader from "@components/features/AdminHeader";
+import Modal from "../../components/ui/Modal.jsx";
+import Skeleton from "../../components/ui/Skeleton.jsx";
+import {
+  getAllVerifikator,
+  createVerifikator,
+  updateVerifikator,
+  deleteVerifikator,
+} from "../../services/adminVerifikatorService.js";
 
 export default function AdminToVerifikator() {
   const [verifiers, setVerifiers] = useState([]);
@@ -16,10 +16,14 @@ export default function AdminToVerifikator() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState('add'); // 'add', 'edit', 'detail'
+  const [modalMode, setModalMode] = useState("add"); // 'add', 'edit', 'detail'
   const [selectedVerifier, setSelectedVerifier] = useState(null);
 
-  const [formData, setFormData] = useState({ nama: '', username: '', password: '' });
+  const [formData, setFormData] = useState({
+    nama: "",
+    username: "",
+    password: "",
+  });
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -40,21 +44,25 @@ export default function AdminToVerifikator() {
   };
 
   const handleOpenAdd = () => {
-    setModalMode('add');
-    setFormData({ nama: '', username: '', password: '' });
+    setModalMode("add");
+    setFormData({ nama: "", username: "", password: "" });
     setSelectedVerifier(null);
     setIsModalOpen(true);
   };
 
   const handleOpenEdit = (verifier) => {
-    setModalMode('edit');
+    setModalMode("edit");
     setSelectedVerifier(verifier);
-    setFormData({ nama: verifier.nama, username: verifier.username, password: '' });
+    setFormData({
+      nama: verifier.nama,
+      username: verifier.username,
+      password: "",
+    });
     setIsModalOpen(true);
   };
 
   const handleOpenDetail = (verifier) => {
-    setModalMode('detail');
+    setModalMode("detail");
     setSelectedVerifier(verifier);
     setIsModalOpen(true);
   };
@@ -73,9 +81,9 @@ export default function AdminToVerifikator() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      if (modalMode === 'add') {
+      if (modalMode === "add") {
         await createVerifikator(formData);
-      } else if (modalMode === 'edit') {
+      } else if (modalMode === "edit") {
         const payload = { nama: formData.nama, username: formData.username };
         if (formData.password) payload.password = formData.password;
         await updateVerifikator(selectedVerifier.id_verifikator, payload);
@@ -83,15 +91,19 @@ export default function AdminToVerifikator() {
       setIsModalOpen(false);
       fetchVerifiers();
     } catch (err) {
-      alert(err.response?.data?.message || `Gagal ${modalMode === 'add' ? 'menambah' : 'mengubah'} verifikator`);
+      alert(
+        err.response?.data?.message ||
+          `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} verifikator`,
+      );
     } finally {
       setSubmitting(false);
     }
   };
 
-  const filteredVerifiers = verifiers.filter(v => 
-    v.nama?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    v.username?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredVerifiers = verifiers.filter(
+    (v) =>
+      v.nama?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      v.username?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -103,7 +115,6 @@ export default function AdminToVerifikator() {
 
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 md:p-8">
-          
           <div className="flex justify-between items-center gap-4 mb-6">
             <div className="relative w-full md:w-80">
               <Search
@@ -118,7 +129,7 @@ export default function AdminToVerifikator() {
                 className="w-full border border-gray-300 rounded text-sm text-gray-800 pl-9 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#253b80] bg-white transition-shadow"
               />
             </div>
-            <button 
+            <button
               onClick={handleOpenAdd}
               className="flex items-center gap-2 bg-white border border-[#253b80] text-[#253b80] hover:bg-blue-50 px-4 py-2 rounded text-sm font-semibold transition-colors"
             >
@@ -137,37 +148,50 @@ export default function AdminToVerifikator() {
               </thead>
               <tbody>
                 {loading ? (
-                   Array.from({ length: 4 }).map((_, i) => (
+                  Array.from({ length: 4 }).map((_, i) => (
                     <tr key={i} className="border-b border-gray-100">
                       <td className="p-4">
                         <div className="flex items-center gap-4">
                           <Skeleton className="h-10 w-10 rounded-full" />
                           <div className="space-y-2">
-                             <Skeleton className="h-4 w-24" />
-                             <Skeleton className="h-3 w-32" />
+                            <Skeleton className="h-4 w-24" />
+                            <Skeleton className="h-3 w-32" />
                           </div>
                         </div>
                       </td>
                       <td className="p-4 flex justify-center gap-2 mt-4">
-                         <Skeleton className="h-8 w-8 rounded" />
-                         <Skeleton className="h-8 w-8 rounded" />
-                         <Skeleton className="h-8 w-8 rounded" />
+                        <Skeleton className="h-8 w-8 rounded" />
+                        <Skeleton className="h-8 w-8 rounded" />
+                        <Skeleton className="h-8 w-8 rounded" />
                       </td>
                     </tr>
-                   ))
+                  ))
                 ) : filteredVerifiers.length === 0 ? (
                   <tr>
-                    <td colSpan={2} className="p-8 text-center text-gray-500">Tidak ada verifikator ditemukan</td>
+                    <td colSpan={2} className="p-8 text-center text-gray-500">
+                      Tidak ada verifikator ditemukan
+                    </td>
                   </tr>
                 ) : (
                   filteredVerifiers.map((item) => (
-                    <tr key={item.id_verifikator} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={item.id_verifikator}
+                      className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                    >
                       <td className="p-4">
                         <div className="flex items-center gap-4">
-                          <UserCircle2 size={40} className="text-gray-300 shrink-0" strokeWidth={1.5} />
+                          <UserCircle2
+                            size={40}
+                            className="text-gray-300 shrink-0"
+                            strokeWidth={1.5}
+                          />
                           <div className="flex flex-col">
-                            <span className="text-sm font-bold text-gray-800">{item.username}</span>
-                            <span className="text-sm text-gray-500">{item.nama}</span>
+                            <span className="text-sm font-bold text-gray-800">
+                              {item.username}
+                            </span>
+                            <span className="text-sm text-gray-500">
+                              {item.nama}
+                            </span>
                           </div>
                         </div>
                       </td>
@@ -207,85 +231,122 @@ export default function AdminToVerifikator() {
         </div>
       </div>
 
-      <Modal 
-        open={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        title={modalMode === 'add' ? 'Buat Akun Verifikator' : modalMode === 'edit' ? 'Edit Akun Verifikator' : 'Detail Akun Verifikator'}
+      <Modal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={
+          modalMode === "add"
+            ? "Buat Akun Verifikator"
+            : modalMode === "edit"
+              ? "Edit Akun Verifikator"
+              : "Detail Akun Verifikator"
+        }
       >
-        {modalMode === 'detail' ? (
+        {modalMode === "detail" ? (
           <div className="space-y-4">
-             <div className="flex items-center gap-4 pb-4 border-b">
-                <UserCircle2 size={64} className="text-gray-300" strokeWidth={1} />
-                <div>
-                   <h3 className="text-lg font-bold text-gray-800">{selectedVerifier?.nama}</h3>
-                   <p className="text-gray-500">@{selectedVerifier?.username}</p>
-                </div>
-             </div>
-             <div className="space-y-3">
-                <div>
-                   <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">ID Petugas</p>
-                   <p className="text-sm text-gray-700 font-medium">{selectedVerifier?.id_verifikator}</p>
-                </div>
-                <div>
-                   <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Role Akses</p>
-                   <p className="text-sm text-gray-700 font-medium">Petugas Verifikator</p>
-                </div>
-             </div>
-             <div className="pt-4 flex justify-end">
-                <button onClick={() => setIsModalOpen(false)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 font-medium transition-colors">Tutup</button>
-             </div>
+            <div className="flex items-center gap-4 pb-4 border-b">
+              <UserCircle2
+                size={64}
+                className="text-gray-300"
+                strokeWidth={1}
+              />
+              <div>
+                <h3 className="text-lg font-bold text-gray-800">
+                  {selectedVerifier?.nama}
+                </h3>
+                <p className="text-gray-500">@{selectedVerifier?.username}</p>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">
+                  ID Petugas
+                </p>
+                <p className="text-sm text-gray-700 font-medium">
+                  {selectedVerifier?.id_verifikator}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">
+                  Role Akses
+                </p>
+                <p className="text-sm text-gray-700 font-medium">
+                  Petugas Verifikator
+                </p>
+              </div>
+            </div>
+            <div className="pt-4 flex justify-end">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 font-medium transition-colors"
+              >
+                Tutup
+              </button>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap Petugas</label>
-              <input 
-                type="text" 
-                required 
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nama Lengkap Petugas
+              </label>
+              <input
+                type="text"
+                required
                 value={formData.nama}
-                onChange={(e) => setFormData({...formData, nama: e.target.value})}
+                onChange={(e) =>
+                  setFormData({ ...formData, nama: e.target.value })
+                }
                 placeholder="Contoh: Marcois Makalew"
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]" 
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Username Login</label>
-              <input 
-                type="text" 
-                required 
-                value={formData.username}
-                onChange={(e) => setFormData({...formData, username: e.target.value})}
-                placeholder="contoh_user123"
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]" 
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {modalMode === 'edit' ? 'Password Baru (Kosongkan jika tidak diubah)' : 'Password Akun'}
+                Username Login
               </label>
-              <input 
-                type="password" 
-                required={modalMode === 'add'}
+              <input
+                type="text"
+                required
+                value={formData.username}
+                onChange={(e) =>
+                  setFormData({ ...formData, username: e.target.value })
+                }
+                placeholder="contoh_user123"
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {modalMode === "edit"
+                  ? "Password Baru (Kosongkan jika tidak diubah)"
+                  : "Password Akun"}
+              </label>
+              <input
+                type="password"
+                required={modalMode === "add"}
                 value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 placeholder="********"
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]" 
+                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]"
               />
             </div>
             <div className="pt-4 flex justify-end gap-3 border-t">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setIsModalOpen(false)}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
               >
                 Batal
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={submitting}
                 className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] transition-colors disabled:opacity-50"
               >
-                {submitting ? 'Menyimpan...' : 'Simpan Akun'}
+                {submitting ? "Menyimpan..." : "Simpan Akun"}
               </button>
             </div>
           </form>
