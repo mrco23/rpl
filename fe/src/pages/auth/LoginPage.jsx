@@ -224,12 +224,15 @@ export default function LoginPage() {
               Daftar disini
             </Link>
           </p>
-          <div className="mt-3 text-center">
+          <div className="mt-6 text-center border-t border-gray-100 pt-6">
             <Link
               to="/"
-              className="text-sm text-gray-500 hover:text-[#253b80] transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-blue-dark transition-all duration-300 font-medium group"
             >
-              ← Kembali ke Landing Page
+              <span className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 group-hover:text-blue-dark transition-colors">
+                ←
+              </span>
+              Kembali ke Beranda
             </Link>
           </div>
         </form>
