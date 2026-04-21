@@ -11,6 +11,7 @@ import {
   UserCheck,
   FileText,
   LogOut,
+  Layers,
 } from "lucide-react";
 import logo from "@assets/logo.png";
 
@@ -71,6 +72,11 @@ const menu = [
     icon: <Megaphone size={16} />,
     path: "/admin/pengumuman",
   },
+  {
+    title: "Gelombang",
+    icon: <Layers size={16} />,
+    path: "/admin/gelombang",
+  },
 ];
 
 function SidebarAdmin() {
@@ -113,10 +119,12 @@ function SidebarAdmin() {
             <NavLink
               key={index}
               to={item.path}
+              end={item.path === "/admin"}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-lg transition ${isActive
-                  ? "bg-white text-[#2f4aa0] font-medium"
-                  : "hover:bg-white/10"
+                `flex items-center gap-3 px-3 py-1.5 rounded-lg transition ${
+                  isActive
+                    ? "bg-white text-[#2f4aa0] font-medium"
+                    : "hover:bg-white/10"
                 }`
               }
             >
@@ -129,7 +137,7 @@ function SidebarAdmin() {
       <hr className="border-white/30" />
 
       {/* LOGOUT */}
-      <button 
+      <button
         onClick={handleLogout}
         className="flex items-center gap-3 px-3 py-2 mt-4 hover:bg-white/10 rounded-lg w-full text-left"
       >

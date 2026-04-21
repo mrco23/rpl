@@ -23,7 +23,7 @@ import Program from "./pages/public/ProgramPage";
 
 // verifikator
 import VerifikatorBerandaPage from "./pages/verifikator/VerifikatorBerandaPage";
-import VerifikatorVerifikasiPage from './pages/verifikator/VerifikatorVerifikasiPage'
+import VerifikatorVerifikasiPage from "./pages/verifikator/VerifikatorVerifikasiPage";
 
 /* Admin */
 import AdminBeranda from "./pages/admin/AdminBeranda";
@@ -35,6 +35,7 @@ import AdminExtracurricularsPage from "./pages/admin/AdminEkstrakurikulerPage";
 import AdminNewsPage from "./pages/admin/AdminNewsPage";
 import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
 import AdminPendaftarPage from "./pages/admin/AdminPendaftarPage";
+import AdminGelombang from "./pages/admin/AdminGelombangPage";
 
 /* Pendaftar */
 import BerandaPendaftar from "./pages/pendaftar/BerandaPendaftar";
@@ -69,11 +70,14 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}
-        <Route path="/admin" element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AdminLayout />
-          </ProtectedRoute>
-        }>
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<AdminBeranda />} />
           <Route path="profil" element={<AdminProfilSekolahPage />} />
           <Route path="prestasi" element={<AdminAchievementsPage />} />
@@ -87,24 +91,31 @@ function App() {
           <Route path="verifikator" element={<AdminToVerifikator />} />
           <Route path="fasilitas" element={<AdminFasilitasPage />} />
           <Route path="ppdb" element={<AdminPendaftarPage />} />
+          <Route path="gelombang" element={<AdminGelombang />} />
         </Route>
 
         {/* Verifier Routes */}
-        <Route path="/verifikator" element={
-          <ProtectedRoute allowedRoles={["verifikator"]}>
-            <VerifikatorLayout />
-          </ProtectedRoute>
-        }>
+        <Route
+          path="/verifikator"
+          element={
+            <ProtectedRoute allowedRoles={["verifikator"]}>
+              <VerifikatorLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<VerifikatorBerandaPage />} />
           <Route path="verifikasi" element={<VerifikatorVerifikasiPage />} />
         </Route>
 
         {/* pendaftar Routes */}
-        <Route path="/pendaftar" element={
-          <ProtectedRoute allowedRoles={["pendaftar"]}>
-            <PendaftarLayout />
-          </ProtectedRoute>
-        }>
+        <Route
+          path="/pendaftar"
+          element={
+            <ProtectedRoute allowedRoles={["pendaftar"]}>
+              <PendaftarLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<BerandaPendaftar />} />
           <Route path="unggah-dokumen" element={<UnggahDokumen />} />
           <Route path="status-verifikasi" element={<StatusVerifikasi />} />
