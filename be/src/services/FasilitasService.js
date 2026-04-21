@@ -25,7 +25,7 @@ export const createFasilitas = async (id_admin, payload) => {
 		data: {
 			nama_fasilitas: payload.nama_fasilitas,
 			deskripsi: payload.deskripsi,
-			gambar: payload.gambar || null,
+			gambar_fasilitas: payload.gambar || null,
 			id_admin: Number(id_admin),
 		},
 	});
@@ -58,7 +58,7 @@ export const updateFasilitasImage = async (id_admin, id, filename) => {
 
 	return prisma.fasilitas.update({
 		where: { id_fasilitas: Number(id) },
-		data: { gambar: filename },
+		data: { gambar_fasilitas: filename },
 	});
 };
 

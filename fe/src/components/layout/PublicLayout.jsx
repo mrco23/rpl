@@ -13,7 +13,13 @@ export default function PublicLayout({
 
   useEffect(() => {
     getPublicProfile()
-      .then(setProfile)
+      .then((res) => {
+        if (res.success) {
+          setProfile(res.data);
+        } else {
+          setProfile(null);
+        }
+      })
       .catch(() => setProfile(null));
   }, []);
 

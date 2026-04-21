@@ -1,6 +1,5 @@
 import React from "react";
-import PublicLayout from "@components/layout/PublicLayout.jsx";
-import hero from "@assets/hero.jpg";
+import hero from "@assets/hero.png";
 import { Link } from "react-router";
 
 function SejarahPage() {
@@ -83,11 +82,11 @@ function SejarahPage() {
       {/* BLUE SECTION */}
       <section className="relative">
         <div className="flex">
-          <div className="bg-[#1f3b9a] h-20 w-[70%] rounded-tr-[100px]"></div>
-          <div className="bg-[#1f3b9a] h-20 w-[30%] rounded-tl-[100px]"></div>
+          <div className="bg-blue-dark h-20 w-[70%] rounded-tr-[100px]"></div>
+          <div className="bg-blue-dark h-20 w-[30%] rounded-tl-[100px]"></div>
         </div>
 
-        <section className="bg-[#1f3b9a] text-white px-6 md:px-20 py-12">
+        <section className="bg-blue-dark text-white px-6 md:px-20 py-12">
           {/* curve atas */}
 
           {/* BAGIAN ATAS (FULL WIDTH) */}

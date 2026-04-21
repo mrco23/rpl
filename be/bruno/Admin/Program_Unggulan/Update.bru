@@ -1,29 +1,25 @@
 meta {
   name: Update
   type: http
-  seq: 1
+  seq: 3
 }
 
 put {
-  url: {{base_url}}/program-unggulan/1
+  url: {{base_url}}/program-unggulan/:id
   body: multipartForm
   auth: bearer
+}
+
+params:path {
+  id: 1
 }
 
 auth:bearer {
   token: {{token}}
 }
 
-<<<<<<< HEAD
 body:multipart-form {
-  nama_pu: Program Unggulan
-  deskripsi: Program yang diunggulkan
-  gambar_pu: @file(path/to/image.jpg)
-=======
-body:json {
-  {
-    "nama": "Tahfidz Quran (revisi)",
-    "deskripsi": "Hafalan Al Quran"
-  }
->>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
+  nama_pu: Program Unggulan (Revisi)
+  deskripsi: Deskripsi program yang diperbarui
+  gambar_pu: @file()
 }

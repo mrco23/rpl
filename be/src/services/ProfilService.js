@@ -252,3 +252,11 @@ export const serializeLandingPage = (req, data) => {
 			: null,
 	};
 };
+
+export const getVisiMisi = async () => {
+	const profil = await prisma.profil.findFirst({
+		orderBy: { id_profil: 'asc' },
+		select: { visi: true, misi: true, nama_sekolah: true },
+	});
+	return profil || { visi: null, misi: null, nama_sekolah: null };
+};

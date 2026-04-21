@@ -1,0 +1,19 @@
+meta {
+  name: Verifikator Register
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/verifikator/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nama": "Maltrian Juan",
+    "username": "Maltrian",
+    "password": "Maltrian123!"
+  }
+}

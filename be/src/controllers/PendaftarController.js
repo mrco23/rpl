@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import {getPendaftar, register} from "../services/PendaftarService.js";
+import {getPendaftar, getPendaftarById, register, getAllPendaftar} from "../services/PendaftarService.js";
 import {generateToken} from '../utils/jwt.js'
 
 class PendaftarController {
@@ -24,19 +24,50 @@ class PendaftarController {
 
             const pendaftar = await getPendaftar(nisn);
             if (!pendaftar) return res.status(404).json({message: "Pendaftar Tidak Terdaftar"})
+            
+            if (!pendaftar.kata_sandi) {
+                return res.status(400).json({message: 'Pendaftar belum memiliki kata sandi, mohon hubungi admin'});
+            }
 
             const isMatch = await bcrypt.compare(password, pendaftar.kata_sandi);
             if (!isMatch) return res.status(400).json({message: 'NISN atau Kata Sandi Salah'})
 
-            const token = generateToken({id: pendaftar.id})
+            const token = generateToken({id: pendaftar.id_pendaftar, role: 'pendaftar'})
             return res.status(200).json({
                 message: "Masuk Berhasil",
                 token,
+                nama: pendaftar.nama_lengkap,
+                nisn: pendaftar.nisn,
+                role: "pendaftar"
             })
         } catch (err) {
-            console.log(err);
+            console.error(err);
+            return res.status(500).json({message: "Terjadi kesalahan pada server", error: err.message});
         }
     }
+
+    getMe = async (req, res) => {
+        try {
+            const id = req.user.id;
+            const pendaftar = await getPendaftarById(id);
+            if (!pendaftar) return res.status(404).json({ message: "Data pendaftar tidak ditemukan" });
+            return res.status(200).json({ message: "success", data: pendaftar });
+        } catch (error) {
+            return res.status(500).json({ message: "Gagal mengambil biodata", error: error.message });
+        }
+    };
+
+    getAllPendaftar = async (req, res) => {
+        try {
+            const data = await getAllPendaftar();
+            return res.status(200).json(data);
+        } catch (error) {
+            return res.status(500).json({
+                message: "Gagal mengambil data pendaftar",
+                error: error.message
+            });
+        }
+    };
 }
 
 export default new PendaftarController();

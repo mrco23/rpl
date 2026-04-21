@@ -7,8 +7,9 @@ import {
 	getProfil,
 	getPublicProfil,
 	getLandingPage,
+	getVisiMisi,
 } from "../controllers/ProfilController.js";
-import { verifyToken } from "../middleware/authMiddleware.js";
+import { verifyToken, authorizeRole } from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 
 const profilRoute = express.Router();
@@ -16,9 +17,10 @@ const profilRoute = express.Router();
 // PUBLIC
 profilRoute.get("", getPublicProfil);
 profilRoute.get("/landing-page", getLandingPage);
+profilRoute.get("/visi-misi", getVisiMisi);
 
 // PRIVATE
-profilRoute.get("/admin", verifyToken, getProfil);
+profilRoute.get("/admin", verifyToken, authorizeRole("admin"), getProfil);
 
 /* 
   POST: Membuat profil pertama kali beserta gambar.
@@ -26,6 +28,7 @@ profilRoute.get("/admin", verifyToken, getProfil);
 profilRoute.post(
 	"",
 	verifyToken,
+	authorizeRole("admin"),
 	upload.fields([
 		{ name: "foto_kepala_sekolah", maxCount: 1 },
 	]),
@@ -35,7 +38,7 @@ profilRoute.post(
 /* 
   PUT: Update hanya data profil (teks) tanpa gambar.
 */
-profilRoute.put("", verifyToken, updateProfilData);
+profilRoute.put("", verifyToken, authorizeRole("admin"), updateProfilData);
 
 /* 
   PATCH: Khusus mengganti gambar foto_kepala_sekolah.
@@ -43,6 +46,7 @@ profilRoute.put("", verifyToken, updateProfilData);
 profilRoute.patch(
 	"/image",
 	verifyToken,
+	authorizeRole("admin"),
 	upload.fields([
 		{ name: "foto_kepala_sekolah", maxCount: 1 },
 	]),
@@ -52,6 +56,6 @@ profilRoute.patch(
 /* 
   POST: Upsert kontak karena relasi 1:1 dan tanpa file.
 */
-profilRoute.post("/kontak", verifyToken, upsertKontak);
+profilRoute.post("/kontak", verifyToken, authorizeRole("admin"), upsertKontak);
 
 export default profilRoute;

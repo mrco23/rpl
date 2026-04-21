@@ -17,3 +17,12 @@ export const verifyToken = (req, res, next) => {
         return res.status(403).json({message: "Token tidak valid atau kadaluarsa."});
     }
 };
+
+export const authorizeRole = (...roles) => {
+    return (req, res, next) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            return res.status(403).json({ message: "Akses ditolak! Anda tidak memiliki izin." });
+        }
+        next();
+    };
+};

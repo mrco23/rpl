@@ -11,6 +11,7 @@ import programUnggulanRoutes from "./programUnggulanRoutes.js";
 import ekstrakurikulerRoutes from "./ekstrakurikulerRoutes.js";
 import fasilitasRoutes from "./fasilitasRoutes.js";
 import gelombangRoutes from "./gelombangRoutes.js";
+import verifikatorRoutes from "./verifikatorRoutes.js";
 
 const routes = express.Router();
 
@@ -27,5 +28,6 @@ routes.use("", gelombangRoutes);
 
 routes.use("/pendaftar", pendaftarRoute);
 routes.use("/dokumen", dokumenRoute);
+routes.use("/verifikator", verifikatorRoutes);
 
 export default routes;

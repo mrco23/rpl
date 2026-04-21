@@ -1,42 +1,27 @@
-import React from "react";
-import PublicLayout from "@components/layout/PublicLayout.jsx";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
-import fasilitasImg from "@assets/fasilitas.jpg";
+import fasilitasService from "@services/fasilitasService";
 
 function FasilitasPage() {
-  const fasilitas = [
-    {
-      title: "LAPANGAN SEKOLAH",
-      desc: `Sekolah ini memiliki area olahraga yang sangat memadai untuk mendukung aktivitas fisik siswa. 
-      Lapangan menjadi pusat kegiatan siswa dan sering digunakan untuk turnamen antar pelajar `,
-      image: fasilitasImg,
-    },
-    {
-      title: "PERPUSTAKAAN",
-      desc: `Perpustakaan SM. Rafet didesain bukan hanya sebagai gudang buku, melainkan sebagai Learning center. 
-      Suasana yang tenang dan koleksi buku yang selalu diperbarui (baik fisik maupun akses digital) menjadi poin plus bagi
-      orang tua yang menginginkan anaknya memiliki minat baca tinggi  `,
-      image: fasilitasImg,
-    },
-    {
-      title: "LABORATORIUM KOMPUTER",
-      desc: `dilengkapi dengan perangkat terkini dan koneksi internet yang stabil. Fasilitas ini bukan sekadar pajangan, 
-      melainkan pusat pembelajaran literasi digital dan persiapan asesmen berbasis komputer yang sudah teruji`,
-      image: fasilitasImg,
-    },
-    {
-      title: "LABORATORIUM IPA (Sains)",
-      desc: `Untuk mendukung kurikulum praktikum, Lab IPA di St. Rafael dilengkapi dengan peralatan eksperimen yang standar. 
-      Ini memberikan pengalaman belajar langsung (hands-on learning) bagi siswa, sehingga teori sains tidak hanya sekedar hafalan di buku.`,
-      image: fasilitasImg,
-    },
-    {
-      title: "Lingkungan Sekolah",
-      desc: `SMP St. Rafael menawarkan lingkungan yang bersih, rindang, dan tertata. Taman sekolah yang dirawat 
-      dengan baik menciptakan atmosfer belajar yang sejuk, yang secara psikologis membantu fokus siswa dalam menyerap pelajaran.`,
-      image: fasilitasImg,
-    },
-  ];
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      const res = await fasilitasService.getFasilitas();
+      if (res.success) {
+        setData(res.data || []);
+      } else {
+        setError(res.message);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-35 mb-10">
@@ -69,32 +54,79 @@ function FasilitasPage() {
           </Link>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-6 py-14 space-y-36">
-        {fasilitas.map((item, index) => (
-          <div
-            key={index}
-            className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
-              }`}
-          >
-            {/* IMAGE */}
-            <div className="w-full md:w-1/2">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-[300px] object-cover rounded-xl"
-              />
-            </div>
 
-            {/* TEXT */}
-            <div className="w-full md:w-1/2">
-              <h3 className="text-4xl font-semibold mb-2">{item.title}</h3>
-              <p className="text-gray-600 text-xl   leading-relaxed">
-                {item.desc}
-              </p>
+      {/* State Renderings */}
+      {loading ? (
+        <div className="max-w-7xl mx-auto px-6 py-14 space-y-36">
+          {[1, 2, 3].map((_, index) => (
+            <div
+              key={index}
+              className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
+                }`}
+            >
+              {/* IMAGE SKELETON */}
+              <div className="w-full md:w-1/2">
+                <div className="w-full h-[300px] bg-slate-200 rounded-xl animate-pulse"></div>
+              </div>
+
+              {/* TEXT SKELETON */}
+              <div className="w-full md:w-1/2">
+                <div className="w-3/4 h-10 bg-slate-200 rounded animate-pulse mb-4"></div>
+                <div className="w-full h-4 bg-slate-200 rounded animate-pulse mb-2"></div>
+                <div className="w-full h-4 bg-slate-200 rounded animate-pulse mb-2"></div>
+                <div className="w-5/6 h-4 bg-slate-200 rounded animate-pulse"></div>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : error ? (
+        <div className="max-w-7xl mx-auto px-6 py-20 text-center flex flex-col items-center">
+          <p className="text-xl text-red-600 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-800 transition"
+          >
+            Coba Lagi
+          </button>
+        </div>
+      ) : data.length === 0 ? (
+        <div className="max-w-7xl mx-auto px-6 py-20 text-center text-xl text-gray-600">
+          Belum ada data fasilitas.
+        </div>
+      ) : (
+        <div className="max-w-7xl mx-auto px-6 py-14 space-y-36">
+          {data.map((item, index) => {
+            const displayTitle = item.nama_fasilitas || item.nama || "Tanpa Judul";
+            const displayDesc = item.deskripsi || "Tidak ada deskripsi";
+            const displayImage = item.gambar_fasilitas || item.gambar || null;
+
+            return (
+              <div
+                key={index}
+                className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
+                  }`}
+              >
+                {/* IMAGE */}
+                <div className="w-full md:w-1/2">
+                  <img
+                    src={displayImage}
+                    alt={displayTitle}
+                    className="w-full h-[300px] object-cover rounded-xl"
+                  />
+                </div>
+
+                {/* TEXT */}
+                <div className="w-full md:w-1/2">
+                  <h3 className="text-4xl font-semibold mb-2">{displayTitle}</h3>
+                  <p className="text-gray-600 text-xl leading-relaxed">
+                    {displayDesc}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }

@@ -8,7 +8,7 @@ import {
 	updateImage,
 	remove,
 } from "../controllers/EkstrakurikulerController.js";
-import { verifyToken } from "../middleware/authMiddleware.js";
+import { verifyToken, authorizeRole } from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 
 const ekstrakurikulerRoutes = express.Router();
@@ -20,21 +20,21 @@ ekstrakurikulerRoutes.get("/:id", getDetailPublic);
 /* 
   POST /: Membuat data baru beserta upload gambar awal.
 */
-ekstrakurikulerRoutes.post("", verifyToken, upload.single("gambar"), create);
+ekstrakurikulerRoutes.post("", verifyToken, authorizeRole("admin"), upload.single("gambar"), create);
 
 /* 
   PUT /:id : Update data non-file.
 */
-ekstrakurikulerRoutes.put("/:id", verifyToken, updateData);
+ekstrakurikulerRoutes.put("/:id", verifyToken, authorizeRole("admin"), updateData);
 
 /* 
   PATCH /:id/image : Khusus update gambar (gambar lama dihapus otomatis di logic).
 */
-ekstrakurikulerRoutes.patch("/:id/image", verifyToken, upload.single("gambar"), updateImage);
+ekstrakurikulerRoutes.patch("/:id/image", verifyToken, authorizeRole("admin"), upload.single("gambar"), updateImage);
 
 /* 
   DELETE /:id : Hapus data berserta gambar fisiknya.
 */
-ekstrakurikulerRoutes.delete("/:id", verifyToken, remove);
+ekstrakurikulerRoutes.delete("/:id", verifyToken, authorizeRole("admin"), remove);
 
 export default ekstrakurikulerRoutes;

@@ -1,0 +1,25 @@
+meta {
+  name: Update Profil Data
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{base_url}}/profile
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "nama_sekolah": "SMP Katolik St. Rafael Manado",
+    "visi": "Membentuk peserta didik menjadi manusia yang seutuhnya",
+    "misi": "Mewujudkan religiusitas; Meningkatkan profesionalisme",
+    "nama_kepala_sekolah": "Herman Ventje Dien, S.Fils",
+    "kata_sambutan": "Selamat datang di website resmi SMP Katolik St. Rafael."
+  }
+}

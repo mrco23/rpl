@@ -120,3 +120,12 @@ export const getLandingPage = async (req, res) => {
 		return res.status(500).json({ message: error.message || "Gagal mengambil data landing page" });
 	}
 };
+
+export const getVisiMisi = async (req, res) => {
+	try {
+		const data = await ProfilService.getVisiMisi();
+		return res.status(200).json({ message: "success", data });
+	} catch (error) {
+		return res.status(500).json({ message: error.message || "Gagal mengambil visi misi" });
+	}
+};

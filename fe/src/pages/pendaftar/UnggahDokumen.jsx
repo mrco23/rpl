@@ -58,11 +58,14 @@ function UnggahDokumen() {
           deskcripsi="Rapor Semester akhir atau ijazah bagi lulusan"
           status="success"
           fileName="ijazah.pdf"
+          statusText="Sudah Diunggah"
         />
+
         <DokumenCard
           title="Akte Kelahiran"
           deskcripsi="Dokumen akte kelahiran asli"
           status="empty"
+          statusText="Belum Diunggah"
         />
 
         <DokumenCard
@@ -70,6 +73,7 @@ function UnggahDokumen() {
           deskcripsi="Dokumen kartu keluarga asli"
           status="error"
           fileName="foto.jpg"
+          statusText="Perlu Perbaiki"
         />
 
         <DokumenCard
@@ -77,12 +81,12 @@ function UnggahDokumen() {
           deskcripsi="Pas foto terbaru latar belakang"
           status="error"
           fileName="foto.jpg"
+          statusText="Perlu Perbaiki"
         />
       </div>
 
       {/* Catatan */}
       <div className="mt-6 flex justify-between items-start gap-6">
-        {/* KIRI */}
         <div className="bg-yellow-100 p-4 rounded-lg flex gap-2 flex-1">
           <AlertCircle className="text-yellow-600" size={18} />
           <div>
@@ -95,14 +99,14 @@ function UnggahDokumen() {
           </div>
         </div>
 
-        {/* KANAN */}
         <div className="flex flex-col gap-4">
           <button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg w-70">
             <Send size={16} />
             Kirim Untuk Diverifikasi
           </button>
+
           <p className="text-sm text-gray-500 max-w-xs">
-            Pastikan semua dokumen sudah benar sebelum dikirim  
+            Pastikan semua dokumen sudah benar sebelum dikirim
           </p>
         </div>
       </div>
@@ -110,26 +114,44 @@ function UnggahDokumen() {
   );
 }
 
-function DokumenCard({ title, status, deskcripsi, fileName }) {
+function DokumenCard({ title, status, deskcripsi, fileName, statusText }) {
+  const statusColor =
+    status === "success"
+      ? "text-green-600"
+      : status === "error"
+        ? "text-orange-500"
+        : "text-gray-500";
+
   return (
     <div
-      className={`w-56 p-4 rounded-xl border bg-white shadow-2xl
-      ${status === "success" && "border-gray-300"}
-      ${status === "error" && "border-gray-300 bg-orange-50"}
-      ${status === "empty" && "border-gray-300"}
+      className={`w-56 p-4 rounded-xl border bg-white shadow-xl
+      ${status === "error" ? "bg-orange-50" : ""}
     `}
     >
       <h5 className="font-medium text-md">{title}</h5>
       <p className="text-sm">{deskcripsi}</p>
 
       {/* Upload Box */}
-      <div className="h-24 border-2 border-dashed rounded-lg flex items-center justify-center mt-3">
+      <div
+        className={`h-24 border-2 border-dashed rounded-lg flex items-center justify-center mt-3
+  ${
+    status === "error"
+      ? "border-orange-400"
+      : status === "success"
+        ? "border-green-400"
+        : "border-gray-300"
+  }`}
+      >
         {status === "success" && <CheckCircle className="text-green-600" />}
         {status === "empty" && <UploadCloud className="text-gray-400" />}
         {status === "error" && <AlertCircle className="text-orange-500" />}
       </div>
 
-      <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+      {/* STATUS TEXT */}
+      <p className={`text-xs font-medium mt-2 ${statusColor}`}>{statusText}</p>
+
+      {/* FILE */}
+      <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
         <FileText size={14} />
         {fileName || "Belum ada file"}
       </p>
@@ -142,7 +164,7 @@ function DokumenCard({ title, status, deskcripsi, fileName }) {
               Lihat File
             </button>
 
-            <button className="w-full text-sm bg-gray-400  text-white py-1 rounded-lg cursor-pointer">
+            <button className="w-full text-sm bg-gray-400 text-white py-1 rounded-lg cursor-pointer">
               Ganti File
             </button>
           </>
@@ -159,6 +181,7 @@ function DokumenCard({ title, status, deskcripsi, fileName }) {
             <button className="w-full text-sm bg-orange-400 text-white py-1 rounded-lg cursor-pointer">
               Lihat Catatan
             </button>
+
             <button className="w-full text-sm bg-blue-600 text-white py-1 rounded-lg cursor-pointer">
               Unggah Ulang
             </button>

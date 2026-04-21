@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   GraduationCap,
   Users,
@@ -7,8 +7,39 @@ import {
   ArrowRight,
   CalendarDays,
 } from "lucide-react";
+import api from "../../services/api.js";
 
 function BerandaPendaftar() {
+  const [biodata, setBiodata] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBiodata = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get("/pendaftar/me");
+        setBiodata(res.data?.data || null);
+      } catch (err) {
+        console.error("Gagal mengambil biodata pendaftar:", err);
+        setBiodata(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBiodata();
+  }, []);
+
+  const formatTanggalLahir = (tempat, tanggal) => {
+    if (!tempat && !tanggal) return "-";
+    if (!tanggal) return tempat || "-";
+    const tgl = new Date(tanggal).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    return tempat ? `${tempat}, ${tgl}` : tgl;
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       {/* HEADER */}
@@ -41,19 +72,36 @@ function BerandaPendaftar() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-5">
-          <Field label="NISN" value="0081234567" />
-          <Field label="Nama Lengkap" value="Budi Santoso" />
+          <Field
+            label="NISN"
+            value={loading ? null : biodata?.nisn || "-"}
+            loading={loading}
+          />
+          <Field
+            label="Nama Lengkap"
+            value={loading ? null : biodata?.nama_lengkap || "-"}
+            loading={loading}
+          />
           <Field
             label="Tempat, Tanggal Lahir"
-            value="Manado, 12 Mei 2011"
+            value={loading ? null : formatTanggalLahir(biodata?.tempat_lahir, biodata?.tanggal_lahir)}
+            loading={loading}
             icon={<CalendarDays size={16} />}
           />
-
-          <Field label="Jenis Kelamin" value="Laki-Laki" />
-          <Field label="Domisili" value="Kota Manado" />
+          <Field
+            label="Jenis Kelamin"
+            value={loading ? null : biodata?.jenis_kelamin === "L" ? "Laki-Laki" : biodata?.jenis_kelamin === "P" ? "Perempuan" : biodata?.jenis_kelamin || "-"}
+            loading={loading}
+          />
+          <Field
+            label="Asal Sekolah"
+            value={loading ? null : biodata?.asal_sekolah || "-"}
+            loading={loading}
+          />
           <Field
             label="Alamat Lengkap"
-            value="Jl. Sam Ratulangi No. 123, Manado"
+            value={loading ? null : biodata?.alamat || "-"}
+            loading={loading}
           />
         </div>
       </div>
@@ -68,10 +116,15 @@ function BerandaPendaftar() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
-          <Field label="Nama Orang Tua / Wali" value="Reins Orlando Maindjanga" />
+          <Field
+            label="Nama Orang Tua / Wali"
+            value={loading ? null : biodata?.nama_wali || "-"}
+            loading={loading}
+          />
           <Field
             label="Alamat Email Orang Tua / Wali"
-            value="xxx@email.com"
+            value={loading ? null : biodata?.email || "-"}
+            loading={loading}
           />
         </div>
       </div>
@@ -85,12 +138,20 @@ function BerandaPendaftar() {
             <span className="text-sm font-medium text-blue-800 ml-2">
               (dapat diedit)
             </span>
-          </h2>w
+          </h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
-          <Field label="No. HP" value="0812-3456-7890" />
-          <Field label="Alamat Email" value="xxxx@email.com" />
+          <Field
+            label="No. HP"
+            value={loading ? null : biodata?.no_hp || "-"}
+            loading={loading}
+          />
+          <Field
+            label="Alamat Email"
+            value={loading ? null : biodata?.email || "-"}
+            loading={loading}
+          />
         </div>
       </div>
 
@@ -118,16 +179,22 @@ function BerandaPendaftar() {
 }
 
 /* COMPONENT FIELD */
-function Field({ label, value, icon }) {
+function Field({ label, value, icon, loading }) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
         {label}
       </label>
 
-      <div className="bg-slate-200 rounded-lg px-4 py-3 text-sm text-gray-800 flex items-center justify-between">
-        <span>{value}</span>
-        {icon}
+      <div className="bg-slate-200 rounded-lg px-4 py-3 text-sm text-gray-800 flex items-center justify-between min-h-[44px]">
+        {loading ? (
+          <div className="h-4 bg-slate-300 rounded w-2/3 animate-pulse" />
+        ) : (
+          <>
+            <span>{value}</span>
+            {icon}
+          </>
+        )}
       </div>
     </div>
   );

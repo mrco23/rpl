@@ -1,78 +1,100 @@
-import { requestAPI } from "./api.js";
+import apiClient from "./apiClient";
 
-// Utility Form Data
-const buildFormData = (payload) => {
+/**
+ * Service untuk Profil Sekolah (Public)
+ * Endpoint: /api/profile/landing-page
+ */
+export const getLandingPageData = async () => {
+  try {
+    const response = await apiClient.get("/profile/landing-page");
+    
+    // Sanitasi data
+    const data = response.data?.data || null;
+    
+    return {
+      success: true,
+      data: data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || "Gagal mengambil data profil landing page",
+      data: null,
+    };
+  }
+};
+
+/**
+ * Service untuk mendapatkan Profil global sekolah
+ * Endpoint: /api/profile
+ */
+export const getPublicProfile = async () => {
+  try {
+    const response = await apiClient.get("/profile");
+    return {
+      success: true,
+      data: response.data?.data || null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || "Gagal mengambil data profil publik",
+      data: null,
+    };
+  }
+};
+
+/**
+ * Service untuk mendapatkan hanya Visi dan Misi
+ * Endpoint: GET /api/profile/visi-misi
+ */
+export const getVisiMisi = async () => {
+  try {
+    const response = await apiClient.get("/profile/visi-misi");
+    return {
+      success: true,
+      data: response.data?.data || null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || "Gagal mengambil visi misi",
+      data: null,
+    };
+  }
+};
+
+/**
+ * Service untuk mendapatkan Profil admin
+ */
+export const getAdminProfile = async () => {
+  const response = await apiClient.get("/profile/admin");
+  return response.data?.data || response.data;
+};
+
+/**
+ * Service untuk update Profil (admin)
+ */
+export const updateProfile = async (payload) => {
   const formData = new FormData();
-  Object.entries(payload).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      formData.append(key, value);
+  Object.keys(payload).forEach(key => {
+    if (payload[key] !== null && payload[key] !== undefined) {
+      formData.append(key, payload[key]);
     }
   });
-  return formData;
-};
 
-export const getAdminProfile = async () => {
-  const res = await requestAPI({ method: "GET", url: "/profile" });
-  return res.data;
-};
-
-export const getPublicProfile = async () => {
-  const res = await requestAPI({ method: "GET", url: "/profile/public" });
-  return res.data;
-};
-
-/* 
-  Profile Management (POST untuk create/upsert data + awal image)
-*/
-export const updateProfile = async (payload) => {
-  const isMultipart = !!(payload.logo || payload.foto_kepala_sekolah);
-  const data = isMultipart ? buildFormData(payload) : payload;
-  
-  const res = await requestAPI({
-    method: "POST", // Menggunakan POST seperti di backend route profil
-    url: "/profile",
-    data,
-    isMultipart,
+  const response = await apiClient.put("/profile", formData, {
+    headers: { "Content-Type": "multipart/form-data" }
   });
-
-  return res.data;
+  return response.data?.data || response.data;
 };
 
-/* 
-  Profile Management: Update teks saja
-*/
-export const updateProfileData = async (payload) => {
-  const res = await requestAPI({
-    method: "PUT",
-    url: "/profile",
-    data: payload,
-  });
-  return res.data;
+const profileService = {
+  getLandingPageData,
+  getPublicProfile,
+  getAdminProfile,
+  updateProfile,
+  getVisiMisi,
 };
 
-/* 
-  Profile Management: Update image saja
-*/
-export const updateProfileImage = async (fileObj) => {
-  // fileObj misal { logo: File } atau { foto_kepala_sekolah: File }
-  const formData = buildFormData(fileObj);
-  const res = await requestAPI({
-    method: "PATCH",
-    url: "/profile/image",
-    data: formData,
-    isMultipart: true,
-  });
-  return res.data;
-};
-
-/* 
-  Kontak Management (POST untuk upsert)
-*/
-export const updateKontak = async (payload) => {
-  const res = await requestAPI({
-    method: "POST",
-    url: "/profile/kontak",
-    data: payload,
-  });
-  return res.data;
-};
+export default profileService;
