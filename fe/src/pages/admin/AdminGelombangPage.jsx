@@ -12,10 +12,12 @@ import {
   Search,
   X,
 } from "lucide-react";
+import AdminHeader from "@components/features/AdminHeader";
 
 function AdminGelombang() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedGelombang, setSelectedGelombang] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const dataGelombang = [
     {
@@ -86,117 +88,115 @@ function AdminGelombang() {
   };
 
   return (
-    <div className="p-6 bg-[#f5f6fa] min-h-screen">
-      {/* HEADER */}
-      <div className="flex justify-between items-start mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-800">Gelombang</h1>
+    <>
+      <div className="max-w-7xl mx-auto">
+        {/* BUTTON */}
+        <div className="flex justify-between items-start mb-6">
+          <AdminHeader
+            text="Gelombang"
+            subText="Kelola periode pendaftaran calon peserta didik"
+          />
 
-          <p className="text-gray-500 mt-1">
-            Kelola periode pendaftaran calon peserta didik
-          </p>
+          <button className="bg-[#2f4aa0] text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm hover:bg-[#253b80]">
+            <Plus size={16} />
+            Tambah Gelombang
+          </button>
         </div>
 
-        <button className="bg-[#2f4aa0] text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm">
-          <Plus size={16} />
-          Tambah Gelombang
-        </button>
-      </div>
+        {/* INFO */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+          <InfoCard
+            icon={<FileCheck size={18} />}
+            title="Total Gelombang"
+            value="3"
+            desc="Gelombang"
+            color="text-blue-600"
+          />
 
-      {/* INFO */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-        <InfoCard
-          icon={<FileCheck size={18} />}
-          title="Total Gelombang"
-          value="3"
-          desc="Gelombang"
-          color="text-blue-600"
-        />
+          <InfoCard
+            icon={<CheckCircle2 size={18} />}
+            title="Gelombang Aktif"
+            value="1"
+            desc="Aktif"
+            color="text-green-600"
+          />
 
-        <InfoCard
-          icon={<CheckCircle2 size={18} />}
-          title="Gelombang Aktif"
-          value="1"
-          desc="Aktif"
-          color="text-green-600"
-        />
+          <InfoCard
+            icon={<Clock3 size={18} />}
+            title="Akan Datang"
+            value="1"
+            desc="Gelombang"
+            color="text-indigo-500"
+          />
 
-        <InfoCard
-          icon={<Clock3 size={18} />}
-          title="Akan Datang"
-          value="1"
-          desc="Gelombang"
-          color="text-indigo-500"
-        />
+          <InfoCard
+            icon={<FileCheck size={18} />}
+            title="Selesai"
+            value="1"
+            desc="Selesai"
+            color="text-blue-600"
+          />
+        </div>
 
-        <InfoCard
-          icon={<FileCheck size={18} />}
-          title="Selesai"
-          value="1"
-          desc="Selesai"
-          color="text-blue-600"
-        />
-      </div>
+        {/* CARD */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {dataGelombang.map((item) => (
+            <div key={item.id} className="bg-white rounded-2xl shadow-md p-5">
+              <div className="flex justify-between items-center">
+                <h3 className="font-semibold text-lg">{item.nama}</h3>
 
-      {/* CARD */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {dataGelombang.map((item) => (
-          <div key={item.id} className="bg-white rounded-2xl shadow-md p-5">
-            <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-lg">{item.nama}</h3>
+                <span
+                  className={`text-xs px-2 py-1 rounded-full ${getStatusStyle(
+                    item.status,
+                  )}`}
+                >
+                  {item.status}
+                </span>
+              </div>
 
-              <span
-                className={`text-xs px-2 py-1 rounded-full ${getStatusStyle(
-                  item.status,
-                )}`}
-              >
-                {item.status}
-              </span>
+              <hr className="my-4" />
+
+              <div className="flex items-center gap-3 mb-4">
+                <CalendarDays size={18} className="text-[#2f4aa0]" />
+                {item.tanggal}
+              </div>
+
+              <div className="flex items-center gap-3 mb-5">
+                <Users size={18} className="text-[#2f4aa0]" />
+                {item.peserta}/{item.kuota} Peserta
+              </div>
+
+              <div className="w-full h-2 bg-gray-200 rounded-full mb-5">
+                <div
+                  className="h-2 bg-[#2f4aa0] rounded-full"
+                  style={{
+                    width: progressWidth(item.peserta, item.kuota),
+                  }}
+                ></div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <button
+                  onClick={() => {
+                    setSelectedGelombang(item);
+                    setOpenModal(true);
+                  }}
+                  className="border rounded-md py-2 flex justify-center hover:bg-gray-100 cursor-pointer"
+                >
+                  <Eye size={16} />
+                </button>
+
+                <button className="border rounded-md py-2 flex justify-center hover:bg-blue-50 cursor-pointer">
+                  <Pencil size={16} className="text-blue-600" />
+                </button>
+
+                <button className="border rounded-md py-2 flex justify-center hover:bg-red-50 cursor-pointer">
+                  <Trash2 size={16} className="text-red-500" />
+                </button>
+              </div>
             </div>
-
-            <hr className="my-4" />
-
-            <div className="flex items-center gap-3 mb-4">
-              <CalendarDays size={18} className="text-[#2f4aa0]" />
-              {item.tanggal}
-            </div>
-
-            <div className="flex items-center gap-3 mb-5">
-              <Users size={18} className="text-[#2f4aa0]" />
-              {item.peserta}/{item.kuota} Peserta
-            </div>
-
-            <div className="w-full h-2 bg-gray-200 rounded-full mb-5">
-              <div
-                className="h-2 bg-[#2f4aa0] rounded-full"
-                style={{
-                  width: progressWidth(item.peserta, item.kuota),
-                }}
-              ></div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3">
-              {/* ICON MATA */}
-              <button
-                onClick={() => {
-                  setSelectedGelombang(item);
-                  setOpenModal(true);
-                }}
-                className="border rounded-md py-2 flex justify-center hover:bg-gray-100"
-              >
-                <Eye size={16} />
-              </button>
-
-              <button className="border rounded-md py-2 flex justify-center hover:bg-blue-50">
-                <Pencil size={16} />
-              </button>
-
-              <button className="border rounded-md py-2 flex justify-center hover:bg-red-50">
-                <Trash2 size={16} />
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* MODAL BESAR */}
@@ -215,10 +215,10 @@ function AdminGelombang() {
 
               <button
                 onClick={() => setOpenModal(false)}
-                className="border px-4 py-2 rounded-lg flex items-center gap-2 cursor-pointer"
+                className=" px-3 py-1 rounded-lg flex items-center gap-2 cursor-pointer hover:bg-gray-50"
               >
-                <X size={16} />
-                Tutup
+                <X size={20} />
+                
               </button>
             </div>
 
@@ -239,8 +239,8 @@ function AdminGelombang() {
 
             {/* TABLE */}
             <div className="px-6 pb-6">
-              <div className="bg-white border rounded-2xl overflow-hidden">
-                <div className="p-4 border-b">
+              <div className="bg-white border border-gray-300 rounded-2xl overflow-hidden">
+                <div className="p-4 border-b border-gray-400 ">
                   <div className="relative w-72">
                     <Search
                       size={16}
@@ -267,7 +267,7 @@ function AdminGelombang() {
 
                   <tbody>
                     {dataPendaftar.map((item, index) => (
-                      <tr key={index} className="border-t">
+                      <tr key={index} className="border border-gray-100">
                         <td className="p-4">{item.nama}</td>
 
                         <td className="p-4">{item.nisn}</td>
@@ -289,24 +289,61 @@ function AdminGelombang() {
                 </table>
 
                 {/* PAGINATION */}
-                <div className="p-4 flex justify-end items-center gap-2 border-t bg-white">
-                  <button className="w-9 h-9 border rounded-lg hover:bg-gray-100">
+
+                <div className="p-4 flex justify-end items-center gap-2 bg-white">
+                  {/* PREV */}
+                  <button
+                    onClick={() =>
+                      currentPage > 1 && setCurrentPage(currentPage - 1)
+                    }
+                    className="w-9 h-9 border rounded-lg hover:bg-gray-100"
+                  >
                     {"<"}
                   </button>
 
-                  <button className="w-9 h-9 bg-[#2f4aa0] text-white rounded-lg">
+                  {/* PAGE 1 */}
+                  <button
+                    onClick={() => setCurrentPage(1)}
+                    className={`w-9 h-9 rounded-lg ${
+                      currentPage === 1
+                        ? "bg-[#2f4aa0] text-white"
+                        : "border hover:bg-gray-100"
+                    }`}
+                  >
                     1
                   </button>
 
-                  <button className="w-9 h-9 border rounded-lg hover:bg-gray-100">
+                  {/* PAGE 2 */}
+                  <button
+                    onClick={() => setCurrentPage(2)}
+                    className={`w-9 h-9 rounded-lg ${
+                      currentPage === 2
+                        ? "bg-[#2f4aa0] text-white"
+                        : "border hover:bg-gray-100"
+                    }`}
+                  >
                     2
                   </button>
 
-                  <button className="w-9 h-9 border rounded-lg hover:bg-gray-100">
+                  {/* PAGE 3 */}
+                  <button
+                    onClick={() => setCurrentPage(3)}
+                    className={`w-9 h-9 rounded-lg ${
+                      currentPage === 3
+                        ? "bg-[#2f4aa0] text-white"
+                        : "border hover:bg-gray-100"
+                    }`}
+                  >
                     3
                   </button>
 
-                  <button className="w-9 h-9 border rounded-lg hover:bg-gray-100">
+                  {/* NEXT */}
+                  <button
+                    onClick={() =>
+                      currentPage < 3 && setCurrentPage(currentPage + 1)
+                    }
+                    className="w-9 h-9 border rounded-lg hover:bg-gray-100"
+                  >
                     {">"}
                   </button>
                 </div>
@@ -315,7 +352,7 @@ function AdminGelombang() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
