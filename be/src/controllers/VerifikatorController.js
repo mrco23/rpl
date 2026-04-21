@@ -69,7 +69,7 @@ class VerifikatorController {
     getBeranda = async (req, res) => {
         try {
             const data = await VerifikatorService.getBerandaData();
-            res.status(200).json(data);
+            res.status(200).json({ message: "success", data });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

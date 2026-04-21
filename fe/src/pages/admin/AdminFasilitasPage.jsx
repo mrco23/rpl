@@ -192,25 +192,23 @@ export default function AdminFasilitasPage() {
                         <button
                           onClick={() => handleOpenDetail(item)}
                           title="Lihat Detail"
-                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors"
+                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors cursor-pointer"
                         >
                           <Eye size={16} />
                         </button>
 
-                        {/* Tombol Edit */}
                         <button
                           onClick={() => handleOpenEdit(item)}
                           title="Edit Fasilitas"
-                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300"
+                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300 cursor-pointer"
                         >
                           <Edit2 size={16} />
                         </button>
 
-                        {/* Tombol Hapus */}
                         <button
                           onClick={() => handleDelete(item.id_fasilitas)}
                           title="Hapus Fasilitas"
-                          className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors"
+                          className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors cursor-pointer"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -232,9 +230,25 @@ export default function AdminFasilitasPage() {
       >
         {modalMode === 'detail' ? (
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
-             {(selectedItem?.gambar_fasilitas || selectedItem?.gambar) && (
-                <img src={selectedItem?.gambar_fasilitas || selectedItem?.gambar} alt="Fasilitas" className="w-full h-auto rounded-lg max-h-60 object-cover" />
+             {selectedItem?.gambar_fasilitas || selectedItem?.gambar ? (
+                <img 
+                  src={selectedItem?.gambar_fasilitas || selectedItem?.gambar} 
+                  alt="Fasilitas" 
+                  className="w-full h-auto rounded-lg max-h-60 object-cover" 
+                  onError={(e) => {
+                    e.target.onerror = null; 
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
+                  }}
+                />
+             ) : (
+                <div className="w-full h-40 bg-gray-100 flex items-center justify-center rounded-lg text-gray-400">
+                  Gambar tidak ada
+                </div>
              )}
+             <div className="hidden w-full h-40 bg-gray-100 flex items-center justify-center rounded-lg text-gray-400">
+                Gambar tidak ditemukan
+             </div>
              <div>
                <h3 className="font-bold text-lg">{selectedItem?.nama_fasilitas}</h3>
              </div>

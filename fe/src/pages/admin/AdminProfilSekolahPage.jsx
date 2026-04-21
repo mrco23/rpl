@@ -29,7 +29,15 @@ export default function AdminProfilSekolahPage() {
 
   const [infoData, setInfoData] = useState({ nama_sekolah: '', visi: '', misi: '' });
   const [kepsekData, setKepsekData] = useState({ nama_kepala_sekolah: '', kata_sambutan: '' });
-  const [kontakData, setKontakData] = useState({ no_telpon: '', email: '' });
+  const [kontakData, setKontakData] = useState({ 
+    no_telpon: '', 
+    email: '', 
+    whatsapp: '', 
+    instagram: '', 
+    tiktok: '', 
+    facebook: '', 
+    youtube: '' 
+  });
 
   // Upload Logo/Foto states
   const [selectedImage, setSelectedImage] = useState(null);
@@ -83,7 +91,12 @@ export default function AdminProfilSekolahPage() {
   const handleOpenKontak = () => {
     setKontakData({ 
       no_telpon: profile?.no_telpon || '', 
-      email: profile?.email || '' 
+      email: profile?.email || '',
+      whatsapp: profile?.whatsapp || '',
+      instagram: profile?.instagram || '',
+      tiktok: profile?.tiktok || '',
+      facebook: profile?.facebook || '',
+      youtube: profile?.youtube || ''
     });
     setIsKontakModalOpen(true);
   };
@@ -399,6 +412,16 @@ export default function AdminProfilSekolahPage() {
                   />
                 )}
               </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Instagram</label>
+                  <input readOnly value={profile?.instagram || '@'} className="w-full border border-gray-300 rounded-md px-3 py-1 text-xs bg-gray-50 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">TikTok</label>
+                  <input readOnly value={profile?.tiktok || '@'} className="w-full border border-gray-300 rounded-md px-3 py-1 text-xs bg-gray-50 outline-none" />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -448,18 +471,42 @@ export default function AdminProfilSekolahPage() {
 
       {/* MODAL: Edit Kontak */}
       <Modal open={isKontakModalOpen} onClose={() => setIsKontakModalOpen(false)} title="Ubah Kontak Web Sekolah">
-         <form onSubmit={handleUpdateKontak} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon Pendaftaran</label>
-              <input type="text" required value={kontakData.no_telpon} onChange={e => setKontakData({...kontakData, no_telpon: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+         <form onSubmit={handleUpdateKontak} className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
+                <input type="text" required value={kontakData.no_telpon} onChange={e => setKontakData({...kontakData, no_telpon: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
+                <input type="text" value={kontakData.whatsapp} onChange={e => setKontakData({...kontakData, whatsapp: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" placeholder="Contoh: 0812..." />
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email Publik</label>
               <input type="email" required value={kontakData.email} onChange={e => setKontakData({...kontakData, email: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Instagram (Username)</label>
+                <input type="text" value={kontakData.instagram} onChange={e => setKontakData({...kontakData, instagram: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" placeholder="@username" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">TikTok (Username)</label>
+                <input type="text" value={kontakData.tiktok} onChange={e => setKontakData({...kontakData, tiktok: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" placeholder="@username" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Facebook (Link/Nama)</label>
+                <input type="text" value={kontakData.facebook} onChange={e => setKontakData({...kontakData, facebook: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">YouTube (Channel Link)</label>
+                <input type="text" value={kontakData.youtube} onChange={e => setKontakData({...kontakData, youtube: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+              </div>
+            </div>
             <div className="pt-4 flex justify-end gap-3 border-t">
-              <button type="button" onClick={() => setIsKontakModalOpen(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">Batal</button>
-              <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66]">Simpan</button>
+              <button type="button" onClick={() => setIsKontakModalOpen(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">Batal</button>
+              <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] cursor-pointer">Simpan</button>
             </div>
          </form>
       </Modal>

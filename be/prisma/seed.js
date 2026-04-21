@@ -7,7 +7,7 @@ async function main() {
 	console.log("🌱 Mulai proses seeding...\n");
 
 	const hashedAdminPass = await bcrypt.hash("Admin123!", 10);
-	const hashedVerifPass = await bcrypt.hash("Verif123!", 10);
+	const hashedVerifPass = await bcrypt.hash("Mitha123!", 10);
 	const hashedPendaftarPass = await bcrypt.hash("Maltrian123!", 10);
 
 	/* ──────────────────── ADMIN ──────────────────── */
@@ -67,10 +67,10 @@ async function main() {
 				no_telpon: "0431826030",
 				email: "smp@exmaple.sch.id",
 				whatsapp: "6285218978970",
-				youtube: "",
-				instagram: "",
-				facebook: "",
-				tiktok: "",
+				youtube: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+				instagram: "https://www.instagram.com/smpkatolikstrafael/",
+				facebook: "https://www.facebook.com/smpkatolikstrafael/",
+				tiktok: "https://www.tiktok.com/smpkatolikstrafael/",
 				id_admin: admin.id_admin,
 			},
 		});
@@ -249,7 +249,7 @@ async function main() {
 		create: {
 			nama_lengkap: "Maltrian Ahmad Terok",
 			kata_sandi: hashedPendaftarPass,
-			nisn: "0012345678",
+			nisn: "24013058",
 			jenis_kelamin: "L",
 			tempat_lahir: "Bahu",
 			tanggal_lahir: new Date("2012-02-01"),
@@ -257,7 +257,7 @@ async function main() {
 			no_hp: "081234567891",
 			email: "ahmad@email.com",
 			asal_sekolah: "SD Negeri 1 Bitung",
-			nama_wali: "Mackie",
+			nama_wali: "Chelsea Blessing Christenia Manahampi",
 		},
 	});
 
@@ -284,8 +284,8 @@ async function main() {
 	console.log("──────────────────────────────");
 	console.log("  Login Akun:");
 	console.log(`  Admin        → username: admin       | password: Admin123!`);
-	console.log(`  Verifikator  → username: verifikator | password: Verif123!`);
-	console.log(`  Pendaftar    → username: Maltrian    | password: Maltrian123!`);
+	console.log(`  Verifikator  → username: selomitha | password: Verif123!`);
+	console.log(`  Pendaftar    → nisn: 24013058    | password: Maltrian123!`);
 	console.log("──────────────────────────────");
 }
 

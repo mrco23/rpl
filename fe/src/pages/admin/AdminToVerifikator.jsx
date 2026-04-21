@@ -136,7 +136,7 @@ export default function AdminToVerifikator() {
             </div>
             <button
               onClick={handleOpenAdd}
-              className="flex items-center gap-2 bg-white border border-[#253b80] text-[#253b80] hover:bg-blue-50 px-4 py-2 rounded text-sm font-semibold transition-colors"
+              className="flex items-center gap-2 bg-white border border-[#253b80] text-[#253b80] hover:bg-blue-50 px-4 py-2 rounded text-sm font-semibold transition-colors cursor-pointer"
             >
               <Plus size={16} strokeWidth={2.5} />
               Buat
@@ -205,7 +205,7 @@ export default function AdminToVerifikator() {
                           <button
                             onClick={() => handleOpenDetail(item)}
                             title="Lihat Detail"
-                            className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors"
+                            className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors cursor-pointer"
                           >
                             <Eye size={16} />
                           </button>
@@ -213,7 +213,7 @@ export default function AdminToVerifikator() {
                           <button
                             onClick={() => handleOpenEdit(item)}
                             title="Edit Akun"
-                            className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300"
+                            className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300 cursor-pointer"
                           >
                             <Edit2 size={16} />
                           </button>
@@ -221,7 +221,7 @@ export default function AdminToVerifikator() {
                           <button
                             onClick={() => handleDelete(item.id_verifikator)}
                             title="Hapus Akun"
-                            className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors"
+                            className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors cursor-pointer"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -283,7 +283,7 @@ export default function AdminToVerifikator() {
             <div className="pt-4 flex justify-end">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 font-medium transition-colors"
+                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 font-medium transition-colors cursor-pointer"
               >
                 Tutup
               </button>
@@ -342,14 +342,14 @@ export default function AdminToVerifikator() {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] transition-colors disabled:opacity-50"
+                className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {submitting ? "Menyimpan..." : "Simpan Akun"}
               </button>
@@ -371,7 +371,7 @@ export default function AdminToVerifikator() {
             <p className="text-sm text-gray-500 mb-6">{successMessage}</p>
             <button
               onClick={() => setShowSuccessModal(false)}
-              className="w-full py-2.5 bg-[#253b80] text-white rounded-lg font-semibold hover:bg-[#1a2c66] transition"
+              className="w-full py-2.5 bg-[#253b80] text-white rounded-lg font-semibold hover:bg-[#1a2c66] transition cursor-pointer"
             >
               Tutup
             </button>

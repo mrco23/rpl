@@ -182,25 +182,23 @@ export default function AdminProgram() {
                         <button
                           onClick={() => handleOpenDetail(item)}
                           title="Lihat Detail"
-                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors"
+                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors cursor-pointer"
                         >
                           <Eye size={16} />
                         </button>
 
-                        {/* Tombol Edit */}
                         <button
                           onClick={() => handleOpenEdit(item)}
                           title="Edit Program"
-                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300"
+                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300 cursor-pointer"
                         >
                           <Edit2 size={16} />
                         </button>
 
-                        {/* Tombol Hapus */}
                         <button
                           onClick={() => handleDelete(item.id_program)}
                           title="Hapus Program"
-                          className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors"
+                          className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors cursor-pointer"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -222,8 +220,12 @@ export default function AdminProgram() {
       >
         {modalMode === 'detail' ? (
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
-             {selectedItem?.gambar_pu && (
+             {selectedItem?.gambar_pu ? (
                 <img src={selectedItem.gambar_pu} alt="Program" className="w-full h-auto rounded-lg max-h-60 object-cover" />
+             ) : (
+                <div className="w-full h-40 bg-gray-100 flex items-center justify-center rounded-lg text-gray-400">
+                  Gambar tidak ada
+                </div>
              )}
              <div>
                <h3 className="font-bold text-lg">{selectedItem?.nama_pu}</h3>
