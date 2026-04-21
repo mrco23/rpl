@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IoArrowBackSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CalendarDays } from "lucide-react";
 import { requestAPI } from "../../services/api.js";
 import { waveApi } from "../../services/waveService.js";
 
@@ -126,38 +126,64 @@ export default function ApplicantRegisterPage() {
           pendaftaran.
         </p>
 
-        {/* Stepper */}
-        <div className="flex items-center mb-6 relative">
-          {/* Step 1 */}
-          <div className="flex flex-col items-center relative">
-            <div className="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center font-bold">
-              1
-            </div>
-            <span className="mt-2 text-sm font-semibold text-center">
-              Identitas calon siswa
-            </span>
-
-            {/* Garis horizontal pendek dari step 1 */}
-            <div className="absolute left-full w-40 h-[2px] top-1/2 -translate-y-1/2 bg-gray-400">
-              {/* Progress biru */}
-              <div
-                className={`h-full bg-blue-800 transition-all duration-500 ${
-                  step === 1 ? "w-0" : step === 2 ? "w-[90%]" : "w-full"
-                }`}
-              ></div>
-            </div>
+        {/* Dynamic Display based on wave status */}
+        {gelombangLoading ? (
+          <div className="bg-white rounded-xl border border-gray-200 p-8 text-center animate-pulse">
+            <div className="w-12 h-12 bg-gray-200 rounded-full mx-auto mb-4"></div>
+            <div className="h-6 bg-gray-200 rounded w-3/4 mx-auto mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
           </div>
-
-          {/* Step 2 */}
-          <div className="flex flex-col items-center ml-40">
-            <div className={`w-10 h-10 rounded-full border flex items-center justify-center font-bold ${step >= 2 ? 'bg-blue-800 text-white border-blue-800' : 'border-gray-300 text-gray-400'}`}>
-              2
+        ) : !gelombangAktif ? (
+          <div className="bg-white rounded-xl border border-red-200 shadow-sm p-10 text-center">
+            <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CalendarDays size={40} />
             </div>
-            <span className={`mt-2 text-sm font-semibold text-center ${step >= 2 ? 'text-blue-800' : 'text-gray-400'}`}>
-              Buat Akun
-            </span>
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">Pendaftaran Belum Dibuka</h2>
+            <p className="text-gray-500 mb-8 max-w-md mx-auto">
+              Mohon maaf, saat ini tidak ada gelombang pendaftaran (PPDB) yang sedang aktif. 
+              Silakan pantau informasi terbaru di halaman beranda atau hubungi pihak sekolah.
+            </p>
+            <button
+               onClick={() => navigate("/")}
+               className="px-8 py-3 bg-[#274ac0] text-white rounded-xl font-semibold hover:bg-[#2343ad] transition shadow-md"
+            >
+              Kembali ke Beranda
+            </button>
           </div>
-        </div>
+        ) : (
+          <>
+            {/* Stepper */}
+            <div className="flex items-center mb-6 relative">
+              {/* Step 1 */}
+              <div className="flex flex-col items-center relative">
+                <div className="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center font-bold">
+                  1
+                </div>
+                <span className="mt-2 text-sm font-semibold text-center">
+                  Identitas calon siswa
+                </span>
+
+                {/* Garis horizontal pendek dari step 1 */}
+                <div className="absolute left-full w-40 h-[2px] top-1/2 -translate-y-1/2 bg-gray-400">
+                  {/* Progress biru */}
+                  <div
+                    className={`h-full bg-blue-800 transition-all duration-500 ${
+                      step === 1 ? "w-0" : step === 2 ? "w-[90%]" : "w-full"
+                    }`}
+                  ></div>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex flex-col items-center ml-40">
+                <div className={`w-10 h-10 rounded-full border flex items-center justify-center font-bold ${step >= 2 ? 'bg-blue-800 text-white border-blue-800' : 'border-gray-300 text-gray-400'}`}>
+                  2
+                </div>
+                <span className={`mt-2 text-sm font-semibold text-center ${step >= 2 ? 'text-blue-800' : 'text-gray-400'}`}>
+                  Buat Akun
+                </span>
+              </div>
+            </div>
 
         {/* Catatan penting */}
         <div className="bg-yellow-100 p-4 rounded-lg mb-6 items-start gap-3">
@@ -460,6 +486,8 @@ export default function ApplicantRegisterPage() {
               </button>
             </div>
           </form>
+        )}
+          </>
         )}
       </div>
 

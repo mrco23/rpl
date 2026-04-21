@@ -1,0 +1,27 @@
+meta {
+  name: Update Verifikator
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/verifikator/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: 1
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "nama": "Nama Verifikator Updated",
+    "username": "verifikator_new",
+    "password": "newpassword123"
+  }
+}
