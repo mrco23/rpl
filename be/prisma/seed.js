@@ -183,17 +183,17 @@ async function main() {
 	/* ──────────────────── PROGRAM UNGGULAN ──────────────────── */
 	const programData = [
 		{
-			nama: "Program Penguatan Karakter",
+			nama_pu: "Program Penguatan Karakter",
 			deskripsi:
 				"Program rutin yang dirancang untuk membentuk karakter siswa melalui kegiatan refleksi, doa bersama, dan pembinaan moral berbasis nilai Kristiani.",
 		},
 		{
-			nama: "Kelas Bilingual",
+			nama_pu: "Kelas Bilingual",
 			deskripsi:
 				"Program pembelajaran dwibahasa (Indonesia-Inggris) yang diterapkan pada mata pelajaran tertentu untuk meningkatkan kemampuan berbahasa siswa.",
 		},
 		{
-			nama: "Pendampingan Akademik",
+			nama_pu: "Pendampingan Akademik",
 			deskripsi:
 				"Bimbingan belajar tambahan yang diberikan oleh guru untuk siswa yang membutuhkan perhatian khusus dalam mata pelajaran tertentu.",
 		},

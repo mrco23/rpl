@@ -54,7 +54,8 @@ export const register = async (payload) => {
         email: payload.email || null,
         nama_wali: payload.nama_wali || null,
         id_gelombang: activeGelombang.id_gelombang,
-        status_pendaftaran: "menunggu_verifikasi",
+        status_pendaftaran: "menunggu verifikasi",
+
     };
 
     return prisma.pendaftar.create({data});
@@ -75,5 +76,21 @@ export const getPendaftarById = async (id) => {
 };
 
 export const getAllPendaftar = async () => {
-    return await prisma.pendaftar.findMany();
+    return await prisma.pendaftar.findMany({
+        include: {
+            gelombang: true
+        }
+    });
 };
+
+export const updateStatusMassal = async (ids, status) => {
+    return await prisma.pendaftar.updateMany({
+        where: {
+            id_pendaftar: { in: ids.map(id => Number(id)) }
+        },
+        data: {
+            status_pendaftaran: status
+        }
+    });
+};
+

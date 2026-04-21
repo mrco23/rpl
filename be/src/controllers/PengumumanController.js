@@ -70,3 +70,16 @@ export const remove = async (req, res) => {
 		res.status(400).json({ message: error.message || "Gagal menghapus data" });
 	}
 };
+
+export const getByPendaftar = async (req, res) => {
+	try {
+		const data = await PengumumanService.getPengumumanByPendaftar(req.user.id);
+		res.json({
+			message: "success",
+			data: data.map((item) => PengumumanService.serialize(req, item)),
+		});
+	} catch (error) {
+		res.status(400).json({ message: error.message });
+	}
+};
+

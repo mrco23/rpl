@@ -1,33 +1,48 @@
 import DokumenService from "../services/DokumenService.js";
 
 class DokumenController {
-  updateVerifikasi = async (req, res) => {
+  getMe = async (req, res) => {
     try {
-      const { status_verifikasi, catatan_verifikasi } = req.body;
-      const { id_dokumen } = req.params;
-      
-      const idVerifikator = req.user.id;
+      const idPendaftar = req.user.id;
+      const data = await DokumenService.getDokumenByPendaftar(idPendaftar);
+      return res.status(200).json({ message: "success", data });
+    } catch (error) {
+      return res.status(500).json({ message: "Gagal mengambil dokumen", error: error.message });
+    }
+  };
 
-      if (!status_verifikasi) {
-        return res.status(400).json({ message: "status_verifikasi wajib diisi" });
+  getByPendaftar = async (req, res) => {
+    try {
+      const { id_pendaftar } = req.params;
+      const data = await DokumenService.getDokumenByPendaftar(id_pendaftar);
+      return res.status(200).json({ message: "success", data });
+    } catch (error) {
+      return res.status(500).json({ message: "Gagal mengambil dokumen pendaftar", error: error.message });
+    }
+  };
+
+  upload = async (req, res) => {
+    try {
+      const idPendaftar = req.user.id;
+      const { nama_dokumen } = req.body;
+      
+      if (!req.file) {
+        return res.status(400).json({ message: "File wajib diunggah" });
       }
 
-      const updated = await DokumenService.updateVerifikasi(id_dokumen, idVerifikator, {
-        status_verifikasi,
-        catatan_verifikasi
-      });
+      if (!nama_dokumen) {
+        return res.status(400).json({ message: "Nama dokumen wajib diisi" });
+      }
 
-      return res.status(200).json({ 
-        message: "Verifikasi dokumen berhasil diupdate", 
-        data: updated 
-      });
+      const filePath = `/uploads/${req.file.filename}`;
+      const data = await DokumenService.uploadDokumen(idPendaftar, nama_dokumen, filePath);
+
+      return res.status(200).json({ message: "Dokumen berhasil diunggah", data });
     } catch (error) {
-      return res.status(400).json({ 
-        message: "Gagal update verifikasi", 
-        error: error.message 
-      });
+      return res.status(500).json({ message: "Gagal mengunggah dokumen", error: error.message });
     }
   };
 }
 
 export default new DokumenController();
+

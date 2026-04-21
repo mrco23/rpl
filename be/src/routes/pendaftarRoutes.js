@@ -12,6 +12,19 @@ pendaftarRoute.post("/login", PendaftarController.login);
 pendaftarRoute.get("/me", verifyToken, authorizeRole("pendaftar"), PendaftarController.getMe);
 
 // Endpoint Ambil Semua Pendaftar
-pendaftarRoute.get("/", verifyToken, authorizeRole("admin", "verifikator"), PendaftarController.getAllPendaftar);
+pendaftarRoute.get(
+	"/",
+	verifyToken,
+	authorizeRole("admin", "verifikator"),
+	PendaftarController.getAllPendaftar,
+);
+
+// Endpoint Update Status Massal
+pendaftarRoute.patch(
+	"/mass-status",
+	verifyToken,
+	authorizeRole("admin"),
+	PendaftarController.updateStatusMassal,
+);
 
 export default pendaftarRoute;

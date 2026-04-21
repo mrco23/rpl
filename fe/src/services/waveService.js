@@ -5,7 +5,7 @@ const resource = "admin/gelombang";
 export const waveApi = {
   getAdminList: async () => {
     const res = await requestAPI({ method: "GET", url: `/${resource}` });
-    return res.data;
+    return res;
   },
   create: async (payload) => {
     const res = await requestAPI({
@@ -13,7 +13,7 @@ export const waveApi = {
       url: `/${resource}`,
       data: payload,
     });
-    return res.data;
+    return res;
   },
   update: async (id, payload) => {
     const res = await requestAPI({
@@ -21,15 +21,17 @@ export const waveApi = {
       url: `/${resource}/${id}`,
       data: payload,
     });
-    return res.data;
+    return res;
   },
   remove: async (id) => {
     const res = await requestAPI({ method: "DELETE", url: `/${resource}/${id}` });
-    return res.data;
+    return res;
   },
+
   // Public endpoint
   getActiveWave: async () => {
     const res = await requestAPI({ method: "GET", url: `/gelombang/aktif` });
-    return res.data;
+    return res;
   }
 };
+

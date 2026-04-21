@@ -115,11 +115,11 @@ export default function VerifikatorBerandaPage() {
               Lihat Semua
             </NavLink>
           </div>
-          <div className="flex-1 p-5 pt-0">
-            <div className="w-full text-left mt-4 border rounded-lg overflow-hidden">
+          <div className="flex-1 p-5 pt-0 overflow-x-auto custom-scrollbar">
+            <div className="w-full text-left mt-4 border rounded-lg overflow-hidden min-w-[500px]">
               <div className="grid grid-cols-12 gap-4 bg-gray-50 text-gray-700 font-bold text-xs p-3 uppercase tracking-wider border-b">
                 <div className="col-span-6">Nama Siswa</div>
-                <div className="col-span-3">Tanggal Daftar</div>
+                <div className="col-span-3 text-center whitespace-nowrap">Tanggal Daftar</div>
                 <div className="col-span-3 text-center">Status</div>
               </div>
               <div className="flex flex-col">
@@ -143,7 +143,7 @@ export default function VerifikatorBerandaPage() {
                                     <p className="text-xs text-gray-500">NISN : {app.nisn}</p>
                                 </div>
                             </div>
-                            <div className="col-span-3 text-sm text-gray-800 font-medium whitespace-nowrap">
+                            <div className="col-span-3 text-center text-sm text-gray-800 font-medium whitespace-nowrap">
                                 {app.tanggalDaftar}
                             </div>
                             <div className="col-span-3 text-center">
@@ -177,11 +177,11 @@ export default function VerifikatorBerandaPage() {
               Lihat Semua
             </NavLink>
           </div>
-          <div className="flex-1 p-5 pt-0">
-            <div className="w-full text-left mt-4 border rounded-lg overflow-hidden">
+          <div className="flex-1 p-5 pt-0 overflow-x-auto custom-scrollbar">
+            <div className="w-full text-left mt-4 border rounded-lg overflow-hidden min-w-[500px]">
               <div className="grid grid-cols-12 gap-4 bg-gray-50 text-gray-700 font-bold text-xs p-3 uppercase tracking-wider border-b">
                 <div className="col-span-6">Nama Siswa</div>
-                <div className="col-span-3 text-center">Tanggal Daftar</div>
+                <div className="col-span-3 text-center whitespace-nowrap">Tanggal Daftar</div>
                 <div className="col-span-3 text-center">Aksi</div>
               </div>
               <div className="flex flex-col">
@@ -208,7 +208,7 @@ export default function VerifikatorBerandaPage() {
                             <div className="col-span-3 text-center">
                                 <NavLink 
                                     to={`/verifikator/pendaftar/${app.nisn}`}
-                                    className="text-blue-600 border border-blue-600 hover:bg-blue-50 px-2 py-1 rounded text-[10px] font-bold uppercase transition-colors whitespace-nowrap cursor-pointer"
+                                    className="text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all whitespace-nowrap cursor-pointer shadow-sm"
                                 >
                                     Periksa
                                 </NavLink>

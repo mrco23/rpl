@@ -90,7 +90,7 @@ export default function AdminBeranda() {
         data?.card?.map((c, index) => {
           const keyName = Object.keys(c)[0];
           const val = c[keyName];
-          
+
           const cardLinks = {
             totalFasilitas: "/admin/fasilitas",
             totalEkstrakurikuler: "/admin/ekstrakurikuler",
@@ -110,8 +110,8 @@ export default function AdminBeranda() {
                   <Users size={24} />
                 </div>
               </div>
-              <NavLink 
-                to={cardLinks[keyName] || "#"} 
+              <NavLink
+                to={cardLinks[keyName] || "#"}
                 className="text-blue-600 text-sm font-medium flex items-center gap-1 mt-auto hover:underline"
               >
                 Lihat Selengkapnya <ArrowRight size={16} />

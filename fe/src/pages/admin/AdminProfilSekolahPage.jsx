@@ -227,8 +227,21 @@ export default function AdminProfilSekolahPage() {
             </div>
 
             <div className="pt-4 flex justify-end gap-3 border-t">
-              <button type="button" onClick={() => setIsCreateModalOpen(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">Batal</button>
-              <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66]">Simpan Profil</button>
+                      <button
+                        type="button"
+                        onClick={() => setIsCreateModalOpen(false)}
+                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
+                      >
+                        Batal
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] cursor-pointer"
+                      >
+                        Simpan Profil
+                      </button>
+
             </div>
           </form>
         </Modal>
@@ -253,10 +266,11 @@ export default function AdminProfilSekolahPage() {
           <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-semibold text-[#253b80] uppercase">Informasi Sekolah</h2>
-              <button onClick={handleOpenInfo} disabled={loading} className="flex items-center gap-2 bg-[#253b80] hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50">
+              <button onClick={handleOpenInfo} disabled={loading} className="flex items-center gap-2 bg-[#253b80] hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer">
                 <Edit2 size={16} />
                 Ubah
               </button>
+
             </div>
 
             <div className="space-y-4">
@@ -307,10 +321,11 @@ export default function AdminProfilSekolahPage() {
           <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-semibold text-[#253b80]">Kepala Sekolah</h2>
-              <button onClick={handleOpenKepsek} disabled={loading} className="flex items-center gap-2 bg-[#253b80] hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50">
+              <button onClick={handleOpenKepsek} disabled={loading} className="flex items-center gap-2 bg-[#253b80] hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer">
                 <Edit2 size={16} />
                 Ubah
               </button>
+
             </div>
 
             <div className="space-y-4">
@@ -368,39 +383,59 @@ export default function AdminProfilSekolahPage() {
               </div>
             )}
 
-            <button onClick={handleLogoUpload} disabled={loading || uploadingImg || !selectedImage} className="w-full flex items-center justify-center gap-2 bg-[#253b80] hover:bg-blue-800 text-white px-4 py-3 rounded-lg text-sm font-medium transition-colors mt-auto disabled:bg-gray-400">
+            <button onClick={handleLogoUpload} disabled={loading || uploadingImg || !selectedImage} className="w-full flex items-center justify-center gap-2 bg-[#253b80] hover:bg-blue-800 text-white px-4 py-3 rounded-lg text-sm font-medium transition-colors mt-auto disabled:bg-gray-400 cursor-pointer">
               <Upload size={18} />
               {uploadingImg ? 'Mengunggah...' : 'Unggah'}
             </button>
+
           </div>
 
           {/* Card Kontak Sekolah */}
           <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-semibold text-[#253b80]">Kontak Sekolah</h2>
-              <button onClick={handleOpenKontak} disabled={loading} className="flex items-center gap-2 bg-[#253b80] hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50">
+              <button onClick={handleOpenKontak} disabled={loading} className="flex items-center gap-2 bg-[#253b80] hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer">
                 <Edit2 size={16} />
                 Ubah
               </button>
             </div>
 
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
-                <div className="flex">
-                  <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-100 text-gray-500 text-sm">
-                    📞
-                  </span>
-                  {loading ? <Skeleton className="h-10 flex-1 rounded-none rounded-r-md" /> : (
-                    <input
-                      type="text"
-                      value={profile?.no_telpon || '+62 -'}
-                      className="flex-1 block w-full rounded-none rounded-r-md border border-gray-300 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-50"
-                      readOnly
-                    />
-                  )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
+                  <div className="flex">
+                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-100 text-gray-500 text-sm">
+                      📞
+                    </span>
+                    {loading ? <Skeleton className="h-10 flex-1 rounded-none rounded-r-md" /> : (
+                      <input
+                        type="text"
+                        value={profile?.no_telpon || '-'}
+                        className="flex-1 block w-full rounded-none rounded-r-md border border-gray-300 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-50"
+                        readOnly
+                      />
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 font-bold">WhatsApp</label>
+                  <div className="flex">
+                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-100 text-gray-500 text-sm">
+                      💬
+                    </span>
+                    {loading ? <Skeleton className="h-10 flex-1 rounded-none rounded-r-md" /> : (
+                      <input
+                        type="text"
+                        value={profile?.whatsapp || '-'}
+                        className="flex-1 block w-full rounded-none rounded-r-md border border-gray-300 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-50"
+                        readOnly
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email Sekolah</label>
                 {loading ? <Skeleton className="h-10 w-full" /> : (
@@ -412,18 +447,28 @@ export default function AdminProfilSekolahPage() {
                   />
                 )}
               </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Instagram</label>
-                  <input readOnly value={profile?.instagram || '@'} className="w-full border border-gray-300 rounded-md px-3 py-1 text-xs bg-gray-50 outline-none" />
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Instagram <span className="text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded ml-1">LINK</span></label>
+                  <input readOnly value={profile?.instagram || '-'} className="w-full border border-gray-300 rounded-md px-3 py-1 text-xs bg-gray-50 outline-none" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">TikTok</label>
-                  <input readOnly value={profile?.tiktok || '@'} className="w-full border border-gray-300 rounded-md px-3 py-1 text-xs bg-gray-50 outline-none" />
+                  <label className="block text-sm font-medium text-gray-700 mb-1">TikTok <span className="text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded ml-1">LINK</span></label>
+                  <input readOnly value={profile?.tiktok || '-'} className="w-full border border-gray-300 rounded-md px-3 py-1 text-xs bg-gray-50 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Facebook <span className="text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded ml-1">LINK</span></label>
+                  <input readOnly value={profile?.facebook || '-'} className="w-full border border-gray-300 rounded-md px-3 py-1 text-xs bg-gray-50 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">YouTube <span className="text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded ml-1">LINK</span></label>
+                  <input readOnly value={profile?.youtube || '-'} className="w-full border border-gray-300 rounded-md px-3 py-1 text-xs bg-gray-50 outline-none" />
                 </div>
               </div>
             </div>
           </div>
+
 
         </div>
 

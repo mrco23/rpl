@@ -101,11 +101,11 @@ export default function LandingPage() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 flex flex-col justify-start pt-32 h-full max-w-7xl mx-auto px-8 text-white">
-          <h1 className="text-5xl md:text-6xl font-semibold mb-4 leading-tight">
-            SMP KATOLIK <br /> ST.RAFAEL MANADO
+        <div className="relative z-10 flex flex-col justify-start pt-24 md:pt-32 h-full max-w-7xl mx-auto px-6 sm:px-8 text-white">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight">
+            SMP KATOLIK <br className="hidden sm:block" /> ST. RAFAEL MANADO
           </h1>
-          <p className="text-base md:text-lg mb-5 max-w-lg">
+          <p className="text-sm md:text-lg mb-8 max-w-lg opacity-90 leading-relaxed font-medium">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
@@ -122,34 +122,33 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-100px] w-full max-w-6xl px-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-24">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-80px] w-full max-w-7xl px-4 sm:px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {stats.map((item, index) => (
               <div key={index} className="flex flex-col group">
                 <Link to={item.path}>
                   <div
-                    className="bg-white rounded-lg py-8 px-8 text-center shadow-md relative w-full cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden"
+                    className="bg-white rounded-xl py-6 sm:py-8 px-4 sm:px-8 text-center shadow-lg relative w-full cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden border border-gray-100"
                   >
-                    <span className="absolute top-3 right-4 text-blue-900 text-4xl opacity-100">
+                    <span className="absolute top-2 right-3 text-blue-900 text-2xl opacity-20">
                       ✦
                     </span>
 
-                    <h1 className="text-5xl font-bold text-blue-900">
+                    <h1 className="text-3xl sm:text-5xl font-bold text-blue-900">
                       {item.value}
                     </h1>
 
-                    {/* Label */}
-                    <p className="text-blue-900 font-medium text-sm mt-2">
+                    <p className="text-blue-900 font-bold text-xs sm:text-sm mt-1 sm:mt-2 uppercase tracking-wider">
                       {item.label}
                     </p>
 
                     <div
-                      className="absolute bottom-0 left-0 w-full h-1 bg-blue-900 transform scale-x-0 origin-left transition-all duration-300 group-hover:scale-x-100"
+                      className="absolute bottom-0 left-0 w-full h-1.5 bg-blue-900 transform scale-x-0 origin-left transition-all duration-300 group-hover:scale-x-100"
                     ></div>
                   </div>
                 </Link>
                 <div
-                  className="w-full h-1 bg-blue-900 rounded mt-3 transition-all duration-300 group-hover:opacity-0 group-hover:scale-x-0"
+                  className="w-full h-1 bg-blue-900/10 rounded mt-3 transition-all duration-300 group-hover:opacity-0 group-hover:scale-x-0"
                 ></div>
               </div>
             ))}

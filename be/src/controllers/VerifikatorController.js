@@ -103,6 +103,45 @@ class VerifikatorController {
             res.status(500).json({ message: error.message });
         }
     };
+
+    getPendaftarVerifikasi = async (req, res) => {
+        try {
+            const data = await VerifikatorService.getPendaftarForVerifikator();
+            res.status(200).json({ message: "success", data });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    };
+
+    getMyAssignedPendaftar = async (req, res) => {
+        try {
+            const data = await VerifikatorService.getAssignedPendaftar(req.user.id);
+            res.status(200).json({ message: "success", data });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    };
+
+    assignPendaftar = async (req, res) => {
+        try {
+            const { id } = req.params;
+            const updated = await VerifikatorService.assignPendaftar(id, req.user.id);
+            res.status(200).json({ message: "Berhasil mengambil alih pemeriksaan pendaftar", data: updated });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    };
+
+    verifyPendaftar = async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { status, catatan } = req.body;
+            const updated = await VerifikatorService.verifyPendaftar(id, req.user.id, status, catatan);
+            res.status(200).json({ message: "Proses verifikasi pendaftar selesai", data: updated });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    };
 }
 
 export default VerifikatorController;

@@ -22,6 +22,10 @@ import {
   updatePengumuman,
   deletePengumuman
 } from "../../services/adminPengumumanService";
+import { getAllPendaftar } from "../../services/adminPendaftarService";
+import { PENDAFTAR_STATUS, STATUS_LABELS } from "../../constants/pendaftarStatus";
+import { Search, Filter, CheckSquare, Square } from "lucide-react";
+
 
 function AdminNotificationsPage() {
   const [loading, setLoading] = useState(true);
@@ -33,14 +37,29 @@ function AdminNotificationsPage() {
   const [modalMode, setModalMode] = useState('add');
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const [formData, setFormData] = useState({ judul_pengumuman: '', deksripsi: '' });
+  const [formData, setFormData] = useState({ judul_pengumuman: '', deksripsi: '', recipients: [] });
+  const [pendaftarList, setPendaftarList] = useState([]);
+  const [pendaftarFilter, setPendaftarFilter] = useState('');
+  const [pendaftarSearch, setPendaftarSearch] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
+
   useEffect(() => {
     fetchNotifications();
+    fetchPendaftar();
   }, []);
+
+  const fetchPendaftar = async () => {
+    try {
+      const res = await getAllPendaftar();
+      setPendaftarList(res.data || []);
+    } catch (err) {
+      console.error("Gagal ambil pendaftar:", err);
+    }
+  };
+
 
   const fetchNotifications = async () => {
     try {
@@ -56,19 +75,22 @@ function AdminNotificationsPage() {
 
   const handleOpenAdd = () => {
     setModalMode('add');
-    setFormData({ judul_pengumuman: '', deksripsi: '' });
+    setFormData({ judul_pengumuman: '', deksripsi: '', recipients: [] });
     setIsModalOpen(true);
   };
+
 
   const handleOpenEdit = (item) => {
     setModalMode('edit');
     setSelectedItem(item);
     setFormData({
       judul_pengumuman: item.judul_pengumuman || '',
-      deksripsi: item.deksripsi || ''
+      deksripsi: item.deksripsi || '',
+      recipients: (item.pengumuman_pendaftar || []).map(rp => rp.id_pendaftar)
     });
     setIsModalOpen(true);
   };
+
 
   const handleOpenDetail = (item) => {
     setModalMode('detail');
@@ -310,14 +332,73 @@ function AdminNotificationsPage() {
               <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Isi Pengumuman</label>
               <textarea
                 required
-                rows={6}
+                rows={4}
                 placeholder="Tuliskan isi pengumuman di sini..."
                 value={formData.deksripsi}
                 onChange={(e) => setFormData({ ...formData, deksripsi: e.target.value })}
                 className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-[#253b80] focus:border-[#253b80] shadow-sm transition-all resize-none"
               />
             </div>
+
+            {/* RECIPIENTS SELECTION */}
+            <div className="border-t pt-4">
+              <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Penerima Pengumuman</label>
+              
+              <div className="flex gap-2 mb-3">
+                <div className="relative flex-1">
+                  <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input 
+                    type="text" 
+                    placeholder="Cari nama..." 
+                    className="w-full pl-9 pr-3 py-2 text-xs border rounded-lg outline-none focus:ring-1 focus:ring-blue-500"
+                    value={pendaftarSearch}
+                    onChange={e => setPendaftarSearch(e.target.value)}
+                  />
+                </div>
+                <select 
+                  className="text-xs border rounded-lg px-2 outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+                  value={pendaftarFilter}
+                  onChange={e => setPendaftarFilter(e.target.value)}
+                >
+                  <option value="">Semua Status</option>
+                  {PENDAFTAR_STATUS.map(s => (
+                    <option key={s} value={s}>{STATUS_LABELS[s] || s}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="max-h-48 overflow-y-auto border rounded-xl divide-y">
+                {pendaftarList
+                  .filter(p => !pendaftarFilter || p.status_pendaftaran === pendaftarFilter)
+                  .filter(p => !pendaftarSearch || p.nama_lengkap.toLowerCase().includes(pendaftarSearch.toLowerCase()))
+                  .map(p => {
+                    const isSelected = formData.recipients.includes(p.id_pendaftar);
+                    return (
+                      <div 
+                        key={p.id_pendaftar} 
+                        className="flex items-center gap-3 p-3 hover:bg-gray-50 cursor-pointer"
+                        onClick={() => {
+                          const newRecipients = isSelected 
+                            ? formData.recipients.filter(id => id !== p.id_pendaftar)
+                            : [...formData.recipients, p.id_pendaftar];
+                          setFormData({ ...formData, recipients: newRecipients });
+                        }}
+                      >
+                        {isSelected ? <CheckSquare size={18} className="text-[#253b80]" /> : <Square size={18} className="text-gray-300" />}
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-800">{p.nama_lengkap}</p>
+                          <p className="text-[10px] text-gray-500 uppercase">{STATUS_LABELS[p.status_pendaftaran] || p.status_pendaftaran}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                {pendaftarList.length === 0 && <div className="p-4 text-center text-gray-400 text-sm">Tidak ada pendaftar</div>}
+              </div>
+              <p className="text-[10px] text-gray-400 mt-2 italic">* {formData.recipients.length} pendaftar dipilih</p>
+            </div>
+
             <div className="pt-4 flex justify-end gap-3">
+
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}

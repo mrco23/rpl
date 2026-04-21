@@ -60,7 +60,7 @@ class PendaftarController {
     getAllPendaftar = async (req, res) => {
         try {
             const data = await getAllPendaftar();
-            return res.status(200).json(data);
+            return res.status(200).json({ message: "success", data });
         } catch (error) {
             return res.status(500).json({
                 message: "Gagal mengambil data pendaftar",
@@ -68,6 +68,23 @@ class PendaftarController {
             });
         }
     };
+
+    updateStatusMassal = async (req, res) => {
+        try {
+            const { ids, status } = req.body;
+            if (!ids || !status) {
+                return res.status(400).json({ message: "ID pendaftar dan status harus diisi" });
+            }
+            await updateStatusMassal(ids, status);
+            return res.status(200).json({ message: "Berhasil memperbarui status pendaftar secara massal" });
+        } catch (error) {
+            return res.status(500).json({
+                message: "Gagal memperbarui status pendaftar",
+                error: error.message
+            });
+        }
+    };
 }
+
 
 export default new PendaftarController();
