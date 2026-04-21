@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import hero from "@assets/hero.png";
 import { Eye, EyeOff } from "lucide-react";
-import { loginService, loginAdminService, loginVerifikatorService } from "@services/authService.js";
+import {
+  loginService,
+  loginAdminService,
+  loginVerifikatorService,
+} from "@services/authService.js";
 import useAuth from "@contexts/useAuth.js";
 import { useNavigate, Link } from "react-router";
 
@@ -26,7 +30,6 @@ export default function LoginPage() {
 
     setSubmitting(true);
     setError("");
-
 
     try {
       let payload = {
@@ -54,16 +57,18 @@ export default function LoginPage() {
       }
 
       console.log(data);
-      
+
       const token = data?.token;
       let finalRole = data?.role;
 
       // Helper decode JWT murni tanpa library
       const decodeJwtRole = (jwtBlob) => {
         try {
-          const payloadB64 = jwtBlob.split('.')[1];
+          const payloadB64 = jwtBlob.split(".")[1];
           if (!payloadB64) return null;
-          const decodedStr = atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/'));
+          const decodedStr = atob(
+            payloadB64.replace(/-/g, "+").replace(/_/g, "/"),
+          );
           return JSON.parse(decodedStr)?.role || null;
         } catch (e) {
           console.error("Gagal mendecode token:", e);
@@ -126,8 +131,8 @@ export default function LoginPage() {
             Satu Platform untuk Seluruh Proses Pendaftaran
           </h1>
           <p className="text-lg">
-            Dirancang agar admin, verifikator, dan pendaftar bekerja lebih
-            cepat dengan alur yang terstruktur.
+            Dirancang agar admin, verifikator, dan pendaftar bekerja lebih cepat
+            dengan alur yang terstruktur.
           </p>
           <p className="mt-6 text-sm opacity-80">
             SMP Katolik St. Rafael Manado
@@ -141,7 +146,7 @@ export default function LoginPage() {
           onSubmit={handleLogin}
           className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-9"
         >
-          <h2 className="text-4xl text-center font-bold mb-8">Masuk ke Akun</h2>
+          <h2 className="text-4xl text-center font-bold mb-8">Masuk Ke Akun</h2>
 
           {/* ROLE */}
           <div className="mb-5">
@@ -153,7 +158,7 @@ export default function LoginPage() {
                 setIdentifier(e.target.value);
               }}
               className="w-full border-2 border-blue-200 rounded-lg px-1 py-3
-                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
             >
               <option value="pendaftar">Pendaftar</option>
               <option value="verifikator">Verifikator</option>
@@ -191,7 +196,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full border border-slate-300 rounded-lg px-2 py-3
-                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
               />
 
               <span
@@ -220,7 +225,10 @@ export default function LoginPage() {
           {/* REGISTER */}
           <p className="text-sm text-center mt-4">
             Belum punya akun?{" "}
-            <Link to={'/register'} className="text-blue-600 active:text-blue-800 cursor-pointer">
+            <Link
+              to={"/register"}
+              className="text-blue-600 active:text-blue-800 cursor-pointer"
+            >
               Daftar disini
             </Link>
           </p>

@@ -21,12 +21,14 @@ function AdminGelombang() {
   const [dataGelombang, setDataGelombang] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [selectedDeleteId, setSelectedDeleteId] = useState(null);
   const [selectedGelombang, setSelectedGelombang] = useState(null);
   const [formData, setFormData] = useState({
     nama: "",
     tanggal_mulai: "",
     tanggal_selesai: "",
-    kuota: ""
+    kuota: "",
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -53,7 +55,12 @@ function AdminGelombang() {
     try {
       await waveApi.create(formData);
       setOpenAddModal(false);
-      setFormData({ nama: "", tanggal_mulai: "", tanggal_selesai: "", kuota: "" });
+      setFormData({
+        nama: "",
+        tanggal_mulai: "",
+        tanggal_selesai: "",
+        kuota: "",
+      });
       fetchGelombang();
     } catch (error) {
       alert(error.message || "Gagal menambah gelombang");
@@ -62,14 +69,14 @@ function AdminGelombang() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Apakah Anda yakin ingin menghapus gelombang ini?")) {
-      try {
-        await waveApi.remove(id);
-        fetchGelombang();
-      } catch (error) {
-        alert(error.message || "Gagal menghapus gelombang");
-      }
+  const handleDelete = async () => {
+    try {
+      await waveApi.remove(selectedDeleteId);
+      fetchGelombang();
+      setOpenDeleteModal(false);
+      setSelectedDeleteId(null);
+    } catch (error) {
+      alert(error.message || "Gagal menghapus gelombang");
     }
   };
 
@@ -150,21 +157,25 @@ function AdminGelombang() {
           <InfoCard
             icon={<CheckCircle2 size={18} />}
             title="Gelombang Aktif"
-            value={dataGelombang.filter(g => getStatus(g) === "Aktif").length}
+            value={dataGelombang.filter((g) => getStatus(g) === "Aktif").length}
             desc="Aktif"
             color="text-green-600"
           />
           <InfoCard
             icon={<Clock3 size={18} />}
             title="Akan Datang"
-            value={dataGelombang.filter(g => getStatus(g) === "Akan Datang").length}
+            value={
+              dataGelombang.filter((g) => getStatus(g) === "Akan Datang").length
+            }
             desc="Gelombang"
             color="text-indigo-500"
           />
           <InfoCard
             icon={<FileCheck size={18} />}
             title="Selesai"
-            value={dataGelombang.filter(g => getStatus(g) === "Selesai").length}
+            value={
+              dataGelombang.filter((g) => getStatus(g) === "Selesai").length
+            }
             desc="Selesai"
             color="text-blue-600"
           />
@@ -180,7 +191,10 @@ function AdminGelombang() {
             dataGelombang.map((item) => {
               const status = getStatus(item);
               return (
-                <div key={item.id_gelombang} className="bg-white rounded-2xl shadow-md p-5 flex flex-col">
+                <div
+                  key={item.id_gelombang}
+                  className="bg-white rounded-2xl shadow-md p-5 flex flex-col"
+                >
                   <div className="flex justify-between items-center">
                     <h3 className="font-semibold text-lg">{item.nama}</h3>
                     <span
@@ -194,7 +208,8 @@ function AdminGelombang() {
 
                   <div className="flex items-center gap-3 mb-4 text-gray-600">
                     <CalendarDays size={18} className="text-[#2f4aa0]" />
-                    {formatDate(item.tanggal_mulai)} - {formatDate(item.tanggal_selesai)}
+                    {formatDate(item.tanggal_mulai)} -{" "}
+                    {formatDate(item.tanggal_selesai)}
                   </div>
 
                   <div className="flex items-center gap-3 mb-5 text-gray-600">
@@ -223,7 +238,10 @@ function AdminGelombang() {
                     </button>
 
                     <button
-                      onClick={() => handleDelete(item.id_gelombang)}
+                      onClick={() => {
+                        setSelectedDeleteId(item.id_gelombang);
+                        setOpenDeleteModal(true);
+                      }}
                       className="border rounded-md py-2 flex justify-center hover:bg-red-50 cursor-pointer transition-colors"
                     >
                       <Trash2 size={16} className="text-red-500" />
@@ -239,54 +257,81 @@ function AdminGelombang() {
       {/* MODAL TAMBAH */}
       {openAddModal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex justify-center items-center p-5">
-          <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-6">
+          <div className="bg-white w-full max-w-md rounded-8xl shadow-xl p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Tambah Gelombang</h2>
-              <button onClick={() => setOpenAddModal(false)} className="p-1 hover:bg-gray-100 rounded-full cursor-pointer"><X size={20} /></button>
+              <button
+                onClick={() => setOpenAddModal(false)}
+                className="p-1 hover:bg-gray-100 rounded-full cursor-pointer"
+              >
+                <X size={20} />
+              </button>
             </div>
             <form onSubmit={handleAdd} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nama Gelombang</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nama Gelombang
+                </label>
                 <input
                   type="text"
                   required
                   placeholder="Contoh: Gelombang 1"
                   className="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                   value={formData.nama}
-                  onChange={e => setFormData({ ...formData, nama: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nama: e.target.value })
+                  }
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Mulai</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Tanggal Mulai
+                  </label>
                   <input
                     type="date"
                     required
                     className="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                     value={formData.tanggal_mulai}
-                    onChange={e => setFormData({ ...formData, tanggal_mulai: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        tanggal_mulai: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Selesai</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Tanggal Selesai
+                  </label>
                   <input
                     type="date"
                     required
                     className="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                     value={formData.tanggal_selesai}
-                    onChange={e => setFormData({ ...formData, tanggal_selesai: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        tanggal_selesai: e.target.value,
+                      })
+                    }
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Kuota Peserta</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Kuota Peserta
+                </label>
                 <input
                   type="number"
                   required
                   placeholder="Contoh: 100"
                   className="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                   value={formData.kuota}
-                  onChange={e => setFormData({ ...formData, kuota: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, kuota: e.target.value })
+                  }
                 />
               </div>
               <button
@@ -294,9 +339,48 @@ function AdminGelombang() {
                 type="submit"
                 className="w-full bg-[#2f4aa0] text-white py-2 rounded-lg font-semibold hover:bg-[#253b80] cursor-pointer disabled:opacity-50"
               >
-                {submitting ? "Menyimpan..." : "Simpan Gelombang"}
+                {submitting ? "Menyimpan..." : "Tambah Gelombang"}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {openDeleteModal && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-md z-50 flex items-center justify-center">
+          <div className="bg-white w-full max-w-sm rounded-2xl shadow-xl p-6 text-center animate-fadeIn">
+            {/* ICON */}
+            <div className="w-14 h-14 mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br from-red-50 to-red-100 mb-4 shadow-inner">
+              <Trash2 size={20} className="text-red-500" />
+            </div>
+
+            {/* TITLE */}
+            <h3 className="text-gray-800 font-semibold text-base">
+              Hapus gelombang
+            </h3>
+
+            {/* DESC */}
+            <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+              Data yang sudah dihapus tidak dapat dikembalikan
+            </p>
+
+            {/* BUTTON */}
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setOpenDeleteModal(false)}
+                className="flex-1 py-2.5 rounded-xl text-sm bg-gray-100 hover:bg-gray-200 transition"
+              >
+                Batal
+              </button>
+
+              <button
+                onClick={handleDelete}
+                className="flex-1 py-2.5 rounded-xl text-sm text-white bg-gradient-to-r from-red-500 to-red-600 hover:opacity-90 transition flex items-center justify-center gap-2 shadow-sm"
+              >
+                <Trash2 size={14} />
+                Hapus
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -310,7 +394,9 @@ function AdminGelombang() {
               <div>
                 <h2 className="text-2xl font-bold">{selectedGelombang.nama}</h2>
                 <p className="text-gray-500 mt-1">
-                  {formatDate(selectedGelombang.tanggal_mulai)} - {formatDate(selectedGelombang.tanggal_selesai)} • {selectedGelombang.kuota} Kuota
+                  {formatDate(selectedGelombang.tanggal_mulai)} -{" "}
+                  {formatDate(selectedGelombang.tanggal_selesai)} •{" "}
+                  {selectedGelombang.kuota} Kuota
                 </p>
               </div>
 
@@ -326,14 +412,21 @@ function AdminGelombang() {
             <div className="p-6 overflow-y-auto">
               <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-6 flex items-center justify-between">
                 <div>
-                  <p className="text-blue-800 font-semibold text-lg">{selectedGelombang.totalPendaftar || 0}</p>
-                  <p className="text-blue-600 text-sm">Total Pendaftar Terdaftar</p>
+                  <p className="text-blue-800 font-semibold text-lg">
+                    {selectedGelombang.totalPendaftar || 0}
+                  </p>
+                  <p className="text-blue-600 text-sm">
+                    Total Pendaftar Terdaftar
+                  </p>
                 </div>
                 <Users className="text-blue-300" size={32} />
               </div>
 
               <div className="text-center py-10 border rounded-xl border-dashed">
-                <p className="text-gray-400">Daftar rincian pendaftar per gelombang dapat dilihat di menu "Pendaftar"</p>
+                <p className="text-gray-400">
+                  Daftar rincian pendaftar per gelombang dapat dilihat di menu
+                  "Pendaftar"
+                </p>
               </div>
             </div>
           </div>

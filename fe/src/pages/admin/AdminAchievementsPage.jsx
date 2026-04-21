@@ -321,25 +321,53 @@ export default function AdminAchievementsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Gambar (Opsional)
               </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setFormImage(e.target.files[0])}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500"
-              />
+
+              {/* PREVIEW */}
+              {(formImage || selectedItem?.gambar_prestasi) && (
+                <div className="mb-3">
+                  <img
+                    src={
+                      formImage
+                        ? URL.createObjectURL(formImage)
+                        : selectedItem?.gambar_prestasi
+                    }
+                    alt="Preview"
+                    className="w-full h-40 object-cover rounded-lg border"
+                  />
+                </div>
+              )}
+
+              {/* CUSTOM FILE INPUT */}
+              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#253b80] hover:bg-blue-50 transition">
+                <div className="flex flex-col items-center justify-center text-gray-500">
+                  <Plus size={20} />
+                  <p className="text-sm mt-1">
+                    {formImage ? "Ganti Gambar" : "Klik untuk upload"}
+                  </p>
+                  <span className="text-xs text-gray-400">PNG / JPG</span>
+                </div>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setFormImage(e.target.files[0])}
+                  className="hidden"
+                />
+              </label>
+
+              {/* NOTE */}
               {modalMode === "edit" &&
                 selectedItem?.gambar_prestasi &&
                 !formImage && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Gambar saat ini sudah ada. Upload gambar baru untuk
-                    mengganti.
+                  <p className="text-xs text-gray-500 mt-2">
+                    Kosongkan jika tidak ingin mengganti gambar.
                   </p>
                 )}
             </div>
-            <div className="pt-4 flex justify-end gap-3 border-t">
+            <div className="pt-4 flex justify-end gap-3 ">
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
