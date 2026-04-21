@@ -23,6 +23,8 @@ export default function AdminFasilitasPage() {
   const [formData, setFormData] = useState({ nama_fasilitas: '', deskripsi: '' });
   const [formImage, setFormImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     fetchFacilities();
@@ -102,6 +104,8 @@ export default function AdminFasilitasPage() {
       }
       setIsModalOpen(false);
       fetchFacilities();
+      setSuccessMessage(modalMode === 'add' ? 'Fasilitas berhasil ditambahkan!' : 'Fasilitas berhasil diperbarui!');
+      setShowSuccessModal(true);
     } catch (err) {
       console.error(err);
       alert(`Gagal ${modalMode === 'add' ? 'menambah' : 'mengubah'} fasilitas`);
@@ -292,6 +296,27 @@ export default function AdminFasilitasPage() {
           </form>
         )}
       </Modal>
+
+      {/* Modal Sukses */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center mx-4">
+            <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-bold text-gray-800 mb-2">Berhasil!</h2>
+            <p className="text-sm text-gray-500 mb-6">{successMessage}</p>
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="w-full py-2.5 bg-[#253b80] text-white rounded-lg font-semibold hover:bg-[#1a2c66] transition"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

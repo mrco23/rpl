@@ -1,12 +1,12 @@
 meta {
-  name: Upsert Profil
+  name: Update Profil Data
   type: http
   seq: 1
 }
 
 put {
   url: {{base_url}}/profile
-  body: multipartForm
+  body: json
   auth: bearer
 }
 
@@ -14,21 +14,12 @@ auth:bearer {
   token: {{token}}
 }
 
-<<<<<<< HEAD
-body:multipart-form {
-  nama_sekolah: SMK Hebat
-  visi: Visi Unggul
-  misi: Misi Cerdas
-  nama_kepala_sekolah: Budi
-  kata_sambutan: Selamat datang semua
-=======
 body:json {
   {
     "nama_sekolah": "SMP Katolik St. Rafael Manado",
     "visi": "Membentuk peserta didik menjadi manusia yang seutuhnya",
-    "misi": "1. Mewujudkan religiusitas\n2. Meningkatkan profesionalisme",
+    "misi": "Mewujudkan religiusitas; Meningkatkan profesionalisme",
     "nama_kepala_sekolah": "Herman Ventje Dien, S.Fils",
     "kata_sambutan": "Selamat datang di website resmi SMP Katolik St. Rafael."
   }
->>>>>>> daf320f16ce680c2daf98019b2b52262fc3ade2c
 }

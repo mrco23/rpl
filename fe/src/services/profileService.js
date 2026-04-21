@@ -45,6 +45,26 @@ export const getPublicProfile = async () => {
 };
 
 /**
+ * Service untuk mendapatkan hanya Visi dan Misi
+ * Endpoint: GET /api/profile/visi-misi
+ */
+export const getVisiMisi = async () => {
+  try {
+    const response = await apiClient.get("/profile/visi-misi");
+    return {
+      success: true,
+      data: response.data?.data || null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || "Gagal mengambil visi misi",
+      data: null,
+    };
+  }
+};
+
+/**
  * Service untuk mendapatkan Profil admin
  */
 export const getAdminProfile = async () => {
@@ -74,6 +94,7 @@ const profileService = {
   getPublicProfile,
   getAdminProfile,
   updateProfile,
+  getVisiMisi,
 };
 
 export default profileService;

@@ -1,0 +1,19 @@
+meta {
+  name: Delete Verifikator
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{base_url}}/verifikator/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: 1
+}
+
+auth:bearer {
+  token: {{token}}
+}

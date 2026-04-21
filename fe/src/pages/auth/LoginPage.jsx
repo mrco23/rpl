@@ -34,7 +34,12 @@ export default function LoginPage() {
         role,
       };
 
-      payload.username = identifier;
+      // Pendaftar login menggunakan nisn, admin/verifikator menggunakan username
+      if (role === "pendaftar") {
+        payload.nisn = identifier;
+      } else {
+        payload.username = identifier;
+      }
 
       let data;
       if (role === "verifikator") {
@@ -219,6 +224,17 @@ export default function LoginPage() {
               Daftar disini
             </Link>
           </p>
+          <div className="mt-6 text-center border-t border-gray-100 pt-6">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-blue-dark transition-all duration-300 font-medium group"
+            >
+              <span className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 group-hover:text-blue-dark transition-colors">
+                ←
+              </span>
+              Kembali ke Beranda
+            </Link>
+          </div>
         </form>
       </div>
     </div>

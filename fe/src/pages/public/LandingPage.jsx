@@ -12,18 +12,15 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      setError(null);
       const res = await profileService.getLandingPageData();
       if (res.success) {
         setData(res.data);
-      } else {
-        setError(res.message);
       }
+      // Jika gagal, biarkan data null — tiap section punya fallback sendiri
       setLoading(false);
     };
     fetchData();
@@ -78,29 +75,11 @@ export default function LandingPage() {
     );
   }
 
-  if (error) {
-    return (
-      <main className="min-h-screen flex flex-col items-center justify-center">
-        <p className="text-xl text-red-600 mb-4">{error}</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="bg-blue-900 px-4 py-2 text-white rounded-md hover:bg-blue-800 transition"
-        >
-          Coba Lagi
-        </button>
-      </main>
-    );
-  }
-
-  if (!data) {
-    return (
-      <main className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-gray-600">Tidak ada data</p>
-      </main>
-    );
-  }
-
-  const { total_data, fasilitas, prestasi, berita, kepala_sekolah } = data;
+  const total_data = data?.total_data || {};
+  const fasilitas = data?.fasilitas || [];
+  const prestasi = data?.prestasi || [];
+  const berita = data?.berita || [];
+  const kepala_sekolah = data?.kepala_sekolah || null;
 
   const stats = [
     { value: total_data?.program_unggulan?.toString() || "0", label: "Program Unggulan", path: "/program" },
@@ -179,12 +158,12 @@ export default function LandingPage() {
       </section>
 
       <div className="mt-32 md:mt-40">
-        <PreviewFasilitas data={fasilitas || []} />
+        <PreviewFasilitas data={fasilitas} />
       </div>
 
       <QuotePage data={kepala_sekolah} />
-      <PreviewPrestasi data={prestasi || []} />
-      <PreviewBerita data={berita || []} />
+      <PreviewPrestasi data={prestasi} />
+      <PreviewBerita data={berita} />
     </main>
   );
 }
