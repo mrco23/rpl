@@ -79,18 +79,17 @@ const menu = [
   },
 ];
 
-function SidebarAdmin({ onClose }) {
+function SidebarAdmin() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    if (onClose) onClose();
     window.location.href = "/login";
   };
 
   return (
-    <div className="w-64 h-screen bg-blue-dark text-white flex flex-col p-4 rounded-r-2xl shadow-xl">
+    <div className="w-64 h-screen bg-blue-dark text-white flex flex-col p-4 rounded-r-2xl">
       {/* HEADER */}
-      <div className="mb-6 flex items-center gap-3 shrink-0">
+      <div className="mb-6 flex items-center gap-3">
         {/* LOGO */}
         <img
           src={logo}
@@ -101,18 +100,17 @@ function SidebarAdmin({ onClose }) {
         {/* TEXT */}
         <div>
           <h2 className="text-lg font-semibold">Admin</h2>
-          <p className="text-[10px] opacity-80 uppercase font-bold tracking-wider">Dashboard</p>
+          <p className="text-sm opacity-80">SMP Katolik St. Rafael Manado</p>
         </div>
       </div>
-
       {/* MENU */}
-      <div className="flex-1 space-y-1 overflow-y-auto custom-scrollbar pr-2 mb-4">
+      <div className="flex-1 space-y-2">
         {menu.map((item, index) => {
           if (item.section) {
             return (
-              <div key={index} className="mt-5 mb-2">
-                <p className="text-[10px] font-bold text-blue-200 uppercase tracking-[0.2em] mb-1">{item.section}</p>
-                <hr className="border-white/10" />
+              <div key={index} className="mt-4">
+                <p className="text-xs opacity-70 mb-1">{item.section}</p>
+                <hr className="border-gray-500/80" />
               </div>
             );
           }
@@ -121,13 +119,11 @@ function SidebarAdmin({ onClose }) {
             <NavLink
               key={index}
               to={item.path}
-              onClick={onClose}
               end={item.path === "/admin"}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all cursor-pointer ${
-                  isActive
-                    ? "bg-white text-[#2f4aa0] font-bold shadow-lg"
-                    : "hover:bg-white/10 text-white/80 hover:text-white"
+                `flex items-center gap-3 px-3 py-1.5 rounded-lg transition ${isActive
+                  ? "bg-white text-[#2f4aa0] font-medium"
+                  : "hover:bg-white/10"
                 }`
               }
             >
@@ -137,15 +133,15 @@ function SidebarAdmin({ onClose }) {
           );
         })}
       </div>
-      <hr className="border-white/10" />
+      <hr className="border-white/30" />
 
       {/* LOGOUT */}
       <button
         onClick={handleLogout}
-        className="flex items-center gap-3 px-4 py-3 mt-4 hover:bg-red-500/20 text-white/90 hover:text-white rounded-xl w-full text-left transition-colors cursor-pointer font-semibold text-sm"
+        className="flex items-center gap-3 px-3 py-2 mt-4 hover:bg-white/10 rounded-lg w-full text-left"
       >
-        <LogOut size={18} />
-        Logout
+        <LogOut size={16} />
+        Keluar
       </button>
     </div>
   );
