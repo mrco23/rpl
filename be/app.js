@@ -10,16 +10,25 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware Global
-app.use(morgan('dev'))
-app.use(cors());
+app.use(morgan("dev"));
+app.use(
+	cors({
+		origin: "https://smpkatolikstrafael.vercel.app",
+		methods: ["GET", "POST", "PUT", "DELETE"],
+		allowedHeaders: ["Content-Type", "Authorization"],
+	}),
+);
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static("public/uploads"));
 
 // Routes
 app.use("/api", routes);
+app.get("/", (req, res) => {
+	res.json({ message: "Backend Torang Bersih is Running!", status: "Healthy" });
+});
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+	console.log(`Server running on http://localhost:${PORT}`);
 });
