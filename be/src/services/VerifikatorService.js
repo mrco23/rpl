@@ -62,7 +62,7 @@ export const getBerandaData = async () => {
     }));
 
     const pendaftarYangPerluRevisiData = await prisma.pendaftar.findMany({
-        where: { status_pendaftaran: "perlu_perbaikan" },
+        where: { status_pendaftaran: "perlu perbaikan" },
         orderBy: { tanggal_daftar: 'desc' },
         take: 3,
         select: { nama_lengkap: true, nisn: true, tanggal_daftar: true, status_pendaftaran: true }
@@ -123,6 +123,7 @@ export const getPendaftarForVerifikator = async () => {
         },
         include: {
             gelombang: true,
+            alamat: true,
             verifikator: {
                 select: { nama: true }
             }
@@ -136,7 +137,8 @@ export const getAssignedPendaftar = async (idVerifikator) => {
         where: { id_verifikator: Number(idVerifikator) },
         include: {
             gelombang: true,
-            dokumen: true
+            dokumen: true,
+            alamat: true
         }
     });
 };

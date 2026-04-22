@@ -100,9 +100,14 @@ function BerandaPendaftar() {
           />
           <Field
             label="Alamat Lengkap"
-            value={biodata?.alamat || "-"}
+            value={
+              biodata?.alamat 
+                ? `${biodata.alamat.provinsi}, ${biodata.alamat.kota_kabupaten}, ${biodata.alamat.kecamatan}, ${biodata.alamat.kelurahan}, RT/RW: ${biodata.alamat.rt_rw}, Kode Pos: ${biodata.alamat.kode_pos}`
+                : "-"
+            }
             loading={loading}
           />
+
         </div>
       </div>
 

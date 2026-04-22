@@ -231,8 +231,15 @@ export default function AdminPendaftarPage() {
              </div>
              <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
                <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Alamat</p>
-               <p className="font-medium whitespace-pre-wrap">{selectedItem.alamat}</p>
+               <p className="font-medium whitespace-pre-wrap">
+                 {selectedItem.alamat ? (
+                   `${selectedItem.alamat.provinsi}, ${selectedItem.alamat.kota_kabupaten}, ${selectedItem.alamat.kecamatan}, ${selectedItem.alamat.kelurahan}, RT/RW: ${selectedItem.alamat.rt_rw}, Kode Pos: ${selectedItem.alamat.kode_pos}`
+                 ) : (
+                   '-'
+                 )}
+               </p>
              </div>
+
              <div className="grid grid-cols-2 gap-4">
                <div>
                   <p className="text-xs text-gray-500 uppercase tracking-wider">Tempat Lahir</p>

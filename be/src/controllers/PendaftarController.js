@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import {getPendaftar, getPendaftarById, register, getAllPendaftar} from "../services/PendaftarService.js";
+import {getPendaftar, getPendaftarById, register, getAllPendaftar, updateStatusMassal} from "../services/PendaftarService.js";
 import {generateToken} from '../utils/jwt.js'
 
 class PendaftarController {

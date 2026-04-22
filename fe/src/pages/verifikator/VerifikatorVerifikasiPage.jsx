@@ -512,10 +512,19 @@ export default function VerifikatorVerifikasiPage() {
                     <div className="w-2 h-6 bg-[#253b80] rounded-full"></div>
                     <h3 className="text-lg font-extrabold text-gray-900 uppercase tracking-wide">ALAMAT / DOMISILI</h3>
                   </div>
-                  <div className="bg-gray-50/50 p-5 rounded-2xl border border-gray-100 italic">
-                    <p className="text-gray-900 font-semibold leading-relaxed">
-                       {assignedApplicant.alamat}
-                    </p>
+                  <div className="bg-gray-50/50 p-5 rounded-2xl border border-gray-100">
+                    {assignedApplicant.alamat ? (
+                      <div className="space-y-4">
+                        <DataRow label="Provinsi" value={assignedApplicant.alamat.provinsi} />
+                        <DataRow label="Kota/Kabupaten" value={assignedApplicant.alamat.kota_kabupaten} />
+                        <DataRow label="Kecamatan" value={assignedApplicant.alamat.kecamatan} />
+                        <DataRow label="Kelurahan" value={assignedApplicant.alamat.kelurahan} />
+                        <DataRow label="RT/RW" value={assignedApplicant.alamat.rt_rw} />
+                        <DataRow label="Kode Pos" value={assignedApplicant.alamat.kode_pos} />
+                      </div>
+                    ) : (
+                      <p className="text-gray-400 font-medium leading-relaxed italic">Alamat belum diisi</p>
+                    )}
                   </div>
                 </div>
 

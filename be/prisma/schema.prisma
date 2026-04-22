@@ -170,7 +170,6 @@ model Pendaftar {
   nama_lengkap       String
   kata_sandi         String?
   nisn               String?   @unique
-  alamat             String    @db.Text
   tempat_lahir       String?
   tanggal_lahir      DateTime? @db.Date
   jenis_kelamin      String
@@ -178,12 +177,13 @@ model Pendaftar {
   asal_sekolah       String
   email              String?
   nama_wali          String?
-  status_pendaftaran String    @default("menunggu_verifikasi")
+  status_pendaftaran String    @default("menunggu verifikasi")
   catatan_dokumen    String?   @db.Text
   tanggal_daftar     DateTime  @default(now())
   id_gelombang        Int?
   id_verifikator     Int?
 
+  alamat               Alamat?
   dokumen              Dokumen[]
   gelombang            Gelombang?            @relation(fields: [id_gelombang], references: [id_gelombang])
   verifikator          Verifikator?          @relation(fields: [id_verifikator], references: [id_verifikator], onDelete: SetNull)
@@ -193,6 +193,22 @@ model Pendaftar {
   @@index([id_verifikator], map: "pendaftar_id_verifikator_idx")
   @@map("pendaftar")
 }
+
+model Alamat {
+  id_alamat      Int    @id @default(autoincrement())
+  provinsi       String
+  kota_kabupaten String
+  kecamatan      String
+  kelurahan      String
+  rt_rw          String
+  kode_pos       String
+  id_pendaftar   Int    @unique
+
+  pendaftar Pendaftar @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
+
+  @@map("alamat")
+}
+
 
 model Dokumen {
   id_dokumen     Int    @id @default(autoincrement())
