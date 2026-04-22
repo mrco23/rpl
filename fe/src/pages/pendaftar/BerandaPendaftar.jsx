@@ -101,7 +101,7 @@ function BerandaPendaftar() {
           <Field
             label="Alamat Lengkap"
             value={
-              biodata?.alamat 
+              biodata?.alamat
                 ? `${biodata.alamat.provinsi}, ${biodata.alamat.kota_kabupaten}, ${biodata.alamat.kecamatan}, ${biodata.alamat.kelurahan}, RT/RW: ${biodata.alamat.rt_rw}, Kode Pos: ${biodata.alamat.kode_pos}`
                 : "-"
             }
@@ -174,10 +174,7 @@ function BerandaPendaftar() {
           </div>
         </div>
 
-        <button className="bg-[#2443a8] hover:bg-[#1b3488] text-white px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition cursor-pointer">
-          SELANJUTNYA
-          <ArrowRight size={18} />
-        </button>
+
       </div>
     </div>
   );

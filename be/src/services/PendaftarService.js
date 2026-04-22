@@ -108,6 +108,11 @@ export const updateStatusMassal = async (ids, status) => {
             status_pendaftaran: status
         }
     });
+};export const updatePassword = async (id, newPassword) => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedKataSandi = await bcrypt.hash(newPassword, salt);
+    return await prisma.pendaftar.update({
+        where: { id_pendaftar: Number(id) },
+        data: { kata_sandi: hashedKataSandi }
+    });
 };
-
-

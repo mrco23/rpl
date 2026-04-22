@@ -102,12 +102,11 @@ export default function LandingPage() {
 
         {/* Hero Content */}
         <div className="relative z-10 flex flex-col justify-start pt-24 md:pt-32 h-full max-w-7xl mx-auto px-6 sm:px-8 text-white">
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
             SMP KATOLIK <br className="hidden sm:block" /> ST. RAFAEL MANADO
           </h1>
-          <p className="text-sm md:text-lg mb-8 max-w-lg opacity-90 leading-relaxed font-medium">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          <p className="text-sm md:text-lg mb-8 max-w-4xl opacity-90 leading-relaxed">
+            Mulai perjalanan pendidikan menengah Anda di SMP Katolik St. Rafael Manado. Kami menyediakan lingkungan belajar yang mendukung prestasi dan pertumbuhan karakter. Klik tombol di bawah untuk proses pendaftaran.
           </p>
           <div className="flex gap-3">
             <button

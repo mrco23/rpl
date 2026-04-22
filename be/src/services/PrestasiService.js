@@ -26,7 +26,7 @@ export const createPrestasi = async (id_admin, payload) => {
 			judul_prestasi: payload.judul_prestasi,
 			deskripsi: payload.deskripsi,
 			peraih_prestasi: payload.peraih_prestasi,
-			gambar_prestasi: payload.gambar || null,
+			gambar_prestasi: payload.gambar_prestasi || null,
 			id_admin: Number(id_admin),
 		},
 	});
@@ -38,13 +38,22 @@ export const updatePrestasiData = async (id_admin, id, payload) => {
 	});
 	if (!existing) throw new Error("Data tidak ditemukan");
 
+	const dataToUpdate = {
+		judul_prestasi: payload.judul_prestasi,
+		deskripsi: payload.deskripsi,
+		peraih_prestasi: payload.peraih_prestasi,
+	};
+
+	if (payload.gambar_prestasi) {
+		if (existing.gambar_prestasi) {
+			deleteFile(existing.gambar_prestasi);
+		}
+		dataToUpdate.gambar_prestasi = payload.gambar_prestasi;
+	}
+
 	return prisma.prestasi.update({
 		where: { id_prestasi: Number(id) },
-		data: {
-			judul_prestasi: payload.judul_prestasi,
-			deskripsi: payload.deskripsi,
-			peraih_prestasi: payload.peraih_prestasi,
-		},
+		data: dataToUpdate,
 	});
 };
 

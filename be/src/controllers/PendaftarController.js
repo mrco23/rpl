@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import {getPendaftar, getPendaftarById, register, getAllPendaftar, updateStatusMassal} from "../services/PendaftarService.js";
+import {getPendaftar, getPendaftarById, register, getAllPendaftar, updateStatusMassal, updatePassword} from "../services/PendaftarService.js";
 import {generateToken} from '../utils/jwt.js'
 
 class PendaftarController {
@@ -80,6 +80,34 @@ class PendaftarController {
         } catch (error) {
             return res.status(500).json({
                 message: "Gagal memperbarui status pendaftar",
+                error: error.message
+            });
+        }
+    };
+
+    changePassword = async (req, res) => {
+        try {
+            const { nisn, oldPassword, newPassword } = req.body;
+            if (!nisn || !oldPassword || !newPassword) {
+                return res.status(400).json({ message: "NISN, kata sandi lama, dan kata sandi baru harus diisi" });
+            }
+
+            const pendaftar = await getPendaftar(nisn);
+            if (!pendaftar) {
+                return res.status(404).json({ message: "Pendaftar dengan NISN tersebut tidak ditemukan" });
+            }
+
+            const isMatch = await bcrypt.compare(oldPassword, pendaftar.kata_sandi);
+            if (!isMatch) {
+                return res.status(400).json({ message: "Kata sandi lama salah" });
+            }
+
+            await updatePassword(pendaftar.id_pendaftar, newPassword);
+
+            return res.status(200).json({ message: "Kata sandi berhasil diperbarui" });
+        } catch (error) {
+            return res.status(500).json({
+                message: "Gagal memperbarui kata sandi",
                 error: error.message
             });
         }

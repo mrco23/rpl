@@ -220,7 +220,7 @@ export default function AdminProfilSekolahPage() {
           </p>
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="bg-[#253b80] hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+            className="bg-[#253b80] hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-medium transition-colors cursor-pointer"
           >
             Buat Profil Awal
           </button>
@@ -390,17 +390,7 @@ export default function AdminProfilSekolahPage() {
                   />
                 )}
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Alamat Sekolah
-                </label>
-                <textarea
-                  value="Data alamat belum diintegrasikan di sistem backend berjalan"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-400 h-20 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100"
-                  readOnly
-                  disabled
-                />
-              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Visi
@@ -502,19 +492,22 @@ export default function AdminProfilSekolahPage() {
                 onClick={() => fileInputRef.current?.click()}
                 className="border-2 border-dashed border-blue-300 bg-blue-50/50 rounded-xl h-64 flex flex-col items-center justify-center text-blue-400 mb-4 cursor-pointer hover:bg-blue-50 transition-colors overflow-hidden relative"
               >
-                {previewLogo || profile?.foto_kepala_sekolah ? (
+                {previewLogo || (profile?.foto_kepala_sekolah && !profile.foto_kepala_sekolah.includes('null')) ? (
                   <img
                     src={previewLogo || profile?.foto_kepala_sekolah}
                     alt="Preview"
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <>
+                  <div className="flex flex-col items-center justify-center">
                     <CloudUpload size={48} strokeWidth={1.5} />
                     <span className="text-sm mt-2 font-medium">
-                      Pilih file...
+                      Gambar tidak ada
                     </span>
-                  </>
+                    <span className="text-xs mt-1 opacity-70">
+                      Klik untuk memilih file
+                    </span>
+                  </div>
                 )}
                 {/* Tambahkan elemen input type file hidden di sini */}
                 <input
@@ -725,13 +718,13 @@ export default function AdminProfilSekolahPage() {
             <button
               type="button"
               onClick={() => setIsInfoModalOpen(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
             >
               Batal
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66]"
+              className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] cursor-pointer"
             >
               Simpan
             </button>
@@ -781,13 +774,13 @@ export default function AdminProfilSekolahPage() {
             <button
               type="button"
               onClick={() => setIsKepsekModalOpen(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
             >
               Batal
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66]"
+              className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] cursor-pointer"
             >
               Simpan
             </button>

@@ -36,3 +36,14 @@ export const loginVerifikatorService = async (payload) => {
     data: payload,
   });
 };
+/**
+ * Ubah Kata Sandi untuk Pendaftar.
+ * Endpoint /pendaftar/change-password menggunakan field nisn + oldPassword + newPassword.
+ */
+export const changePasswordService = async (payload) => {
+  return await requestAPI({
+    method: "POST",
+    url: "/pendaftar/change-password",
+    data: payload,
+  });
+};

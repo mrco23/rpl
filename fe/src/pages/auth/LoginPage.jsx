@@ -232,6 +232,15 @@ export default function LoginPage() {
               Daftar disini
             </Link>
           </p>
+          <p className="text-sm text-center mt-2">
+            Lupa kata sandi?{" "}
+            <Link
+              to={"/ubah-kata-sandi"}
+              className="text-[#253b80] font-medium active:text-blue-800 cursor-pointer"
+            >
+              Ubah Kata Sandi
+            </Link>
+          </p>
           <div className="mt-6 text-center border-t border-gray-100 pt-6">
             <Link
               to="/"

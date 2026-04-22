@@ -74,8 +74,8 @@ function SidebarPendaftar({ onClose }) {
             to={item.path}
             onClick={onClose}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all cursor-pointer ${isActive(item.path)
-                ? "bg-white text-[#1f3fa6] font-bold shadow-md"
-                : "text-white hover:bg-white/10"
+              ? "bg-white text-[#1f3fa6] font-bold shadow-md"
+              : "text-white hover:bg-white/10"
               }`}
           >
             {item.icon}
@@ -88,7 +88,7 @@ function SidebarPendaftar({ onClose }) {
       <div className="pt-3 mt-auto border-t border-white/20 mb-2">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-3 text-sm w-full hover:bg-white/10 rounded-xl transition cursor-pointer font-semibold"
+          className="flex items-center gap-3 px-4 py-3 text-sm w-full hover:bg-white/10 hover:text-red-300 rounded-xl transition cursor-pointer font-semibold"
         >
           <LogOut size={18} />
           Keluar

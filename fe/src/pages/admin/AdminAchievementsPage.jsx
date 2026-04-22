@@ -135,7 +135,7 @@ export default function AdminAchievementsPage() {
           </div>
           <button
             onClick={handleOpenAdd}
-            className="flex items-center gap-2 bg-white border border-[#253b80] text-[#253b80] hover:bg-blue-50 px-4 py-2 rounded-md text-sm font-semibold transition-colors shadow-sm"
+            className="flex items-center gap-2 bg-white border border-[#253b80] text-[#253b80] hover:bg-blue-50 px-4 py-2 rounded-md text-sm font-semibold transition-colors shadow-sm cursor-pointer"
           >
             <Plus size={16} strokeWidth={2.5} />
             Buat
@@ -200,7 +200,7 @@ export default function AdminAchievementsPage() {
                         <button
                           onClick={() => handleOpenDetail(item)}
                           title="Lihat Detail"
-                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors"
+                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors cursor-pointer"
                         >
                           <Eye size={16} />
                         </button>
@@ -209,7 +209,7 @@ export default function AdminAchievementsPage() {
                         <button
                           onClick={() => handleOpenEdit(item)}
                           title="Edit Prestasi"
-                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300"
+                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300 cursor-pointer"
                         >
                           <Edit2 size={16} />
                         </button>
@@ -218,7 +218,7 @@ export default function AdminAchievementsPage() {
                         <button
                           onClick={() => handleDelete(item.id_prestasi)}
                           title="Hapus Prestasi"
-                          className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors"
+                          className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors cursor-pointer"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -246,12 +246,16 @@ export default function AdminAchievementsPage() {
       >
         {modalMode === "detail" ? (
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
-            {selectedItem?.gambar_prestasi && (
+            {selectedItem?.gambar_prestasi && !selectedItem.gambar_prestasi.includes('null') ? (
               <img
                 src={selectedItem.gambar_prestasi}
                 alt="Prestasi"
                 className="w-full h-auto rounded-lg max-h-60 object-cover"
               />
+            ) : (
+              <div className="w-full h-40 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 font-medium">
+                Gambar tidak ada
+              </div>
             )}
             <div>
               <h3 className="font-bold text-lg">
@@ -267,7 +271,7 @@ export default function AdminAchievementsPage() {
             <div className="pt-4 flex justify-end">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 font-medium transition-colors"
+                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 font-medium transition-colors cursor-pointer"
               >
                 Tutup
               </button>
@@ -326,7 +330,7 @@ export default function AdminAchievementsPage() {
               </label>
 
               {/* PREVIEW */}
-              {(formImage || selectedItem?.gambar_prestasi) && (
+              {(formImage || (selectedItem?.gambar_prestasi && !selectedItem.gambar_prestasi.includes('null'))) && (
                 <div className="mb-3">
                   <img
                     src={
@@ -378,7 +382,7 @@ export default function AdminAchievementsPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] transition-colors disabled:opacity-50"
+                className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {submitting ? "Menyimpan..." : "Simpan"}
               </button>

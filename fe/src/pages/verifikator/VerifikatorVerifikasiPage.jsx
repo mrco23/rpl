@@ -4,11 +4,11 @@ import {
   Download, Info, Check, X, ArrowRight, UserCircle2, XCircle, FileText
 } from 'lucide-react';
 import VerifikatorHeader from '@components/features/VerifikatorHeader';
-import { 
-  getPendaftarVerifikasiList, 
-  getMyAssignedPendaftar, 
-  assignPendaftar, 
-  verifyPendaftar 
+import {
+  getPendaftarVerifikasiList,
+  getMyAssignedPendaftar,
+  assignPendaftar,
+  verifyPendaftar
 } from '../../services/verifikatorVerifikasiService';
 import Skeleton from '@components/ui/Skeleton';
 import { STATUS_LABELS } from '../../constants/pendaftarStatus';
@@ -17,10 +17,10 @@ export default function VerifikatorVerifikasiPage() {
   const [loading, setLoading] = useState(true);
   const [listLoading, setListLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
-  
+
   const [applicants, setApplicants] = useState([]);
   const [assignedApplicant, setAssignedApplicant] = useState(null);
-  
+
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('Semua'); // 'Semua', 'Menunggu', 'Unggah Ulang', 'Diproses'
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,8 +75,8 @@ export default function VerifikatorVerifikasiPage() {
   const handleVerifyAction = async (status) => {
     if (!assignedApplicant || actionLoading) return;
     if (status === 'perlu perbaikan' && !catatan.trim()) {
-        alert("Mohon isi catatan perbaikan terlebih dahulu");
-        return;
+      alert("Mohon isi catatan perbaikan terlebih dahulu");
+      return;
     }
 
     try {
@@ -101,14 +101,14 @@ export default function VerifikatorVerifikasiPage() {
 
   // Logic Filtering
   const filteredApplicants = applicants.filter(app => {
-    const matchesSearch = app.nama_lengkap?.toLowerCase().includes(search.toLowerCase()) || 
-                          app.nisn?.includes(search);
-    
+    const matchesSearch = app.nama_lengkap?.toLowerCase().includes(search.toLowerCase()) ||
+      app.nisn?.includes(search);
+
     if (filterStatus === 'Semua') return matchesSearch;
     if (filterStatus === 'Menunggu') return matchesSearch && app.status_pendaftaran === 'menunggu verifikasi' && !app.id_verifikator;
     if (filterStatus === 'Unggah Ulang') return matchesSearch && app.status_pendaftaran === 'unggah ulang' && !app.id_verifikator;
     if (filterStatus === 'Diproses') return matchesSearch && app.id_verifikator;
-    
+
     return matchesSearch;
   });
 
@@ -165,7 +165,7 @@ export default function VerifikatorVerifikasiPage() {
           <div className="p-5 border-b border-gray-100">
             <div className="flex justify-between items-start mb-1">
               <h2 className="text-xl font-bold text-gray-900">Daftar Pendaftar</h2>
-              <button 
+              <button
                 onClick={handleRefresh}
                 className={`p-1.5 text-gray-400 hover:bg-gray-100 rounded-md transition-colors cursor-pointer ${listLoading ? 'animate-spin' : ''}`}
                 disabled={listLoading}
@@ -189,17 +189,17 @@ export default function VerifikatorVerifikasiPage() {
 
             {/* Filter Chips */}
             <div className="flex flex-wrap gap-2">
-              <FilterChip label="Semua" count={stats.semua} active={filterStatus === 'Semua'} onClick={() => {setFilterStatus('Semua'); setCurrentPage(1);}} />
-              <FilterChip label="Menunggu" count={stats.menunggu} active={filterStatus === 'Menunggu'} onClick={() => {setFilterStatus('Menunggu'); setCurrentPage(1);}} />
-              <FilterChip label="Unggah Ulang" count={stats.unggahUlang} active={filterStatus === 'Unggah Ulang'} onClick={() => {setFilterStatus('Unggah Ulang'); setCurrentPage(1);}} />
-              <FilterChip label="Diproses" count={stats.diproses} active={filterStatus === 'Diproses'} onClick={() => {setFilterStatus('Diproses'); setCurrentPage(1);}} />
+              <FilterChip label="Semua" count={stats.semua} active={filterStatus === 'Semua'} onClick={() => { setFilterStatus('Semua'); setCurrentPage(1); }} />
+              <FilterChip label="Menunggu" count={stats.menunggu} active={filterStatus === 'Menunggu'} onClick={() => { setFilterStatus('Menunggu'); setCurrentPage(1); }} />
+              <FilterChip label="Unggah Ulang" count={stats.unggahUlang} active={filterStatus === 'Unggah Ulang'} onClick={() => { setFilterStatus('Unggah Ulang'); setCurrentPage(1); }} />
+              <FilterChip label="Diproses" count={stats.diproses} active={filterStatus === 'Diproses'} onClick={() => { setFilterStatus('Diproses'); setCurrentPage(1); }} />
             </div>
           </div>
 
           {/* List Pendaftar (Scrollable) */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {listLoading ? (
-               Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-24 w-full rounded-xl" />)
+              Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-24 w-full rounded-xl" />)
             ) : paginatedApplicants.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-gray-400 py-10">
                 <FileText size={48} className="mb-2 opacity-20" />
@@ -250,12 +250,12 @@ export default function VerifikatorVerifikasiPage() {
                     {isLockedOther ? (
                       <Lock size={18} className="text-gray-400 mr-2 shrink-0" />
                     ) : (
-                      <button 
+                      <button
                         onClick={() => handleAssign(app.id_pendaftar)}
                         disabled={isMyAssigned || actionLoading}
                         className={`flex items-center gap-1 text-[11px] font-semibold px-3 py-1.5 border rounded-full transition-colors shrink-0 
-                          ${isMyAssigned 
-                            ? 'bg-blue-600 text-white border-blue-600' 
+                          ${isMyAssigned
+                            ? 'bg-blue-600 text-white border-blue-600'
                             : 'text-blue-600 border-blue-200 hover:bg-blue-50 bg-white cursor-pointer'} 
                           disabled:opacity-50`}
                       >
@@ -270,7 +270,7 @@ export default function VerifikatorVerifikasiPage() {
 
           {/* Pagination */}
           <div className="p-4 border-t border-gray-100 flex justify-center items-center gap-1.5 overflow-x-auto">
-            <button 
+            <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(prev => prev - 1)}
               className="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-500 hover:bg-gray-50 text-sm font-medium disabled:opacity-30 cursor-pointer"
@@ -278,7 +278,7 @@ export default function VerifikatorVerifikasiPage() {
               «
             </button>
             {Array.from({ length: totalPages }).map((_, i) => (
-              <button 
+              <button
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
                 className={`w-8 h-8 flex items-center justify-center rounded border text-sm font-bold cursor-pointer ${currentPage === i + 1 ? 'bg-blue-100 text-blue-600 border-blue-200' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}
@@ -286,7 +286,7 @@ export default function VerifikatorVerifikasiPage() {
                 {i + 1}
               </button>
             ))}
-            <button 
+            <button
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage(prev => prev + 1)}
               className="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-500 hover:bg-gray-50 text-sm font-medium disabled:opacity-30 cursor-pointer"
@@ -300,11 +300,11 @@ export default function VerifikatorVerifikasiPage() {
         <div className="flex-1 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-[85vh] overflow-hidden">
           {!assignedApplicant ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-8 text-gray-400">
-               <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                  <UserCircle2 size={48} className="opacity-20" />
-               </div>
-               <h3 className="text-lg font-bold text-gray-700 mb-1">Belum Ada Pendaftar Terpilih</h3>
-               <p className="text-sm max-w-xs">Silakan pilih pendaftar dari daftar di sebelah kiri untuk memulai proses verifikasi dokumen.</p>
+              <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                <UserCircle2 size={48} className="opacity-20" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-700 mb-1">Belum Ada Pendaftar Terpilih</h3>
+              <p className="text-sm max-w-xs">Silakan pilih pendaftar dari daftar di sebelah kiri untuk memulai proses verifikasi dokumen.</p>
             </div>
           ) : (
             <div className="h-full flex flex-col">
@@ -372,7 +372,7 @@ export default function VerifikatorVerifikasiPage() {
                           <span className="text-xs text-gray-500 mt-0.5 truncate">{doc.jenis_dokumen?.split('/').pop()}</span>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
-                          <button 
+                          <button
                             onClick={() => openDocument(doc.jenis_dokumen)}
                             className="bg-[#253b80] hover:bg-blue-800 text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors cursor-pointer"
                           >
@@ -406,14 +406,14 @@ export default function VerifikatorVerifikasiPage() {
                   ></textarea>
 
                   <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
-                    <button 
+                    <button
                       onClick={() => handleVerifyAction('terverifikasi')}
                       disabled={actionLoading}
                       className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-green-500 text-green-600 rounded-xl text-sm font-bold hover:bg-green-50 transition-all cursor-pointer disabled:opacity-50"
                     >
                       Verifikasi & Lanjutkan <Check size={18} strokeWidth={3} />
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleVerifyAction('perlu perbaikan')}
                       disabled={actionLoading}
                       className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-red-500 text-red-500 rounded-xl text-sm font-bold hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
@@ -421,7 +421,7 @@ export default function VerifikatorVerifikasiPage() {
                       Minta Perbaikan <X size={18} strokeWidth={3} />
                     </button>
                   </div>
-                  
+
                   <p className="text-[11px] text-center text-gray-400 mt-2">
                     Setelah melakukan tindakan, data pendaftar ini akan keluar dari penanganan Anda.
                   </p>
@@ -495,15 +495,15 @@ export default function VerifikatorVerifikasiPage() {
 
                 {/* Orang Tua / Wali */}
                 <div>
-                    <div className="flex items-center gap-2 mb-5">
-                      <div className="w-2 h-6 bg-[#253b80] rounded-full"></div>
-                      <h3 className="text-lg font-extrabold text-gray-900 uppercase tracking-wide">DATA WALI</h3>
-                    </div>
-                    <div className="space-y-4 bg-gray-50/50 p-5 rounded-2xl border border-gray-100">
-                      <DataRow label="Nama Wali" value={assignedApplicant.nama_wali || '-'} />
-                      <DataRow label="Asal Sekolah" value={assignedApplicant.asal_sekolah} />
-                      <DataRow label="Gelombang" value={assignedApplicant.gelombang?.nama || '-'} />
-                    </div>
+                  <div className="flex items-center gap-2 mb-5">
+                    <div className="w-2 h-6 bg-[#253b80] rounded-full"></div>
+                    <h3 className="text-lg font-extrabold text-gray-900 uppercase tracking-wide">DATA WALI</h3>
+                  </div>
+                  <div className="space-y-4 bg-gray-50/50 p-5 rounded-2xl border border-gray-100">
+                    <DataRow label="Nama Wali" value={assignedApplicant.nama_wali || '-'} />
+                    <DataRow label="Asal Sekolah" value={assignedApplicant.asal_sekolah} />
+                    <DataRow label="Gelombang" value={assignedApplicant.gelombang?.nama || '-'} />
+                  </div>
                 </div>
 
                 {/* Domisili */}
@@ -530,15 +530,15 @@ export default function VerifikatorVerifikasiPage() {
 
               </div>
             </div>
-            
+
             {/* Modal Footer */}
             <div className="p-6 border-t border-gray-100 bg-gray-50/80 rounded-b-2xl">
-               <button 
-                 onClick={() => setIsModalOpen(false)}
-                 className="w-full bg-[#253b80] text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition-all cursor-pointer shadow-md"
-               >
-                 TUTUP BIODATA
-               </button>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="w-full bg-[#253b80] text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition-all cursor-pointer shadow-md"
+              >
+                TUTUP BIODATA
+              </button>
             </div>
           </div>
         </div>
@@ -550,7 +550,7 @@ export default function VerifikatorVerifikasiPage() {
 // Sub-komponen chips
 function FilterChip({ label, count, active, onClick }) {
   return (
-    <button 
+    <button
       onClick={onClick}
       className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${active ? 'bg-[#253b80] text-white shadow-md' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
     >
@@ -568,4 +568,4 @@ function DataRow({ label, value }) {
       <div className="w-[60%] font-bold text-gray-900">{value || '-'}</div>
     </div>
   );
-}
+}
