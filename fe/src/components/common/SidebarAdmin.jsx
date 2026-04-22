@@ -81,9 +81,13 @@ const menu = [
 
 function SidebarAdmin() {
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    window.location.href = "/login";
+    const confirmLogout = window.confirm("Anda Yakin ingin keluar?");
+
+    if (confirmLogout) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      window.location.href = "/login";
+    }
   };
 
   return (
@@ -121,9 +125,10 @@ function SidebarAdmin() {
               to={item.path}
               end={item.path === "/admin"}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-1.5 rounded-lg transition ${isActive
-                  ? "bg-white text-[#2f4aa0] font-medium"
-                  : "hover:bg-white/10"
+                `flex items-center gap-3 px-3 py-1.5 rounded-lg transition ${
+                  isActive
+                    ? "bg-white text-[#2f4aa0] font-medium"
+                    : "hover:bg-white/10"
                 }`
               }
             >
