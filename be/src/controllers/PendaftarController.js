@@ -97,6 +97,10 @@ class PendaftarController {
                 return res.status(404).json({ message: "Pendaftar dengan NISN tersebut tidak ditemukan" });
             }
 
+            if (!pendaftar.kata_sandi) {
+                return res.status(400).json({ message: "Pendaftar belum memiliki kata sandi, mohon hubungi admin" });
+            }
+
             const isMatch = await bcrypt.compare(oldPassword, pendaftar.kata_sandi);
             if (!isMatch) {
                 return res.status(400).json({ message: "Kata sandi lama salah" });

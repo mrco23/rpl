@@ -41,7 +41,7 @@ export const create = async (req, res) => {
 	try {
 		const payload = { ...req.body };
 		if (req.file) {
-			payload.gambar = req.file.filename;
+			payload.gambar_ekskul = req.file.filename;
 		}
 
 		const created = await EkstrakurikulerService.createEkstrakurikuler(req.user.id, payload);
