@@ -1,8 +1,15 @@
 import React from "react";
 import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import { Mail, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Footer({ profile }) {
+  const menu = [
+    { name: "Tentang", path: "/sejarah" },
+    { name: "Akademik", path: "/program" },
+    { name: "SPMB", path: "/panduan" },
+    { name: "Berita", path: "/berita" },
+  ];
   const whatsapp = String(
     profile?.whatsapp || profile?.no_telpon || "",
   ).replace(/[^\d]/g, "");
@@ -29,25 +36,25 @@ function Footer({ profile }) {
                 href={profile?.instagram || "#"}
                 target="_blank"
                 rel="noreferrer"
-                className="hover:opacity-80"
+                className="w-7 h-7 flex items-center justify-center border border-[#7b8ccc] rounded-lg text-[#7b8ccc] hover:bg-[#7b8ccc] hover:text-white transition"
               >
-                <FaInstagram size={20} className="text-pink-500" />
+                <FaInstagram size={20} />
               </a>
               <a
                 href={profile?.facebook || "#"}
                 target="_blank"
                 rel="noreferrer"
-                className="hover:opacity-80"
+                className="w-7 h-7 flex items-center justify-center border border-[#7b8ccc] rounded-lg text-[#7b8ccc] hover:bg-[#7b8ccc] hover:text-white transition"
               >
-                <FaFacebook size={20} className="text-blue-700" />
+                <FaFacebook size={20} />
               </a>
               <a
                 href={profile?.youtube || "#"}
                 target="_blank"
                 rel="noreferrer"
-                className="hover:opacity-80"
+                className="w-7 h-7 flex items-center justify-center border border-[#7b8ccc] rounded-lg text-[#7b8ccc] hover:bg-[#7b8ccc] hover:text-white transition"
               >
-                <FaYoutube size={20} className="text-red-600" />
+                <FaYoutube size={20} />
               </a>
             </div>
           </div>
@@ -55,10 +62,15 @@ function Footer({ profile }) {
           {/* KOLOM 2: Menu */}
           <div className="md:ml-10">
             <h3 className="font-semibold mb-4 text-center">Menu</h3>
-            <ul className="space-y-2 text-sm text-gray-600 text-center">
-              {["Tentang", "Akademik", "SPMB", "Berita"].map((item) => (
-                <li key={item} className="hover:text-black cursor-pointer">
-                  {item}
+            <ul className="space-y-2 text-sm text-center">
+              {menu.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.path}
+                    className="text-gray-600 hover:text-black transition"
+                  >
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   FileText,
   UploadCloud,
@@ -6,23 +6,71 @@ import {
   CheckCircle,
   Calendar,
   Send,
+  Loader2
 } from "lucide-react";
+import { getMyDocuments, uploadDocument } from "../../services/dokumenService.js";
+import { getPendaftarMe } from "../../services/pendaftarService.js";
 
 function UnggahDokumen() {
+  const [documents, setDocuments] = useState([]);
+  const [pendaftar, setPendaftar] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [docsRes, pendaftarRes] = await Promise.all([
+        getMyDocuments(),
+        getPendaftarMe()
+      ]);
+      setDocuments(docsRes.data || []);
+      setPendaftar(pendaftarRes.data || null);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getDocStatus = (nama) => {
+    const doc = documents.find(d => d.nama_dokumen === nama);
+    if (!doc) return { status: "empty", fileName: null, statusText: "Belum upload" };
+    return { status: "success", fileName: doc.jenis_dokumen.split('/').pop(), statusText: "Sudah diupload" };
+  };
+
+  const docTypes = [
+    { title: "Ijazah", desk: "Rapor Semester akhir atau ijazah bagi lulusan" },
+    { title: "Foto Copy Akte Keluarga", desk: "Dokumen akte kelahiran asli / foto copy" },
+    { title: "Foto Copy Kartu Keluarga", desk: "Dokumen kartu keluarga asli / foto copy" },
+    { title: "Pas Foto", desk: "Pas foto terbaru latar belakang merah" },
+  ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="animate-spin text-blue-600" size={48} />
+      </div>
+    );
+  }
+
   return (
-    <div className="p-6 bg-gray-100 min-h-screen relative">
+    <div className="p-4 md:p-6 bg-gray-100 min-h-screen relative">
       {/* Header */}
-      <h2 className="text-3xl font-semibold">Unggah Dokumen</h2>
-      <p className="text-gray-600 mt-1 max-w-xl">
+      <h2 className="text-2xl md:text-3xl font-semibold">Unggah Dokumen</h2>
+      <p className="text-gray-600 mt-1 max-w-xl text-sm md:text-base">
         Unggah dokumen persyaratan dengan format yang sesuai. Pastikan dokumen
         jelas dan tidak buram.
       </p>
 
       {/* Info */}
-      <div className="flex items-start mt-4 gap-16">
+      <div className="flex flex-col md:flex-row items-start mt-6 gap-4 md:gap-16">
         {/* Kiri */}
-        <div className="bg-gray-300 text-md text-gray-700 p-7 rounded-lg flex gap-2 items-start max-w-4xl">
-          <AlertCircle size={20} />
+        <div className="bg-gray-300 text-sm md:text-md text-gray-700 p-5 md:p-7 rounded-lg flex gap-2 items-start w-full md:max-w-4xl">
+          <AlertCircle size={20} className="flex-shrink-0" />
           <p>
             Setelah semua dokumen diunggah klik tombol{" "}
             <span className="font-medium text-black">
@@ -33,156 +81,202 @@ function UnggahDokumen() {
         </div>
 
         {/* Kanan */}
-        <div className="bg-white shadow p-4 rounded-lg border w-52">
+        <div className="bg-white shadow p-4 rounded-lg border w-full md:w-52 flex-shrink-0">
           <div className="flex items-start gap-2">
             <Calendar size={18} className="text-gray-500 mt-1" />
-
             <div>
               <p className="text-sm text-gray-500">Batas waktu unggah</p>
-              <h4 className="font-semibold">12 Juni 2026</h4>
-              <span className="text-green-600 text-sm">23 hari lagi</span>
+              <h4 className="font-semibold">Sesuai Gelombang</h4>
+              <span className="text-green-600 text-sm">Aktif</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Section */}
-      <h4 className="mt-6 mb-3 font-semibold text-gray-700">
+      <h4 className="mt-8 mb-4 font-semibold text-gray-700">
         Dokumen yang diperlukan
       </h4>
 
       {/* Cards */}
       <div className="flex flex-wrap gap-4">
-        <DokumenCard
-          title="Rapor / Ijazah Terakhir"
-          deskcripsi="Rapor Semester akhir atau ijazah bagi lulusan"
-          status="success"
-          fileName="ijazah.pdf"
-          statusText="Sudah Diunggah"
-        />
-
-        <DokumenCard
-          title="Akte Kelahiran"
-          deskcripsi="Dokumen akte kelahiran asli"
-          status="empty"
-          statusText="Belum Diunggah"
-        />
-
-        <DokumenCard
-          title="Kartu Keluarga"
-          deskcripsi="Dokumen kartu keluarga asli"
-          status="error"
-          fileName="foto.jpg"
-          statusText="Perlu Perbaiki"
-        />
-
-        <DokumenCard
-          title="Pas Foto"
-          deskcripsi="Pas foto terbaru latar belakang"
-          status="error"
-          fileName="foto.jpg"
-          statusText="Perlu Perbaiki"
-        />
+        {docTypes.map((type, idx) => {
+          const info = getDocStatus(type.title);
+          return (
+            <DokumenCard
+              key={idx}
+              title={type.title}
+              deskcripsi={type.desk}
+              initialStatus={info.status}
+              initialFileName={info.fileName}
+              statusText={info.statusText}
+              onUploadSuccess={loadData}
+              fileUrl={documents.find(d => d.nama_dokumen === type.title)?.jenis_dokumen}
+            />
+          );
+        })}
       </div>
 
       {/* Catatan */}
-      <div className="mt-6 flex justify-between items-start gap-6">
-        <div className="bg-yellow-100 p-4 rounded-lg flex gap-2 flex-1">
-          <AlertCircle className="text-yellow-600" size={18} />
-          <div>
-            <p className="font-semibold">Catatan Verifikator</p>
-            <p className="text-sm">
-              Pas foto kurang jelas. Mohon unggah ulang dengan foto yang lebih
-              terang dan fokus.
+      {pendaftar?.catatan_dokumen && (
+        <div className="mt-8 flex flex-col md:flex-row justify-between items-start gap-6">
+          <div className="bg-yellow-100 p-4 rounded-lg flex gap-2 w-full md:flex-1">
+            <AlertCircle className="text-yellow-600 flex-shrink-0" size={18} />
+            <div>
+              <p className="font-semibold">Catatan Verifikator</p>
+              <p className="text-sm mt-1">
+                {pendaftar.catatan_dokumen}
+              </p>
+              <span className="text-xs text-gray-600 block mt-2">
+                Mohon segera lakukan perbaikan jika diminta.
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 w-full md:w-auto">
+            <button className="flex justify-center items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg w-full md:w-72 font-medium transition-colors cursor-pointer">
+              <Send size={18} />
+              Kirim Untuk Diverifikasi
+            </button>
+
+            <p className="text-sm text-gray-500 md:max-w-xs text-center md:text-left">
+              Pastikan semua dokumen sudah benar sebelum dikirim
             </p>
-            <span className="text-xs text-gray-600">30 Mei 2026 10:30</span>
           </div>
         </div>
-
-        <div className="flex flex-col gap-4">
-          <button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg w-70">
-            <Send size={16} />
-            Kirim Untuk Diverifikasi
-          </button>
-
-          <p className="text-sm text-gray-500 max-w-xs">
-            Pastikan semua dokumen sudah benar sebelum dikirim
-          </p>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
 
-function DokumenCard({ title, status, deskcripsi, fileName, statusText }) {
+function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, statusText, onUploadSuccess, fileUrl }) {
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = async (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      try {
+        setIsUploading(true);
+        await uploadDocument(title, selectedFile);
+        onUploadSuccess();
+      } catch (err) {
+        console.error(err);
+        alert("Gagal mengunggah dokumen: " + (err.message || "Unknown error"));
+      } finally {
+        setIsUploading(false);
+      }
+    }
+  };
+
+  const triggerUpload = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleViewFile = () => {
+    if (fileUrl) {
+      const baseUrl = import.meta.env.VITE_API_URL.replace('/api', '');
+      window.open(`${baseUrl}${fileUrl}`, '_blank');
+    }
+  };
+
   const statusColor =
-    status === "success"
+    initialStatus === "success"
       ? "text-green-600"
-      : status === "error"
+      : initialStatus === "error"
         ? "text-orange-500"
         : "text-gray-500";
 
   return (
     <div
-      className={`w-56 p-4 rounded-xl border bg-white shadow-xl
-      ${status === "error" ? "bg-orange-50" : ""}
+      className={`w-full sm:w-56 p-4 rounded-xl border bg-white shadow-sm hover:shadow-md transition-shadow
+      ${initialStatus === "error" ? "bg-orange-50 border-orange-200" : "border-gray-200"}
     `}
     >
-      <h5 className="font-medium text-md">{title}</h5>
-      <p className="text-sm">{deskcripsi}</p>
+      <h5 className="font-medium text-md text-gray-800">{title}</h5>
+      <p className="text-sm text-gray-500 mt-1 line-clamp-2 min-h-[40px]">{deskcripsi}</p>
+
+      {/* Hidden File Input */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        accept=".pdf,.jpg,.jpeg,.png"
+      />
 
       {/* Upload Box */}
       <div
-        className={`h-24 border-2 border-dashed rounded-lg flex items-center justify-center mt-3
-  ${
-    status === "error"
-      ? "border-orange-400"
-      : status === "success"
-        ? "border-green-400"
-        : "border-gray-300"
-  }`}
+        className={`h-24 border-2 border-dashed rounded-lg flex items-center justify-center mt-4 transition-colors
+          ${initialStatus === "error"
+            ? "border-orange-400 bg-orange-100"
+            : initialStatus === "success"
+              ? "border-green-400 bg-green-50"
+              : "border-gray-300 bg-gray-50"
+          }`}
       >
-        {status === "success" && <CheckCircle className="text-green-600" />}
-        {status === "empty" && <UploadCloud className="text-gray-400" />}
-        {status === "error" && <AlertCircle className="text-orange-500" />}
+        {isUploading ? (
+          <Loader2 className="animate-spin text-blue-500" size={28} />
+        ) : (
+          <>
+            {initialStatus === "success" && <CheckCircle className="text-green-600" size={28} />}
+            {initialStatus === "empty" && <UploadCloud className="text-gray-400" size={28} />}
+            {initialStatus === "error" && <AlertCircle className="text-orange-500" size={28} />}
+          </>
+        )}
       </div>
 
       {/* STATUS TEXT */}
-      <p className={`text-xs font-medium mt-2 ${statusColor}`}>{statusText}</p>
+      <p className={`text-xs font-semibold mt-3 ${statusColor}`}>
+        {isUploading ? "Sedang Mengunggah..." : statusText}
+      </p>
 
-      {/* FILE */}
-      <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-        <FileText size={14} />
-        {fileName || "Belum ada file"}
+      {/* FILE NAME */}
+      <p className="text-xs text-gray-600 mt-1 flex items-center gap-1.5 truncate">
+        <FileText size={14} className="flex-shrink-0" />
+        <span className="truncate">{initialFileName || "Belum ada file"}</span>
       </p>
 
       {/* Buttons */}
-      <div className="mt-2 space-y-1">
-        {status === "success" && (
+      <div className="mt-4 space-y-2">
+        {initialStatus === "success" && (
           <>
-            <button className="w-full text-sm text-blue-600 bg-gray-200 py-1 rounded-lg border border-b-blue-600 cursor-pointer">
+            <button
+              onClick={handleViewFile}
+              className="w-full text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 py-2 rounded-lg transition-colors cursor-pointer"
+            >
               Lihat File
             </button>
-
-            <button className="w-full text-sm bg-gray-400 text-white py-1 rounded-lg cursor-pointer">
+            <button
+              onClick={triggerUpload}
+              disabled={isUploading}
+              className="w-full text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+            >
               Ganti File
             </button>
           </>
         )}
 
-        {status === "empty" && (
-          <button className="w-full text-sm bg-blue-600 text-white py-1 rounded-lg cursor-pointer">
+        {initialStatus === "empty" && (
+          <button
+            onClick={triggerUpload}
+            disabled={isUploading}
+            className="w-full text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+          >
             Unggah File
           </button>
         )}
 
-        {status === "error" && (
+        {initialStatus === "error" && (
           <>
-            <button className="w-full text-sm bg-orange-400 text-white py-1 rounded-lg cursor-pointer">
+            <button className="w-full text-sm font-medium bg-orange-100 hover:bg-orange-200 text-orange-700 py-2 rounded-lg transition-colors cursor-pointer">
               Lihat Catatan
             </button>
-
-            <button className="w-full text-sm bg-blue-600 text-white py-1 rounded-lg cursor-pointer">
+            <button
+              onClick={triggerUpload}
+              disabled={isUploading}
+              className="w-full text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+            >
               Unggah Ulang
             </button>
           </>

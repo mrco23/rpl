@@ -7,7 +7,7 @@ async function main() {
 	console.log("🌱 Mulai proses seeding...\n");
 
 	const hashedAdminPass = await bcrypt.hash("Admin123!", 10);
-	const hashedVerifPass = await bcrypt.hash("Verif123!", 10);
+	const hashedVerifPass = await bcrypt.hash("Mitha123!", 10);
 	const hashedPendaftarPass = await bcrypt.hash("Maltrian123!", 10);
 
 	/* ──────────────────── ADMIN ──────────────────── */
@@ -40,7 +40,7 @@ async function main() {
 			visi: "Membentuk peserta didik menjadi manusia yang seutuhnya ,beriman,unggul,bijaksana dan pancasilais sesuai semangat Santo Rafael",
 			misi: "1. Mewujudkan religiusitas dalam diri warga sekolah sehingga kehidupan beriman dan persaudaraan sejati semakin berkembang.\n2. Meningkatkan profesionalisme tenaga pendidik dan kependidikan dengan etos kerja tinggi.\n3. Mewujudkan lingkungan berwawasan IPTEK.\n4. Menciptakan sekolah sehat,bersih dan nyaman.",
 			nama_kepala_sekolah: "Herman Ventje Dien, S.Fils",
-			foto_kepala_sekolah: "default-kepala-sekolah.jpg",
+			foto_kepala_sekolah: null,
 			kata_sambutan:
 				"Selamat datang di website resmi SMP Katolik St. Rafael. Website ini kami hadirkan sebagai sarana informasi sekolah yang terbuka, informatif, dan mudah diakses.",
 		},
@@ -49,7 +49,7 @@ async function main() {
 			visi: "Membentuk peserta didik menjadi manusia yang seutuhnya ,beriman,unggul,bijaksana dan pancasilais sesuai semangat Santo Rafael",
 			misi: "1. Mewujudkan religiusitas dalam diri warga sekolah sehingga kehidupan beriman dan persaudaraan sejati semakin berkembang.\n2. Meningkatkan profesionalisme tenaga pendidik dan kependidikan dengan etos kerja tinggi.\n3. Mewujudkan lingkungan berwawasan IPTEK.\n4. Menciptakan sekolah sehat,bersih dan nyaman.",
 			nama_kepala_sekolah: "Herman Ventje Dien, S.Fils",
-			foto_kepala_sekolah: "default-kepala-sekolah.jpg",
+			foto_kepala_sekolah: null,
 			kata_sambutan: "Selamat datang di website resmi SMP Katolik St. Rafael.",
 			id_admin: admin.id_admin,
 		},
@@ -64,13 +64,13 @@ async function main() {
 	if (!existingKontak) {
 		await prisma.kontak.create({
 			data: {
-				no_telpon: "0431826030",
-				email: "smp@exmaple.sch.id",
-				whatsapp: "6285218978970",
-				youtube: "",
-				instagram: "",
-				facebook: "",
-				tiktok: "",
+				no_telpon: "0431863678",
+				email: "smprafaelmdo@gmail.com",
+				whatsapp: "082322839100",
+				youtube: "https://www.youtube.com/@smpkatolikstrafaelmanado4699",
+				instagram: "https://www.instagram.com/smpkatolikstrafael/",
+				facebook: "https://www.facebook.com/smpkatolikstrafael/",
+				tiktok: "https://www.tiktok.com/smpkatolikstrafael/",
 				id_admin: admin.id_admin,
 			},
 		});
@@ -183,17 +183,17 @@ async function main() {
 	/* ──────────────────── PROGRAM UNGGULAN ──────────────────── */
 	const programData = [
 		{
-			nama: "Program Penguatan Karakter",
+			nama_pu: "Program Penguatan Karakter",
 			deskripsi:
 				"Program rutin yang dirancang untuk membentuk karakter siswa melalui kegiatan refleksi, doa bersama, dan pembinaan moral berbasis nilai Kristiani.",
 		},
 		{
-			nama: "Kelas Bilingual",
+			nama_pu: "Kelas Bilingual",
 			deskripsi:
 				"Program pembelajaran dwibahasa (Indonesia-Inggris) yang diterapkan pada mata pelajaran tertentu untuk meningkatkan kemampuan berbahasa siswa.",
 		},
 		{
-			nama: "Pendampingan Akademik",
+			nama_pu: "Pendampingan Akademik",
 			deskripsi:
 				"Bimbingan belajar tambahan yang diberikan oleh guru untuk siswa yang membutuhkan perhatian khusus dalam mata pelajaran tertentu.",
 		},
@@ -249,15 +249,14 @@ async function main() {
 		create: {
 			nama_lengkap: "Maltrian Ahmad Terok",
 			kata_sandi: hashedPendaftarPass,
-			nisn: "0012345678",
+			nisn: "24013058",
 			jenis_kelamin: "L",
 			tempat_lahir: "Bahu",
 			tanggal_lahir: new Date("2012-02-01"),
-			alamat: "Jl. Mawar No. 5, Laikit",
 			no_hp: "081234567891",
 			email: "ahmad@email.com",
 			asal_sekolah: "SD Negeri 1 Bitung",
-			nama_wali: "Mackie",
+			nama_wali: "Chelsea Blessing Christenia Manahampi",
 		},
 	});
 
@@ -284,8 +283,8 @@ async function main() {
 	console.log("──────────────────────────────");
 	console.log("  Login Akun:");
 	console.log(`  Admin        → username: admin       | password: Admin123!`);
-	console.log(`  Verifikator  → username: verifikator | password: Verif123!`);
-	console.log(`  Pendaftar    → username: Maltrian    | password: Maltrian123!`);
+	console.log(`  Verifikator  → username: selomitha | password: Verif123!`);
+	console.log(`  Pendaftar    → nisn: 24013058    | password: Maltrian123!`);
 	console.log("──────────────────────────────");
 }
 

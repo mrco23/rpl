@@ -91,10 +91,7 @@ export default function ExtracurricularPage() {
             const displayTitle = item.nama_ekskul || item.nama || "Tanpa Judul";
             const displayImage = item.gambar_ekskul || item.gambar || null;
             const displayDesc = item.deskripsi || "Tidak ada deskripsi";
-            const displayJadwal = item.jadwal || "-";
-            const displayPembina = Array.isArray(item.mentor)
-              ? item.mentor.join(", ")
-              : item.mentor || "-";
+            const displayPembina = item.p_jwb_ekskul || "-";
 
             return (
               <div key={index} className=" flex flex-col">
@@ -111,10 +108,6 @@ export default function ExtracurricularPage() {
                   <p className="text-black font-medium mb-1">
                     <span className="font-semibold text-blue-800">Pembina:</span>{" "}
                     {displayPembina}
-                  </p>
-                  <p className="text-black font-medium">
-                    <span className="font-semibold text-blue-800">Jadwal:</span>{" "}
-                    {displayJadwal}
                   </p>
                 </div>
               </div>

@@ -2,18 +2,41 @@ import prisma from "../config/prisma.js";
 
 export const getAktif = async () => {
     const now = new Date();
-    return prisma.gelombang.findFirst({
+    const gelombang = await prisma.gelombang.findFirst({
         where: {
             tanggal_mulai: { lte: now },
             tanggal_selesai: { gte: now }
+        },
+        include: {
+            _count: {
+                select: { pendaftar: true }
+            }
         }
     });
+
+    if (gelombang) {
+        return {
+            ...gelombang,
+            totalPendaftar: gelombang._count.pendaftar
+        };
+    }
+    return null;
 };
 
 export const getAll = async () => {
-    return prisma.gelombang.findMany({
-        orderBy: { tanggal_mulai: "desc" }
+    const data = await prisma.gelombang.findMany({
+        orderBy: { tanggal_mulai: "desc" },
+        include: {
+            _count: {
+                select: { pendaftar: true }
+            }
+        }
     });
+
+    return data.map(item => ({
+        ...item,
+        totalPendaftar: item._count.pendaftar
+    }));
 };
 
 export const getById = async (id) => {

@@ -1,7 +1,7 @@
 import MoreButton from "../ui/MoreButton";
 export default function PreviewFasilitas({ data = [] }) {
   return (
-    <section className="w-full py-20 bg-gray-100">
+    <section className="w-full py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         {/* TITLE */}
         <h2 className="text-3xl md:text-5xl font-semibold text-center mb-12">

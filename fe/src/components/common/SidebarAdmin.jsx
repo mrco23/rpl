@@ -81,9 +81,13 @@ const menu = [
 
 function SidebarAdmin() {
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    window.location.href = "/login";
+    const confirmLogout = window.confirm("Anda Yakin ingin keluar?");
+
+    if (confirmLogout) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      window.location.href = "/login";
+    }
   };
 
   return (

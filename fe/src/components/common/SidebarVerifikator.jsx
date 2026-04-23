@@ -4,13 +4,14 @@ import { House, FileText, LogOut } from "lucide-react";
 // Pastikan path ini sesuai dengan struktur folder kerjamu di VS Code
 import logo from "@assets/logo.png";
 
-function SidebarVerifikator() {
+function SidebarVerifikator({ onClose }) {
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Apakah Anda yakin ingin keluar?");
     if (confirmLogout) {
+      if (onClose) onClose();
       navigate("/login");
     }
   };
@@ -28,7 +29,6 @@ function SidebarVerifikator() {
     },
   ];
 
-  // Logika bawaanmu sudah tepat. Ini akan mengunci "Beranda" hanya untuk exact path.
   const isActive = (path) => {
     if (path === "/verifikator") {
       return location.pathname === "/verifikator" || location.pathname === "/verifikator/";
@@ -71,7 +71,8 @@ function SidebarVerifikator() {
             <Link
               key={index}
               to={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200
+              onClick={onClose}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer
                 ${active
                   ? "bg-[#253b80] text-white shadow-md"
                   : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
@@ -88,7 +89,7 @@ function SidebarVerifikator() {
       <div className="p-4 border-t border-gray-200 mb-2">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer"
         >
           <LogOut size={20} strokeWidth={2} />
           Keluar

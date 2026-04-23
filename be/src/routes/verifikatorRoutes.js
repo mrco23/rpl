@@ -15,4 +15,10 @@ routes.post("/", verifyToken, authorizeRole("admin"), verifikatorController.regi
 routes.put("/:id", verifyToken, authorizeRole("admin"), verifikatorController.updateVerifikatorData);
 routes.delete("/:id", verifyToken, authorizeRole("admin"), verifikatorController.remove);
 
+// Verifier pendaftar interaction
+routes.get("/pendaftar", verifyToken, authorizeRole("verifikator"), verifikatorController.getPendaftarVerifikasi);
+routes.get("/pendaftar/assigned", verifyToken, authorizeRole("verifikator"), verifikatorController.getMyAssignedPendaftar);
+routes.post("/pendaftar/:id/assign", verifyToken, authorizeRole("verifikator"), verifikatorController.assignPendaftar);
+routes.post("/pendaftar/:id/verify", verifyToken, authorizeRole("verifikator"), verifikatorController.verifyPendaftar);
+
 export default routes;

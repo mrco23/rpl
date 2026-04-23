@@ -1,5 +1,7 @@
 import * as FasilitasService from "../services/FasilitasService.js";
 
+
+
 export const getAll = async (req, res) => {
 	try {
 		const data = await FasilitasService.getAllFasilitas(req.user.id);

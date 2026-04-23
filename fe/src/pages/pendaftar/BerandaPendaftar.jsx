@@ -74,35 +74,40 @@ function BerandaPendaftar() {
         <div className="grid md:grid-cols-3 gap-5">
           <Field
             label="NISN"
-            value={loading ? null : biodata?.nisn || "-"}
+            value={biodata?.nisn || "-"}
             loading={loading}
           />
           <Field
             label="Nama Lengkap"
-            value={loading ? null : biodata?.nama_lengkap || "-"}
+            value={biodata?.nama_lengkap || "-"}
             loading={loading}
           />
           <Field
             label="Tempat, Tanggal Lahir"
-            value={loading ? null : formatTanggalLahir(biodata?.tempat_lahir, biodata?.tanggal_lahir)}
+            value={formatTanggalLahir(biodata?.tempat_lahir, biodata?.tanggal_lahir)}
             loading={loading}
             icon={<CalendarDays size={16} />}
           />
           <Field
             label="Jenis Kelamin"
-            value={loading ? null : biodata?.jenis_kelamin === "L" ? "Laki-Laki" : biodata?.jenis_kelamin === "P" ? "Perempuan" : biodata?.jenis_kelamin || "-"}
+            value={biodata?.jenis_kelamin === "L" ? "Laki-Laki" : biodata?.jenis_kelamin === "P" ? "Perempuan" : biodata?.jenis_kelamin || "-"}
             loading={loading}
           />
           <Field
             label="Asal Sekolah"
-            value={loading ? null : biodata?.asal_sekolah || "-"}
+            value={biodata?.asal_sekolah || "-"}
             loading={loading}
           />
           <Field
             label="Alamat Lengkap"
-            value={loading ? null : biodata?.alamat || "-"}
+            value={
+              biodata?.alamat
+                ? `${biodata.alamat.provinsi}, ${biodata.alamat.kota_kabupaten}, ${biodata.alamat.kecamatan}, ${biodata.alamat.kelurahan}, RT/RW: ${biodata.alamat.rt_rw}, Kode Pos: ${biodata.alamat.kode_pos}`
+                : "-"
+            }
             loading={loading}
           />
+
         </div>
       </div>
 
@@ -118,12 +123,12 @@ function BerandaPendaftar() {
         <div className="grid md:grid-cols-2 gap-5">
           <Field
             label="Nama Orang Tua / Wali"
-            value={loading ? null : biodata?.nama_wali || "-"}
+            value={biodata?.nama_wali || "-"}
             loading={loading}
           />
           <Field
             label="Alamat Email Orang Tua / Wali"
-            value={loading ? null : biodata?.email || "-"}
+            value={biodata?.email || "-"}
             loading={loading}
           />
         </div>
@@ -144,12 +149,12 @@ function BerandaPendaftar() {
         <div className="grid md:grid-cols-2 gap-5">
           <Field
             label="No. HP"
-            value={loading ? null : biodata?.no_hp || "-"}
+            value={biodata?.no_hp || "-"}
             loading={loading}
           />
           <Field
             label="Alamat Email"
-            value={loading ? null : biodata?.email || "-"}
+            value={biodata?.email || "-"}
             loading={loading}
           />
         </div>
@@ -169,10 +174,7 @@ function BerandaPendaftar() {
           </div>
         </div>
 
-        <button className="bg-[#2443a8] hover:bg-[#1b3488] text-white px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition">
-          SELANJUTNYA
-          <ArrowRight size={18} />
-        </button>
+
       </div>
     </div>
   );

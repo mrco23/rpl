@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import logo from "@assets/logo.png";
 
-function SidebarPendaftar() {
+function SidebarPendaftar({ onClose }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -17,6 +17,7 @@ function SidebarPendaftar() {
     const confirmLogout = window.confirm("Apakah Anda yakin ingin keluar?");
 
     if (confirmLogout) {
+      if (onClose) onClose();
       navigate("/login");
     }
   };
@@ -49,9 +50,9 @@ function SidebarPendaftar() {
   };
 
   return (
-    <div className="w-64 bg-[#1f3fa6] text-white flex flex-col px-4 py-5 rounded-r-2xl">
+    <div className="w-64 h-screen bg-[#1f3fa6] text-white flex flex-col px-4 py-5 rounded-r-2xl shadow-xl">
       {/* HEADER */}
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex items-center gap-3 mb-8 shrink-0">
         <img
           src={logo}
           alt="logo"
@@ -66,31 +67,32 @@ function SidebarPendaftar() {
       </div>
 
       {/* MENU */}
-      <div className="space-y-2">
+      <div className="flex-1 space-y-2">
         {menu.map((item, index) => (
           <Link
             key={index}
             to={item.path}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${isActive(item.path)
-                ? "bg-white text-[#1f3fa6] font-medium"
-                : "text-white hover:bg-white/10"
+            onClick={onClose}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all cursor-pointer ${isActive(item.path)
+              ? "bg-white text-[#1f3fa6] font-bold shadow-md"
+              : "text-white hover:bg-white/10"
               }`}
           >
             {item.icon}
             <span>{item.title}</span>
           </Link>
         ))}
+      </div>
 
-        {/* LOGOUT */}
-        <div className="pt-3 mt-3 border-t border-white/20">
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-3 text-sm w-full hover:bg-white/10 rounded-lg transition"
-          >
-            <LogOut size={18} />
-            Keluar
-          </button>
-        </div>
+      {/* LOGOUT */}
+      <div className="pt-3 mt-auto border-t border-white/20 mb-2">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-3 px-4 py-3 text-sm w-full hover:bg-white/10 hover:text-red-300 rounded-xl transition cursor-pointer font-semibold"
+        >
+          <LogOut size={18} />
+          Keluar
+        </button>
       </div>
     </div>
   );

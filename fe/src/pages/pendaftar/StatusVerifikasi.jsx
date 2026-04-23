@@ -65,7 +65,7 @@ export default function StatusVerifikasi() {
             </div>
           </div>
 
-          
+
           {/* RIGHT */}
           <div className="text-right text-sm text-gray-500 space-y-1">
             <p className="font-medium">Tanggal Verifikasi</p>
@@ -106,20 +106,18 @@ export default function StatusVerifikasi() {
                   {/* CIRCLE */}
                   <div
                     className={`w-12 h-12 flex items-center justify-center rounded-full border-2 transition-all
-                    ${
-                      isDone || isActive
+                    ${isDone || isActive
                         ? "bg-blue-100 border-blue-500 text-blue-600"
                         : "bg-gray-100 border-gray-300 text-gray-400"
-                    }`}
+                      }`}
                   >
                     {isDone ? <FaCheckCircle /> : <Icon />}
                   </div>
 
                   {/* LABEL */}
                   <p
-                    className={`mt-2 text-sm text-center ${
-                      isDone || isActive ? "text-gray-700" : "text-gray-400"
-                    }`}
+                    className={`mt-2 text-sm text-center ${isDone || isActive ? "text-gray-700" : "text-gray-400"
+                      }`}
                   >
                     {step.label}
                   </p>

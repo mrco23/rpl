@@ -14,6 +14,7 @@ import NewsPage from "./pages/public/NewsPage";
 import DetailBerita from "./pages/public/DetailBerita";
 import PanduanPage from "./pages/public/PanduanPage";
 import LoginPage from "./pages/auth/LoginPage";
+import UbahKataSandiPage from "./pages/auth/UbahKataSandiPage";
 import Register from "./pages/pendaftar/Register";
 import NotFoundPage from "./pages/public/NotFoundPage";
 import VisiMisiPage from "./pages/public/VisiMisiPage";
@@ -67,6 +68,7 @@ function App() {
           <Route path="/panduan" element={<PanduanPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/ubah-kata-sandi" element={<UbahKataSandiPage />} />
         <Route path="/register" element={<Register />} />
 
         {/* Admin Routes */}

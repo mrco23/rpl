@@ -45,7 +45,6 @@ export const register = async (payload) => {
         nama_lengkap: payload.nama_lengkap,
         kata_sandi: hashedKataSandi,
         nisn: payload.nisn || null,
-        alamat: payload.alamat,
         tempat_lahir: payload.tempat_lahir || null,
         tanggal_lahir: payload.tanggal_lahir ? new Date(payload.tanggal_lahir) : null,
         jenis_kelamin: payload.jenis_kelamin,
@@ -54,26 +53,68 @@ export const register = async (payload) => {
         email: payload.email || null,
         nama_wali: payload.nama_wali || null,
         id_gelombang: activeGelombang.id_gelombang,
-        status_pendaftaran: "menunggu_verifikasi",
+        status_pendaftaran: "menunggu verifikasi",
+        alamat: {
+            create: {
+                provinsi: payload.alamat.provinsi,
+                kota_kabupaten: payload.alamat.kota_kabupaten,
+                kecamatan: payload.alamat.kecamatan,
+                kelurahan: payload.alamat.kelurahan,
+                rt_rw: payload.alamat.rt_rw,
+                kode_pos: payload.alamat.kode_pos,
+            }
+        }
     };
 
-    return prisma.pendaftar.create({data});
+    return prisma.pendaftar.create({ 
+        data,
+        include: { alamat: true }
+    });
 }
 
 export const getPendaftar = async (nisn) => {
-    let pendaftar = await prisma.pendaftar.findUnique({where: {nisn}});
+    let pendaftar = await prisma.pendaftar.findUnique({
+        where: { nisn },
+        include: { alamat: true }
+    });
     if (pendaftar) {
-        return {...pendaftar, id: pendaftar.id_pendaftar};
+        return { ...pendaftar, id: pendaftar.id_pendaftar };
     }
     return null;
 };
 
 export const getPendaftarById = async (id) => {
     return await prisma.pendaftar.findUnique({
-        where: { id_pendaftar: Number(id) }
+        where: { id_pendaftar: Number(id) },
+        include: { alamat: true }
     });
 };
 
 export const getAllPendaftar = async () => {
-    return await prisma.pendaftar.findMany();
+    return await prisma.pendaftar.findMany({
+        include: {
+            gelombang: true,
+            alamat: true
+        }
+    });
+};
+
+export const updateStatusMassal = async (ids, status) => {
+    return await prisma.pendaftar.updateMany({
+        where: {
+            id_pendaftar: { in: ids.map(id => Number(id)) }
+        },
+        data: {
+            status_pendaftaran: status
+        }
+    });
+};
+
+export const updatePassword = async (id, newPassword) => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedKataSandi = await bcrypt.hash(newPassword, salt);
+    return await prisma.pendaftar.update({
+        where: { id_pendaftar: Number(id) },
+        data: { kata_sandi: hashedKataSandi }
+    });
 };

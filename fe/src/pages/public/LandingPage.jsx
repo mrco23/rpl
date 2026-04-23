@@ -101,13 +101,12 @@ export default function LandingPage() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 flex flex-col justify-start pt-32 h-full max-w-7xl mx-auto px-8 text-white">
-          <h1 className="text-5xl md:text-6xl font-semibold mb-4 leading-tight">
-            SMP KATOLIK <br /> ST.RAFAEL MANADO
+        <div className="relative z-10 flex flex-col justify-start pt-24 md:pt-32 h-full max-w-7xl mx-auto px-6 sm:px-8 text-white">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+            SMP KATOLIK <br className="hidden sm:block" /> ST. RAFAEL MANADO
           </h1>
-          <p className="text-base md:text-lg mb-5 max-w-lg">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          <p className="text-sm md:text-lg mb-8 max-w-4xl opacity-90 leading-relaxed">
+            Mulai perjalanan pendidikan menengah Anda di SMP Katolik St. Rafael Manado. Kami menyediakan lingkungan belajar yang mendukung prestasi dan pertumbuhan karakter. Klik tombol di bawah untuk proses pendaftaran.
           </p>
           <div className="flex gap-3">
             <button
@@ -154,6 +153,29 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* AKREDITASI SECTION */}
+      <section className="max-w-5xl mx-auto px-6 mt-60 mb-10 relative">
+        <div className="bg-white rounded-[2rem] shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative">
+
+          {/* Badge Icon Akreditasi */}
+          <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full p-2 shadow-sm flex items-center justify-center">
+            {/* Ganti div ini dengan <img src={iconAkreditasi} alt="Akreditasi" /> jika asset sudah ada */}
+            <div className="w-full h-full bg-blue-50 rounded-full flex items-center justify-center text-4xl">
+              🏅
+            </div>
+          </div>
+
+          <h2 className="text-3xl font-bold text-slate-800 mb-4">
+            Terakreditasi B
+          </h2>
+          <p className="text-slate-600 text-lg leading-relaxed max-w-4xl mx-auto font-medium">
+            dengan Nomor SK Akreditasi 283/BAN-SM/SULUT/XII/2018 pada tanggal 4
+            Desember 2018. Selain itu, SMP KATOLIK ST RAFAEL juga telah tersertifikasi
+            ISO 9001:2000.
+          </p>
         </div>
       </section>
 

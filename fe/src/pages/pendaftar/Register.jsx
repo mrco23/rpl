@@ -10,7 +10,12 @@ export default function ApplicantRegisterPage() {
   const [formData, setFormData] = useState({
     namaLengkap: "",
     nisn: "",
-    alamat: "",
+    provinsi: "",
+    kotaKabupaten: "",
+    kecamatan: "",
+    kelurahan: "",
+    rtRw: "",
+    kodePos: "",
     tempatLahir: "",
     tanggalLahir: "",
     jenisKelamin: "",
@@ -53,7 +58,12 @@ export default function ApplicantRegisterPage() {
     // Validasi step 1
     if (
       !formData.namaLengkap ||
-      !formData.alamat ||
+      !formData.provinsi ||
+      !formData.kotaKabupaten ||
+      !formData.kecamatan ||
+      !formData.kelurahan ||
+      !formData.rtRw ||
+      !formData.kodePos ||
       !formData.jenisKelamin ||
       !formData.noHp ||
       !formData.asalSekolah
@@ -83,7 +93,14 @@ export default function ApplicantRegisterPage() {
       const payload = {
         nama_lengkap: formData.namaLengkap,
         nisn: formData.nisn || undefined,
-        alamat: formData.alamat,
+        alamat: {
+          provinsi: formData.provinsi,
+          kota_kabupaten: formData.kotaKabupaten,
+          kecamatan: formData.kecamatan,
+          kelurahan: formData.kelurahan,
+          rt_rw: formData.rtRw,
+          kode_pos: formData.kodePos,
+        },
         tempat_lahir: formData.tempatLahir || undefined,
         tanggal_lahir: formData.tanggalLahir || undefined,
         jenis_kelamin: formData.jenisKelamin,
@@ -265,19 +282,85 @@ export default function ApplicantRegisterPage() {
               </div>
 
               {/* Alamat Domisili */}
-              <div>
-                <label className="block mb-1 font-semibold">
-                  Alamat Domisili <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  name="alamat"
-                  value={formData.alamat}
-                  onChange={handleChange}
-                  placeholder="Isi alamat lengkap"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none resize-none"
-                  rows={3}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    Provinsi <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    name="provinsi"
+                    value={formData.provinsi}
+                    onChange={handleChange}
+                    placeholder="Isi Provinsi"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    Kota/Kabupaten <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    name="kotaKabupaten"
+                    value={formData.kotaKabupaten}
+                    onChange={handleChange}
+                    placeholder="Isi Kota/Kabupaten"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    Kecamatan <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    name="kecamatan"
+                    value={formData.kecamatan}
+                    onChange={handleChange}
+                    placeholder="Isi Kecamatan"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    Kelurahan <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    name="kelurahan"
+                    value={formData.kelurahan}
+                    onChange={handleChange}
+                    placeholder="Isi Kelurahan"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    RT / RW <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    name="rtRw"
+                    value={formData.rtRw}
+                    onChange={handleChange}
+                    placeholder="Contoh: 001 / 001"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    Kode Pos <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    name="kodePos"
+                    value={formData.kodePos}
+                    onChange={handleChange}
+                    placeholder="Isi Kode Pos"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                  />
+                </div>
               </div>
 
               {/* Tanggal Lahir + Tempat Lahir + Jenis Kelamin + Nomor HP */}

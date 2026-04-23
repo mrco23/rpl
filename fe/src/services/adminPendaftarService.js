@@ -6,3 +6,8 @@ import adminAxios from "./adminAxios.js";
 export const getAllPendaftar = () => {
   return adminAxios.get("/pendaftar");
 };
+
+export const updateStatusMassal = (ids, status) => {
+  return adminAxios.patch("/pendaftar/mass-status", { ids, status });
+};
+

@@ -1,0 +1,15 @@
+meta {
+  name: Get All (Admin)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/admin/gelombang
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
