@@ -13,9 +13,10 @@ const PORT = process.env.PORT || 3000;
 app.use(morgan("dev"));
 app.use(
 	cors({
-		origin: "https://smpkatolikstrafael.vercel.app",
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		allowedHeaders: ["Content-Type", "Authorization"],
+		origin: ["http://localhost:5173", "https://smpkatolikstrafael.vercel.app"],
+		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+		allowedHeaders: "*",
+		credentials: true,
 	}),
 );
 app.use(express.json());
