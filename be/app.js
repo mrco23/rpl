@@ -11,11 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 // CORS options
 const corsOptions = {
-	origin: [
-		"http://localhost:5173",
-		"https://vicious-kore-mrco23-5f44984d.koyeb.app",
-		"https://bruno-fe-domain.com", // tambahkan domain FE Bruno
-	],
+	origin: ["http://localhost:5173", "https://vicious-kore-mrco23-5f44984d.koyeb.app"],
 	methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 	allowedHeaders: ["Content-Type", "Authorization"],
 	credentials: true,
@@ -39,8 +35,14 @@ app.get("/", (req, res) => {
 });
 
 // 404 handler (catch-all tanpa wildcard path)
-app.use((req, res) => {
+app.use((req, res, next) => {
 	res.status(404).json({ message: "Route not found" });
+});
+
+// Global error handler (opsional tapi disarankan)
+app.use((err, req, res, next) => {
+	console.error("Server error:", err);
+	res.status(500).json({ message: "Internal server error" });
 });
 
 // Start server
