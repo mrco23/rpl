@@ -13,7 +13,12 @@ const PORT = process.env.PORT || 3000;
 app.use(morgan("dev"));
 app.use(
 	cors({
-		origin: ["http://localhost:5173", "https://vicious-kore-mrco23-5f44984d.koyeb.app"],
+		origin: [
+			"http://localhost:5173",
+			"https://vicious-kore-mrco23-5f44984d.koyeb.app",
+			"https://smpkatolikstrafael.netlify.app",
+			"https://smpkatolikstrafael.vercel.app",
+		],
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		allowedHeaders: "*",
 		credentials: true,
