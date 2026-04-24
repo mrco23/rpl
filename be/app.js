@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware Global
 app.use(morgan("dev"));
 app.use(
+	"*",
 	cors({
 		origin: ["http://localhost:5173", "https://vicious-kore-mrco23-5f44984d.koyeb.app"],
 		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
