@@ -4,10 +4,17 @@ meta {
   seq: 6
 }
 
-get {
-  url: https://project-wbjk9.vercel.app/api/profile/landing-page
-  body: none
+post {
+  url: https://vicious-kore-mrco23-5f44984d.koyeb.app/api/admin/login
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "username": "admin",
+    "password": "Admin123!"
+  }
 }
 
 settings {

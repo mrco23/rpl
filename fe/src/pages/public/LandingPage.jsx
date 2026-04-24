@@ -24,6 +24,7 @@ export default function LandingPage() {
       setLoading(false);
     };
     fetchData();
+    alert(import.meta.env.VITE_API_URL)
   }, []);
 
   if (loading) {
