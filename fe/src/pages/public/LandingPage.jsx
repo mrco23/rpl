@@ -14,32 +14,13 @@ export default function LandingPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    /*  const fetchData = async () => {
-       setLoading(true);
-       const res = await profileService.getLandingPageData();
-       if (res.success) {
-         setData(res.data);
-       }
-       // Jika gagal, biarkan data null — tiap section punya fallback sendiri
-       setLoading(false);
-     };
-     fetchData(); */
     const fetchData = async () => {
       setLoading(true);
-      setTimeout(fetch("https://vicious-kore-mrco23-5f44984d.koyeb.app/api/profile/landing-page")
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(`HTTP error! Status: ${res.status}`);
-          }
-          return res.json();
-        })
-        .then((res) => {
-          console.log(res.data); // Menampilkan data di console
-          setData(res.data);      // Meng-update state
-        })
-        .catch((error) => {
-          console.error("Terjadi kesalahan:", error);
-        }), 30000)
+      const res = await profileService.getLandingPageData();
+      if (res.success) {
+        setData(res.data);
+      }
+      // Jika gagal, biarkan data null — tiap section punya fallback sendiri
       setLoading(false);
     };
     fetchData();
