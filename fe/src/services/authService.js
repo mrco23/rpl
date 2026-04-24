@@ -5,11 +5,11 @@ import { requestAPI } from "./api.js";
  * Endpoint /pendaftar/login menggunakan field nisn + password.
  */
 export const loginService = async (payload) => {
-  return await requestAPI({
-    method: "POST",
-    url: "/pendaftar/login",
-    data: payload,
-  });
+	return await requestAPI({
+		method: "POST",
+		url: "/pendaftar/login",
+		data: payload,
+	});
 };
 
 /**
@@ -18,11 +18,11 @@ export const loginService = async (payload) => {
  * HARUS digunakan saat login sebagai admin agar authorizeRole("admin") di backend pass.
  */
 export const loginAdminService = async (payload) => {
-  return await requestAPI({
-    method: "POST",
-    url: "/admin/login",
-    data: payload,
-  });
+	return await requestAPI({
+		method: "POST",
+		url: "/admin/login",
+		data: payload,
+	});
 };
 
 /**
@@ -30,20 +30,20 @@ export const loginAdminService = async (payload) => {
  * Endpoint /verifikator/login menghasilkan token dengan payload { id, role: 'verifikator' }.
  */
 export const loginVerifikatorService = async (payload) => {
-  return await requestAPI({
-    method: "POST",
-    url: "/verifikator/login",
-    data: payload,
-  });
+	return await requestAPI({
+		method: "POST",
+		url: "/verifikator/login",
+		data: payload,
+	});
 };
 /**
  * Ubah Kata Sandi untuk Pendaftar.
  * Endpoint /pendaftar/change-password menggunakan field nisn + oldPassword + newPassword.
  */
 export const changePasswordService = async (payload) => {
-  return await requestAPI({
-    method: "POST",
-    url: "/pendaftar/change-password",
-    data: payload,
-  });
+	return await requestAPI({
+		method: "POST",
+		url: "/pendaftar/change-password",
+		data: payload,
+	});
 };

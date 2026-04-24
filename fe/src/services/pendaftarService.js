@@ -1,8 +1,11 @@
 import { requestAPI } from "./api.js";
 
-export const getPendaftarMe = () => {
-  return requestAPI({
-    method: "GET",
-    url: "/pendaftar/me"
-  });
+/**
+ * Mengambil data profil pendaftar yang sedang login.
+ */
+export const getPendaftarMe = async () => {
+	return await requestAPI({
+		method: "GET",
+		url: "/pendaftar/me",
+	});
 };
