@@ -26,11 +26,12 @@ export default function LandingPage() {
      fetchData(); */
     const fetchData = async () => {
       setLoading(true);
-      fetch("https://vicious-kore-mrco23-5f44984d.koyeb.app/api/profile/landing-page").then((res) => res.json()).then((res) => {
+      setTimeout(fetch("https://vicious-kore-mrco23-5f44984d.koyeb.app/api/profile/landing-page").then((res) => res.json()).then((res) => {
         console.log(res.data);
         setData(res.data);
-        setLoading(false);
-      })
+
+      }), 10000)
+      setLoading(false);
     };
     fetchData();
   }, []);
