@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js",
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -99,8 +100,8 @@ model Pengumuman {
 
 model PengumumanPendaftar {
   id_pengumuman_pendaftar Int @id @default(autoincrement())
-  id_pendaftar           Int
-  id_pengumuman          Int
+  id_pendaftar            Int
+  id_pengumuman           Int
 
   pendaftar  Pendaftar  @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
   pengumuman Pengumuman @relation(fields: [id_pengumuman], references: [id_pengumuman], onDelete: Cascade)
@@ -109,7 +110,6 @@ model PengumumanPendaftar {
   @@index([id_pengumuman], map: "pengumuman_pendaftar_id_pengumuman_idx")
   @@map("pengumuman_pendaftar")
 }
-
 
 model Fasilitas {
   id_fasilitas     Int     @id @default(autoincrement())
@@ -180,7 +180,7 @@ model Pendaftar {
   status_pendaftaran String    @default("menunggu verifikasi")
   catatan_dokumen    String?   @db.Text
   tanggal_daftar     DateTime  @default(now())
-  id_gelombang        Int?
+  id_gelombang       Int?
   id_verifikator     Int?
 
   alamat               Alamat?
@@ -208,7 +208,6 @@ model Alamat {
 
   @@map("alamat")
 }
-
 
 model Dokumen {
   id_dokumen     Int    @id @default(autoincrement())
