@@ -37,33 +37,23 @@ function Navbar() {
 
   return (
     <>
-      <nav ref={dropdownRef} className="w-full bg-white shadow-sm">
+      <nav ref={dropdownRef} className="w-full sticky top-0 z-50 bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2 ml-2">
-            <img src={logo} alt="logo" className="w-14 h-14  object-contain" />
+          <div className="flex items-center h-full gap-2 ml-2">
+            <img src={logo} alt="logo" className="w-12 xl:w-14 h-auto  object-contain" />
           </div>
 
           {/* Menu */}
-          <ul className="hidden md:flex space-x-10 text-gray-600 font-medium items-center">
+          <ul className="hidden lg:flex space-x-5 xl:space-x-10 text-gray-600 font-medium items-center">
             {/* Beranda */}
-            <li>
-              <Link
-                to="/"
-                className={`px-3 py-2 rounded  ${location.pathname === "/"
-                  ? "border-transparent  text-gray-950 font-semibold"
-                  : "border-transparent"
-                  } hover:bg-gray-100`}
-              >
-                Beranda
-              </Link>
-            </li>
+            <Li title="Beranda" to="/" />
 
             {/* Tentang */}
             <li className="relative">
               <button
                 onClick={() => handleDropdown("tentang")}
-                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${location.pathname === "/sejarah" ||
+                className={`flex items-center gap-1 px-3 cursor-pointer hover:text-blue-normal py-2 border-2 rounded transition-colors appearance-none bg-transparent ${location.pathname === "/sejarah" ||
                   location.pathname === "/visi-misi" ||
                   location.pathname === "/fasilitas"
                   ? "border-transparent text-gray-950 font-semibold"
@@ -101,12 +91,11 @@ function Navbar() {
                 </div>
               )}
             </li>
-
             {/* Akademik */}
             <li className="relative">
               <button
                 onClick={() => handleDropdown("akademik")}
-                className={`flex items-center gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${location.pathname === "/program" ||
+                className={`flex items-center cursor-pointer hover:text-blue-normal gap-1 px-3 py-2 border-2 rounded transition-colors appearance-none bg-transparent ${location.pathname === "/program" ||
                   location.pathname === "/ekstrakurikuler" ||
                   location.pathname === "/prestasi"
                   ? "border-transparent text-gray-950 font-semibold"
@@ -146,34 +135,14 @@ function Navbar() {
             </li>
 
             {/* Panduan */}
-            <li>
-              <Link
-                to="/panduan"
-                className={`px-3 py-2 border-2 rounded transition-colors ${location.pathname === "/panduan"
-                  ? "border-transparent text-gray-950 font-semibold"
-                  : "border-transparent"
-                  } hover:bg-gray-100`}
-              >
-                Panduan
-              </Link>
-            </li>
+            <Li to="/panduan" title="Panduan" />
 
             {/* Berita */}
-            <li>
-              <Link
-                to="/berita"
-                className={`px-3 py-2 border-2 rounded transition-colors ${location.pathname === "/berita"
-                  ? "border-transparent text-gray-950 font-semibold"
-                  : "border-transparent"
-                  } hover:bg-gray-100`}
-              >
-                Berita
-              </Link>
-            </li>
+            <Li to="/berita" title="Berita" />
           </ul>
 
           {/* Button DESKTOP*/}
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden lg:flex space-x-4">
             <button
               onClick={() => navigate("/login")}
               className="px-3 py-1 border-2 border-blue-800 text-blue-900 rounded-md font-normal hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
@@ -190,17 +159,18 @@ function Navbar() {
           </div>
 
           {/* ✅ HAMBURGER BUTTON (MOBILE) */}
-          <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          <button className="lg:hidden" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X size={28} className="" /> : <Menu size={28} />}
           </button>
         </div>
 
         {isOpen && (
-          <div className="md:hidden px-6 pb-4 space-y-4 text-gray-700 font-medium">
+          <div className="lg:hidden px-6 pb-4 gap-4 mt-2 flex flex-col text-gray-700 font-medium">
             <Link to="/" className="block">
               Beranda
             </Link>
 
+            {/* Dropdown Tentang */}
             <div>
               <p
                 onClick={() => handleDropdown("tentang")}
@@ -208,26 +178,27 @@ function Navbar() {
               >
                 Tentang <ChevronDown size={16} />
               </p>
-              {openDropdown === "tentang" && (
-                <div className="ml-4 mt-2 space-y-2 text-sm">
-                  <Link
-                    to="/sejarah"
-                    className=" hover:bg-gray-100 block cursor-pointer"
-                  >
-                    Sejarah Sekolah
-                  </Link>
-                  <Link
-                    to="/visi-misi"
-                    className=" hover:bg-gray-100 block cursor-pointer"
-                  >
-                    Visi dan Misi Sekolah
-                  </Link>
-                  <p onClick={() => handleModal("kepsek")}>Sambutan Kepsek</p>
-                  <p onClick={() => handleModal("fasilitas")}>Fasilitas</p>
-                </div>
-              )}
+
+              <div
+                className={`ml-4 mt-2 space-y-2 text-sm overflow-hidden transition-[max-height,opacity,transform] duration-300 ease-out
+                  ${openDropdown === "tentang" ? "max-h-96 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-2"}`}
+              >
+                <Link to="/sejarah" className="hover:bg-gray-100 block cursor-pointer">
+                  Sejarah Sekolah
+                </Link>
+                <Link to="/visi-misi" className="hover:bg-gray-100 block cursor-pointer">
+                  Visi dan Misi Sekolah
+                </Link>
+                <p onClick={() => handleModal("kepsek")} className="cursor-pointer">
+                  Sambutan Kepsek
+                </p>
+                <p onClick={() => handleModal("fasilitas")} className="cursor-pointer">
+                  Fasilitas
+                </p>
+              </div>
             </div>
 
+            {/* Dropdown Akademik */}
             <div>
               <p
                 onClick={() => handleDropdown("akademik")}
@@ -235,25 +206,27 @@ function Navbar() {
               >
                 Akademik <ChevronDown size={16} />
               </p>
-              {openDropdown === "akademik" && (
-                <div className="ml-4 mt-2 space-y-2 text-sm">
-                  <Link
-                    to="/program"
-                    className=" hover:bg-gray-100 block cursor-pointer"
-                  >
-                    Program Unggulan
-                  </Link>
-                  <p onClick={() => handleModal("guru")}>Ekstrakurikuler</p>
-                  <p onClick={() => handleModal("prestasi")}>Prestasi</p>
-                </div>
-              )}
+
+              <div
+                className={`ml-4 mt-2 space-y-2 text-sm overflow-hidden transition-[max-height,opacity,transform] duration-300 ease-out
+                  ${openDropdown === "akademik" ? "max-h-96 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-2"}`}
+              >
+                <Link to="/program" className="hover:bg-gray-100 block cursor-pointer">
+                  Program Unggulan
+                </Link>
+                <p onClick={() => handleModal("guru")} className="cursor-pointer">
+                  Ekstrakurikuler
+                </p>
+                <p onClick={() => handleModal("prestasi")} className="cursor-pointer">
+                  Prestasi
+                </p>
+              </div>
             </div>
 
-            <Link to="/panduan" className="block">
+            <Link to="/panduan" className="">
               Panduan
             </Link>
-
-            <Link to="/berita" className="block">
+            <Link to="/berita" className="">
               Berita
             </Link>
 
@@ -278,7 +251,7 @@ function Navbar() {
 
       {/* MODAL */}
       {openModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-[999]">
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-999">
           <div className="bg-white rounded-xl p-6 w-96 relative">
             <button
               onClick={() => setOpenModal(null)}
@@ -345,4 +318,18 @@ function Navbar() {
   );
 }
 
+
+function Li({ title, to }) {
+  return <li>
+    <Link
+      to={to}
+      className={`px-1 lg:px-2 xl:px-3 py-2 border-2 rounded transition-colors relative hover:after:w-full after:w-0 after:h-0.5 after:absolute after:left-1/2 after:bottom-0 after:-translate-x-1/2 after:bg-blue-normal after:transition-all after:duration-300 hover:text-blue-normal ${location.pathname === to
+        ? "border-transparent  text-gray-950 font-semibold"
+        : "border-transparent"
+        } hover:bg-gray-100`}
+    >
+      {title}
+    </Link>
+  </li>
+}
 export default Navbar;
