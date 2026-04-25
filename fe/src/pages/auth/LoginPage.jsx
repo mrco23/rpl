@@ -155,7 +155,6 @@ export default function LoginPage() {
               value={role}
               onChange={(e) => {
                 setRole(e.target.value);
-                setIdentifier(e.target.value);
               }}
               className="w-full border-2 rounded-lg px-1 py-3 border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition"
             >
