@@ -215,11 +215,10 @@ function AdminNotificationsPage() {
             paginatedData.map((item) => (
               <div
                 key={item.id_pengumuman}
-                className="shadow-sm border border-gray-100 rounded-xl p-5 flex justify-between items-center bg-white hover:border-[#253b80]/30 transition-all group"
+                className="shadow-sm border border-gray-100 rounded-xl p-5 flex flex-col md:flex-row justify-between items-center bg-white hover:border-[#253b80]/30 transition-all group"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded bg-blue-50 text-blue-800">PUBLISHED</span>
                     <h3 className="font-bold text-gray-800 text-lg group-hover:text-[#253b80] transition-colors">{item.judul_pengumuman}</h3>
                   </div>
                   <p className="text-sm text-gray-500 mb-3 line-clamp-2 max-w-3xl">{item.deksripsi}</p>
@@ -237,7 +236,7 @@ function AdminNotificationsPage() {
                 </div>
 
                 {/* ACTION */}
-                <div className="flex gap-2">
+                <div className="flex gap-2 md:flex-row lg:flex-col xl:flex-row  mt-4 md:mt-0">
                   <button
                     onClick={() => handleOpenDetail(item)}
                     className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-gray-500 hover:text-gray-800"
@@ -343,19 +342,19 @@ function AdminNotificationsPage() {
             {/* RECIPIENTS SELECTION */}
             <div className="border-t pt-4">
               <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Penerima Pengumuman</label>
-              
+
               <div className="flex gap-2 mb-3">
                 <div className="relative flex-1">
                   <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input 
-                    type="text" 
-                    placeholder="Cari nama..." 
+                  <input
+                    type="text"
+                    placeholder="Cari nama..."
                     className="w-full pl-9 pr-3 py-2 text-xs border rounded-lg outline-none focus:ring-1 focus:ring-blue-500"
                     value={pendaftarSearch}
                     onChange={e => setPendaftarSearch(e.target.value)}
                   />
                 </div>
-                <select 
+                <select
                   className="text-xs border rounded-lg px-2 outline-none focus:ring-1 focus:ring-blue-500 bg-white"
                   value={pendaftarFilter}
                   onChange={e => setPendaftarFilter(e.target.value)}
@@ -374,11 +373,11 @@ function AdminNotificationsPage() {
                   .map(p => {
                     const isSelected = formData.recipients.includes(p.id_pendaftar);
                     return (
-                      <div 
-                        key={p.id_pendaftar} 
+                      <div
+                        key={p.id_pendaftar}
                         className="flex items-center gap-3 p-3 hover:bg-gray-50 cursor-pointer"
                         onClick={() => {
-                          const newRecipients = isSelected 
+                          const newRecipients = isSelected
                             ? formData.recipients.filter(id => id !== p.id_pendaftar)
                             : [...formData.recipients, p.id_pendaftar];
                           setFormData({ ...formData, recipients: newRecipients });

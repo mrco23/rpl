@@ -127,10 +127,10 @@ export default function AdminBeranda() {
 
       {/* Pendaftar Terbaru Table */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
-        <div className="p-6 text-center border-b border-gray-100">
+        <div className="my-6 text-center border-b border-gray-100">
           <h2 className="text-lg font-semibold text-blue-dark">Pendaftar Terbaru</h2>
         </div>
-        <div className="flex-1 p-6">
+        <div className="flex-1 px-6">
           <div className="w-full text-left">
             <div className="grid grid-cols-13 gap-4 bg-blue-light text-gray-700 font-semibold text-sm p-3 rounded-t-lg">
               <div className="col-span-6">Nama Siswa</div>
@@ -170,8 +170,8 @@ export default function AdminBeranda() {
             )}
           </div>
         </div>
-        <div className="p-4 border-t border-gray-100 text-center">
-          <NavLink to="/admin/ppdb" className="text-blue-600 text-sm font-semibold flex items-center justify-center gap-2 hover:underline">
+        <div className="p-6 border-t border-gray-100 text-center">
+          <NavLink to="/admin/ppdb" className="text-slate-600 hover:text-blue-normal transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:underline underline-offset-4">
             Lihat Semua Pendaftar <ArrowRight size={16} />
           </NavLink>
         </div>
@@ -179,10 +179,10 @@ export default function AdminBeranda() {
 
       {/* Daftar Verifikator Table */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
-        <div className="p-6 text-center border-b border-gray-100">
+        <div className="my-6 text-center border-b border-gray-100">
           <h2 className="text-lg font-semibold text-blue-dark">Daftar Verifikator</h2>
         </div>
-        <div className="flex-1 p-6">
+        <div className="flex-1 px-6">
           <div className="w-full text-left">
             <div className="bg-blue-light text-gray-700 font-semibold text-sm p-3 rounded-t-lg">
               Nama
@@ -210,8 +210,8 @@ export default function AdminBeranda() {
             )}
           </div>
         </div>
-        <div className="p-4 border-t border-gray-100 text-center">
-          <NavLink to="/admin/verifikator" className="text-blue-600 text-sm font-semibold flex items-center justify-center gap-2 hover:underline">
+        <div className="p-6 border-t border-gray-100 text-center">
+          <NavLink to="/admin/verifikator" className="text-slate-600 hover:text-blue-normal transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:underline underline-offset-4">
             Lihat Semua Verifikator <ArrowRight size={16} />
           </NavLink>
         </div>

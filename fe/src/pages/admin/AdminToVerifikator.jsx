@@ -15,8 +15,8 @@ export default function AdminToVerifikator() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); // 'add', 'edit', 'detail'
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [modalMode, setModalMode] = useState("add"); // 'add', 'edit'
   const [selectedVerifier, setSelectedVerifier] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -63,12 +63,6 @@ export default function AdminToVerifikator() {
     setIsModalOpen(true);
   };
 
-  const handleOpenDetail = (verifier) => {
-    setModalMode("detail");
-    setSelectedVerifier(verifier);
-    setIsModalOpen(true);
-  };
-
   const handleDelete = async (id) => {
     if (!window.confirm("Yakin ingin menghapus akun verifikator ini?")) return;
     try {
@@ -98,7 +92,7 @@ export default function AdminToVerifikator() {
       console.error(err);
       alert(
         err.message ||
-          `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} verifikator`,
+        `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} verifikator`,
       );
     } finally {
       setSubmitting(false);
@@ -203,14 +197,6 @@ export default function AdminToVerifikator() {
                       <td className="p-4">
                         <div className="flex items-center justify-center gap-2">
                           <button
-                            onClick={() => handleOpenDetail(item)}
-                            title="Lihat Detail"
-                            className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors cursor-pointer"
-                          >
-                            <Eye size={16} />
-                          </button>
-
-                          <button
                             onClick={() => handleOpenEdit(item)}
                             title="Edit Akun"
                             className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300 cursor-pointer"
@@ -247,121 +233,77 @@ export default function AdminToVerifikator() {
               : "Detail Akun Verifikator"
         }
       >
-        {modalMode === "detail" ? (
-          <div className="space-y-4">
-            <div className="flex items-center gap-4 pb-4 border-b">
-              <UserCircle2
-                size={64}
-                className="text-gray-300"
-                strokeWidth={1}
-              />
-              <div>
-                <h3 className="text-lg font-bold text-gray-800">
-                  {selectedVerifier?.nama}
-                </h3>
-                <p className="text-gray-500">@{selectedVerifier?.username}</p>
-              </div>
-            </div>
-            <div className="space-y-3">
-              <div>
-                <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">
-                  ID Petugas
-                </p>
-                <p className="text-sm text-gray-700 font-medium">
-                  {selectedVerifier?.id_verifikator}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">
-                  Role Akses
-                </p>
-                <p className="text-sm text-gray-700 font-medium">
-                  Petugas Verifikator
-                </p>
-              </div>
-            </div>
-            <div className="pt-4 flex justify-end">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 font-medium transition-colors cursor-pointer"
-              >
-                Tutup
-              </button>
-            </div>
+        {modalMode ? (<form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Nama Lengkap Petugas
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.nama}
+              onChange={(e) =>
+                setFormData({ ...formData, nama: e.target.value })
+              }
+              placeholder="Contoh: Marcois Makalew"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]"
+            />
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nama Lengkap Petugas
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.nama}
-                onChange={(e) =>
-                  setFormData({ ...formData, nama: e.target.value })
-                }
-                placeholder="Contoh: Marcois Makalew"
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Username Login
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.username}
-                onChange={(e) =>
-                  setFormData({ ...formData, username: e.target.value })
-                }
-                placeholder="contoh_user123"
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {modalMode === "edit"
-                  ? "Password Baru (Kosongkan jika tidak diubah)"
-                  : "Password Akun"}
-              </label>
-              <input
-                type="password"
-                required={modalMode === "add"}
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                placeholder="********"
-                className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]"
-              />
-            </div>
-            <div className="pt-4 flex justify-end gap-3 border-t">
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
-              >
-                Batal
-              </button>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] transition-colors disabled:opacity-50 cursor-pointer"
-              >
-                {submitting ? "Menyimpan..." : "Simpan Akun"}
-              </button>
-            </div>
-          </form>
-        )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Username Login
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.username}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
+              placeholder="contoh_user123"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {modalMode === "edit"
+                ? "Password Baru (Kosongkan jika tidak diubah)"
+                : "Password Akun"}
+            </label>
+            <input
+              type="password"
+              required={modalMode === "add"}
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              placeholder="********"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-[#253b80] focus:border-[#253b80]"
+            />
+          </div>
+          <div className="pt-4 flex justify-end gap-3 border-t">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(false)}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] transition-colors disabled:opacity-50 cursor-pointer"
+            >
+              {submitting ? "Menyimpan..." : "Simpan Akun"}
+            </button>
+          </div>
+        </form>) : (<></>)}
       </Modal>
 
       {/* Modal Sukses */}
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center mx-4">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-sm w-full text-center mx-4">
             <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
               <svg className="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -371,7 +313,7 @@ export default function AdminToVerifikator() {
             <p className="text-sm text-gray-500 mb-6">{successMessage}</p>
             <button
               onClick={() => setShowSuccessModal(false)}
-              className="w-full py-2.5 bg-[#253b80] text-white rounded-lg font-semibold hover:bg-[#1a2c66] transition cursor-pointer"
+              className="w-full py-2.5 cursor-pointer bg-blue-dark text-white rounded-lg font-semibold hover:bg-blue-dark-hover transition"
             >
               Tutup
             </button>

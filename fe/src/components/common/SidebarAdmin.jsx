@@ -108,7 +108,7 @@ function SidebarAdmin() {
         </div>
       </div>
       {/* MENU */}
-      <div className="flex-1 space-y-2 overflow-y-scroll">
+      <div className="flex-1 space-y-2 overflow-auto no-scrollbar-custom">
         {menu.map((item, index) => {
           if (item.section) {
             return (
