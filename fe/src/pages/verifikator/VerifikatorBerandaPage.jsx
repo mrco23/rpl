@@ -25,7 +25,6 @@ export default function VerifikatorBerandaPage() {
     try {
       setLoading(true);
       const res = await adminAxios.get("/verifikator/beranda");
-      // Respon: { message, data: { card: [], pendaftarTerbaru: [], pendaftarYangPerluRevisi: [] } }
       setData(res.data || null);
     } catch (error) {
       console.error("Gagal mengambil data beranda verifikator:", error);
@@ -59,79 +58,79 @@ export default function VerifikatorBerandaPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {loading
           ? Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl px-6 py-4 border border-gray-200 shadow-sm border-l-4 border-l-gray-300"
+            >
+              <Skeleton className="h-4 w-24 mb-2" />
+              <Skeleton className="h-8 w-16 mb-4" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+          ))
+          : stats.map((stat, i) => {
+            const colors = [
+              {
+                bg: "bg-[#fff9f0]",
+                border: "border-l-orange-400",
+                iconBg: "bg-orange-100",
+                iconCol: "text-orange-500",
+                icon: <Clock size={24} />,
+                link: "/verifikator/menunggu",
+              },
+              {
+                bg: "bg-[#fff5f5]",
+                border: "border-l-red-400",
+                iconBg: "bg-red-100",
+                iconCol: "text-red-500",
+                icon: <AlertTriangle size={24} />,
+                link: "/verifikator/revisi",
+              },
+              {
+                bg: "bg-[#f0fdf4]",
+                border: "border-l-green-400",
+                iconBg: "bg-green-100",
+                iconCol: "text-green-600",
+                icon: <CheckCircle size={24} />,
+                link: "/verifikator/selesai",
+              },
+              {
+                bg: "bg-[#f4f7ff]",
+                border: "border-l-blue-600",
+                iconBg: "bg-blue-100",
+                iconCol: "text-blue-600",
+                icon: <Users size={24} />,
+                link: "/verifikator/pendaftar",
+              },
+            ];
+            // Try to match by index if available, else use a default
+            const config = colors[i] || colors[3];
+
+            return (
               <div
                 key={i}
-                className="bg-white rounded-xl px-6 py-4 border border-gray-200 shadow-sm border-l-4 border-l-gray-300"
+                className={`${config.bg} rounded-xl px-6 py-4 border border-gray-200 shadow-sm flex flex-col border-l-4 ${config.border}`}
               >
-                <Skeleton className="h-4 w-24 mb-2" />
-                <Skeleton className="h-8 w-16 mb-4" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-            ))
-          : stats.map((stat, i) => {
-              const colors = [
-                {
-                  bg: "bg-[#fff9f0]",
-                  border: "border-l-orange-400",
-                  iconBg: "bg-orange-100",
-                  iconCol: "text-orange-500",
-                  icon: <Clock size={24} />,
-                  link: "/verifikator/menunggu",
-                },
-                {
-                  bg: "bg-[#fff5f5]",
-                  border: "border-l-red-400",
-                  iconBg: "bg-red-100",
-                  iconCol: "text-red-500",
-                  icon: <AlertTriangle size={24} />,
-                  link: "/verifikator/revisi",
-                },
-                {
-                  bg: "bg-[#f0fdf4]",
-                  border: "border-l-green-400",
-                  iconBg: "bg-green-100",
-                  iconCol: "text-green-600",
-                  icon: <CheckCircle size={24} />,
-                  link: "/verifikator/selesai",
-                },
-                {
-                  bg: "bg-[#f4f7ff]",
-                  border: "border-l-blue-600",
-                  iconBg: "bg-blue-100",
-                  iconCol: "text-blue-600",
-                  icon: <Users size={24} />,
-                  link: "/verifikator/pendaftar",
-                },
-              ];
-              // Try to match by index if available, else use a default
-              const config = colors[i] || colors[3];
-
-              return (
-                <div
-                  key={i}
-                  className={`${config.bg} rounded-xl px-6 py-4 border border-gray-200 shadow-sm flex flex-col border-l-4 ${config.border}`}
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-gray-600 text-sm font-medium capitalize">
-                        {stat.status}
-                      </h3>
-                      <p className="text-3xl font-bold text-gray-800 mt-1 flex items-baseline gap-1">
-                        {stat.jumlah}{" "}
-                        <span className="text-sm font-medium text-gray-500">
-                          siswa
-                        </span>
-                      </p>
-                    </div>
-                    <div
-                      className={`p-3 ${config.iconBg} ${config.iconCol} rounded-full`}
-                    >
-                      {config.icon}
-                    </div>
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="text-gray-600 text-sm font-medium capitalize">
+                      {stat.status}
+                    </h3>
+                    <p className="text-3xl font-bold text-gray-800 mt-1 flex items-baseline gap-1">
+                      {stat.jumlah}{" "}
+                      <span className="text-sm font-medium text-gray-500">
+                        siswa
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    className={`p-3 ${config.iconBg} ${config.iconCol} rounded-full`}
+                  >
+                    {config.icon}
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
       </div>
 
       {/* Info Banner */}
@@ -151,21 +150,16 @@ export default function VerifikatorBerandaPage() {
       {/* Tables Section */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
         {/* Pendaftar Terbaru Table */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
-          <div className="p-5 flex justify-between items-center border-b border-gray-100">
-            <h2 className="text-lg font-bold text-[#253b80]">
+        <div className="bg-white rounded-xl border-0 border-gray-200 shadow-sm flex flex-col">
+          <div className="p-5 flex justify-between items-center border-gray-100">
+            <h2 className="text-lg font-bold text-slate-600">
               Pendaftar Terbaru
             </h2>
-            <NavLink
-              to="/verifikator/pendaftar"
-              className="text-[#253b80] text-xs font-semibold px-3 py-1 border border-[#253b80] rounded hover:bg-gray-50 cursor-pointer"
-            >
-              Lihat Semua
-            </NavLink>
+
           </div>
           <div className="flex-1 p-5 pt-0 overflow-x-auto custom-scrollbar">
-            <div className="w-full text-left mt-4 border rounded-lg overflow-hidden min-w-[500px]">
-              <div className="grid grid-cols-12 gap-4 bg-gray-50 text-gray-700 font-bold text-xs p-3 uppercase tracking-wider border-b">
+            <div className="w-full text-left mt-4 border-0 outline outline-blue-light-hover rounded-lg overflow-hidden min-w-[500px]">
+              <div className="grid grid-cols-12 gap-4 bg-blue-light text-gray-700 font-bold text-xs p-3 uppercase tracking-wider">
                 <div className="col-span-6">Nama Siswa</div>
                 <div className="col-span-3 text-center whitespace-nowrap">
                   Tanggal Daftar
@@ -234,7 +228,7 @@ export default function VerifikatorBerandaPage() {
           <div className="p-4 border-t border-gray-100 text-center bg-gray-50/50 rounded-b-xl">
             <NavLink
               to="/verifikator/pendaftar"
-              className="text-blue-600 text-sm font-bold flex items-center justify-center gap-2 hover:underline cursor-pointer"
+              className="text-slate-600 hover:text-blue-normal hover:underline underline-offset-4  transition-all duration-300 text-sm font-bold flex items-center justify-center gap-2 cursor-pointer"
             >
               Lihat Semua Pendaftar <ArrowRight size={16} />
             </NavLink>
@@ -242,8 +236,8 @@ export default function VerifikatorBerandaPage() {
         </div>
 
         {/* Yang Perlu Revisi Table */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col">
-          <div className="p-5 flex justify-between items-center border-b border-gray-100">
+        <div className="bg-white rounded-xl border-0 border-gray-200 shadow-sm flex flex-col">
+          <div className="p-5 flex justify-between items-center border-gray-100">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-red-100 text-red-500 rounded-full">
                 <AlertTriangle size={20} />
@@ -252,16 +246,10 @@ export default function VerifikatorBerandaPage() {
                 Yang Perlu Revisi
               </h2>
             </div>
-            <NavLink
-              to="/verifikator/revisi"
-              className="text-[#253b80] text-xs font-semibold px-3 py-1 border border-[#253b80] rounded hover:bg-gray-50 cursor-pointer"
-            >
-              Lihat Semua
-            </NavLink>
           </div>
           <div className="flex-1 p-5 pt-0 overflow-x-auto custom-scrollbar">
-            <div className="w-full text-left mt-4 border rounded-lg overflow-hidden min-w-[500px]">
-              <div className="grid grid-cols-12 gap-4 bg-gray-50 text-gray-700 font-bold text-xs p-3 uppercase tracking-wider border-b">
+            <div className="w-full text-left mt-4 border-0 outline outline-blue-light-hover rounded-lg overflow-hidden min-w-[500px]">
+              <div className="grid grid-cols-12 gap-4 bg-blue-light text-gray-700 font-bold text-xs p-3 uppercase tracking-wider ">
                 <div className="col-span-6">Nama Siswa</div>
                 <div className="col-span-3 text-center whitespace-nowrap">
                   Tanggal Daftar
@@ -325,7 +313,7 @@ export default function VerifikatorBerandaPage() {
           <div className="p-4 border-t border-gray-100 text-center bg-gray-50/50 rounded-b-xl">
             <NavLink
               to="/verifikator/revisi"
-              className="text-blue-600 text-sm font-bold flex items-center justify-center gap-2 hover:underline cursor-pointer"
+              className="text-slate-600 hover:text-blue-normal hover:underline underline-offset-4  transition-all duration-300 text-sm font-bold flex items-center justify-center gap-2 cursor-pointer"
             >
               Lihat Semua yang Perlu Revisi <ArrowRight size={16} />
             </NavLink>

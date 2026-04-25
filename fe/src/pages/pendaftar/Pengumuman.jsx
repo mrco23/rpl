@@ -63,12 +63,12 @@ function Pengumuman() {
         {/* LIST */}
         <div className="space-y-7">
           {loading ? (
-             Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 italic text-gray-300">
-                  <Skeleton className="h-4 w-1/3 mb-3" />
-                  <Skeleton className="h-10 w-full" />
-                </div>
-             ))
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 italic text-gray-300">
+                <Skeleton className="h-4 w-1/3 mb-3" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))
           ) : dataPengumuman.length === 0 ? (
             <div className="py-20 text-center bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
               <Megaphone className="mx-auto text-gray-300 mb-4" size={48} />
@@ -117,9 +117,9 @@ function Pengumuman() {
                   {/* BODY */}
                   {isOpen && (
                     <div className="px-6 pb-6 pt-2">
-                       <div className="bg-white rounded-2xl p-5 shadow-inner border border-blue-50">
-                          <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{item.deksripsi}</p>
-                       </div>
+                      <div className="bg-white rounded-2xl p-5 shadow-inner border border-blue-50">
+                        <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{item.deksripsi}</p>
+                      </div>
                     </div>
                   )}
                 </div>

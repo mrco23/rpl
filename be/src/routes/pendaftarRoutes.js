@@ -28,4 +28,11 @@ pendaftarRoute.patch(
 	PendaftarController.updateStatusMassal,
 );
 
+pendaftarRoute.get(
+	"/status",
+	verifyToken,
+	authorizeRole("pendaftar"),
+	PendaftarController.getStatusById,
+);
+
 export default pendaftarRoute;

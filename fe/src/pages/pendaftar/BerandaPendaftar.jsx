@@ -41,9 +41,9 @@ function BerandaPendaftar() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-gray-100 p-8 ">
       {/* HEADER */}
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8">
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8 ">
         <div>
           <h1 className="text-3xl font-bold text-gray-800">
             Biodata Calon Siswa
@@ -62,106 +62,106 @@ function BerandaPendaftar() {
         </div>
       </div>
 
-      {/* DATA SISWA */}
-      <div className="mb-10">
-        <div className="flex items-center gap-2 mb-5">
-          <GraduationCap size={18} className="text-[#2443a8]" />
-          <h2 className="font-bold text-gray-800 uppercase text-lg">
-            Data Siswa
-          </h2>
+
+      <div className="mb-10 flex flex-col gap-5 px-0 lg:px-20 ">
+        {/* DATA SISWA */}
+        <div>
+          <div className="flex items-center gap-2 mb-5">
+            <GraduationCap size={18} className="text-[#2443a8]" />
+            <h2 className="font-bold text-gray-800 uppercase text-lg">
+              Data Siswa
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            <Field
+              label="NISN"
+              value={biodata?.nisn || "-"}
+              loading={loading}
+            />
+            <Field
+              label="Nama Lengkap"
+              value={biodata?.nama_lengkap || "-"}
+              loading={loading}
+            />
+            <Field
+              label="Tempat, Tanggal Lahir"
+              value={formatTanggalLahir(biodata?.tempat_lahir, biodata?.tanggal_lahir)}
+              loading={loading}
+              icon={<CalendarDays size={16} />}
+            />
+            <Field
+              label="Jenis Kelamin"
+              value={biodata?.jenis_kelamin === "L" ? "Laki-Laki" : biodata?.jenis_kelamin === "P" ? "Perempuan" : biodata?.jenis_kelamin || "-"}
+              loading={loading}
+            />
+            <Field
+              label="Asal Sekolah"
+              value={biodata?.asal_sekolah || "-"}
+              loading={loading}
+            />
+            <Field
+              label="Alamat Lengkap"
+              value={
+                biodata?.alamat
+                  ? `${biodata.alamat.provinsi}, ${biodata.alamat.kota_kabupaten}, ${biodata.alamat.kecamatan}, ${biodata.alamat.kelurahan}, RT/RW: ${biodata.alamat.rt_rw}, Kode Pos: ${biodata.alamat.kode_pos}`
+                  : "-"
+              }
+              loading={loading}
+            />
+
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-5">
-          <Field
-            label="NISN"
-            value={biodata?.nisn || "-"}
-            loading={loading}
-          />
-          <Field
-            label="Nama Lengkap"
-            value={biodata?.nama_lengkap || "-"}
-            loading={loading}
-          />
-          <Field
-            label="Tempat, Tanggal Lahir"
-            value={formatTanggalLahir(biodata?.tempat_lahir, biodata?.tanggal_lahir)}
-            loading={loading}
-            icon={<CalendarDays size={16} />}
-          />
-          <Field
-            label="Jenis Kelamin"
-            value={biodata?.jenis_kelamin === "L" ? "Laki-Laki" : biodata?.jenis_kelamin === "P" ? "Perempuan" : biodata?.jenis_kelamin || "-"}
-            loading={loading}
-          />
-          <Field
-            label="Asal Sekolah"
-            value={biodata?.asal_sekolah || "-"}
-            loading={loading}
-          />
-          <Field
-            label="Alamat Lengkap"
-            value={
-              biodata?.alamat
-                ? `${biodata.alamat.provinsi}, ${biodata.alamat.kota_kabupaten}, ${biodata.alamat.kecamatan}, ${biodata.alamat.kelurahan}, RT/RW: ${biodata.alamat.rt_rw}, Kode Pos: ${biodata.alamat.kode_pos}`
-                : "-"
-            }
-            loading={loading}
-          />
+        {/* DATA ORTU */}
+        <div>
+          <div className="flex items-center gap-2 mb-5">
+            <Users size={18} className="text-[#2443a8]" />
+            <h2 className="font-bold text-gray-800 uppercase text-lg">
+              Data Orang Tua / Wali
+            </h2>
+          </div>
 
+          <div className="grid md:grid-cols-2 gap-5">
+            <Field
+              label="Nama Orang Tua / Wali"
+              value={biodata?.nama_wali || "-"}
+              loading={loading}
+            />
+            <Field
+              label="Alamat Email Orang Tua / Wali"
+              value={biodata?.email || "-"}
+              loading={loading}
+            />
+          </div>
+        </div>
+        {/* DATA KONTAK */}
+        <div>
+          <div className="flex items-center gap-2 mb-5">
+            <Phone size={18} className="text-[#2443a8]" />
+            <h2 className="font-bold text-gray-800 uppercase text-lg">
+              Data Kontak
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            <Field
+              label="No. HP"
+              value={biodata?.no_hp || "-"}
+              loading={loading}
+            />
+            <Field
+              label="Alamat Email"
+              value={biodata?.email || "-"}
+              loading={loading}
+            />
+          </div>
         </div>
       </div>
 
-      {/* DATA ORTU */}
-      <div className="mb-10">
-        <div className="flex items-center gap-2 mb-5">
-          <Users size={18} className="text-[#2443a8]" />
-          <h2 className="font-bold text-gray-800 uppercase text-lg">
-            Data Orang Tua / Wali
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-5">
-          <Field
-            label="Nama Orang Tua / Wali"
-            value={biodata?.nama_wali || "-"}
-            loading={loading}
-          />
-          <Field
-            label="Alamat Email Orang Tua / Wali"
-            value={biodata?.email || "-"}
-            loading={loading}
-          />
-        </div>
-      </div>
-
-      {/* DATA KONTAK */}
-      <div className="mb-10">
-        <div className="flex items-center gap-2 mb-5">
-          <Phone size={18} className="text-[#2443a8]" />
-          <h2 className="font-bold text-gray-800 uppercase text-lg">
-            Data Kontak
-            <span className="text-sm font-medium text-blue-800 ml-2">
-              (dapat diedit)
-            </span>
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-5">
-          <Field
-            label="No. HP"
-            value={biodata?.no_hp || "-"}
-            loading={loading}
-          />
-          <Field
-            label="Alamat Email"
-            value={biodata?.email || "-"}
-            loading={loading}
-          />
-        </div>
-      </div>
 
       {/* FOOTER */}
-      <div className="space-y-4">
+      <div className="space-y-4  px-0 lg:px-20">
         <div className="bg-indigo-100 rounded-xl px-4 py-4 flex items-start gap-3 max-w-xl">
           <ShieldCheck size={20} className="text-[#2443a8] mt-0.5" />
           <div>

@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import {
   FaCheckCircle,
   FaUser,
@@ -8,22 +8,30 @@ import {
   FaClipboardList,
   FaCalendarAlt,
 } from "react-icons/fa";
+import { getPendaftarStatus } from "../../services/pendaftarService";
 
 export default function StatusVerifikasi() {
-  // STEP CONFIG (JANGAN DIUBAH SEMBARANG)
+  const [status, setStatus] = useState({});
+  useEffect(() => {
+    async function getStatus() {
+      const res = await getPendaftarStatus();
+      setStatus(res.data)
+    }
+    getStatus()
+  }, [])
+  // STEP CONFIG (JANGAN DIUBAH SEMBARANG)\
   const steps = [
-    { key: "akun", label: "Akun Dibuat", icon: FaUser },
-    { key: "dokumen", label: "Unggah dokumen", icon: FaFileAlt },
-    { key: "verifikasi", label: "Verifikasi", icon: FaShieldAlt },
-    { key: "pengumuman", label: "Pengumuman Hasil", icon: FaBullhorn },
-    { key: "daftar_ulang", label: "Daftar Ulang", icon: FaClipboardList },
+    { key: "akun", label: "Akun Dibuat", icon: FaUser, keterangan: "Tahap ini menandakan bahwa akun pengguna telah berhasil dibuat." },
+    { key: "menunggu verifikasi", label: "menunggu verifikasi", icon: FaUser, keterangan: "Menunggu verifikasi data pendaftaran." },
+    { key: "dokumen", label: "Unggah dokumen", icon: FaFileAlt, keterangan: "Mengunggah dokumen yang diperlukan." },
+    { key: "verifikasi", label: "Verifikasi", icon: FaShieldAlt, keterangan: "Verifikasi dokumen pendaftaran." },
+    { key: "pengumuman", label: "Pengumuman Hasil", icon: FaBullhorn, keterangan: "Pengumuman hasil pendaftaran." },
+    { key: "daftar_ulang", label: "Daftar Ulang", icon: FaClipboardList, keterangan: "Daftar ulang pendaftaran." },
   ];
 
   // SIMULASI DATA BACKEND
   const dataBackend = {
-    status: "verifikasi", // ubah ini nanti dari API
-    tanggal: "20 Juni 2026, 14:30",
-    verifikator: "Tim Verifikator",
+    status: status.status_pendaftaran,
   };
 
   const statusKey = dataBackend.status;
@@ -36,10 +44,10 @@ export default function StatusVerifikasi() {
     currentStep <= 0 ? 0 : (currentStep / (steps.length - 1)) * 100;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-start ml-10 p-8">
-      <div className="w-full max-w-4xl">
+    <div className="p-4 md:p-6 bg-gray-100 min-h-screen relative">
+      <div className="w-full max-w-5xl">
         {/* TITLE */}
-        <h1 className="text-2xl font-semibold">Status Verifikasi</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold">Status Pendaftaran</h1>
         <p className="text-gray-500 mb-6">
           Pantau proses verifikasi dokumen pendaftaran anda secara real-time.
         </p>
@@ -48,37 +56,21 @@ export default function StatusVerifikasi() {
         <div className="bg-gray-200  rounded-xl shadow-sm  p-5 flex justify-between items-center">
           {/* LEFT */}
           <div className="flex items-center gap-4">
-            <div className="bg-green-100 p-3 rounded-full">
-              <FaCheckCircle className="text-green-600 text-2xl" />
+            <div className={`bg-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-100 p-3 rounded-full`}>
+              <FaCheckCircle className={`text-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-600 text-2xl`} />
             </div>
 
             <div>
               <p className="text-sm text-gray-500 uppercase">
-                Status Administrasi
+                Status Pendaftaran
               </p>
-              <h2 className="text-green-600 text-2xl font-semibold">
-                LULUS VERIFIKASI ADMINISTRASI
+              <h2 className={`text-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-600 text-2xl font-semibold uppercase`}>
+                {status.status_pendaftaran}
               </h2>
               <p className="text-sm text-gray-500">
-                Selamat! Dokumen Anda telah dinyatakan lengkap dan sesuai.
+                {steps.find(s => s.key === statusKey)?.keterangan}
               </p>
             </div>
-          </div>
-
-
-          {/* RIGHT */}
-          <div className="text-right text-sm text-gray-500 space-y-1">
-            <p className="font-medium">Tanggal Verifikasi</p>
-
-            {/* tanggal + icon */}
-            <div className="flex items-center justify-end gap-2">
-              <FaCalendarAlt className="text-green-500" />
-              <p className="text-green-600 font-semibold">
-                {dataBackend.tanggal}
-              </p>
-            </div>
-
-            <p>Oleh: {dataBackend.verifikator}</p>
           </div>
         </div>
 

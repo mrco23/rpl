@@ -9,3 +9,10 @@ export const getPendaftarMe = async () => {
 		url: "/pendaftar/me",
 	});
 };
+
+export const getPendaftarStatus = async () => {
+	return await requestAPI({
+		method: "GET",
+		url: "/pendaftar/status",
+	});
+};

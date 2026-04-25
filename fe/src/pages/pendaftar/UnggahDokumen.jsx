@@ -189,7 +189,7 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
 
   return (
     <div
-      className={`w-full sm:w-56 p-4 rounded-xl border bg-white shadow-sm hover:shadow-md transition-shadow
+      className={`w-full h-90 sm:w-56 p-4 rounded-xl border bg-white shadow-sm hover:shadow-md transition-shadow
       ${initialStatus === "error" ? "bg-orange-50 border-orange-200" : "border-gray-200"}
     `}
     >
@@ -233,7 +233,7 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
 
       {/* FILE NAME */}
       <p className="text-xs text-gray-600 mt-1 flex items-center gap-1.5 truncate">
-        <FileText size={14} className="flex-shrink-0" />
+        <FileText size={14} className="shrink-0" />
         <span className="truncate">{initialFileName || "Belum ada file"}</span>
       </p>
 
@@ -243,7 +243,7 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
           <>
             <button
               onClick={handleViewFile}
-              className="w-full text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 py-2 rounded-lg transition-colors cursor-pointer"
+              className="w-full text-sm font-medium text-blue-normal bg-blue-50 hover:bg-blue-normal-hover py-2 rounded-lg transition-colors cursor-pointer"
             >
               Lihat File
             </button>
@@ -261,7 +261,7 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
           <button
             onClick={triggerUpload}
             disabled={isUploading}
-            className="w-full text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+            className="w-full text-sm font-medium bg-blue-normal hover:bg-blue-normal-hover text-white py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
           >
             Unggah File
           </button>
@@ -275,7 +275,7 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
             <button
               onClick={triggerUpload}
               disabled={isUploading}
-              className="w-full text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+              className="w-full text-sm font-medium bg-blue-dark hover:bg-blue-700 text-white py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
             >
               Unggah Ulang
             </button>

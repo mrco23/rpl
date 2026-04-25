@@ -260,7 +260,7 @@ export default function ApplicantRegisterPage() {
                       name="nisn"
                       value={formData.nisn}
                       onChange={handleChange}
-                      placeholder="Isi NISN (opsional)"
+                      placeholder="Isi NISN SD mu"
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
                     />
                   </div>
@@ -404,7 +404,6 @@ export default function ApplicantRegisterPage() {
                         required
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
                       >
-                        <option value="">Pilih Jenis Kelamin</option>
                         <option value="L">Laki-laki</option>
                         <option value="P">Perempuan</option>
                       </select>
