@@ -72,7 +72,7 @@ export default function AdminBeranda() {
     )}
 
     {/* Stats Cards - Diubah ke Horizontal Scroll */}
-    <div className="flex flex-nowrap overflow-x-auto gap-6 mb-8 pb-4 snap-x snap-mandatory hide-scrollbar-custom">
+    <div className="flex flex-nowrap overflow-x-scroll gap-6 mb-8 pb-4">
       {loading ? (
         [1, 2, 3, 4, 5].map((item) => (
           <div key={item} className="bg-white rounded-xl px-6 py-4 border border-gray-200 shadow-sm flex flex-col min-w-[280px] shrink-0 snap-start border-l-4 border-l-gray-200">
@@ -112,7 +112,7 @@ export default function AdminBeranda() {
               </div>
               <NavLink
                 to={cardLinks[keyName] || "#"}
-                className="text-blue-600 text-sm font-medium flex items-center gap-1 mt-auto hover:underline"
+                className="text-slate-600 hover:text-blue-normal transition-colors text-sm font-medium flex items-center gap-1 mt-auto hover:underline"
               >
                 Lihat Selengkapnya <ArrowRight size={16} />
               </NavLink>

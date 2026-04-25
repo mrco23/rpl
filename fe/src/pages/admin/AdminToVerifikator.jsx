@@ -15,7 +15,7 @@ export default function AdminToVerifikator() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("add"); // 'add', 'edit'
   const [selectedVerifier, setSelectedVerifier] = useState(null);
 
