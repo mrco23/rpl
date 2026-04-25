@@ -7,11 +7,19 @@ import PreviewBerita from "@components/features/PreviewBerita.jsx";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import profileService from "../../services/profileService";
+import AOS from "aos";
+import "aos/dist/aos.css"; // import CSS AOS
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    AOS.init({
+      easing: "ease-in-out",
+      once: false
+    });
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,15 +28,16 @@ export default function LandingPage() {
       if (res.success) {
         setData(res.data);
       }
-      // Jika gagal, biarkan data null — tiap section punya fallback sendiri
-      setLoading(false);
+      setTimeout(() => setLoading(false), 2000);
+      AOS.refresh()
     };
     fetchData();
+
   }, []);
 
-  if (loading) {
+  /* if (loading) {
     return (
-      <main className="animate-pulse">
+      <main className="animate-pulse ">
         <section className="relative w-full h-[80vh] bg-gray-600 rounded-b-3xl">
           <div className="relative z-10 flex flex-col justify-start pt-32 h-full max-w-7xl mx-auto px-8">
             <div className="w-1/2 h-12 md:h-16 bg-slate-200 rounded mb-4"></div>
@@ -63,7 +72,7 @@ export default function LandingPage() {
         </div>
 
         <div className="py-20 mt-10 max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
-          <div className="w-full aspect-[3/4] bg-slate-200 rounded-2xl"></div>
+          <div className="w-full h-100 bg-slate-200 rounded-2xl">hai</div>
           <div className="space-y-4">
             <div className="w-full h-4 bg-slate-200 rounded"></div>
             <div className="w-full h-4 bg-slate-200 rounded"></div>
@@ -73,7 +82,7 @@ export default function LandingPage() {
         </div>
       </main>
     );
-  }
+  } */
 
   const total_data = data?.total_data || {};
   const fasilitas = data?.fasilitas || [];
@@ -91,7 +100,28 @@ export default function LandingPage() {
   return (
     <main>
       {/* HERO SECTION */}
-      <section className="relative w-full h-[80vh]">
+      {loading ? (<section className="relative w-full h-[80vh] bg-gray-600 rounded-b-3xl">
+        <div className="relative z-10 flex flex-col justify-start pt-32 h-full max-w-7xl mx-auto px-8">
+          <div className="w-1/2 h-12 md:h-16 bg-slate-200 rounded mb-4"></div>
+          <div className="w-2/3 h-12 md:h-16 bg-slate-200 rounded mb-4"></div>
+          <div className="w-full max-w-lg h-6 bg-slate-200 rounded mb-2"></div>
+          <div className="w-3/4 max-w-md h-6 bg-slate-200 rounded mb-5"></div>
+          <div className="flex gap-3">
+            <div className="w-32 h-10 bg-slate-200 rounded-md"></div>
+            <div className="w-40 h-10 bg-slate-200 rounded-md"></div>
+          </div>
+        </div>
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-100px] w-full max-w-6xl px-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-24">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-white border text-center border-gray-100 rounded-lg py-8 px-8 shadow-md relative w-full h-40">
+                <div className="w-16 h-12 bg-gray-200 mx-auto rounded mt-2 mb-3"></div>
+                <div className="w-24 h-4 bg-gray-200 mx-auto rounded"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>) : (<section className="relative w-full h-[80vh]">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center rounded-b-3xl overflow-hidden brightness-40"
@@ -120,20 +150,22 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
-
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-100px] w-full max-w-6xl px-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-24">
+        {/* 4 cards */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-300px] md:bottom-[-150px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-10 lg:gap-10 xl:gap-24">
             {stats.map((item, index) => (
-              <div key={index} className="flex flex-col group">
+              <div key={index} className="flex flex-col group lg:w-40 xl:w-50" data-aos={`${index === 0 ? "fade-up-right" : index > 0 && index < stats.length - 1 ? "fade-up" : index === stats.length - 1 ? "fade-up-left" : ""
+                }`} data-aos-duration="500"
+                data-aos-delay={index * 100}>
                 <Link to={item.path}>
                   <div
-                    className="bg-white rounded-lg py-8 px-8 text-center shadow-md relative w-full cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden"
+                    className="bg-white rounded-lg py-6 sm:py-8 px-0 lg:px-8 text-center shadow-md relative w-full h-30 sm:h-38 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden"
                   >
                     <span className="absolute top-3 right-4 text-blue-900 text-4xl opacity-100">
                       ✦
                     </span>
 
-                    <h1 className="text-5xl font-bold text-blue-900">
+                    <h1 className="text-3xl sm:text-5xl  font-bold text-blue-900">
                       {item.value}
                     </h1>
 
@@ -154,38 +186,59 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section>)
+      }
+
 
       {/* AKREDITASI SECTION */}
-      <section className="max-w-5xl mx-auto px-6 mt-60 mb-10 relative">
-        <div className="bg-white rounded-[2rem] shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative">
+      <section className="max-w-5xl mx-auto px-6 mt-40 md:mt-60 relative">
+        {loading ? (
+          <div className="bg-white rounded-[2rem] shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative animate-pulse">
 
-          {/* Badge Icon Akreditasi */}
-          <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full p-2 shadow-sm flex items-center justify-center">
-            {/* Ganti div ini dengan <img src={iconAkreditasi} alt="Akreditasi" /> jika asset sudah ada */}
-            <div className="w-full h-full bg-blue-50 rounded-full flex items-center justify-center text-4xl">
-              🏅
+            {/* Skeleton Badge */}
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full p-2 shadow-sm flex items-center justify-center">
+              <div className="w-full h-full bg-gray-200 rounded-full" />
             </div>
-          </div>
 
-          <h2 className="text-3xl font-bold text-slate-800 mb-4">
-            Terakreditasi B
-          </h2>
-          <p className="text-slate-600 text-lg leading-relaxed max-w-4xl mx-auto font-medium">
-            dengan Nomor SK Akreditasi 283/BAN-SM/SULUT/XII/2018 pada tanggal 4
-            Desember 2018. Selain itu, SMP KATOLIK ST RAFAEL juga telah tersertifikasi
-            ISO 9001:2000.
-          </p>
-        </div>
+            {/* Skeleton Title */}
+            <div className="h-8 w-48 bg-gray-200 rounded mx-auto mb-4" />
+
+            {/* Skeleton Paragraph */}
+            <div className="space-y-2 max-w-4xl mx-auto">
+              <div className="h-4 w-full bg-gray-200 rounded" />
+              <div className="h-4 w-5/6 bg-gray-200 rounded" />
+            </div>
+
+          </div>
+        ) : (
+          <div className="bg-white rounded-[2rem] shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative" data-aos="fade-up" data-aos-duration="800">
+            {/* Badge Icon Akreditasi */}
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full p-2 shadow-sm flex items-center justify-center">
+              <div className="w-full h-full bg-blue-50 rounded-full flex items-center justify-center text-4xl">
+                🏅
+              </div>
+            </div>
+
+            <h2 className="text-3xl font-bold text-slate-800 mb-4">
+              Terakreditasi B
+            </h2>
+            <p className="text-slate-600 text-lg leading-relaxed max-w-4xl mx-auto font-medium">
+              dengan Nomor SK Akreditasi 283/BAN-SM/SULUT/XII/2018 pada tanggal 4
+              Desember 2018.
+            </p>
+
+          </div>
+        )}
       </section>
 
-      <div className="mt-32 md:mt-40">
-        <PreviewFasilitas data={fasilitas} />
+
+      <div className="mt-0 md:mt-40">
+        <PreviewFasilitas loading={loading} data={fasilitas} dataAos={"fade-up"} />
       </div>
 
-      <QuotePage data={kepala_sekolah} />
-      <PreviewPrestasi data={prestasi} />
-      <PreviewBerita data={berita} />
-    </main>
+      <QuotePage data={kepala_sekolah} loading={loading} />
+      <PreviewPrestasi data={prestasi} loading={loading} />
+      <PreviewBerita data={berita} loading={loading} />
+    </main >
   );
 }
