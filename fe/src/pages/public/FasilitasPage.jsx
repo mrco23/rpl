@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import fasilitasService from "@services/fasilitasService";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function FasilitasPage() {
   const [data, setData] = useState([]);
@@ -8,12 +10,20 @@ function FasilitasPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    AOS.init({
+      easing: "ease-in-out",
+      once: false
+    });
+  }, [])
+
+  useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
       const res = await fasilitasService.getFasilitas();
       if (res.success) {
-        setData(res.data || []);
+        setTimeout(() => setData(res.data), 1000)
+        AOS.refresh();
       } else {
         setError(res.message);
       }
@@ -84,14 +94,10 @@ function FasilitasPage() {
           <p className="text-xl text-red-600 mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-800 transition"
+            className="px-4 py-2 bg-blue-dark text-white rounded-md hover:bg-blue-dark-hover transition"
           >
             Coba Lagi
           </button>
-        </div>
-      ) : data.length === 0 ? (
-        <div className="max-w-7xl mx-auto px-6 py-20 text-center text-xl text-gray-600">
-          Belum ada data fasilitas.
         </div>
       ) : (
         <div className="max-w-7xl mx-auto px-6 py-14 space-y-36">
@@ -102,6 +108,9 @@ function FasilitasPage() {
 
             return (
               <div
+                data-aos={index % 2 === 0 ? "fade-up-right" : "fade-up-left"}
+                data-aos-duration="500"
+                data-aos-delay={index * 100}
                 key={index}
                 className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
                   }`}
