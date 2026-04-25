@@ -157,12 +157,12 @@ export default function ApplicantRegisterPage() {
             </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-3">Pendaftaran Belum Dibuka</h2>
             <p className="text-gray-500 mb-8 max-w-md mx-auto">
-              Mohon maaf, saat ini tidak ada gelombang pendaftaran (PPDB) yang sedang aktif. 
+              Mohon maaf, saat ini tidak ada gelombang pendaftaran (PPDB) yang sedang aktif.
               Silakan pantau informasi terbaru di halaman beranda atau hubungi pihak sekolah.
             </p>
             <button
-               onClick={() => navigate("/")}
-               className="px-8 py-3 bg-[#274ac0] text-white rounded-xl font-semibold hover:bg-[#2343ad] transition shadow-md"
+              onClick={() => navigate("/")}
+              className="px-8 py-3 bg-[#274ac0] text-white rounded-xl font-semibold hover:bg-[#2343ad] transition shadow-md"
             >
               Kembali ke Beranda
             </button>
@@ -184,9 +184,8 @@ export default function ApplicantRegisterPage() {
                 <div className="absolute left-full w-40 h-[2px] top-1/2 -translate-y-1/2 bg-gray-400">
                   {/* Progress biru */}
                   <div
-                    className={`h-full bg-blue-800 transition-all duration-500 ${
-                      step === 1 ? "w-0" : step === 2 ? "w-[90%]" : "w-full"
-                    }`}
+                    className={`h-full bg-blue-800 transition-all duration-500 ${step === 1 ? "w-0" : step === 2 ? "w-[90%]" : "w-full"
+                      }`}
                   ></div>
                 </div>
               </div>
@@ -202,374 +201,374 @@ export default function ApplicantRegisterPage() {
               </div>
             </div>
 
-        {/* Catatan penting */}
-        <div className="bg-yellow-100 p-4 rounded-lg mb-6 items-start gap-3">
-          <div className="flex items-center gap-2 mb-2 justify-center">
-            <div className="w-6 h-6 rounded-full bg-yellow-300 text-yellow-800 flex items-center justify-center font-bold">
-              i
-            </div>
-            <h3 className="font-bold text-black-800 text-sm">
-              Catatan Penting
-            </h3>
-          </div>
-
-          <ul className="list-disc ml-2 text-slate-700">
-            <li>
-              Isi data diri calon siswa secara benar dan sesuai dokumen resmi
-              (KK/Ijazah).
-            </li>
-            <li>Pastikan nomor HP aktif dan dapat dihubungi.</li>
-            <li>
-              Simpan NISN dan password baik-baik karena akan digunakan untuk
-              login selama proses PPDB berlangsung.
-            </li>
-          </ul>
-        </div>
-
-        {/* Error message */}
-        {error && (
-          <div className="bg-red-100 text-red-700 border border-red-300 px-4 py-3 rounded-lg mb-4 text-sm">
-            {error}
-          </div>
-        )}
-
-        {/* Form Step 1 */}
-        {step === 1 && (
-          <form className="space-y-6" onSubmit={handleNext}>
-            <div className="space-y-4">
-              {/* Nama Lengkap */}
-              <div>
-                <label className="block mb-1 font-semibold">
-                  Nama Lengkap <span className="text-red-500">*</span>
-                </label>
-                <input
-                  name="namaLengkap"
-                  value={formData.namaLengkap}
-                  onChange={handleChange}
-                  placeholder="Isi nama lengkap"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
-                />
+            {/* Catatan penting */}
+            <div className="bg-yellow-100 p-4 rounded-lg mb-6 items-start gap-3">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-6 h-6 rounded-full bg-yellow-300 text-yellow-800 flex items-center justify-center font-bold">
+                  i
+                </div>
+                <h3 className="font-bold text-black-800 text-sm ">
+                  Catatan Penting
+                </h3>
               </div>
 
-              {/* NISN */}
-              <div>
-                <label className="block mb-1 font-semibold">
-                  NISN
-                </label>
-                <input
-                  name="nisn"
-                  value={formData.nisn}
-                  onChange={handleChange}
-                  placeholder="Isi NISN (opsional)"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
-                />
-              </div>
-
-              {/* Asal Sekolah */}
-              <div>
-                <label className="block mb-1 font-semibold">
-                  Asal Sekolah <span className="text-red-500">*</span>
-                </label>
-                <input
-                  name="asalSekolah"
-                  value={formData.asalSekolah}
-                  onChange={handleChange}
-                  placeholder="Isi asal sekolah"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
-                />
-              </div>
-
-              {/* Alamat Domisili */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Provinsi <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="provinsi"
-                    value={formData.provinsi}
-                    onChange={handleChange}
-                    placeholder="Isi Provinsi"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Kota/Kabupaten <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="kotaKabupaten"
-                    value={formData.kotaKabupaten}
-                    onChange={handleChange}
-                    placeholder="Isi Kota/Kabupaten"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Kecamatan <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="kecamatan"
-                    value={formData.kecamatan}
-                    onChange={handleChange}
-                    placeholder="Isi Kecamatan"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Kelurahan <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="kelurahan"
-                    value={formData.kelurahan}
-                    onChange={handleChange}
-                    placeholder="Isi Kelurahan"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    RT / RW <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="rtRw"
-                    value={formData.rtRw}
-                    onChange={handleChange}
-                    placeholder="Contoh: 001 / 001"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Kode Pos <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="kodePos"
-                    value={formData.kodePos}
-                    onChange={handleChange}
-                    placeholder="Isi Kode Pos"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Tanggal Lahir + Tempat Lahir + Jenis Kelamin + Nomor HP */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Tempat Lahir */}
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Tempat Lahir <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="tempatLahir"
-                    value={formData.tempatLahir}
-                    onChange={handleChange}
-                    placeholder="Isi Tempat Lahir"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
-                  />
-                </div>
-
-                {/* Tanggal Lahir */}
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Tanggal Lahir <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="tanggalLahir"
-                    value={formData.tanggalLahir}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
-                  />
-                </div>
-
-                {/* Jenis Kelamin */}
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Jenis Kelamin <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="jenisKelamin"
-                    value={formData.jenisKelamin}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
-                  >
-                    <option value="">Pilih Jenis Kelamin</option>
-                    <option value="L">Laki-laki</option>
-                    <option value="P">Perempuan</option>
-                  </select>
-                </div>
-
-                {/* Nomor HP */}
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Nomor Handphone (WhatsApp){" "}
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="noHp"
-                    value={formData.noHp}
-                    onChange={handleChange}
-                    placeholder="08xx..."
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
-                  />
-                </div>
-              </div>
+              <ul className="list-disc ml-2 text-slate-700 px-5">
+                <li>
+                  Isi data diri calon siswa secara benar dan sesuai dokumen resmi
+                  (KK/Ijazah).
+                </li>
+                <li>Pastikan nomor HP aktif dan dapat dihubungi.</li>
+                <li>
+                  Simpan NISN dan password baik-baik karena akan digunakan untuk
+                  login selama proses PPDB berlangsung.
+                </li>
+              </ul>
             </div>
 
-            {/* Informasi Orang Tua/Wali */}
-            <div className="mt-10">
-              <h2 className="text-lg font-semibold mb-2">
-                Informasi Orang Tua/Wali
-              </h2>
-              <p className="text-sm text-gray-600 mb-4">
-                Lengkapi form bertanda bintang{" "}
-                <span className="text-red-500">*</span> karena wajib diisi.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Nama Orangtua/Wali <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="namaWali"
-                    value={formData.namaWali}
-                    onChange={handleChange}
-                    placeholder="Isi Nama Lengkap OrangTua/Wali"
-                    className="w-full px-4 py-3 border border-gray-300   rounded-xl focus:border-blue-700 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-semibold">
-                    Alamat Email Orangtua/Wali{" "}
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    name="emailWali"
-                    value={formData.emailWali}
-                    onChange={handleChange}
-                    placeholder="Isi Alamat Email OrangTua/Wali"
-                    className="w-full px-4 py-3 border border-gray-300   rounded-xl focus:border-blue-700 focus:outline-none"
-                  />
-                </div>
+            {/* Error message */}
+            {error && (
+              <div className="bg-red-100 text-red-700 border border-red-300 px-4 py-3 rounded-lg mb-4 text-sm">
+                {error}
               </div>
-            </div>
+            )}
 
-            {/* Tombol Lanjut */}
-            <div className="flex justify-end mt-6">
-              <button
-                type="submit"
-                className="
+            {/* Form Step 1 */}
+            {step === 1 && (
+              <form className="space-y-6 mx-15 lg:mx-10" onSubmit={handleNext}>
+                <div className="space-y-4">
+                  {/* Nama Lengkap */}
+                  <div>
+                    <label className="block mb-1 font-semibold">
+                      Nama Lengkap <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      name="namaLengkap"
+                      value={formData.namaLengkap}
+                      onChange={handleChange}
+                      placeholder="Isi nama lengkap"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                    />
+                  </div>
+
+                  {/* NISN */}
+                  <div>
+                    <label className="block mb-1 font-semibold">
+                      NISN
+                    </label>
+                    <input
+                      name="nisn"
+                      value={formData.nisn}
+                      onChange={handleChange}
+                      placeholder="Isi NISN (opsional)"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Asal Sekolah */}
+                  <div>
+                    <label className="block mb-1 font-semibold">
+                      Asal Sekolah <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      name="asalSekolah"
+                      value={formData.asalSekolah}
+                      onChange={handleChange}
+                      placeholder="Isi asal sekolah"
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Alamat Domisili */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Provinsi <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="provinsi"
+                        value={formData.provinsi}
+                        onChange={handleChange}
+                        placeholder="Isi Provinsi"
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Kota/Kabupaten <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="kotaKabupaten"
+                        value={formData.kotaKabupaten}
+                        onChange={handleChange}
+                        placeholder="Isi Kota/Kabupaten"
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Kecamatan <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="kecamatan"
+                        value={formData.kecamatan}
+                        onChange={handleChange}
+                        placeholder="Isi Kecamatan"
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Kelurahan <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="kelurahan"
+                        value={formData.kelurahan}
+                        onChange={handleChange}
+                        placeholder="Isi Kelurahan"
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        RT / RW <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="rtRw"
+                        value={formData.rtRw}
+                        onChange={handleChange}
+                        placeholder="Contoh: 001 / 001"
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Kode Pos <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="kodePos"
+                        value={formData.kodePos}
+                        onChange={handleChange}
+                        placeholder="Isi Kode Pos"
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Tanggal Lahir + Tempat Lahir + Jenis Kelamin + Nomor HP */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Tempat Lahir */}
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Tempat Lahir <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="tempatLahir"
+                        value={formData.tempatLahir}
+                        onChange={handleChange}
+                        placeholder="Isi Tempat Lahir"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
+                      />
+                    </div>
+
+                    {/* Tanggal Lahir */}
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Tanggal Lahir <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        name="tanggalLahir"
+                        value={formData.tanggalLahir}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
+                      />
+                    </div>
+
+                    {/* Jenis Kelamin */}
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Jenis Kelamin <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        name="jenisKelamin"
+                        value={formData.jenisKelamin}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
+                      >
+                        <option value="">Pilih Jenis Kelamin</option>
+                        <option value="L">Laki-laki</option>
+                        <option value="P">Perempuan</option>
+                      </select>
+                    </div>
+
+                    {/* Nomor HP */}
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Nomor Handphone (WhatsApp){" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="noHp"
+                        value={formData.noHp}
+                        onChange={handleChange}
+                        placeholder="08xx..."
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Informasi Orang Tua/Wali */}
+                <div className="mt-10">
+                  <h2 className="text-lg font-semibold mb-2">
+                    Informasi Orang Tua/Wali
+                  </h2>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Lengkapi form bertanda bintang{" "}
+                    <span className="text-red-500">*</span> karena wajib diisi.
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Nama Orangtua/Wali <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="namaWali"
+                        value={formData.namaWali}
+                        onChange={handleChange}
+                        placeholder="Isi Nama Lengkap OrangTua/Wali"
+                        className="w-full px-4 py-3 border border-gray-300   rounded-xl focus:border-blue-700 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block mb-1 font-semibold">
+                        Alamat Email Orangtua/Wali{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        name="emailWali"
+                        value={formData.emailWali}
+                        onChange={handleChange}
+                        placeholder="Isi Alamat Email OrangTua/Wali"
+                        className="w-full px-4 py-3 border border-gray-300   rounded-xl focus:border-blue-700 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tombol Lanjut */}
+                <div className="flex justify-end mt-6">
+                  <button
+                    type="submit"
+                    className="
     px-6 py-2 bg-[#274ac0] text-white rounded-md 
     hover:bg-[#2343ad] 
     transition-all duration-300 
     flex items-center gap-2 group cursor-pointer
   "
-              >
-                <span className="flex items-center gap-2">
-                  LANJUT
-                  <ArrowRight
-                    size={14}
-                    className="
+                  >
+                    <span className="flex items-center gap-2">
+                      LANJUT
+                      <ArrowRight
+                        size={14}
+                        className="
         transition-transform duration-300
         group-hover:translate-x-1
       "
+                      />
+                    </span>
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* Form Step 2 */}
+            {step === 2 && (
+              <form className="space-y-6" onSubmit={handleSubmit}>
+                {/* Judul */}
+                <div>
+                  <h2 className="text-lg font-semibold">Buat Kata Sandi Akun</h2>
+                  <p className="text-sm text-gray-600">
+                    Buat password yang kuat untuk menjaga privasi data Anda.
+                  </p>
+                </div>
+
+                {/* NISN */}
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    Nama Pengguna (NISN)
+                  </label>
+                  <input
+                    value={formData.nisn || "(tidak diisi)"}
+                    disabled
+                    className="w-full px-4 py-3 bg-gray-200 rounded-xl"
                   />
-                </span>
-              </button>
-            </div>
-          </form>
-        )}
+                  <p className="text-xs text-gray-500 mt-1">
+                    NISN akan otomatis digunakan sebagai username.
+                  </p>
+                </div>
 
-        {/* Form Step 2 */}
-        {step === 2 && (
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Judul */}
-            <div>
-              <h2 className="text-lg font-semibold">Buat Kata Sandi Akun</h2>
-              <p className="text-sm text-gray-600">
-                Buat password yang kuat untuk menjaga privasi data Anda.
-              </p>
-            </div>
+                {/* Password */}
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    Kata Sandi <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Minimal 6 karakter"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  focus:border-blue-400 focus:outline-none"
+                  />
+                </div>
 
-            {/* NISN */}
-            <div>
-              <label className="block mb-1 font-semibold">
-                Nama Pengguna (NISN)
-              </label>
-              <input
-                value={formData.nisn || "(tidak diisi)"}
-                disabled
-                className="w-full px-4 py-3 bg-gray-200 rounded-xl"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                NISN akan otomatis digunakan sebagai username.
-              </p>
-            </div>
+                {/* Konfirmasi Password */}
+                <div>
+                  <label className="block mb-1 font-semibold">
+                    Konfirmasi Kata Sandi <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Ulangi kata sandi"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  focus:border-blue-700 focus:outline-none"
+                  />
+                </div>
 
-            {/* Password */}
-            <div>
-              <label className="block mb-1 font-semibold">
-                Kata Sandi <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Minimal 6 karakter"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl  focus:border-blue-400 focus:outline-none"
-              />
-            </div>
+                {/* Tombol */}
+                <div className="flex justify-end gap-12 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => { setStep(1); setError(""); }}
+                    className="px-10 py-2 cursor-pointer bg-gray-300 rounded-md"
+                  >
+                    ← Kembali
+                  </button>
 
-            {/* Konfirmasi Password */}
-            <div>
-              <label className="block mb-1 font-semibold">
-                Konfirmasi Kata Sandi <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Ulangi kata sandi"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl  focus:border-blue-700 focus:outline-none"
-              />
-            </div>
-
-            {/* Tombol */}
-            <div className="flex justify-end gap-12 mt-6">
-              <button
-                type="button"
-                onClick={() => { setStep(1); setError(""); }}
-                className="px-10 py-2 bg-gray-300 rounded-md"
-              >
-                ← Kembali
-              </button>
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className="px-10 py-2 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md disabled:opacity-50"
-              >
-                {submitting ? "Mendaftarkan..." : "Selesaikan"}
-              </button>
-            </div>
-          </form>
-        )}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="px-10 py-2 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md disabled:opacity-50"
+                  >
+                    {submitting ? "Mendaftarkan..." : "Selesaikan"}
+                  </button>
+                </div>
+              </form>
+            )}
           </>
         )}
       </div>

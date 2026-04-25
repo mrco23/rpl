@@ -28,61 +28,13 @@ export default function LandingPage() {
       if (res.success) {
         setData(res.data);
       }
-      setTimeout(() => setLoading(false), 2000);
+      setTimeout(() => setLoading(false), 1500);
       AOS.refresh()
     };
     fetchData();
 
   }, []);
 
-  /* if (loading) {
-    return (
-      <main className="animate-pulse ">
-        <section className="relative w-full h-[80vh] bg-gray-600 rounded-b-3xl">
-          <div className="relative z-10 flex flex-col justify-start pt-32 h-full max-w-7xl mx-auto px-8">
-            <div className="w-1/2 h-12 md:h-16 bg-slate-200 rounded mb-4"></div>
-            <div className="w-2/3 h-12 md:h-16 bg-slate-200 rounded mb-4"></div>
-            <div className="w-full max-w-lg h-6 bg-slate-200 rounded mb-2"></div>
-            <div className="w-3/4 max-w-md h-6 bg-slate-200 rounded mb-5"></div>
-            <div className="flex gap-3">
-              <div className="w-32 h-10 bg-slate-200 rounded-md"></div>
-              <div className="w-40 h-10 bg-slate-200 rounded-md"></div>
-            </div>
-          </div>
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-[-100px] w-full max-w-6xl px-5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-24">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="bg-white border text-center border-gray-100 rounded-lg py-8 px-8 shadow-md relative w-full h-40">
-                  <div className="w-16 h-12 bg-gray-200 mx-auto rounded mt-2 mb-3"></div>
-                  <div className="w-24 h-4 bg-gray-200 mx-auto rounded"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <div className="mt-40 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10">
-          <div className="aspect-[4/3] bg-slate-200 rounded-2xl w-full"></div>
-          <div className="flex flex-col justify-center space-y-4">
-            <div className="w-1/2 h-8 bg-slate-200 rounded"></div>
-            <div className="w-full h-4 bg-slate-200 rounded"></div>
-            <div className="w-full h-4 bg-slate-200 rounded"></div>
-            <div className="w-3/4 h-4 bg-slate-200 rounded"></div>
-          </div>
-        </div>
-
-        <div className="py-20 mt-10 max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
-          <div className="w-full h-100 bg-slate-200 rounded-2xl">hai</div>
-          <div className="space-y-4">
-            <div className="w-full h-4 bg-slate-200 rounded"></div>
-            <div className="w-full h-4 bg-slate-200 rounded"></div>
-            <div className="w-3/4 h-4 bg-slate-200 rounded"></div>
-            <div className="w-1/2 h-6 bg-slate-200 rounded mt-6"></div>
-          </div>
-        </div>
-      </main>
-    );
-  } */
 
   const total_data = data?.total_data || {};
   const fasilitas = data?.fasilitas || [];
@@ -111,7 +63,7 @@ export default function LandingPage() {
             <div className="w-40 h-10 bg-slate-200 rounded-md"></div>
           </div>
         </div>
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-100px] w-full max-w-6xl px-5">
+        <div className="absolute left-1/2 -translate-x-1/2 -bottom-80 md:bottom-[-100px] w-full max-w-6xl px-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-24">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="bg-white border text-center border-gray-100 rounded-lg py-8 px-8 shadow-md relative w-full h-40">
@@ -152,9 +104,9 @@ export default function LandingPage() {
         </div>
         {/* 4 cards */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-[-300px] md:bottom-[-150px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-10 lg:gap-10 xl:gap-24">
+          <div className="grid grid-cols-2 md:grid-cols-4  gap-10 md:gap-10 lg:gap-10 xl:gap-24">
             {stats.map((item, index) => (
-              <div key={index} className="flex flex-col group lg:w-40 xl:w-50" data-aos={`${index === 0 ? "fade-up-right" : index > 0 && index < stats.length - 1 ? "fade-up" : index === stats.length - 1 ? "fade-up-left" : ""
+              <div key={index} className="flex flex-col mx-auto group w-50 lg:w-40 xl:w-50" data-aos={`${index === 0 ? "fade-up-right" : index > 0 && index < stats.length - 1 ? "fade-up" : index === stats.length - 1 ? "fade-up-left" : ""
                 }`} data-aos-duration="500"
                 data-aos-delay={index * 100}>
                 <Link to={item.path}>
@@ -211,7 +163,7 @@ export default function LandingPage() {
 
           </div>
         ) : (
-          <div className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative" data-aos="fade-up" data-aos-duration="800">
+          <div className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative mt-100 xl:mt-0" data-aos="fade-up" data-aos-duration="800">
             {/* Badge Icon Akreditasi */}
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full p-2 shadow-sm flex items-center justify-center">
               <div className="w-full h-full bg-blue-50 rounded-full flex items-center justify-center text-4xl">

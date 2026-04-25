@@ -2,10 +2,10 @@ import { Link } from "react-router";
 import { FiCalendar } from "react-icons/fi";
 import MoreButton from "../ui/MoreButton";
 
-export default function PreviewBerita({ data = [] }) {
+export default function PreviewBerita({ data = [], loading }) {
   return (
     <section className="w-full py-1 font-sans mb-7">
-      <div className="max-w-7xl mx-auto px-10">
+      <div className="max-w-7xl mx-auto px-0 sm:px-10">
         {/* TITLE */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-medium text-gray-800">
@@ -16,53 +16,83 @@ export default function PreviewBerita({ data = [] }) {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-10">
-          {data.slice(0, 3).map((item, index) => (
-            <Link to={`/berita/${item.id_berita || ''}`} key={index}>
-              <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition! overflow-hidden p-2 cursor-pointer sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-95 sm:w-130 md:w-60 lg:w-full"
-                data-aos="fade-up"
-                data-aos-duration="1000"
-                data-aos-delay={index * 500}>
-                {/* IMAGE */}
+        {loading ? (
+          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-10">
+            {[...Array(3)].map((_, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-3xl shadow-sm overflow-hidden p-2 cursor-pointer animate-pulse sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-95 sm:w-130 md:w-60 lg:w-full"
+              >
+                {/* IMAGE SKELETON */}
+                <div className="w-full aspect-3.5/2.5 bg-gray-200 rounded-2xl mb-4" />
 
-                <img
-                  src={item.gambar || null}
-                  alt={item.judul}
-                  className="w-full aspect-3.5/2.5 object-cover rounded-2xl hover:scale-[1.02] transition-all duration-500"
-                />
-
-                {/* CONTENT */}
-                <div className="p-4">
-                  {/* DATE + ICON */}
-                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-                    <FiCalendar className="text-gray-400 text-[14px]" />
-                    <span>
-                      {item.tanggal ? new Date(item.tanggal).toLocaleDateString("id-ID", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      }) : "Tanggal tidak tersedia"}
-                    </span>
-                  </div>
+                {/* CONTENT SKELETON */}
+                <div className="p-4 space-y-2">
+                  {/* DATE */}
+                  <div className="h-4 w-1/3 bg-gray-200 rounded"></div>
 
                   {/* TITLE */}
-                  <h3 className="font-semibold text-base text-gray-800 mb-2 line-clamp-2">
-                    {item.judul}
-                  </h3>
+                  <div className="h-6 w-full bg-gray-200 rounded"></div>
 
-                  {/* DESC */}
-                  <p className="text-sm text-gray-600 line-clamp-2">
-                    {item.deskripsi}
-                  </p>
+                  {/* DESCRIPTION */}
+                  <div className="h-4 w-full bg-gray-200 rounded"></div>
+                  <div className="h-4 w-5/6 bg-gray-200 rounded"></div>
                 </div>
               </div>
-            </Link>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-10">
+            {data.slice(0, 3).map((item, index) => (
+              <Link to={`/berita/${item.id_berita || ''}`} key={index}>
+                <div
+                  className="bg-white rounded-3xl shadow-sm hover:shadow-md transition-all overflow-hidden p-2 cursor-pointer sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-95 sm:w-130 md:w-60 lg:w-full"
+                  data-aos="fade-up"
+                  data-aos-duration="1000"
+                  data-aos-delay={index * 500}
+                >
+                  {/* IMAGE */}
+                  <img
+                    src={item.gambar || null}
+                    alt={item.judul}
+                    className="w-full aspect-3.5/2.5 object-cover rounded-2xl hover:scale-[1.02] transition-all duration-500"
+                  />
+
+                  {/* CONTENT */}
+                  <div className="p-4">
+                    {/* DATE + ICON */}
+                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                      <FiCalendar className="text-gray-400 text-[14px]" />
+                      <span>
+                        {item.tanggal
+                          ? new Date(item.tanggal).toLocaleDateString("id-ID", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })
+                          : "Tanggal tidak tersedia"}
+                      </span>
+                    </div>
+
+                    {/* TITLE */}
+                    <h3 className="font-semibold text-base text-gray-800 mb-2 line-clamp-2">
+                      {item.judul}
+                    </h3>
+
+                    {/* DESC */}
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {item.deskripsi}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
 
         {/* BUTTON */}
         <MoreButton text={'Lihat Semua Berita'} to={'/berita'} />
       </div>
-    </section>
+    </section >
   );
 }
