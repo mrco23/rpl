@@ -5,7 +5,11 @@ meta {
 }
 
 get {
-  url: {{base_url}}/profile
+  url: {{base_url}}/profile/admin
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }

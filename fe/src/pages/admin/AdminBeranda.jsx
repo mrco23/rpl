@@ -54,7 +54,7 @@ export default function AdminBeranda() {
   const formatCardTitle = (key) => {
     const titles = {
       totalFasilitas: "Fasilitas",
-      totalEkstrakurikuler: "Ekstra Kurikuler",
+      totalEkstrakurikuler: "Ekstrakurikuler",
       totalPrestasi: "Prestasi",
       totalBerita: "Berita",
       totalProgramUnggulan: "Program Unggulan",

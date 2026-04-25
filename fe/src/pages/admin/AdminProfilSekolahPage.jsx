@@ -28,6 +28,8 @@ export default function AdminProfilSekolahPage() {
     misi: "",
     nama_kepala_sekolah: "",
     kata_sambutan: "",
+    akreditasi: "",
+    nomor_sk_akreditasi: "",
   });
   const [createImage, setCreateImage] = useState(null);
 
@@ -68,6 +70,7 @@ export default function AdminProfilSekolahPage() {
       // Backend mengembalikan { message, data: {...} }
       if (res.data) {
         setProfile(res.data);
+        console.log(res.data)
       } else {
         setProfile(null);
       }
@@ -90,6 +93,8 @@ export default function AdminProfilSekolahPage() {
       nama_sekolah: profile?.nama_sekolah || "",
       visi: profile?.visi || "",
       misi: profile?.misi || "",
+      akreditasi: profile?.akreditasi || "",
+      nomor_sk_akreditasi: profile?.nomor_sk_akreditasi || "",
     });
     setIsInfoModalOpen(true);
   };
@@ -414,10 +419,43 @@ export default function AdminProfilSekolahPage() {
                 ) : (
                   <textarea
                     value={profile?.misi || ""}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-800 h-20 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-50"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-800 h-30 resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-50"
                     readOnly
                   />
                 )}
+              </div>
+              <div className="flex items-center justify-center w-full gap-5">
+                <div className="w-1/6">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Akreditasi
+                  </label>
+                  {loading ? (
+                    <Skeleton className="h-10 w-full" />
+                  ) : (
+                    <input
+                      type="text"
+                      value={profile?.akreditasi || ""}
+                      className="w-full text-center font-bold border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-50"
+                      readOnly
+                    />
+
+                  )}
+                </div>
+                <div className="w-full">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nomor SK Akreditasi
+                  </label>
+                  {loading ? (
+                    <Skeleton className="h-10 w-full" />
+                  ) : (
+                    <input
+                      type="text"
+                      value={profile?.nomor_sk_akreditasi || ""}
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-50"
+                      readOnly
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -490,7 +528,7 @@ export default function AdminProfilSekolahPage() {
             ) : (
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-blue-300 bg-blue-50/50 rounded-xl h-64 flex flex-col items-center justify-center text-blue-400 mb-4 cursor-pointer hover:bg-blue-50 transition-colors overflow-hidden relative"
+                className="border-2 border-dashed border-blue-300 bg-blue-50/50 rounded-xl h-80 flex flex-col items-center justify-center text-blue-400 mb-4 cursor-pointer hover:bg-blue-50 transition-colors overflow-hidden relative"
               >
                 {previewLogo || (profile?.foto_kepala_sekolah && !profile.foto_kepala_sekolah.includes('null')) ? (
                   <img
@@ -569,7 +607,7 @@ export default function AdminProfilSekolahPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1 font-bold">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     WhatsApp
                   </label>
                   <div className="flex">
@@ -714,6 +752,49 @@ export default function AdminProfilSekolahPage() {
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
             />
           </div>
+
+          <div className="flex items-center justify-center w-full gap-5">
+            <div className="w-1/6">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Akreditasi
+              </label>
+              {loading ? (
+                <Skeleton className="h-10 w-full" />
+              ) : (
+                <select
+                  value={infoData.akreditasi}
+                  onChange={(e) =>
+                    setInfoData({ ...infoData, akreditasi: e.target.value })
+                  }
+                  className="w-full text-center font-bold border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-50"
+                  placeholder='Pilih'
+                >
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              )}
+            </div>
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nomor SK Akreditasi
+              </label>
+              {loading ? (
+                <Skeleton className="h-10 w-full" />
+              ) : (
+                <input
+                  type="text"
+                  value={infoData.nomor_sk_akreditasi}
+                  onChange={(e) =>
+                    setInfoData({ ...infoData, nomor_sk_akreditasi: e.target.value })
+                  }
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-50"
+                />
+              )}
+            </div>
+          </div>
+
           <div className="pt-4 flex justify-end gap-3 border-t">
             <button
               type="button"
@@ -854,7 +935,7 @@ export default function AdminProfilSekolahPage() {
                   setKontakData({ ...kontakData, instagram: e.target.value })
                 }
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-                placeholder="@username"
+                placeholder="www.youtube.com/channel/.."
               />
             </div>
             <div>
@@ -868,7 +949,7 @@ export default function AdminProfilSekolahPage() {
                   setKontakData({ ...kontakData, tiktok: e.target.value })
                 }
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-                placeholder="@username"
+                placeholder="www.tiktok.com/@..."
               />
             </div>
             <div>
@@ -881,6 +962,7 @@ export default function AdminProfilSekolahPage() {
                 onChange={(e) =>
                   setKontakData({ ...kontakData, facebook: e.target.value })
                 }
+                placeholder="www.facebook.com/..."
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
               />
             </div>
@@ -894,6 +976,7 @@ export default function AdminProfilSekolahPage() {
                 onChange={(e) =>
                   setKontakData({ ...kontakData, youtube: e.target.value })
                 }
+                placeholder="www.youtube.com/channel/..."
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
               />
             </div>

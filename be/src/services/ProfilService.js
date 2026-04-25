@@ -49,6 +49,8 @@ export const createProfil = async (id_admin, payload) => {
 			nama_sekolah: payload.nama_sekolah,
 			visi: payload.visi,
 			misi: payload.misi,
+			akreditasi: payload.akreditasi,
+			nomor_sk_akreditasi: payload.nomor_sk_akreditasi,
 			nama_kepala_sekolah: payload.nama_kepala_sekolah,
 			foto_kepala_sekolah: payload.foto_kepala_sekolah,
 			kata_sambutan: payload.kata_sambutan,
@@ -73,6 +75,8 @@ export const updateProfilData = async (id_admin, payload) => {
 			nama_sekolah: payload.nama_sekolah,
 			visi: payload.visi,
 			misi: payload.misi,
+			akreditasi: payload.akreditasi,
+			nomor_sk_akreditasi: payload.nomor_sk_akreditasi,
 			nama_kepala_sekolah: payload.nama_kepala_sekolah,
 			kata_sambutan: payload.kata_sambutan,
 		},
@@ -149,6 +153,8 @@ export const serialize = (req, data) => {
 		nama_sekolah: profil.nama_sekolah || "",
 		visi: profil.visi || "",
 		misi: profil.misi || "",
+		nomor_sk_akreditasi: profil.nomor_sk_akreditasi || "",
+		akreditasi: profil.akreditasi || "",
 		nama_kepala_sekolah: profil.nama_kepala_sekolah || "",
 		foto_kepala_sekolah: buildFileUrl(req, profil.foto_kepala_sekolah),
 		kata_sambutan: profil.kata_sambutan || "",
@@ -197,6 +203,8 @@ export const getLandingPageData = async () => {
 			kata_sambutan: true,
 			foto_kepala_sekolah: true,
 			nama_kepala_sekolah: true,
+			akreditasi: true,
+			nomor_sk_akreditasi: true,
 		},
 	});
 
@@ -222,6 +230,10 @@ export const getLandingPageData = async () => {
 		prestasi: prestasi,
 		profil_kepala_sekolah: profil,
 		berita_terbaru: berita,
+		akreditasi_sekolah: {
+			akreditasi: profil.akreditasi,
+			nomor_sk_akreditasi: profil.nomor_sk_akreditasi,
+		},
 	};
 };
 
@@ -250,12 +262,13 @@ export const serializeLandingPage = (req, data) => {
 					kata_sambutan: data.profil_kepala_sekolah.kata_sambutan,
 				}
 			: null,
+		akreditasi_sekolah: data.akreditasi_sekolah,
 	};
 };
 
 export const getVisiMisi = async () => {
 	const profil = await prisma.profil.findFirst({
-		orderBy: { id_profil: 'asc' },
+		orderBy: { id_profil: "asc" },
 		select: { visi: true, misi: true, nama_sekolah: true },
 	});
 	return profil || { visi: null, misi: null, nama_sekolah: null };

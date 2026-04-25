@@ -38,13 +38,15 @@ model Verifikator {
 }
 
 model Profil {
-  id_profil           Int    @id @default(autoincrement())
-  nama_sekolah        String @unique
-  visi                String @db.Text
-  misi                String @db.Text
+  id_profil           Int     @id @default(autoincrement())
+  nama_sekolah        String  @unique
+  visi                String  @db.Text
+  misi                String  @db.Text
   nama_kepala_sekolah String
   foto_kepala_sekolah String
-  kata_sambutan       String @db.Text
+  akreditasi          String? @db.Char(1)
+  nomor_sk_akreditasi String?
+  kata_sambutan       String  @db.Text
   id_admin            Int
 
   admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
