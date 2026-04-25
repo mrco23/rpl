@@ -15,7 +15,7 @@ export default function UbahKataSandiPage() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     nisn: "",
     oldPassword: "",
@@ -64,9 +64,9 @@ export default function UbahKataSandiPage() {
   };
 
   return (
-    <div className="flex min-h-screen justify-center items-center">
+    <div className="flex h-screen justify-center items-center">
       {/* LEFT SIDE (Sama dengan LoginPage) */}
-      <div className="hidden md:flex w-1/2 min-h-screen relative overflow-hidden">
+      <div className="hidden lg:flex w-1/2 min-h-screen relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center blur-[2px] scale-105 brightness-50"
           style={{ backgroundImage: `url(${hero})` }}
@@ -87,16 +87,16 @@ export default function UbahKataSandiPage() {
       </div>
 
       {/* RIGHT SIDE (Form Ubah Kata Sandi) */}
-      <div className="flex w-full md:w-1/2 items-start justify-center px-14 pt-8">
+      <div className="flex w-full md:w-1/2 items-start justify-center px-14 pt-4">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-9"
+          className="w-full max-w-xl rounded-2xl p-9"
         >
-          <h2 className="text-4xl text-center font-bold mb-8 text-slate-800">Ubah Kata Sandi</h2>
+          <h2 className="text-2xl text-center font-bold mb-2 text-slate-800">Ubah Kata Sandi</h2>
 
           {/* NISN */}
           <div className="mb-5">
-            <label className="text-lg font-medium text-slate-700">NISN</label>
+            <label className="text-base font-medium text-slate-700">NISN</label>
             <input
               type="text"
               name="nisn"
@@ -110,7 +110,7 @@ export default function UbahKataSandiPage() {
 
           {/* KATA SANDI LAMA */}
           <div className="mb-5">
-            <label className="text-lg font-medium text-slate-700">Kata Sandi Lama</label>
+            <label className="text-base font-medium text-slate-700">Kata Sandi Lama</label>
             <div className="relative mt-1">
               <input
                 type={showPassword.lama ? "text" : "password"}
@@ -132,7 +132,7 @@ export default function UbahKataSandiPage() {
 
           {/* KATA SANDI BARU */}
           <div className="mb-5">
-            <label className="text-lg font-medium text-slate-700">Kata Sandi Baru</label>
+            <label className="text-base font-medium text-slate-700">Kata Sandi Baru</label>
             <div className="relative mt-1">
               <input
                 type={showPassword.baru ? "text" : "password"}
@@ -154,7 +154,7 @@ export default function UbahKataSandiPage() {
 
           {/* KONFIRMASI KATA SANDI BARU */}
           <div className="mb-6">
-            <label className="text-lg font-medium text-slate-700">Konfirmasi Kata Sandi Baru</label>
+            <label className="text-base font-medium text-slate-700">Konfirmasi Kata Sandi Baru</label>
             <div className="relative mt-1">
               <input
                 type={showPassword.konfirmasi ? "text" : "password"}
@@ -184,12 +184,13 @@ export default function UbahKataSandiPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-[#253b80] text-white py-3.5 rounded-xl hover:bg-blue-800 cursor-pointer active:scale-[0.98] transition-all font-semibold text-lg shadow-lg shadow-blue-900/20"
+            className="w-full bg-blue-dark text-white py-3 rounded-lg hover:bg-blue-dark-hover cursor-pointer active:bg-blue-dark-active transition"
+
           >
             {submitting ? "Memproses..." : "Simpan Perubahan"}
           </button>
 
-          <div className="mt-8 text-center border-t border-gray-100 pt-6">
+          <div className="text-center border-t border-gray-100 pt-6">
             <Link
               to="/login"
               className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#253b80] transition-all duration-300 font-medium group"
@@ -204,7 +205,7 @@ export default function UbahKataSandiPage() {
       </div>
 
       {/* MODAL SUKSES */}
-      <Modal open={success} onClose={() => {}} title="Berhasil">
+      <Modal open={success} onClose={() => { }} title="Berhasil">
         <div className="flex flex-col items-center text-center p-4">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4">
             <CheckCircle2 size={48} className="text-green-600" />

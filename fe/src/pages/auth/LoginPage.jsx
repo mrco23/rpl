@@ -113,9 +113,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen justify-center items-center">
+    <div className="flex justify-center items-center h-screen">
       {/* LEFT SIDE */}
-      <div className="hidden md:flex w-1/2 min-h-screen relative overflow-hidden">
+      <div className="hidden lg:flex w-1/2 h-full relative overflow-hidden">
         {/* ✅ BACKGROUND IMAGE (BLUR) */}
         <div
           className="absolute inset-0 bg-cover bg-center blur-[2px] scale-105 brightness-50"
@@ -141,24 +141,23 @@ export default function LoginPage() {
       </div>
 
       {/* RIGHT SIDE */}
-      <div className="flex w-full  md:w-1/2 items-start justify-center px-14 pt-8">
+      <div className="flex w-full lg:w-1/2 items-start justify-center px-14 pt-8">
         <form
           onSubmit={handleLogin}
-          className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-9"
+          className="w-130 max-w-xl rounded-2xl p-9"
         >
-          <h2 className="text-4xl text-center font-bold mb-8">Masuk Ke Akun</h2>
+          <h2 className="text-3xl text-center font-bold mb-8">Masuk Ke Akun</h2>
 
           {/* ROLE */}
           <div className="mb-5">
-            <label className="text-lg">Masuk sebagai</label>
+            <label className="text-base">Masuk sebagai</label>
             <select
               value={role}
               onChange={(e) => {
                 setRole(e.target.value);
                 setIdentifier(e.target.value);
               }}
-              className="w-full border-2 border-blue-200 rounded-lg px-1 py-3
-                focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
+              className="w-full border-2 rounded-lg px-1 py-3 border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition"
             >
               <option value="pendaftar">Pendaftar</option>
               <option value="verifikator">Verifikator</option>
@@ -168,7 +167,7 @@ export default function LoginPage() {
 
           {/* EMAIL */}
           <div className="mb-5">
-            <label className="text-lg">
+            <label className="text-sm">
               {role === "pendaftar" ? "NISN" : "username  "}
             </label>
             <input
@@ -179,14 +178,14 @@ export default function LoginPage() {
               }
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              className="w-full border border-blue-400 rounded-lg px-2 py-3 
+              className="w-full border border-slate-300 rounded-lg px-2 py-3 
                 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition"
             />
           </div>
 
           {/* PASSWORD */}
           <div className="mb-4">
-            <label className="text-lg">Kata Sandi</label>
+            <label className="text-base">Kata Sandi</label>
 
             <div className="relative mt-1">
               <input
@@ -196,7 +195,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full border border-slate-300 rounded-lg px-2 py-3
-                  focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition"
               />
 
               <span
@@ -206,6 +205,15 @@ export default function LoginPage() {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </span>
             </div>
+            <p className="text-xs text-end mt-2">
+              {" "}
+              <Link
+                to={"/ubah-kata-sandi"}
+                className="text-slate-500 font-medium active:text-blue-800 cursor-pointer"
+              >
+                Lupa kata sandi?
+              </Link>
+            </p>
           </div>
 
           {error && (
@@ -232,16 +240,8 @@ export default function LoginPage() {
               Daftar disini
             </Link>
           </p>
-          <p className="text-sm text-center mt-2">
-            Lupa kata sandi?{" "}
-            <Link
-              to={"/ubah-kata-sandi"}
-              className="text-[#253b80] font-medium active:text-blue-800 cursor-pointer"
-            >
-              Ubah Kata Sandi
-            </Link>
-          </p>
-          <div className="mt-6 text-center border-t border-gray-100 pt-6">
+
+          <div className="mt-3 text-center border-t border-gray-100 pt-6">
             <Link
               to="/"
               className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-blue-dark transition-all duration-300 font-medium group"

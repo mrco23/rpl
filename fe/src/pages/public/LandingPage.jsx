@@ -193,7 +193,7 @@ export default function LandingPage() {
       {/* AKREDITASI SECTION */}
       <section className="max-w-5xl mx-auto px-6 mt-40 md:mt-60 relative">
         {loading ? (
-          <div className="bg-white rounded-[2rem] shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative animate-pulse">
+          <div className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative animate-pulse">
 
             {/* Skeleton Badge */}
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full p-2 shadow-sm flex items-center justify-center">
@@ -211,7 +211,7 @@ export default function LandingPage() {
 
           </div>
         ) : (
-          <div className="bg-white rounded-[2rem] shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative" data-aos="fade-up" data-aos-duration="800">
+          <div className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative" data-aos="fade-up" data-aos-duration="800">
             {/* Badge Icon Akreditasi */}
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full p-2 shadow-sm flex items-center justify-center">
               <div className="w-full h-full bg-blue-50 rounded-full flex items-center justify-center text-4xl">

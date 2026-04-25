@@ -19,7 +19,7 @@ export default function PreviewBerita({ data = [] }) {
         <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-10">
           {data.slice(0, 3).map((item, index) => (
             <Link to={`/berita/${item.id_berita || ''}`} key={index}>
-              <div className="bg-white rounded-3xl shadow-sm hover:shadow-md !transition overflow-hidden p-2 cursor-pointer sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-95 sm:w-130 md:w-60 lg:w-full"
+              <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition! overflow-hidden p-2 cursor-pointer sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-95 sm:w-130 md:w-60 lg:w-full"
                 data-aos="fade-up"
                 data-aos-duration="1000"
                 data-aos-delay={index * 500}>
@@ -28,7 +28,7 @@ export default function PreviewBerita({ data = [] }) {
                 <img
                   src={item.gambar || null}
                   alt={item.judul}
-                  className="w-full aspect-[3.5/2.5] object-cover rounded-2xl hover:scale-[1.02] transition-all duration-500"
+                  className="w-full aspect-3.5/2.5 object-cover rounded-2xl hover:scale-[1.02] transition-all duration-500"
                 />
 
                 {/* CONTENT */}
