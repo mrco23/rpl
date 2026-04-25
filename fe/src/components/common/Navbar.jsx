@@ -50,7 +50,7 @@ function Navbar() {
             <li>
               <Link
                 to="/"
-                className={`px-3 py-2 border-2 rounded transition-colors ${location.pathname === "/"
+                className={`px-3 py-2 rounded  ${location.pathname === "/"
                   ? "border-transparent  text-gray-950 font-semibold"
                   : "border-transparent"
                   } hover:bg-gray-100`}
