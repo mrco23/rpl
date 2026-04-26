@@ -103,21 +103,21 @@ export default function LandingPage() {
           </div>
         </div>
         {/* 4 cards */}
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-300px] md:bottom-[-150px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
-          <div className="grid grid-cols-2 md:grid-cols-4  gap-10 md:gap-10 lg:gap-10 xl:gap-24">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-220px] sm:bottom-[-100px] md:bottom-[-120px] lg:bottom-[-100px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-10 sm:px-20 md:px-0 md:gap-5 lg:gap-10 xl:gap-24">
             {stats.map((item, index) => (
-              <div key={index} className="flex flex-col mx-auto group w-50 lg:w-40 xl:w-50" data-aos={`${index === 0 ? "fade-up-right" : index > 0 && index < stats.length - 1 ? "fade-up" : index === stats.length - 1 ? "fade-up-left" : ""
+              <div key={index} className="flex flex-col mx-auto group w-30 sm:w-50 md:w-35 lg:w-40 xl:w-50" data-aos={`${index === 0 ? "fade-up-right" : index > 0 && index < stats.length - 1 ? "fade-up" : index === stats.length - 1 ? "fade-up-left" : ""
                 }`} data-aos-duration="500"
                 data-aos-delay={index * 100}>
                 <Link to={item.path}>
                   <div
                     className="bg-white rounded-lg py-6 sm:py-8 px-0 lg:px-8 text-center shadow-md relative w-full h-30 sm:h-38 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden"
                   >
-                    <span className="absolute top-3 right-4 text-blue-900 text-4xl opacity-100">
+                    <span className="absolute top-3 right-4 text-blue-900 sm:text-2xl md:text-4xl opacity-100">
                       ✦
                     </span>
 
-                    <h1 className="text-3xl sm:text-5xl  font-bold text-blue-900">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-900">
                       {item.value}
                     </h1>
 
@@ -143,7 +143,7 @@ export default function LandingPage() {
 
 
       {/* AKREDITASI SECTION */}
-      <section className="max-w-5xl mx-auto px-6 mt-40 md:mt-60 relative">
+      <section className="w-full mx-auto sm:px-0 px-6 mt-40 md:mt-60 relative">
         {loading ? (
           <div className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 pb-12 text-center relative animate-pulse">
 
@@ -163,7 +163,7 @@ export default function LandingPage() {
 
           </div>
         ) : (
-          <div className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-8 pt-16 w-140 mx-auto pb-12 text-center relative mt-100 xl:mt-90" data-aos="fade-up" data-aos-duration="800">
+          <div className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-4 xl:px-8 pt-16 w-97 lg:w-130 xl:w-140 mx-auto pb-12 text-center relative mt-100 sm:mt-65 lg:mt-70 xl:mt-90" data-aos="fade-up" data-aos-duration="800">
             {/* Badge Icon Akreditasi */}
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full p-2 shadow-sm flex items-center justify-center">
               <div className="w-full h-full bg-blue-50 rounded-full flex items-center justify-center text-4xl">
@@ -171,10 +171,10 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <h2 className="text-3xl font-bold text-slate-800 mb-4">
+            <h2 className="text-lg xl:text-3xl font-bold text-slate-800 mb-4">
               Terakreditasi {data.akreditasi_sekolah.akreditasi}
             </h2>
-            <p className="text-slate-600 text-lg leading-relaxed max-w-4xl mx-auto font-medium">
+            <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-4xl mx-auto font-medium">
               Nomor SK Akreditasi <span className="font-bold">{data.akreditasi_sekolah.nomor_sk_akreditasi}</span>
             </p>
 

@@ -37,7 +37,7 @@ function Navbar() {
 
   return (
     <>
-      <nav ref={dropdownRef} className="w-full sticky top-0 z-50 bg-white shadow-sm">
+      <nav ref={dropdownRef} className="w-full sticky top-0 z-50 bg-white shadow-lg">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center h-full gap-2 ml-2">
@@ -189,9 +189,6 @@ function Navbar() {
                 <Link to="/visi-misi" className="hover:bg-gray-100 block cursor-pointer">
                   Visi dan Misi Sekolah
                 </Link>
-                <p onClick={() => handleModal("kepsek")} className="cursor-pointer">
-                  Sambutan Kepsek
-                </p>
                 <p onClick={() => handleModal("fasilitas")} className="cursor-pointer">
                   Fasilitas
                 </p>
