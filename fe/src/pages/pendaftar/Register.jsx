@@ -240,7 +240,7 @@ export default function ApplicantRegisterPage() {
 
             {/* Form Step 1 */}
             {step === 1 && (
-              <form className="space-y-6 mx-15 lg:mx-10" onSubmit={handleNext}>
+              <form className="space-y-6 mx-5 sm:mx-8 lg:mx-10" onSubmit={handleNext}>
                 <div className="space-y-4">
                   {/* Nama Lengkap */}
                   <div>
@@ -556,11 +556,11 @@ export default function ApplicantRegisterPage() {
                 </div>
 
                 {/* Tombol */}
-                <div className="flex justify-end gap-12 mt-6">
+                <div className="flex justify-center md:justify-end sm:justify-end gap-12 mt-6 w-full">
                   <button
                     type="button"
                     onClick={() => { setStep(1); setError(""); }}
-                    className="px-10 py-2 cursor-pointer bg-gray-300 rounded-md"
+                    className="px-5 lg:px-10 py-2 cursor-pointer bg-gray-300 rounded-md"
                   >
                     ← Kembali
                   </button>
@@ -568,7 +568,7 @@ export default function ApplicantRegisterPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="px-10 py-2 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md disabled:opacity-50"
+                    className="px-5 lg:px-10 py-2 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md disabled:opacity-50"
                   >
                     {submitting ? "Mendaftarkan..." : "Selesaikan"}
                   </button>
