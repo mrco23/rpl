@@ -501,8 +501,7 @@ export default function VerifikatorVerifikasiPage() {
                   </div>
                   <div className="space-y-4 bg-gray-50/50 p-5 rounded-2xl border border-gray-100">
                     <DataRow label="Nama Wali" value={assignedApplicant.nama_wali || '-'} />
-                    <DataRow label="Asal Sekolah" value={assignedApplicant.asal_sekolah} />
-                    <DataRow label="Gelombang" value={assignedApplicant.gelombang?.nama || '-'} />
+                    <DataRow label="Email Orang Tua" value={assignedApplicant.email || '-'} />
                   </div>
                 </div>
 

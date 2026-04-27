@@ -19,7 +19,7 @@ app.use(
 			"https://smpkatolikstrafael.netlify.app",
 			"https://smpkatolikstrafael.vercel.app",
 		],
-		methods: ["GET", "POST", "PUT", "DELETE"],
+		methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 		allowedHeaders: "*",
 		credentials: true,
 	}),

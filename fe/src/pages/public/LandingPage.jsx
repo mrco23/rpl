@@ -103,7 +103,7 @@ export default function LandingPage() {
           </div>
         </div>
         {/* 4 cards */}
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-220px] sm:bottom-[-100px] md:bottom-[-120px] lg:bottom-[-100px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-220px] sm:bottom-[-300px] md:bottom-[-120px] lg:bottom-[-130px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-10 sm:px-20 md:px-0 md:gap-5 lg:gap-10 xl:gap-24">
             {stats.map((item, index) => (
               <div key={index} className="flex flex-col mx-auto group w-30 sm:w-50 md:w-35 lg:w-40 xl:w-50" data-aos={`${index === 0 ? "fade-up-right" : index > 0 && index < stats.length - 1 ? "fade-up" : index === stats.length - 1 ? "fade-up-left" : ""

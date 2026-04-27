@@ -86,6 +86,7 @@ class PendaftarController {
 			if (!ids || !status) {
 				return res.status(400).json({ message: "ID pendaftar dan status harus diisi" });
 			}
+			console.log({ ids, status });
 			await updateStatusMassal(ids, status);
 			return res
 				.status(200)
