@@ -61,7 +61,6 @@ export default function LoginPage() {
       const token = data?.token;
       let finalRole = data?.role;
 
-      // Helper decode JWT murni tanpa library
       const decodeJwtRole = (jwtBlob) => {
         try {
           const payloadB64 = jwtBlob.split(".")[1];
@@ -76,17 +75,13 @@ export default function LoginPage() {
         }
       };
 
-      // 1. Coba ambil role dari token jika di response tidak ada (fallback)
       if (!finalRole && token) {
         finalRole = decodeJwtRole(token);
       }
 
-      // 2. Fallback terakhir jika masih gagal (ambil dari state dropdown user)
       if (!finalRole) {
         finalRole = role;
       }
-
-      // 3. Simpan ke localStorage dengan key ketat
       if (token) {
         localStorage.setItem("token", token);
       }
@@ -141,7 +136,7 @@ export default function LoginPage() {
       </div>
 
       {/* RIGHT SIDE */}
-      <div className="flex w-full lg:w-1/2 items-start justify-center px-14 pt-8">
+      <div className="flex w-full lg:w-1/2 items-start justify-center px-4 lg:px-14 pt-8">
         <form
           onSubmit={handleLogin}
           className="w-130 max-w-xl rounded-2xl p-9"
