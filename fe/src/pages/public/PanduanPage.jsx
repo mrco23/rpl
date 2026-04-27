@@ -1,8 +1,23 @@
-import React from "react";
-import PublicLayout from "@components/layout/PublicLayout.jsx";
+import { useEffect, useState } from "react";
 import { FaCalendarAlt, FaCheck, FaThumbtack } from "react-icons/fa";
+import { waveApi } from "@services/waveService";
 
 export default function PanduanPage() {
+  const [gelombang, setGelombang] = useState({});
+
+  async function handleGetGelombangAktif() {
+    try {
+      const response = await waveApi.getActiveWave();
+      setGelombang(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    handleGetGelombangAktif();
+  }, []);
+
   const steps = [
     "Isi formulir pendaftaran secara online",
     "Upload dokumen yang dibutuhkan",
@@ -28,8 +43,26 @@ export default function PanduanPage() {
         <div className="bg-[#f5f6f8] rounded-xl px-4 py-3 w-fit mb-6 flex items-center gap-3 shadow-[0_4px_10px_rgba(0,0,0,0.08)]">
           <FaCalendarAlt className="text-blue-600 text-lg" />
           <div>
-            <p className="text-md font-medium">Pendaftaran Dibuka</p>
-            <p className="text-xs text-blue-600">30 maret - 13 juni 2026</p>
+            {
+              gelombang ? (
+                <>
+                  <p className="text-md font-medium">Pendaftaran Dibuka</p>
+                  <p className="text-xs text-blue-600">{new Date(gelombang.tanggal_mulai).toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })} - {new Date(gelombang.tanggal_selesai).toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })}</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-md font-medium">Pendaftaran Ditutup</p>
+                </>
+              )
+            }
           </div>
         </div>
 
