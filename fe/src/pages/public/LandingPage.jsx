@@ -84,7 +84,7 @@ export default function LandingPage() {
 
         {/* Hero Content */}
         <div className="relative z-10 flex flex-col justify-start pt-24 md:pt-32 h-full max-w-7xl mx-auto px-6 sm:px-8 text-white">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+          <h1 className="text-2xl md:text-6xl font-bold mb-4 leading-tight">
             SMP KATOLIK <br className="hidden sm:block" /> ST. RAFAEL MANADO
           </h1>
           <p className="text-sm md:text-lg mb-8 max-w-4xl opacity-90 leading-relaxed">
@@ -103,7 +103,7 @@ export default function LandingPage() {
           </div>
         </div>
         {/* 4 cards */}
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-220px] sm:bottom-[-300px] md:bottom-[-120px] lg:bottom-[-130px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-[-250px] sm:bottom-[-300px] md:bottom-[-120px] lg:bottom-[-130px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-10 sm:px-20 md:px-0 md:gap-5 lg:gap-10 xl:gap-24">
             {stats.map((item, index) => (
               <div key={index} className="flex flex-col mx-auto group w-30 sm:w-50 md:w-35 lg:w-40 xl:w-50" data-aos={`${index === 0 ? "fade-up-right" : index > 0 && index < stats.length - 1 ? "fade-up" : index === stats.length - 1 ? "fade-up-left" : ""
@@ -163,7 +163,7 @@ export default function LandingPage() {
 
           </div>
         ) : (
-          <div className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-4 xl:px-8 pt-16 w-97 lg:w-130 xl:w-140 mx-auto pb-12 text-center relative mt-100 sm:mt-65 lg:mt-70 xl:mt-90" data-aos="fade-up" data-aos-duration="800">
+          <div className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-4 xl:px-8 pt-16 w-75 sm:w-97 lg:w-130 xl:w-140 mx-auto pb-12 text-center relative mt-100 sm:mt-65 lg:mt-70 xl:mt-90" data-aos="fade-up" data-aos-duration="800">
             {/* Badge Icon Akreditasi */}
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full p-2 shadow-sm flex items-center justify-center">
               <div className="w-full h-full bg-blue-50 rounded-full flex items-center justify-center text-4xl">
