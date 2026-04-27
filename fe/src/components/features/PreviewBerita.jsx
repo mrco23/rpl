@@ -46,7 +46,7 @@ export default function PreviewBerita({ data = [], loading }) {
             {data.slice(0, 3).map((item, index) => (
               <Link to={`/berita/${item.id_berita || ''}`} key={index}>
                 <div
-                  className="bg-white rounded-3xl shadow-sm hover:shadow-md transition-all overflow-hidden p-2 cursor-pointer sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-95 sm:w-130 md:w-60 lg:w-full"
+                  className="bg-white rounded-3xl shadow-sm hover:shadow-md transition-all overflow-hidden p-2 cursor-pointer sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-80 sm:w-130 md:w-60 lg:w-full"
                   data-aos="fade-up"
                   data-aos-duration="1000"
                   data-aos-delay={index * 500}

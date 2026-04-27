@@ -38,11 +38,11 @@ export default function PreviewPrestasi({ data = [], loading }) {
             ))}
           </div>
         ) : (
-          <div className="px-10 mb-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-items-center">
+          <div className="px-10 mb-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 gap-10 justify-items-center">
             {data.slice(0, 3).map((item, index) => (
               <div
                 key={index}
-                className="group bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[520px] cursor-pointer transition-all duration-800 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl"
+                className="group bg-white rounded-2xl shadow-md overflow-hidden w-90 md:w-70 max-w-[520px] cursor-pointer transition-all duration-800 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl"
                 data-aos={index == 0 ? "fade-up-right" : index == 1 ? "fade-up" : "fade-up-left"}
                 data-aos-duration="800"
                 data-aos-delay={index * 500}
