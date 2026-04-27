@@ -35,6 +35,7 @@ export default function ApplicantRegisterPage() {
   const [gelombangAktif, setGelombangAktif] = useState(null);
 
   useEffect(() => {
+    console.log(formData)
     const checkGelombang = async () => {
       setGelombangLoading(true);
       try {
@@ -58,6 +59,7 @@ export default function ApplicantRegisterPage() {
     // Validasi step 1
     if (
       !formData.namaLengkap ||
+      !formData.nisn ||
       !formData.provinsi ||
       !formData.kotaKabupaten ||
       !formData.kecamatan ||
@@ -66,9 +68,13 @@ export default function ApplicantRegisterPage() {
       !formData.kodePos ||
       !formData.jenisKelamin ||
       !formData.noHp ||
-      !formData.asalSekolah
+      !formData.asalSekolah ||
+      !formData.tanggalLahir ||
+      !formData.tempatLahir ||
+      !formData.namaWali ||
+      !formData.emailWali
     ) {
-      setError("Harap lengkapi semua field wajib.");
+      setError("Harap lengkapi semua data wajib.");
       return;
     }
     setError("");
@@ -92,7 +98,7 @@ export default function ApplicantRegisterPage() {
     try {
       const payload = {
         nama_lengkap: formData.namaLengkap,
-        nisn: formData.nisn || undefined,
+        nisn: formData.nisn,
         alamat: {
           provinsi: formData.provinsi,
           kota_kabupaten: formData.kotaKabupaten,
@@ -254,7 +260,7 @@ export default function ApplicantRegisterPage() {
                   {/* NISN */}
                   <div>
                     <label className="block mb-1 font-semibold">
-                      NISN
+                      NISN <span className="text-red-500">*</span>
                     </label>
                     <input
                       name="nisn"
@@ -404,6 +410,7 @@ export default function ApplicantRegisterPage() {
                         required
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-600 focus:outline-none h-12"
                       >
+                        <option value="">Pilih Jenis Kelamin</option>
                         <option value="L">Laki-laki</option>
                         <option value="P">Perempuan</option>
                       </select>
