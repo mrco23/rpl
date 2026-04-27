@@ -21,9 +21,9 @@ function VisiMisiPage() {
   // Parse misi: bisa berupa string panjang atau null
   const misiLines = data?.misi
     ? data.misi
-        .split(/\n|;/)
-        .map((s) => s.trim())
-        .filter(Boolean)
+      .split(/\n|;/)
+      .map((s) => s.trim())
+      .filter(Boolean)
     : [];
 
   return (
@@ -33,7 +33,7 @@ function VisiMisiPage() {
           <h2 className="text-2xl font-medium translate-y-4">Visi dan Misi</h2>
         </section>
         <div className="max-w-7xl mx-auto px-6 mt-6">
-          <div className="flex items-center gap-7 text-sm text-gray-500">
+          <div className="hidden sm:flex flex items-center gap-7 text-sm text-gray-500">
             {/* Tentang */}
             <Link to="/tentang" className="text-black font-semibold">
               Tentang
