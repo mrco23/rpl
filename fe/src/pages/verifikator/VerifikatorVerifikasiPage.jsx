@@ -85,7 +85,8 @@ export default function VerifikatorVerifikasiPage() {
       setAssignedApplicant(null);
       setCatatan('');
       await fetchData(true);
-      alert("Status berhasil diperbarui");
+      status ? alert("Status berhasil diperbarui") : ""
+
     } catch (err) {
       alert(err.message || "Gagal memperbarui status");
     } finally {
@@ -419,6 +420,13 @@ export default function VerifikatorVerifikasiPage() {
                       className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-red-500 text-red-500 rounded-xl text-sm font-bold hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
                     >
                       Minta Perbaikan <X size={18} strokeWidth={3} />
+                    </button>
+                    <button
+                      onClick={() => handleVerifyAction('')}
+                      disabled={actionLoading}
+                      className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-500 text-gray-500 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      Batal <X size={18} strokeWidth={3} />
                     </button>
                   </div>
 
