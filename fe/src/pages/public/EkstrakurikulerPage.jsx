@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import extracurricularService from "@services/extracurricularService";
 import CardSkeleton from "@components/features/CardSkeleton";
 
-export default function ExtracurricularPage() {
+export default function EkstrakurikulerPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

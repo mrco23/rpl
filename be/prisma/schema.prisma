@@ -86,7 +86,7 @@ model Berita {
   @@map("berita")
 }
 
-model Pengumuman {
+model PendaftarPengumumanPage {
   id_pengumuman    Int      @id @default(autoincrement())
   judul_pengumuman String
   deksripsi        String?  @db.Text

@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import api from "../../services/api.js";
 
-function BerandaPendaftar() {
+function BerandaPendaftarPage() {
   const [biodata, setBiodata] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -202,4 +202,4 @@ function Field({ label, value, icon, loading }) {
   );
 }
 
-export default BerandaPendaftar;
+export default BerandaPendaftarPage;

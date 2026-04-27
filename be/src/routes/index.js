@@ -24,7 +24,7 @@ routes.use("/pengumuman", pengumumanRoutes);
 routes.use("/program-unggulan", programUnggulanRoutes);
 routes.use("/ekstrakurikuler", ekstrakurikulerRoutes);
 routes.use("/fasilitas", fasilitasRoutes);
-routes.use("", gelombangRoutes);
+routes.use("/gelombang", gelombangRoutes);
 
 routes.use("/pendaftar", pendaftarRoute);
 routes.use("/dokumen", dokumenRoute);

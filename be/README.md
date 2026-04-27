@@ -46,7 +46,7 @@ Controller meng-over *Business Logic* (Logika Bisnis) ke dalam file-file Service
 Adapun aktor yang diatur dalam backend ini dibagi menjadi 3 entri utama:
 
 1. **Admin (`id_admin`)**
-   Admin adalah pengelola tunggal untuk seluruh **Konten dan Entitas Sekolah**. Hanya Token bertipe Admin yang dapat memanipulasi (CRUD) untuk tabel: Berita, Prestasi, Pengumuman, Program Unggulan, Ekstrakurikuler, Fasilitas, dan Profil/Kontak utama instansi.
+   Admin adalah pengelola tunggal untuk seluruh **Konten dan Entitas Sekolah**. Hanya Token bertipe Admin yang dapat memanipulasi (CRUD) untuk tabel: Berita, Prestasi, PendaftarPengumumanPage, Program Unggulan, Ekstrakurikuler, Fasilitas, dan Profil/Kontak utama instansi.
 
 2. **Pendaftar**
    Aktor publik. Mereka difasilitasi endpoint registrasi spesifik `/api/pendaftar/register`. Skema otomatis membuat ID Pendaftaran baru dengan status `draft`.

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import achievementService from "../../services/achievementService";
 import CardSkeleton from "../../components/features/CardSkeleton";
 
-export default function AchievementsPage() {
+export default function PrestasiPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

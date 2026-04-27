@@ -24,7 +24,7 @@ function SejarahPage() {
       </section>
 
       {/* NAV TAB */}
-      <div className=" px-20 py-5 text-sm text-gray-600 hidden sm:flex flex gap-10">
+      <div className=" px-20 py-5 text-sm text-gray-600 hidden sm:flex gap-10">
         <span className="text-black font-semibold">Tentang</span>
         <p className="font-semibold">{">"}</p>
         <Link to="/sejarah" className="text-blue-800 font-semibold">

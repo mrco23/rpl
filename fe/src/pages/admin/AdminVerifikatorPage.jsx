@@ -10,7 +10,7 @@ import {
   deleteVerifikator,
 } from "../../services/adminVerifikatorService.js";
 
-export default function AdminToVerifikator() {
+export default function AdminVerifikatorPage() {
   const [verifiers, setVerifiers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");

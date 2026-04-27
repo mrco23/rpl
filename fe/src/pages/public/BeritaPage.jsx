@@ -4,7 +4,7 @@ import { FiCalendar } from "react-icons/fi";
 import newsService from "@services/newsService";
 import CardSkeleton from "@components/features/CardSkeleton";
 
-export default function NewsPage() {
+export default function BeritaPage() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

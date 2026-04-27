@@ -33,7 +33,7 @@ function VisiMisiPage() {
           <h2 className="text-2xl font-medium translate-y-4">Visi dan Misi</h2>
         </section>
         <div className="max-w-7xl mx-auto px-6 mt-6">
-          <div className="hidden sm:flex flex items-center gap-7 text-sm text-gray-500">
+          <div className="hidden sm:flex items-center gap-7 text-sm text-gray-500">
             {/* Tentang */}
             <Link to="/tentang" className="text-black font-semibold">
               Tentang

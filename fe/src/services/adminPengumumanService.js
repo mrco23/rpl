@@ -1,7 +1,7 @@
 import adminAxios from "./adminAxios.js";
 
 /**
- * Service untuk entitas Pengumuman
+ * Service untuk entitas PendaftarPengumumanPage
  */
 export const getAllPengumuman = () => {
   return adminAxios.get("/pengumuman");

@@ -1,6 +1,6 @@
 import { requestAPI } from "./api.js";
 
-const resource = "admin/gelombang";
+const resource = "gelombang";
 
 export const waveApi = {
   getAdminList: async () => {

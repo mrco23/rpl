@@ -38,11 +38,11 @@ export const create = async (req, res) => {
 	try {
 		const created = await PengumumanService.createPengumuman(req.user.id, req.body);
 		res.status(201).json({
-			message: "Berhasil membuat Pengumuman",
+			message: "Berhasil membuat PendaftarPengumumanPage",
 			data: PengumumanService.serialize(req, created),
 		});
 	} catch (error) {
-		res.status(400).json({ message: error.message || "Gagal membuat Pengumuman" });
+		res.status(400).json({ message: error.message || "Gagal membuat PendaftarPengumumanPage" });
 	}
 };
 
@@ -58,7 +58,7 @@ export const updateData = async (req, res) => {
 			data: PengumumanService.serialize(req, updated),
 		});
 	} catch (error) {
-		res.status(400).json({ message: error.message || "Gagal update data Pengumuman" });
+		res.status(400).json({ message: error.message || "Gagal update data PendaftarPengumumanPage" });
 	}
 };
 

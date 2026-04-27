@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { getPendaftarStatus } from "../../services/pendaftarService";
 
-export default function StatusVerifikasi() {
+export default function StatusVerifikasiPage() {
   const [status, setStatus] = useState({});
   useEffect(() => {
     async function getStatus() {
@@ -25,7 +25,7 @@ export default function StatusVerifikasi() {
     { key: "menunggu verifikasi", label: "menunggu verifikasi", icon: FaUser, keterangan: "Menunggu verifikasi data pendaftaran." },
     { key: "dokumen", label: "Unggah dokumen", icon: FaFileAlt, keterangan: "Mengunggah dokumen yang diperlukan." },
     { key: "verifikasi", label: "Verifikasi", icon: FaShieldAlt, keterangan: "Verifikasi dokumen pendaftaran." },
-    { key: "pengumuman", label: "Pengumuman Hasil", icon: FaBullhorn, keterangan: "Pengumuman hasil pendaftaran." },
+    { key: "pengumuman", label: "PendaftarPengumumanPage Hasil", icon: FaBullhorn, keterangan: "PendaftarPengumumanPage hasil pendaftaran." },
     { key: "daftar_ulang", label: "Daftar Ulang", icon: FaClipboardList, keterangan: "Daftar ulang pendaftaran." },
   ];
 

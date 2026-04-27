@@ -27,7 +27,7 @@ function Program() {
       <section className="w-full bg-blue-dark text-white rounded-b-3xl py-8 px-6 md:px-20 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">Program Unggulan</h2>
       </section>
-      <div className=" px-20 py-2 text-md text-gray-600 hidden sm:flex flex gap-6 -mt-5">
+      <div className=" px-20 py-2 text-md text-gray-600 hidden sm:flex gap-6 -mt-5">
         <span className="font-semibold text-black">Akademik</span>
         <p className="font-semibold">{">"}</p>
         <span className="text-blue-600 font-medium">Program Unggulan</span>

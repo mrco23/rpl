@@ -7,7 +7,7 @@ import { NavLink } from 'react-router';
 import { getAdminBeranda } from '../../services/adminDashboardService';
 import Skeleton from '../../components/ui/Skeleton';
 
-export default function AdminBeranda() {
+export default function AdminBerandaPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

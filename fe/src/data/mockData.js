@@ -65,6 +65,6 @@ export const mockData = {
     { id: 'cand3', accountId: 'u-applicant', fullName: 'Reins Maharani', nisn: '24013000', gender: 'Perempuan', birthPlace: 'Manado', birthDate: '2010-01-10', address: 'Jl. Merpati No. 4', schoolOrigin: 'SMP Islam Terpadu', track: 'Afirmasi', documents: [{ name: 'SKL Alya.pdf', type: 'PDF', uploadedAt: '2026-03-09' }], formCompleted: true, uploadCompleted: false, verificationStatus: 'Perlu Revisi', selectionStatus: 'Diproses', notes: 'Dokumen rapor belum lengkap.' }
   ],
   notifications: [
-    { id: 'n1', title: 'Pengumuman Tahap 1', message: 'Peserta yang lolos tahap 1 diminta melakukan konfirmasi ulang sesuai jadwal.', target: 'all', date: '2026-03-12' }
+    { id: 'n1', title: 'PendaftarPengumumanPage Tahap 1', message: 'Peserta yang lolos tahap 1 diminta melakukan konfirmasi ulang sesuai jadwal.', target: 'all', date: '2026-03-12' }
   ]
 };

@@ -6,10 +6,10 @@ const router = express.Router();
 
 router.get("/gelombang/aktif", getAktif);
 
-router.get("/admin/gelombang", verifyToken, getAll);
-router.post("/admin/gelombang", verifyToken, create);
-router.get("/admin/gelombang/:id", verifyToken, getById);
-router.put("/admin/gelombang/:id", verifyToken, update);
-router.delete("/admin/gelombang/:id", verifyToken, remove);
+router.get("", verifyToken, getAll);
+router.post("", verifyToken, create);
+router.get("/:id", verifyToken, getById);
+router.put("/:id", verifyToken, update);
+router.delete("/:id", verifyToken, remove);
 
 export default router;

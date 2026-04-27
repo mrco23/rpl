@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { IoArrowBackSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, CalendarDays } from "lucide-react";
-import { requestAPI } from "../../services/api.js";
-import { waveApi } from "../../services/waveService.js";
+import { requestAPI } from "@services/api.js";
+import { waveApi } from "@services/waveService.js";
 
 export default function ApplicantRegisterPage() {
   const navigate = useNavigate();

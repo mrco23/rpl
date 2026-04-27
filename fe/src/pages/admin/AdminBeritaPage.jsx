@@ -4,14 +4,15 @@ import AdminHeader from "@components/features/AdminHeader";
 import Modal from "../../components/ui/Modal.jsx";
 import Skeleton from "../../components/ui/Skeleton.jsx";
 import {
-  getAllProgramUnggulan,
-  createProgramUnggulan,
-  updateProgramUnggulan,
-  deleteProgramUnggulan,
-} from "../../services/adminProgramService.js";
+  getAllBerita,
+  createBerita,
+  updateBeritaData,
+  updateBeritaImage,
+  deleteBerita,
+} from "../../services/adminNewsService.js";
 
-export default function AdminProgram() {
-  const [programs, setPrograms] = useState([]);
+export default function AdminBeritaPage() {
+  const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -19,24 +20,22 @@ export default function AdminProgram() {
   const [modalMode, setModalMode] = useState("add"); // 'add', 'edit', 'detail'
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const [formData, setFormData] = useState({ nama_pu: "", deskripsi: "" });
+  const [formData, setFormData] = useState({ judul_berita: "", deskripsi: "" });
   const [formImage, setFormImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    fetchPrograms();
+    fetchNews();
   }, []);
 
-  const fetchPrograms = async () => {
+  const fetchNews = async () => {
     try {
       setLoading(true);
-      const res = await getAllProgramUnggulan();
-      setPrograms(res.data || []);
+      const res = await getAllBerita();
+      setNewsList(res.data || []);
     } catch (err) {
       console.error(err);
-      alert("Gagal memuat daftar program unggulan");
+      alert("Gagal memuat berita");
     } finally {
       setLoading(false);
     }
@@ -44,7 +43,7 @@ export default function AdminProgram() {
 
   const handleOpenAdd = () => {
     setModalMode("add");
-    setFormData({ nama_pu: "", deskripsi: "" });
+    setFormData({ judul_berita: "", deskripsi: "" });
     setFormImage(null);
     setIsModalOpen(true);
   };
@@ -53,7 +52,7 @@ export default function AdminProgram() {
     setModalMode("edit");
     setSelectedItem(item);
     setFormData({
-      nama_pu: item.nama_pu || "",
+      judul_berita: item.judul_berita || "",
       deskripsi: item.deskripsi || "",
     });
     setFormImage(null);
@@ -67,12 +66,12 @@ export default function AdminProgram() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Yakin ingin menghapus program unggulan ini?")) return;
+    if (!window.confirm("Yakin ingin menghapus berita ini?")) return;
     try {
-      await deleteProgramUnggulan(id);
-      fetchPrograms();
+      await deleteBerita(id);
+      fetchNews();
     } catch (err) {
-      alert("Gagal menghapus program unggulan");
+      alert("Gagal menghapus berita");
     }
   };
 
@@ -80,45 +79,46 @@ export default function AdminProgram() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const payload = new FormData();
-      payload.append("nama_pu", formData.nama_pu);
-      payload.append("deskripsi", formData.deskripsi);
-      if (formImage) {
-        payload.append("gambar_pu", formImage);
-      }
-
       if (modalMode === "add") {
-        await createProgramUnggulan(payload);
+        const payload = new FormData();
+        payload.append("judul_berita", formData.judul_berita);
+        payload.append("deskripsi", formData.deskripsi);
+        if (formImage) payload.append("gambar", formImage);
+
+        await createBerita(payload);
       } else if (modalMode === "edit") {
-        await updateProgramUnggulan(selectedItem.id_program, payload);
+        // Update Data Text (berdasarkan response model)
+        await updateBeritaData(selectedItem.id_berita, {
+          judul_berita: formData.judul_berita,
+          deskripsi: formData.deskripsi,
+        });
+
+        // Update Image independently if changed
+        if (formImage) {
+          const payloadImg = new FormData();
+          payloadImg.append("gambar", formImage);
+          await updateBeritaImage(selectedItem.id_berita, payloadImg);
+        }
       }
       setIsModalOpen(false);
-      fetchPrograms();
-      setSuccessMessage(
-        modalMode === "add"
-          ? "Program unggulan berhasil ditambahkan!"
-          : "Program unggulan berhasil diperbarui!",
-      );
-      setShowSuccessModal(true);
+      fetchNews();
     } catch (err) {
       console.error(err);
-      alert(
-        `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} program unggulan`,
-      );
+      alert(`Gagal ${modalMode === "add" ? "menambah" : "mengubah"} berita`);
     } finally {
       setSubmitting(false);
     }
   };
 
-  const filteredPrograms = programs.filter((item) =>
-    item.nama_pu?.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredNews = newsList.filter((item) =>
+    item.judul_berita?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
     <>
       <AdminHeader
-        text="Program Unggulan"
-        subText="Kelola program-program unggulan sekolah di sini."
+        text="Berita"
+        subText="Kelola seluruh berita sekolah di sini."
       />
 
       <div className="max-w-7xl mx-auto">
@@ -131,10 +131,10 @@ export default function AdminProgram() {
             />
             <input
               type="text"
-              placeholder="Cari Program Unggulan ..."
+              placeholder="Cari Berita ..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full border border-gray-300 rounded-md pl-10 pr-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-[#253b80] bg-white shadow-sm"
+              className="w-full border border-gray-300 rounded-md pl-10 pr-4 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white shadow-sm"
             />
           </div>
           <button
@@ -146,14 +146,15 @@ export default function AdminProgram() {
           </button>
         </div>
 
-        {/* Tabel Program Unggulan */}
+        {/* Tabel Berita */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-max">
             <thead>
               <tr className="bg-[#e2e8f0] border-b border-gray-200 text-sm font-bold text-gray-800">
-                <th className="p-4 w-1/3">Program</th>
+                <th className="p-4 w-1/4">Berita</th>
                 <th className="p-4 w-1/3">Deskripsi</th>
-                <th className="p-4 w-1/3 text-center">Aksi</th>
+                <th className="p-4 w-1/4">Tanggal Dibuat</th>
+                <th className="p-4 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -166,6 +167,9 @@ export default function AdminProgram() {
                     <td className="p-4">
                       <Skeleton className="h-4 w-full" />
                     </td>
+                    <td className="p-4">
+                      <Skeleton className="h-4 w-1/2" />
+                    </td>
                     <td className="p-4 flex justify-center gap-2">
                       <Skeleton className="h-8 w-8 rounded" />
                       <Skeleton className="h-8 w-8 rounded" />
@@ -173,23 +177,30 @@ export default function AdminProgram() {
                     </td>
                   </tr>
                 ))
-              ) : filteredPrograms.length === 0 ? (
+              ) : filteredNews.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="p-8 text-center text-gray-500">
-                    Tidak ada program unggulan ditemukan
+                  <td colSpan={4} className="p-8 text-center text-gray-500">
+                    Tidak ada berita ditemukan
                   </td>
                 </tr>
               ) : (
-                filteredPrograms.map((item) => (
+                filteredNews.map((item) => (
                   <tr
-                    key={item.id_program}
+                    key={item.id_berita}
                     className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                   >
-                    <td className="p-4 text-sm text-gray-800 font-semibold truncate max-w-[250px]">
-                      {item.nama_pu}
+                    <td className="p-4 text-sm text-gray-800 font-semibold truncate max-w-[200px]">
+                      {item.judul_berita}
                     </td>
-                    <td className="p-4 text-sm text-gray-600 font-medium truncate max-w-[300px]">
+                    <td className="p-4 text-sm text-gray-800 font-semibold text-gray-600 truncate max-w-[300px]">
                       {item.deskripsi}
+                    </td>
+                    <td className="p-4 text-sm text-gray-800 font-semibold">
+                      {item.tanggal_dibuat
+                        ? new Date(item.tanggal_dibuat).toLocaleDateString(
+                            "id-ID",
+                          )
+                        : "-"}
                     </td>
                     <td className="p-4">
                       <div className="flex items-center justify-center gap-2">
@@ -197,23 +208,25 @@ export default function AdminProgram() {
                         <button
                           onClick={() => handleOpenDetail(item)}
                           title="Lihat Detail"
-                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors cursor-pointer"
+                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors"
                         >
                           <Eye size={16} />
                         </button>
 
+                        {/* Tombol Edit */}
                         <button
                           onClick={() => handleOpenEdit(item)}
-                          title="Edit Program"
-                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300 cursor-pointer"
+                          title="Edit Berita"
+                          className="p-1.5 border border-gray-300 rounded text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors hover:border-blue-300"
                         >
                           <Edit2 size={16} />
                         </button>
 
+                        {/* Tombol Hapus */}
                         <button
-                          onClick={() => handleDelete(item.id_program)}
-                          title="Hapus Program"
-                          className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors cursor-pointer"
+                          onClick={() => handleDelete(item.id_berita)}
+                          title="Hapus Berita"
+                          className="p-1.5 border border-red-200 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -233,27 +246,32 @@ export default function AdminProgram() {
         onClose={() => setIsModalOpen(false)}
         title={
           modalMode === "add"
-            ? "Tambah Program Unggulan"
+            ? "Tambah Berita Baru"
             : modalMode === "edit"
-              ? "Edit Program Unggulan"
-              : "Detail Program Unggulan"
+              ? "Edit Berita"
+              : "Detail Berita"
         }
       >
         {modalMode === "detail" ? (
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
-            {selectedItem?.gambar_pu ? (
+            {selectedItem?.gambar_berita && (
               <img
-                src={selectedItem.gambar_pu}
-                alt="Program"
+                src={selectedItem.gambar_berita}
+                alt="Berita"
                 className="w-full h-auto rounded-lg max-h-60 object-cover"
               />
-            ) : (
-              <div className="w-full h-40 bg-gray-100 flex items-center justify-center rounded-lg text-gray-400">
-                Gambar tidak ada
-              </div>
             )}
             <div>
-              <h3 className="font-bold text-lg">{selectedItem?.nama_pu}</h3>
+              <h3 className="font-bold text-lg">
+                {selectedItem?.judul_berita}
+              </h3>
+              <p className="text-sm text-gray-500">
+                {selectedItem?.tanggal_dibuat
+                  ? new Date(selectedItem.tanggal_dibuat).toLocaleDateString(
+                      "id-ID",
+                    )
+                  : "-"}
+              </p>
             </div>
             <p className="whitespace-pre-wrap">{selectedItem?.deskripsi}</p>
             <div className="pt-4 flex justify-end">
@@ -272,14 +290,14 @@ export default function AdminProgram() {
           >
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nama Program
+                Judul Berita
               </label>
               <input
                 type="text"
                 required
-                value={formData.nama_pu}
+                value={formData.judul_berita}
                 onChange={(e) =>
-                  setFormData({ ...formData, nama_pu: e.target.value })
+                  setFormData({ ...formData, judul_berita: e.target.value })
                 }
                 className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500"
               />
@@ -303,22 +321,46 @@ export default function AdminProgram() {
                 Gambar (Opsional)
               </label>
 
-              <label className="flex items-center justify-between w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-600 cursor-pointer hover:border-[#253b80] transition">
-                <span>{formImage ? formImage.name : "Pilih gambar..."}</span>
-
-                <span className="text-[#253b80] text-xs font-semibold">
-                  Browse
-                </span>
-
+              <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center hover:border-[#253b80] transition relative">
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => setFormImage(e.target.files[0])}
-                  className="hidden"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
-              </label>
+
+                {formImage ? (
+                  <div className="space-y-2">
+                    <img
+                      src={URL.createObjectURL(formImage)}
+                      alt="preview"
+                      className="mx-auto h-32 object-cover rounded-lg"
+                    />
+                    <p className="text-sm text-gray-600">{formImage.name}</p>
+                    <p className="text-xs text-gray-400">
+                      Klik untuk ganti gambar
+                    </p>
+                  </div>
+                ) : modalMode === "edit" && selectedItem?.gambar_berita ? (
+                  <div className="space-y-2">
+                    <img
+                      src={selectedItem.gambar_berita}
+                      alt="existing"
+                      className="mx-auto h-32 object-cover rounded-lg"
+                    />
+                    <p className="text-xs text-gray-500">
+                      Gambar saat ini. Klik untuk mengganti.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="text-gray-400 text-sm">
+                    <p className="font-medium">Klik atau drag gambar ke sini</p>
+                    <p className="text-xs">PNG, JPG maksimal 2MB</p>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="pt-4 flex justify-end gap-3">
+            <div className="pt-4 flex justify-end gap-3 border-t">
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
@@ -337,37 +379,6 @@ export default function AdminProgram() {
           </form>
         )}
       </Modal>
-
-      {/* Modal Sukses */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center mx-4">
-            <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-              <svg
-                className="w-7 h-7 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </div>
-            <h2 className="text-lg font-bold text-gray-800 mb-2">Berhasil!</h2>
-            <p className="text-sm text-gray-500 mb-6">{successMessage}</p>
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="w-full py-2.5 bg-[#253b80] text-white rounded-lg font-semibold hover:bg-[#1a2c66] transition"
-            >
-              Tutup
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 }

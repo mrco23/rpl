@@ -39,7 +39,7 @@ function SidebarPendaftar({ onClose }) {
       path: "/pendaftar/status-verifikasi",
     },
     {
-      title: "Pengumuman",
+      title: "PendaftarPengumumanPage",
       icon: <Megaphone size={18} />,
       path: "/pendaftar/pengumuman",
     },

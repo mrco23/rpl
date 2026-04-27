@@ -27,7 +27,7 @@ import { PENDAFTAR_STATUS, STATUS_LABELS } from "../../constants/pendaftarStatus
 import { Search, Filter, CheckSquare, Square } from "lucide-react";
 
 
-function AdminNotificationsPage() {
+function AdminPengumumanPage() {
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -116,10 +116,10 @@ function AdminNotificationsPage() {
     try {
       if (modalMode === 'add') {
         await createPengumuman(formData);
-        setSuccessMessage("Pengumuman berhasil ditambahkan!");
+        setSuccessMessage("PendaftarPengumumanPage berhasil ditambahkan!");
       } else {
         await updatePengumuman(selectedItem.id_pengumuman, formData);
-        setSuccessMessage("Pengumuman berhasil diperbarui!");
+        setSuccessMessage("PendaftarPengumumanPage berhasil diperbarui!");
       }
       setIsModalOpen(false);
       fetchNotifications();
@@ -192,7 +192,7 @@ function AdminNotificationsPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <h2 className="flex items-center gap-2 font-bold text-lg text-gray-800 uppercase tracking-tight">
             <ClipboardList size={20} className="text-[#253b80]" />
-            Daftar Pengumuman
+            Daftar PendaftarPengumumanPage
           </h2>
           <button
             onClick={handleOpenAdd}
@@ -298,7 +298,7 @@ function AdminNotificationsPage() {
       <Modal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={modalMode === 'add' ? 'Buat Pengumuman Baru' : modalMode === 'edit' ? 'Edit Pengumuman' : 'Detail Pengumuman'}
+        title={modalMode === 'add' ? 'Buat PendaftarPengumumanPage Baru' : modalMode === 'edit' ? 'Edit PendaftarPengumumanPage' : 'Detail PendaftarPengumumanPage'}
       >
         {modalMode === 'detail' ? (
           <div className="space-y-4">
@@ -317,7 +317,7 @@ function AdminNotificationsPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Judul Pengumuman</label>
+              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Judul PendaftarPengumumanPage</label>
               <input
                 type="text"
                 required
@@ -328,7 +328,7 @@ function AdminNotificationsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Isi Pengumuman</label>
+              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Isi PendaftarPengumumanPage</label>
               <textarea
                 required
                 rows={4}
@@ -341,7 +341,7 @@ function AdminNotificationsPage() {
 
             {/* RECIPIENTS SELECTION */}
             <div className="border-t pt-4">
-              <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Penerima Pengumuman</label>
+              <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Penerima PendaftarPengumumanPage</label>
 
               <div className="flex gap-2 mb-3">
                 <div className="relative flex-1">
@@ -440,7 +440,7 @@ function AdminNotificationsPage() {
       <div className="mt-8 bg-blue-50 text-[#253b80] p-4 rounded-xl text-sm flex items-start gap-3 border border-blue-100 shadow-sm">
         <Info size={18} className="mt-0.5 shrink-0" />
         <p className="font-medium">
-          Pengumuman yang sudah diunggah akan langsung terlihat oleh calon
+          PendaftarPengumumanPage yang sudah diunggah akan langsung terlihat oleh calon
           pendaftar pada halaman pengumuman di akun pendaftar masing-masing.
         </p>
       </div>
@@ -448,4 +448,4 @@ function AdminNotificationsPage() {
   );
 }
 
-export default AdminNotificationsPage;
+export default AdminPengumumanPage;

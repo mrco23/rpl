@@ -11,7 +11,7 @@ import {
 import { getMyDocuments, uploadDocument } from "../../services/dokumenService.js";
 import { getPendaftarMe } from "../../services/pendaftarService.js";
 
-function UnggahDokumen() {
+function UnggahDokumenPage() {
   const [documents, setDocuments] = useState([]);
   const [pendaftar, setPendaftar] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -286,4 +286,4 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
   );
 }
 
-export default UnggahDokumen;
+export default UnggahDokumenPage;

@@ -13,7 +13,7 @@ import {
 import { getPendaftarPengumuman } from "../../services/pendaftarPengumumanService";
 import Skeleton from "../../components/ui/Skeleton";
 
-function Pengumuman() {
+function PendaftarPengumumanPage() {
   const [dataPengumuman, setDataPengumuman] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openId, setOpenId] = useState(null);
@@ -132,5 +132,5 @@ function Pengumuman() {
   );
 }
 
-export default Pengumuman;
+export default PendaftarPengumumanPage;
 

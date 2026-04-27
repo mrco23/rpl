@@ -8,14 +8,14 @@ import PendaftarLayout from "./components/layout/PendaftarLayout";
 
 /* Pages */
 import LandingPage from "./pages/public/LandingPage";
-import ExtracurricularPage from "./pages/public/ExtracurricularPage";
-import AchievementsPage from "./pages/public/AchievementsPage";
-import NewsPage from "./pages/public/NewsPage";
-import DetailBerita from "./pages/public/DetailBerita";
+import EkstrakurikulerPage from "./pages/public/EkstrakurikulerPage.jsx";
+import PrestasiPage from "./pages/public/PrestasiPage.jsx";
+import BeritaPage from "./pages/public/BeritaPage.jsx";
+import DetailBerita from "./pages/public/DetailBeritaPage.jsx";
 import PanduanPage from "./pages/public/PanduanPage";
 import LoginPage from "./pages/auth/LoginPage";
 import UbahKataSandiPage from "./pages/auth/UbahKataSandiPage";
-import Register from "./pages/pendaftar/Register";
+import Register from "./pages/auth/PendaftaranPage.jsx";
 import NotFoundPage from "./pages/public/NotFoundPage";
 import VisiMisiPage from "./pages/public/VisiMisiPage";
 import SejarahPage from "./pages/public/SejarahPage";
@@ -27,22 +27,22 @@ import VerifikatorBerandaPage from "./pages/verifikator/VerifikatorBerandaPage";
 import VerifikatorVerifikasiPage from "./pages/verifikator/VerifikatorVerifikasiPage";
 
 /* Admin */
-import AdminBeranda from "./pages/admin/AdminBeranda";
-import AdminProgram from "./pages/admin/AdminProgram";
-import AdminToVerifikator from "./pages/admin/AdminToVerifikator";
+import AdminBerandaPage from "./pages/admin/AdminBerandaPage.jsx";
+import AdminProgramUnggulanPage from "./pages/admin/AdminProgramUnggulanPage.jsx";
+import AdminVerifikatorPage from "./pages/admin/AdminVerifikatorPage.jsx";
 import AdminFasilitasPage from "./pages/admin/AdminFasilitasPage";
 import AdminAchievementsPage from "./pages/admin/AdminAchievementsPage";
 import AdminExtracurricularsPage from "./pages/admin/AdminEkstrakurikulerPage";
-import AdminNewsPage from "./pages/admin/AdminNewsPage";
-import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
+import AdminBeritaPage from "./pages/admin/AdminBeritaPage.jsx";
+import AdminPengumumanPage from "./pages/admin/AdminPengumumanPage.jsx";
 import AdminPendaftarPage from "./pages/admin/AdminPendaftarPage";
 import AdminGelombang from "./pages/admin/AdminGelombangPage";
 
 /* Pendaftar */
-import BerandaPendaftar from "./pages/pendaftar/BerandaPendaftar";
-import UnggahDokumen from "./pages/pendaftar/UnggahDokumen";
-import StatusVerifikasi from "./pages/pendaftar/StatusVerifikasi";
-import Pengumuman from "./pages/pendaftar/Pengumuman";
+import BerandaPendaftarPage from "./pages/pendaftar/BerandaPendaftarPage.jsx";
+import UnggahDokumenPage from "./pages/pendaftar/UnggahDokumenPage.jsx";
+import StatusVerifikasiPage from "./pages/pendaftar/StatusVerifikasiPage.jsx";
+import PendaftarPengumumanPage from "./pages/pendaftar/PendaftarPengumumanPage.jsx";
 
 /* scrool */
 import ScrolTop from "./components/common/ScrolTop";
@@ -57,9 +57,9 @@ function App() {
       <Routes>
         <Route path={"/"} element={<PublicLayout />}>
           <Route index element={<LandingPage />} />
-          <Route path="/ekstrakurikuler" element={<ExtracurricularPage />} />
-          <Route path="/prestasi" element={<AchievementsPage />} />
-          <Route path="/berita" element={<NewsPage />} />
+          <Route path="/ekstrakurikuler" element={<EkstrakurikulerPage />} />
+          <Route path="/prestasi" element={<PrestasiPage />} />
+          <Route path="/berita" element={<BeritaPage />} />
           <Route path="/berita/:id" element={<DetailBerita />} />
           <Route path="/visi-misi" element={<VisiMisiPage />} />
           <Route path="/sejarah" element={<SejarahPage />} />
@@ -80,17 +80,17 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<AdminBeranda />} />
+          <Route index element={<AdminBerandaPage />} />
           <Route path="profil" element={<AdminProfilSekolahPage />} />
           <Route path="prestasi" element={<AdminAchievementsPage />} />
           <Route
             path="ekstrakurikuler"
             element={<AdminExtracurricularsPage />}
           />
-          <Route path="berita" element={<AdminNewsPage />} />
-          <Route path="program" element={<AdminProgram />} />
-          <Route path="pengumuman" element={<AdminNotificationsPage />} />
-          <Route path="verifikator" element={<AdminToVerifikator />} />
+          <Route path="berita" element={<AdminBeritaPage />} />
+          <Route path="program" element={<AdminProgramUnggulanPage />} />
+          <Route path="pengumuman" element={<AdminPengumumanPage />} />
+          <Route path="verifikator" element={<AdminVerifikatorPage />} />
           <Route path="fasilitas" element={<AdminFasilitasPage />} />
           <Route path="ppdb" element={<AdminPendaftarPage />} />
           <Route path="gelombang" element={<AdminGelombang />} />
@@ -118,10 +118,10 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<BerandaPendaftar />} />
-          <Route path="unggah-dokumen" element={<UnggahDokumen />} />
-          <Route path="status-verifikasi" element={<StatusVerifikasi />} />
-          <Route path="pengumuman" element={<Pengumuman />} />
+          <Route index element={<BerandaPendaftarPage />} />
+          <Route path="unggah-dokumen" element={<UnggahDokumenPage />} />
+          <Route path="status-verifikasi" element={<StatusVerifikasiPage />} />
+          <Route path="pengumuman" element={<PendaftarPengumumanPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

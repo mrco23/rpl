@@ -7,7 +7,7 @@ export default function PanduanPage() {
     "Isi formulir pendaftaran secara online",
     "Upload dokumen yang dibutuhkan",
     "Verifikasi data oleh panitia",
-    "Pengumuman hasil seleksi",
+    "PendaftarPengumumanPage hasil seleksi",
     "Daftar ulang",
   ];
 

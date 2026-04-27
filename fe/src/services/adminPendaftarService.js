@@ -8,6 +8,5 @@ export const getAllPendaftar = () => {
 };
 
 export const updateStatusMassal = (ids, status) => {
-	console.log({ ids, status });
 	return adminAxios.patch("/pendaftar/mass-status", { ids, status });
 };
