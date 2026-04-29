@@ -95,7 +95,7 @@ function UnggahDokumenPage() {
         </div>
 
         {/* Kanan */}
-        <div className="bg-white shadow p-4 rounded-lg border w-full md:w-52 flex-shrink-0">
+        <div className="bg-white shadow p-4 rounded-lg border-0 outline-2 w-full md:w-52 shrink-0">
           <div className="flex items-start gap-2">
             <Calendar size={18} className="text-gray-500 mt-1" />
             <div>
