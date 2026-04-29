@@ -116,10 +116,10 @@ function AdminPengumumanPage() {
     try {
       if (modalMode === 'add') {
         await createPengumuman(formData);
-        setSuccessMessage("PendaftarPengumumanPage berhasil ditambahkan!");
+        setSuccessMessage("Pengumuman berhasil ditambahkan!");
       } else {
         await updatePengumuman(selectedItem.id_pengumuman, formData);
-        setSuccessMessage("PendaftarPengumumanPage berhasil diperbarui!");
+        setSuccessMessage("Pengumuman berhasil diperbarui!");
       }
       setIsModalOpen(false);
       fetchNotifications();
@@ -192,7 +192,7 @@ function AdminPengumumanPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <h2 className="flex items-center gap-2 font-bold text-lg text-gray-800 uppercase tracking-tight">
             <ClipboardList size={20} className="text-[#253b80]" />
-            Daftar PendaftarPengumumanPage
+            Daftar Pengumuman
           </h2>
           <button
             onClick={handleOpenAdd}
@@ -298,7 +298,7 @@ function AdminPengumumanPage() {
       <Modal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={modalMode === 'add' ? 'Buat PendaftarPengumumanPage Baru' : modalMode === 'edit' ? 'Edit PendaftarPengumumanPage' : 'Detail PendaftarPengumumanPage'}
+        title={modalMode === 'add' ? 'Buat Pengumuman Baru' : modalMode === 'edit' ? 'Edit Pengumuman' : 'Detail Pengumuman'}
       >
         {modalMode === 'detail' ? (
           <div className="space-y-4">
@@ -317,7 +317,7 @@ function AdminPengumumanPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Judul PendaftarPengumumanPage</label>
+              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Judul Pengumuman</label>
               <input
                 type="text"
                 required
@@ -328,7 +328,7 @@ function AdminPengumumanPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Isi PendaftarPengumumanPage</label>
+              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Isi Pengumuman</label>
               <textarea
                 required
                 rows={4}
@@ -341,7 +341,7 @@ function AdminPengumumanPage() {
 
             {/* RECIPIENTS SELECTION */}
             <div className="border-t pt-4">
-              <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Penerima PendaftarPengumumanPage</label>
+              <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Penerima Pengumuman</label>
 
               <div className="flex gap-2 mb-3">
                 <div className="relative flex-1">
@@ -440,7 +440,7 @@ function AdminPengumumanPage() {
       <div className="mt-8 bg-blue-50 text-[#253b80] p-4 rounded-xl text-sm flex items-start gap-3 border border-blue-100 shadow-sm">
         <Info size={18} className="mt-0.5 shrink-0" />
         <p className="font-medium">
-          PendaftarPengumumanPage yang sudah diunggah akan langsung terlihat oleh calon
+          Pengumuman yang sudah diunggah akan langsung terlihat oleh calon
           pendaftar pada halaman pengumuman di akun pendaftar masing-masing.
         </p>
       </div>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     Plus,
     CalendarDays,
@@ -13,8 +13,8 @@ import {
     Loader2,
 } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
-import {waveApi} from "@services/waveService.js";
-import {deleteGelombang, createGelombang, updateGelombang, getSemuaGelombang, getGelombangById} from "@services/adminGelombangService.js";
+import { waveApi } from "@services/waveService.js";
+import { deleteGelombang, createGelombang, updateGelombang, getSemuaGelombang, getGelombangById } from "@services/adminGelombangService.js";
 import Skeleton from "@components/ui/Skeleton";
 
 function AdminGelombang() {
@@ -99,7 +99,7 @@ function AdminGelombang() {
     const formatDate = (dateString) => {
         if (!dateString) return "-";
         const date = new Date(dateString);
-        return date.toLocaleDateString("id-ID", {day: "numeric", month: "short"});
+        return date.toLocaleDateString("id-ID", { day: "numeric", month: "short" });
     };
 
     const progressWidth = (peserta, kuota) => {
@@ -111,17 +111,17 @@ function AdminGelombang() {
         return (
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-start mb-6">
-                    <Skeleton className="h-10 w-48"/>
-                    <Skeleton className="h-10 w-32 rounded-lg"/>
+                    <Skeleton className="h-10 w-48" />
+                    <Skeleton className="h-10 w-32 rounded-lg" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-                    {Array.from({length: 4}).map((_, i) => (
-                        <Skeleton key={i} className="h-24 w-full rounded-2xl"/>
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <Skeleton key={i} className="h-24 w-full rounded-2xl" />
                     ))}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {Array.from({length: 3}).map((_, i) => (
-                        <Skeleton key={i} className="h-64 w-full rounded-2xl"/>
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <Skeleton key={i} className="h-64 w-full rounded-2xl" />
                     ))}
                 </div>
             </div>
@@ -141,7 +141,7 @@ function AdminGelombang() {
                         onClick={() => setOpenAddModal(true)}
                         className="bg-[#2f4aa0] text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm hover:bg-[#253b80] cursor-pointer"
                     >
-                        <Plus size={16}/>
+                        <Plus size={16} />
                         Tambah Gelombang
                     </button>
                 </div>
@@ -149,21 +149,21 @@ function AdminGelombang() {
                 {/* INFO */}
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
                     <InfoCard
-                        icon={<FileCheck size={18}/>}
+                        icon={<FileCheck size={18} />}
                         title="Total Gelombang"
                         value={dataGelombang.length}
                         desc="Gelombang"
                         color="text-blue-600"
                     />
                     <InfoCard
-                        icon={<CheckCircle2 size={18}/>}
+                        icon={<CheckCircle2 size={18} />}
                         title="Gelombang Aktif"
                         value={dataGelombang.filter((g) => getStatus(g) === "Aktif").length}
                         desc="Aktif"
                         color="text-green-600"
                     />
                     <InfoCard
-                        icon={<Clock3 size={18}/>}
+                        icon={<Clock3 size={18} />}
                         title="Akan Datang"
                         value={
                             dataGelombang.filter((g) => getStatus(g) === "Akan Datang").length
@@ -172,7 +172,7 @@ function AdminGelombang() {
                         color="text-indigo-500"
                     />
                     <InfoCard
-                        icon={<FileCheck size={18}/>}
+                        icon={<FileCheck size={18} />}
                         title="Selesai"
                         value={
                             dataGelombang.filter((g) => getStatus(g) === "Selesai").length
@@ -202,20 +202,20 @@ function AdminGelombang() {
                                         <span
                                             className={`text-xs px-2 py-1 rounded-full ${getStatusStyle(status)}`}
                                         >
-                      {status}
-                    </span>
+                                            {status}
+                                        </span>
                                     </div>
 
-                                    <hr className="my-4"/>
+                                    <hr className="my-4" />
 
                                     <div className="flex items-center gap-3 mb-4 text-gray-600">
-                                        <CalendarDays size={18} className="text-[#2f4aa0]"/>
+                                        <CalendarDays size={18} className="text-[#2f4aa0]" />
                                         {formatDate(item.tanggal_mulai)} -{" "}
                                         {formatDate(item.tanggal_selesai)}
                                     </div>
 
                                     <div className="flex items-center gap-3 mb-5 text-gray-600">
-                                        <Users size={18} className="text-[#2f4aa0]"/>
+                                        <Users size={18} className="text-[#2f4aa0]" />
                                         {item.totalPendaftar || 0}/{item.kuota} Peserta
                                     </div>
 
@@ -234,9 +234,9 @@ function AdminGelombang() {
                                                 setSelectedGelombang(item);
                                                 setOpenModal(true);
                                             }}
-                                            className="border rounded-md py-2 flex justify-center hover:bg-gray-100 cursor-pointer transition-colors"
+                                            className="border-0 outline rounded-md py-2 flex justify-center hover:bg-gray-100 cursor-pointer transition-colors"
                                         >
-                                            <Eye size={16}/>
+                                            <Eye size={16} />
                                         </button>
 
                                         <button
@@ -244,9 +244,9 @@ function AdminGelombang() {
                                                 setSelectedDeleteId(item.id_gelombang);
                                                 setOpenDeleteModal(true);
                                             }}
-                                            className="border rounded-md py-2 flex justify-center hover:bg-red-50 cursor-pointer transition-colors"
+                                            className="border-0 outline outline-red-500 rounded-md py-2 flex justify-center hover:bg-red-50 cursor-pointer transition-colors"
                                         >
-                                            <Trash2 size={16} className="text-red-500"/>
+                                            <Trash2 size={16} className="text-red-500" />
                                         </button>
                                     </div>
                                 </div>
@@ -266,7 +266,7 @@ function AdminGelombang() {
                                 onClick={() => setOpenAddModal(false)}
                                 className="p-1 hover:bg-gray-100 rounded-full cursor-pointer"
                             >
-                                <X size={20}/>
+                                <X size={20} />
                             </button>
                         </div>
                         <form onSubmit={handleAdd} className="space-y-4">
@@ -281,7 +281,7 @@ function AdminGelombang() {
                                     className="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                                     value={formData.nama}
                                     onChange={(e) =>
-                                        setFormData({...formData, nama: e.target.value})
+                                        setFormData({ ...formData, nama: e.target.value })
                                     }
                                 />
                             </div>
@@ -332,7 +332,7 @@ function AdminGelombang() {
                                     className="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                                     value={formData.kuota}
                                     onChange={(e) =>
-                                        setFormData({...formData, kuota: e.target.value})
+                                        setFormData({ ...formData, kuota: e.target.value })
                                     }
                                 />
                             </div>
@@ -354,7 +354,7 @@ function AdminGelombang() {
                         {/* ICON */}
                         <div
                             className="w-14 h-14 mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br from-red-50 to-red-100 mb-4 shadow-inner">
-                            <Trash2 size={20} className="text-red-500"/>
+                            <Trash2 size={20} className="text-red-500" />
                         </div>
 
                         {/* TITLE */}
@@ -380,7 +380,7 @@ function AdminGelombang() {
                                 onClick={handleDelete}
                                 className="flex-1 py-2.5 rounded-xl text-sm text-white bg-gradient-to-r from-red-500 to-red-600 hover:opacity-90 transition flex items-center justify-center gap-2 shadow-sm"
                             >
-                                <Trash2 size={14}/>
+                                <Trash2 size={14} />
                                 Hapus
                             </button>
                         </div>
@@ -408,7 +408,7 @@ function AdminGelombang() {
                                 onClick={() => setOpenModal(false)}
                                 className="p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
                             >
-                                <X size={24}/>
+                                <X size={24} />
                             </button>
                         </div>
 
@@ -424,7 +424,7 @@ function AdminGelombang() {
                                         Total Pendaftar Terdaftar
                                     </p>
                                 </div>
-                                <Users className="text-blue-300" size={32}/>
+                                <Users className="text-blue-300" size={32} />
                             </div>
 
                             <div className="text-center py-10 border rounded-xl border-dashed">
@@ -441,7 +441,7 @@ function AdminGelombang() {
     );
 }
 
-function InfoCard({icon, title, value, desc, color}) {
+function InfoCard({ icon, title, value, desc, color }) {
     return (
         <div className="bg-white rounded-2xl shadow-md p-5">
             <div className="flex gap-3 mb-3">
@@ -458,7 +458,7 @@ function InfoCard({icon, title, value, desc, color}) {
     );
 }
 
-function StatCard({title, value, color}) {
+function StatCard({ title, value, color }) {
     return (
         <div className="bg-[#f8f9fc] rounded-2xl p-5 border">
             <p className="text-sm text-gray-500">{title}</p>

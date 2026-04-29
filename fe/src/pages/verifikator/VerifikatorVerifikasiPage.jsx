@@ -19,10 +19,17 @@ import {
   getMyAssignedPendaftar,
   assignPendaftar,
   verifyPendaftar,
+<<<<<<< HEAD
 } from "../../services/verifikatorVerifikasiService";
 import Skeleton from "@components/ui/Skeleton";
 import { STATUS_LABELS } from "../../constants/pendaftarStatus";
 import { useSearchParams } from "react-router-dom";
+=======
+  cancelVerifikasi
+} from '../../services/verifikatorVerifikasiService';
+import Skeleton from '@components/ui/Skeleton';
+import { STATUS_LABELS } from '../../constants/pendaftarStatus';
+>>>>>>> 19ee1dc (feat(button): batal verifikasi)
 
 export default function VerifikatorVerifikasiPage() {
   const [loading, setLoading] = useState(true);
@@ -110,6 +117,23 @@ export default function VerifikatorVerifikasiPage() {
       status ? alert("Status berhasil diperbarui") : "";
     } catch (err) {
       alert(err.message || "Gagal memperbarui status");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleCancel = async () => {
+    if (actionLoading) return;
+
+    try {
+      setActionLoading(true);
+      await cancelVerifikasi(assignedApplicant.id_pendaftar);
+      setAssignedApplicant(null);
+      setCatatan('');
+      await fetchData(true);
+      alert("Pendaftaran berhasil dibatalkan");
+    } catch (err) {
+      alert(err.message || "Gagal membatalkan pendaftaran");
     } finally {
       setActionLoading(false);
     }
@@ -584,7 +608,11 @@ export default function VerifikatorVerifikasiPage() {
                       Minta Perbaikan <X size={18} strokeWidth={3} />
                     </button>
                     <button
+<<<<<<< HEAD
                       onClick={() => handleVerifyAction("")}
+=======
+                      onClick={() => handleCancel()}
+>>>>>>> 19ee1dc (feat(button): batal verifikasi)
                       disabled={actionLoading}
                       className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-500 text-gray-500 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
                     >
