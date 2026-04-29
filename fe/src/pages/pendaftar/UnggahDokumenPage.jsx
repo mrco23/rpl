@@ -6,9 +6,12 @@ import {
   CheckCircle,
   Calendar,
   Send,
-  Loader2
+  Loader2,
 } from "lucide-react";
-import { getMyDocuments, uploadDocument } from "../../services/dokumenService.js";
+import {
+  getMyDocuments,
+  uploadDocument,
+} from "../../services/dokumenService.js";
 import { getPendaftarMe } from "../../services/pendaftarService.js";
 
 function UnggahDokumenPage() {
@@ -25,7 +28,7 @@ function UnggahDokumenPage() {
       setLoading(true);
       const [docsRes, pendaftarRes] = await Promise.all([
         getMyDocuments(),
-        getPendaftarMe()
+        getPendaftarMe(),
       ]);
       setDocuments(docsRes.data || []);
       setPendaftar(pendaftarRes.data || null);
@@ -37,15 +40,26 @@ function UnggahDokumenPage() {
   };
 
   const getDocStatus = (nama) => {
-    const doc = documents.find(d => d.nama_dokumen === nama);
-    if (!doc) return { status: "empty", fileName: null, statusText: "Belum upload" };
-    return { status: "success", fileName: doc.jenis_dokumen.split('/').pop(), statusText: "Sudah diupload" };
+    const doc = documents.find((d) => d.nama_dokumen === nama);
+    if (!doc)
+      return { status: "empty", fileName: null, statusText: "Belum upload" };
+    return {
+      status: "success",
+      fileName: doc.jenis_dokumen.split("/").pop(),
+      statusText: "Sudah diupload",
+    };
   };
 
   const docTypes = [
     { title: "Ijazah", desk: "Rapor Semester akhir atau ijazah bagi lulusan" },
-    { title: "Foto Copy Akte Keluarga", desk: "Dokumen akte kelahiran asli / foto copy" },
-    { title: "Foto Copy Kartu Keluarga", desk: "Dokumen kartu keluarga asli / foto copy" },
+    {
+      title: "Foto Copy Akte Kelahiran",
+      desk: "Dokumen akte kelahiran asli / foto copy",
+    },
+    {
+      title: "Foto Copy Kartu Keluarga",
+      desk: "Dokumen kartu keluarga asli / foto copy",
+    },
     { title: "Pas Foto", desk: "Pas foto terbaru latar belakang merah" },
   ];
 
@@ -111,7 +125,10 @@ function UnggahDokumenPage() {
               initialFileName={info.fileName}
               statusText={info.statusText}
               onUploadSuccess={loadData}
-              fileUrl={documents.find(d => d.nama_dokumen === type.title)?.jenis_dokumen}
+              fileUrl={
+                documents.find((d) => d.nama_dokumen === type.title)
+                  ?.jenis_dokumen
+              }
             />
           );
         })}
@@ -124,9 +141,7 @@ function UnggahDokumenPage() {
             <AlertCircle className="text-yellow-600 flex-shrink-0" size={18} />
             <div>
               <p className="font-semibold">Catatan Verifikator</p>
-              <p className="text-sm mt-1">
-                {pendaftar.catatan_dokumen}
-              </p>
+              <p className="text-sm mt-1">{pendaftar.catatan_dokumen}</p>
               <span className="text-xs text-gray-600 block mt-2">
                 Mohon segera lakukan perbaikan jika diminta.
               </span>
@@ -149,7 +164,15 @@ function UnggahDokumenPage() {
   );
 }
 
-function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, statusText, onUploadSuccess, fileUrl }) {
+function DokumenCard({
+  title,
+  initialStatus,
+  deskcripsi,
+  initialFileName,
+  statusText,
+  onUploadSuccess,
+  fileUrl,
+}) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -175,8 +198,8 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
 
   const handleViewFile = () => {
     if (fileUrl) {
-      const baseUrl = import.meta.env.VITE_API_URL.replace('/api', '');
-      window.open(`${baseUrl}${fileUrl}`, '_blank');
+      const baseUrl = import.meta.env.VITE_API_URL.replace("/api", "");
+      window.open(`${baseUrl}${fileUrl}`, "_blank");
     }
   };
 
@@ -189,12 +212,14 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
 
   return (
     <div
-      className={`w-full h-90 sm:w-56 p-4 rounded-xl border bg-white shadow-sm hover:shadow-md transition-shadow
-      ${initialStatus === "error" ? "bg-orange-50 border-orange-200" : "border-gray-200"}
-    `}
+      className={`w-full sm:w-56 p-4 rounded-xl border bg-white shadow-sm hover:shadow-md transition-shadow flex flex-col
+    ${initialStatus === "error" ? "bg-orange-50 border-orange-200" : "border-gray-200"}
+  `}
     >
       <h5 className="font-medium text-md text-gray-800">{title}</h5>
-      <p className="text-sm text-gray-500 mt-1 line-clamp-2 min-h-[40px]">{deskcripsi}</p>
+      <p className="text-sm text-gray-500 mt-1 line-clamp-2 min-h-[40px]">
+        {deskcripsi}
+      </p>
 
       {/* Hidden File Input */}
       <input
@@ -208,20 +233,27 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
       {/* Upload Box */}
       <div
         className={`h-24 border-2 border-dashed rounded-lg flex items-center justify-center mt-4 transition-colors
-          ${initialStatus === "error"
-            ? "border-orange-400 bg-orange-100"
-            : initialStatus === "success"
-              ? "border-green-400 bg-green-50"
-              : "border-gray-300 bg-gray-50"
+          ${
+            initialStatus === "error"
+              ? "border-orange-400 bg-orange-100"
+              : initialStatus === "success"
+                ? "border-green-400 bg-green-50"
+                : "border-gray-300 bg-gray-50"
           }`}
       >
         {isUploading ? (
           <Loader2 className="animate-spin text-blue-500" size={28} />
         ) : (
           <>
-            {initialStatus === "success" && <CheckCircle className="text-green-600" size={28} />}
-            {initialStatus === "empty" && <UploadCloud className="text-gray-400" size={28} />}
-            {initialStatus === "error" && <AlertCircle className="text-orange-500" size={28} />}
+            {initialStatus === "success" && (
+              <CheckCircle className="text-green-600" size={28} />
+            )}
+            {initialStatus === "empty" && (
+              <UploadCloud className="text-gray-400" size={28} />
+            )}
+            {initialStatus === "error" && (
+              <AlertCircle className="text-orange-500" size={28} />
+            )}
           </>
         )}
       </div>
@@ -243,7 +275,7 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
           <>
             <button
               onClick={handleViewFile}
-              className="w-full text-sm font-medium text-blue-normal bg-blue-50 hover:bg-blue-normal-hover py-2 rounded-lg transition-colors cursor-pointer"
+              className="w-full text-sm font-medium text-blue-normal bg-blue-50 hover:bg-blue-normal-hover py-2 hover:text-white rounded-lg transition-colors cursor-pointer"
             >
               Lihat File
             </button>
