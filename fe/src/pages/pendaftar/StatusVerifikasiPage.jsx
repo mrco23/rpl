@@ -15,18 +15,49 @@ export default function StatusVerifikasiPage() {
   useEffect(() => {
     async function getStatus() {
       const res = await getPendaftarStatus();
-      setStatus(res.data)
+      setStatus(res.data);
     }
-    getStatus()
-  }, [])
+    getStatus();
+  }, []);
   // STEP CONFIG (JANGAN DIUBAH SEMBARANG)\
   const steps = [
-    { key: "akun", label: "Akun Dibuat", icon: FaUser, keterangan: "Tahap ini menandakan bahwa akun pengguna telah berhasil dibuat." },
-    { key: "menunggu verifikasi", label: "menunggu verifikasi", icon: FaUser, keterangan: "Menunggu verifikasi data pendaftaran." },
-    { key: "dokumen", label: "Unggah dokumen", icon: FaFileAlt, keterangan: "Mengunggah dokumen yang diperlukan." },
-    { key: "verifikasi", label: "Verifikasi", icon: FaShieldAlt, keterangan: "Verifikasi dokumen pendaftaran." },
-    { key: "pengumuman", label: "PendaftarPengumumanPage Hasil", icon: FaBullhorn, keterangan: "PendaftarPengumumanPage hasil pendaftaran." },
-    { key: "daftar_ulang", label: "Daftar Ulang", icon: FaClipboardList, keterangan: "Daftar ulang pendaftaran." },
+    {
+      key: "akun",
+      label: "Akun Dibuat",
+      icon: FaUser,
+      keterangan:
+        "Tahap ini menandakan bahwa akun pengguna telah berhasil dibuat.",
+    },
+    {
+      key: "dokumen",
+      label: "Unggah dokumen",
+      icon: FaFileAlt,
+      keterangan: "Mengunggah dokumen yang diperlukan.",
+    },
+    {
+      key: "menunggu verifikasi",
+      label: "menunggu verifikasi",
+      icon: FaUser,
+      keterangan: "Menunggu verifikasi data pendaftaran.",
+    },
+    {
+      key: "verifikasi",
+      label: "Verifikasi",
+      icon: FaShieldAlt,
+      keterangan: "Verifikasi dokumen pendaftaran.",
+    },
+    {
+      key: "pengumuman",
+      label: "PendaftarPengumumanPage Hasil",
+      icon: FaBullhorn,
+      keterangan: "PendaftarPengumumanPage hasil pendaftaran.",
+    },
+    {
+      key: "daftar_ulang",
+      label: "Daftar Ulang",
+      icon: FaClipboardList,
+      keterangan: "Daftar ulang pendaftaran.",
+    },
   ];
 
   // SIMULASI DATA BACKEND
@@ -47,7 +78,9 @@ export default function StatusVerifikasiPage() {
     <div className="p-4 md:p-6 bg-gray-100 min-h-screen relative">
       <div className="w-full max-w-5xl">
         {/* TITLE */}
-        <h1 className="text-2xl md:text-3xl font-semibold">Status Pendaftaran</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold">
+          Status Pendaftaran
+        </h1>
         <p className="text-gray-500 mb-6">
           Pantau proses verifikasi dokumen pendaftaran anda secara real-time.
         </p>
@@ -56,19 +89,25 @@ export default function StatusVerifikasiPage() {
         <div className="bg-gray-200  rounded-xl shadow-sm  p-5 flex justify-between items-center">
           {/* LEFT */}
           <div className="flex items-center gap-4">
-            <div className={`bg-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-100 p-3 rounded-full`}>
-              <FaCheckCircle className={`text-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-600 text-2xl`} />
+            <div
+              className={`bg-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-100 p-3 rounded-full`}
+            >
+              <FaCheckCircle
+                className={`text-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-600 text-2xl`}
+              />
             </div>
 
             <div>
               <p className="text-sm text-gray-500 uppercase">
                 Status Pendaftaran
               </p>
-              <h2 className={`text-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-600 text-2xl font-semibold uppercase`}>
+              <h2
+                className={`text-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-600 text-2xl font-semibold uppercase`}
+              >
                 {status.status_pendaftaran}
               </h2>
               <p className="text-sm text-gray-500">
-                {steps.find(s => s.key === statusKey)?.keterangan}
+                {steps.find((s) => s.key === statusKey)?.keterangan}
               </p>
             </div>
           </div>
@@ -98,18 +137,20 @@ export default function StatusVerifikasiPage() {
                   {/* CIRCLE */}
                   <div
                     className={`w-12 h-12 flex items-center justify-center rounded-full border-2 transition-all
-                    ${isDone || isActive
+                    ${
+                      isDone || isActive
                         ? "bg-blue-100 border-blue-500 text-blue-600"
                         : "bg-gray-100 border-gray-300 text-gray-400"
-                      }`}
+                    }`}
                   >
                     {isDone ? <FaCheckCircle /> : <Icon />}
                   </div>
 
                   {/* LABEL */}
                   <p
-                    className={`mt-2 text-sm text-center ${isDone || isActive ? "text-gray-700" : "text-gray-400"
-                      }`}
+                    className={`mt-2 text-sm text-center ${
+                      isDone || isActive ? "text-gray-700" : "text-gray-400"
+                    }`}
                   >
                     {step.label}
                   </p>
