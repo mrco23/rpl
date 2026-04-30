@@ -22,3 +22,9 @@ export const updateGelombang = (id, payload) => {
 export const deleteGelombang = (id) => {
 	return adminAxios.delete(`/gelombang/${id}`);
 };
+
+export const exportExcelGelombang = (id) => {
+	return adminAxios.get(`/gelombang/${id}/export`, {
+		responseType: "blob",
+	});
+};

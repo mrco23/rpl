@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
 import { waveApi } from "@services/waveService.js";
-import { deleteGelombang, createGelombang, updateGelombang, getSemuaGelombang, getGelombangById } from "@services/adminGelombangService.js";
+import { deleteGelombang, createGelombang, updateGelombang, getSemuaGelombang, getGelombangById, exportExcelGelombang } from "@services/adminGelombangService.js";
 import Skeleton from "@components/ui/Skeleton";
 import Toast from "../../components/ui/Toast.jsx";
 
@@ -82,9 +82,22 @@ function AdminGelombang() {
         }
     };
 
-    const handleExportPDF = (id) => {
-        // TODO: Tambahkan logic untuk memanggil service Export PDF di sini
-        setToastConfig({ show: true, message: "Mempersiapkan dokumen PDF...", type: "success" });
+    const handleExportExcel = async (id) => {
+        try {
+            setToastConfig({ show: true, message: "Mempersiapkan dokumen Excel...", type: "success" });
+            const response = await exportExcelGelombang(id);
+            const url = window.URL.createObjectURL(new Blob([response]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `Export_Gelombang_${id}.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+            setToastConfig({ show: true, message: "Berhasil mengunduh dokumen Excel!", type: "success" });
+        } catch (error) {
+            console.error("Gagal export Excel:", error);
+            setToastConfig({ show: true, message: "Gagal mengekspor dokumen Excel", type: "error" });
+        }
     };
 
     const getStatus = (item) => {
@@ -239,13 +252,13 @@ function AdminGelombang() {
                                     {status === "Selesai" && (
                                         <div className="grid grid-cols-2 gap-3">
                                             <button
-                                                onClick={() => handleExportPDF(item.id_gelombang)}
-                                                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition"
+                                                onClick={() => handleExportExcel(item.id_gelombang)}
+                                                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition"
                                             >
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m-6 4h6m-6 4h6M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"></path>
                                                 </svg>
-                                                Export PDF
+                                                Export Excel
                                             </button>
                                             <button
                                                 onClick={() => {
@@ -381,7 +394,7 @@ function AdminGelombang() {
                             </p>
                             <div className="bg-yellow-50 text-yellow-800 p-3 rounded-lg mt-3 text-xs text-left flex gap-2 border border-yellow-200">
                                 <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <p>Sangat disarankan untuk melakukan <b>Export PDF</b> terlebih dahulu untuk mencadangkan data pendaftaran.</p>
+                                <p>Sangat disarankan untuk melakukan <b>Export Excel</b> terlebih dahulu untuk mencadangkan data pendaftaran.</p>
                             </div>
                         </div>
 
