@@ -3,7 +3,12 @@ import streamifier from "streamifier";
 
 export const uploadFileToCloudinary = (fileBuffer, folderName = "rpl") => {
   return new Promise((resolve, reject) => {
-    console.log("Starting upload to Cloudinary. Buffer size:", fileBuffer.length);
+    if (!fileBuffer || fileBuffer.length === 0) {
+      console.error("Upload gagal: file buffer kosong!");
+      return reject(new Error("File buffer is empty"));
+    }
+    console.log(`Starting upload to Cloudinary [${folderName}]. Buffer size:`, fileBuffer.length);
+    
     const uploadStream = cloudinary.uploader.upload_stream(
       { folder: folderName, resource_type: "auto" },
       (error, result) => {
@@ -15,7 +20,13 @@ export const uploadFileToCloudinary = (fileBuffer, folderName = "rpl") => {
         resolve(result);
       }
     );
-    streamifier.createReadStream(fileBuffer).pipe(uploadStream);
+    
+    const stream = streamifier.createReadStream(fileBuffer);
+    stream.on('error', (err) => {
+      console.error("Streamifier pipe error:", err);
+      reject(err);
+    });
+    stream.pipe(uploadStream);
   });
 };
 
@@ -42,8 +53,11 @@ export const deleteFile = async (fileIdentifier) => {
         const lastDotIndex = publicIdWithExt.lastIndexOf(".");
         const publicId = lastDotIndex !== -1 ? publicIdWithExt.substring(0, lastDotIndex) : publicIdWithExt;
         
-        await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
-        await cloudinary.uploader.destroy(publicId, { resource_type: "raw" });
+        // Optimize: Jalankan penghapusan image & raw secara paralel untuk mempercepat response
+        await Promise.allSettled([
+          cloudinary.uploader.destroy(publicId, { resource_type: "image" }),
+          cloudinary.uploader.destroy(publicId, { resource_type: "raw" })
+        ]);
       }
     } catch (err) {
       console.error("Failed to delete file from Cloudinary:", err);

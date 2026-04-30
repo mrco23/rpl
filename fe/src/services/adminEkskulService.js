@@ -8,9 +8,7 @@ export const getAllEkstrakurikuler = () => {
 };
 
 export const createEkstrakurikuler = (formData) => {
-  return adminAxios.post("/ekstrakurikuler", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.post("/ekstrakurikuler", formData);
 };
 
 export const updateEkstrakurikulerData = (id, payload) => {
@@ -18,9 +16,7 @@ export const updateEkstrakurikulerData = (id, payload) => {
 };
 
 export const updateEkstrakurikulerImage = (id, formData) => {
-  return adminAxios.patch(`/ekstrakurikuler/${id}/image`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.patch(`/ekstrakurikuler/${id}/image`, formData);
 };
 
 export const deleteEkstrakurikuler = (id) => {

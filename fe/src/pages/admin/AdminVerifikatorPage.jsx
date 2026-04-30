@@ -3,6 +3,7 @@ import { Search, Plus, Eye, Edit2, Trash2, UserCircle2 } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
 import Modal from "../../components/ui/Modal.jsx";
 import Skeleton from "../../components/ui/Skeleton.jsx";
+import Toast from "../../components/ui/Toast.jsx";
 import {
   getAllVerifikator,
   createVerifikator,
@@ -25,23 +26,22 @@ export default function AdminVerifikatorPage() {
     password: "",
   });
   const [submitting, setSubmitting] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
   useEffect(() => {
     fetchVerifiers();
   }, []);
 
-  const fetchVerifiers = async () => {
+  const fetchVerifiers = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const res = await getAllVerifikator();
       setVerifiers(res.data || []);
     } catch (err) {
       console.error(err);
-      alert("Gagal memuat data verifikator");
+      setToastConfig({ show: true, message: "Gagal memuat data verifikator", type: "error" });
     } finally {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
 
@@ -67,9 +67,10 @@ export default function AdminVerifikatorPage() {
     if (!window.confirm("Yakin ingin menghapus akun verifikator ini?")) return;
     try {
       await deleteVerifikator(id);
-      fetchVerifiers();
+      setToastConfig({ show: true, message: "Verifikator berhasil dihapus!", type: "success" });
+      fetchVerifiers(false);
     } catch (err) {
-      alert("Gagal menghapus verifikator");
+      setToastConfig({ show: true, message: "Gagal menghapus verifikator", type: "error" });
     }
   };
 
@@ -85,15 +86,19 @@ export default function AdminVerifikatorPage() {
         await updateVerifikator(selectedVerifier.id_verifikator, payload);
       }
       setIsModalOpen(false);
-      fetchVerifiers();
-      setSuccessMessage(modalMode === "add" ? "Akun verifikator berhasil dibuat!" : "Akun verifikator berhasil diperbarui!");
-      setShowSuccessModal(true);
+      setToastConfig({
+        show: true,
+        message: modalMode === "add" ? "Akun verifikator berhasil dibuat!" : "Akun verifikator berhasil diperbarui!",
+        type: "success"
+      });
+      fetchVerifiers(false);
     } catch (err) {
       console.error(err);
-      alert(
-        err.message ||
-        `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} verifikator`,
-      );
+      setToastConfig({
+        show: true,
+        message: err.message || `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} verifikator`,
+        type: "error"
+      });
     } finally {
       setSubmitting(false);
     }
@@ -300,26 +305,12 @@ export default function AdminVerifikatorPage() {
         </form>) : (<></>)}
       </Modal>
 
-      {/* Modal Sukses */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-sm w-full text-center mx-4">
-            <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-              <svg className="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className="text-lg font-bold text-gray-800 mb-2">Berhasil!</h2>
-            <p className="text-sm text-gray-500 mb-6">{successMessage}</p>
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="w-full py-2.5 cursor-pointer bg-blue-dark text-white rounded-lg font-semibold hover:bg-blue-dark-hover transition"
-            >
-              Tutup
-            </button>
-          </div>
-        </div>
-      )}
+      <Toast 
+        show={toastConfig.show} 
+        message={toastConfig.message} 
+        type={toastConfig.type} 
+        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      />
     </>
   );
 }

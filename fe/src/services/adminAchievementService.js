@@ -8,15 +8,11 @@ export const getAllPrestasi = () => {
 };
 
 export const createPrestasi = (formData) => {
-  return adminAxios.post("/prestasi", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.post("/prestasi", formData);
 };
 
 export const updatePrestasi = (id, formData) => {
-  return adminAxios.put(`/prestasi/${id}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.put(`/prestasi/${id}`, formData);
 };
 
 export const deletePrestasi = (id) => {

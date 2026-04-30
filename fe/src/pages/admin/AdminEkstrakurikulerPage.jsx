@@ -3,6 +3,7 @@ import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
 import AdminHeader from "../../components/features/AdminHeader";
 import Modal from "../../components/ui/Modal.jsx";
 import Skeleton from "../../components/ui/Skeleton.jsx";
+import Toast from "../../components/ui/Toast.jsx";
 import {
   getAllEkstrakurikuler,
   createEkstrakurikuler,
@@ -27,24 +28,23 @@ export default function AdminEkstrakurikulerPage() {
   });
   const [formImage, setFormImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
   useEffect(() => {
     fetchEkskuls();
   }, []);
 
-  const fetchEkskuls = async () => {
+  const fetchEkskuls = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const res = await getAllEkstrakurikuler();
       // Backend returns { message, data }
       setEkskuls(res.data || []);
     } catch (err) {
       console.error(err);
-      alert("Gagal memuat daftar ekstrakurikuler");
+      setToastConfig({ show: true, message: "Gagal memuat daftar ekstrakurikuler", type: "error" });
     } finally {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
 
@@ -81,10 +81,9 @@ export default function AdminEkstrakurikulerPage() {
       setEkskuls((prev) =>
         prev.filter((item) => item.id_ekstrakurikuler !== id),
       );
-      setSuccessMessage("Data berhasil dihapus!");
-      setShowSuccessModal(true);
+      setToastConfig({ show: true, message: "Data berhasil dihapus!", type: "success" });
     } catch (err) {
-      alert("Gagal menghapus data");
+      setToastConfig({ show: true, message: "Gagal menghapus data", type: "error" });
     }
   };
 
@@ -101,7 +100,7 @@ export default function AdminEkstrakurikulerPage() {
           payload.append("gambar", formImage);
         }
         await createEkstrakurikuler(payload);
-        setSuccessMessage("Data berhasil ditambahkan!");
+        setToastConfig({ show: true, message: "Data berhasil ditambahkan!", type: "success" });
       } else if (modalMode === "edit") {
         // Update text data
         await updateEkstrakurikulerData(
@@ -118,15 +117,18 @@ export default function AdminEkstrakurikulerPage() {
             imgPayload,
           );
         }
-        setSuccessMessage("Data berhasil diperbarui!");
+        setToastConfig({ show: true, message: "Data berhasil diperbarui!", type: "success" });
       }
 
       setIsModalOpen(false);
-      fetchEkskuls(); // Refresh to ensure data is synced
-      setShowSuccessModal(true);
+      fetchEkskuls(false); // Refresh to ensure data is synced
     } catch (err) {
       console.error(err);
-      alert(`Gagal ${modalMode === "add" ? "menambah" : "mengubah"} data`);
+      setToastConfig({
+        show: true,
+        message: `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} data`,
+        type: "error"
+      });
     } finally {
       setSubmitting(false);
     }
@@ -414,36 +416,12 @@ export default function AdminEkstrakurikulerPage() {
         )}
       </Modal>
 
-      {/* Modal Sukses */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center mx-4">
-            <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-              <svg
-                className="w-7 h-7 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </div>
-            <h2 className="text-lg font-bold text-gray-800 mb-2">Berhasil!</h2>
-            <p className="text-sm text-gray-500 mb-6">{successMessage}</p>
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="w-full py-2.5 bg-[#253b80] text-white rounded-lg font-semibold hover:bg-[#1a2c66] transition cursor-pointer"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      )}
+      <Toast 
+        show={toastConfig.show} 
+        message={toastConfig.message} 
+        type={toastConfig.type} 
+        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      />
     </>
   );
 }

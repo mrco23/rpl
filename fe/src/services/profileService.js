@@ -65,6 +65,26 @@ export const getVisiMisi = async () => {
 };
 
 /**
+ * Service untuk mendapatkan data Footer
+ * Endpoint: GET /api/profile/footer
+ */
+export const getFooterData = async () => {
+  try {
+    const response = await apiClient.get("/profile/footer");
+    return {
+      success: true,
+      data: response.data?.data || null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.response?.data?.message || "Gagal mengambil data footer",
+      data: null,
+    };
+  }
+};
+
+/**
  * Service untuk mendapatkan Profil admin
  */
 export const getAdminProfile = async () => {
@@ -83,9 +103,7 @@ export const updateProfile = async (payload) => {
     }
   });
 
-  const response = await apiClient.put("/profile", formData, {
-    headers: { "Content-Type": "multipart/form-data" }
-  });
+  const response = await apiClient.put("/profile", formData);
   return response.data?.data || response.data;
 };
 
@@ -95,6 +113,7 @@ const profileService = {
   getAdminProfile,
   updateProfile,
   getVisiMisi,
+  getFooterData,
 };
 
 export default profileService;

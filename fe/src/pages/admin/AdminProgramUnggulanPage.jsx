@@ -3,6 +3,7 @@ import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
 import Modal from "../../components/ui/Modal.jsx";
 import Skeleton from "../../components/ui/Skeleton.jsx";
+import Toast from "../../components/ui/Toast.jsx";
 import {
   getAllProgramUnggulan,
   createProgramUnggulan,
@@ -22,23 +23,22 @@ export default function AdminProgramUnggulanPage() {
   const [formData, setFormData] = useState({ nama_pu: "", deskripsi: "" });
   const [formImage, setFormImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
   useEffect(() => {
     fetchPrograms();
   }, []);
 
-  const fetchPrograms = async () => {
+  const fetchPrograms = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const res = await getAllProgramUnggulan();
       setPrograms(res.data || []);
     } catch (err) {
       console.error(err);
-      alert("Gagal memuat daftar program unggulan");
+      setToastConfig({ show: true, message: "Gagal memuat daftar program unggulan", type: "error" });
     } finally {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
 
@@ -70,9 +70,10 @@ export default function AdminProgramUnggulanPage() {
     if (!window.confirm("Yakin ingin menghapus program unggulan ini?")) return;
     try {
       await deleteProgramUnggulan(id);
-      fetchPrograms();
+      setToastConfig({ show: true, message: "Program unggulan berhasil dihapus!", type: "success" });
+      fetchPrograms(false);
     } catch (err) {
-      alert("Gagal menghapus program unggulan");
+      setToastConfig({ show: true, message: "Gagal menghapus program unggulan", type: "error" });
     }
   };
 
@@ -93,18 +94,19 @@ export default function AdminProgramUnggulanPage() {
         await updateProgramUnggulan(selectedItem.id_program, payload);
       }
       setIsModalOpen(false);
-      fetchPrograms();
-      setSuccessMessage(
-        modalMode === "add"
-          ? "Program unggulan berhasil ditambahkan!"
-          : "Program unggulan berhasil diperbarui!",
-      );
-      setShowSuccessModal(true);
+      setToastConfig({
+        show: true,
+        message: modalMode === "add" ? "Program unggulan berhasil ditambahkan!" : "Program unggulan berhasil diperbarui!",
+        type: "success"
+      });
+      fetchPrograms(false);
     } catch (err) {
       console.error(err);
-      alert(
-        `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} program unggulan`,
-      );
+      setToastConfig({
+        show: true,
+        message: `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} program unggulan`,
+        type: "error"
+      });
     } finally {
       setSubmitting(false);
     }
@@ -338,36 +340,12 @@ export default function AdminProgramUnggulanPage() {
         )}
       </Modal>
 
-      {/* Modal Sukses */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center mx-4">
-            <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-              <svg
-                className="w-7 h-7 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </div>
-            <h2 className="text-lg font-bold text-gray-800 mb-2">Berhasil!</h2>
-            <p className="text-sm text-gray-500 mb-6">{successMessage}</p>
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="w-full py-2.5 bg-[#253b80] text-white rounded-lg font-semibold hover:bg-[#1a2c66] transition"
-            >
-              Tutup
-            </button>
-          </div>
-        </div>
-      )}
+      <Toast 
+        show={toastConfig.show} 
+        message={toastConfig.message} 
+        type={toastConfig.type} 
+        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      />
     </>
   );
 }

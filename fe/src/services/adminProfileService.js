@@ -8,9 +8,7 @@ export const getAdminProfile = () => {
 };
 
 export const createProfile = (formData) => {
-  return adminAxios.post("/profile", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.post("/profile", formData);
 };
 
 export const updateProfileData = (payload) => {
@@ -18,9 +16,7 @@ export const updateProfileData = (payload) => {
 };
 
 export const updateProfileImage = (formData) => {
-  return adminAxios.patch("/profile/image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.patch("/profile/image", formData);
 };
 
 export const upsertKontakProfile = (payload) => {

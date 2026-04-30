@@ -3,7 +3,6 @@ import {
     Plus,
     CalendarDays,
     Users,
-    Eye,
     Trash2,
     CheckCircle2,
     Clock3,
@@ -16,15 +15,14 @@ import AdminHeader from "@components/features/AdminHeader";
 import { waveApi } from "@services/waveService.js";
 import { deleteGelombang, createGelombang, updateGelombang, getSemuaGelombang, getGelombangById } from "@services/adminGelombangService.js";
 import Skeleton from "@components/ui/Skeleton";
+import Toast from "../../components/ui/Toast.jsx";
 
 function AdminGelombang() {
     const [loading, setLoading] = useState(true);
     const [dataGelombang, setDataGelombang] = useState([]);
-    const [openModal, setOpenModal] = useState(false);
     const [openAddModal, setOpenAddModal] = useState(false);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [selectedDeleteId, setSelectedDeleteId] = useState(null);
-    const [selectedGelombang, setSelectedGelombang] = useState(null);
     const [formData, setFormData] = useState({
         nama: "",
         tanggal_mulai: "",
@@ -32,21 +30,22 @@ function AdminGelombang() {
         kuota: "",
     });
     const [submitting, setSubmitting] = useState(false);
+    const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
     useEffect(() => {
         fetchGelombang();
     }, []);
 
-    const fetchGelombang = async () => {
-        setLoading(true);
+    const fetchGelombang = async (showLoader = true) => {
+        if (showLoader) setLoading(true);
         try {
             const res = await waveApi.getAdminList();
-            // WaveService returns { message, data } because of my backend change
             setDataGelombang(res.data || []);
         } catch (error) {
             console.error("Gagal mengambil data gelombang:", error);
+            setToastConfig({ show: true, message: "Gagal mengambil data gelombang", type: "error" });
         } finally {
-            setLoading(false);
+            if (showLoader) setLoading(false);
         }
     };
 
@@ -62,9 +61,10 @@ function AdminGelombang() {
                 tanggal_selesai: "",
                 kuota: "",
             });
-            fetchGelombang();
+            setToastConfig({ show: true, message: "Gelombang berhasil ditambahkan!", type: "success" });
+            fetchGelombang(false);
         } catch (error) {
-            alert(error.message || "Gagal menambah gelombang");
+            setToastConfig({ show: true, message: error.message || "Gagal menambah gelombang", type: "error" });
         } finally {
             setSubmitting(false);
         }
@@ -73,12 +73,18 @@ function AdminGelombang() {
     const handleDelete = async () => {
         try {
             await deleteGelombang(selectedDeleteId);
-            fetchGelombang();
+            setToastConfig({ show: true, message: "Gelombang berhasil dihapus!", type: "success" });
+            fetchGelombang(false);
             setOpenDeleteModal(false);
             setSelectedDeleteId(null);
         } catch (error) {
-            alert(error.message || "Gagal menghapus gelombang");
+            setToastConfig({ show: true, message: error.message || "Gagal menghapus gelombang", type: "error" });
         }
+    };
+
+    const handleExportPDF = (id) => {
+        // TODO: Tambahkan logic untuk memanggil service Export PDF di sini
+        setToastConfig({ show: true, message: "Mempersiapkan dokumen PDF...", type: "success" });
     };
 
     const getStatus = (item) => {
@@ -131,7 +137,7 @@ function AdminGelombang() {
     return (
         <>
             <div className="max-w-7xl mx-auto">
-                <div className="flex justify-between items-start mb-6">
+                <div className="flex justify-between items-center mb-6">
                     <AdminHeader
                         text="Gelombang"
                         subText="Kelola periode pendaftaran calon peserta didik"
@@ -145,6 +151,7 @@ function AdminGelombang() {
                         Tambah Gelombang
                     </button>
                 </div>
+
 
                 {/* INFO */}
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
@@ -228,27 +235,32 @@ function AdminGelombang() {
                                         ></div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <button
-                                            onClick={() => {
-                                                setSelectedGelombang(item);
-                                                setOpenModal(true);
-                                            }}
-                                            className="border-0 outline rounded-md py-2 flex justify-center hover:bg-gray-100 cursor-pointer transition-colors"
-                                        >
-                                            <Eye size={16} />
-                                        </button>
-
-                                        <button
-                                            onClick={() => {
-                                                setSelectedDeleteId(item.id_gelombang);
-                                                setOpenDeleteModal(true);
-                                            }}
-                                            className="border-0 outline outline-red-500 rounded-md py-2 flex justify-center hover:bg-red-50 cursor-pointer transition-colors"
-                                        >
-                                            <Trash2 size={16} className="text-red-500" />
-                                        </button>
-                                    </div>
+                                    {/* Render buttons hanya jika status Selesai */}
+                                    {status === "Selesai" && (
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <button
+                                                onClick={() => handleExportPDF(item.id_gelombang)}
+                                                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m-6 4h6m-6 4h6M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"></path>
+                                                </svg>
+                                                Export PDF
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedDeleteId(item.id_gelombang);
+                                                    setOpenDeleteModal(true);
+                                                }}
+                                                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                                Hapus
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })
@@ -259,7 +271,7 @@ function AdminGelombang() {
             {/* MODAL TAMBAH */}
             {openAddModal && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex justify-center items-center p-5">
-                    <div className="bg-white w-full max-w-md rounded-8xl shadow-xl p-6">
+                    <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-6">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-xl font-bold">Tambah Gelombang</h2>
                             <button
@@ -348,95 +360,59 @@ function AdminGelombang() {
                 </div>
             )}
 
+            {/* MODAL HAPUS */}
             {openDeleteModal && (
                 <div className="fixed inset-0 bg-black/30 backdrop-blur-md z-50 flex items-center justify-center">
                     <div className="bg-white w-full max-w-sm rounded-2xl shadow-xl p-6 text-center animate-fadeIn">
                         {/* ICON */}
                         <div
                             className="w-14 h-14 mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br from-red-50 to-red-100 mb-4 shadow-inner">
-                            <Trash2 size={20} className="text-red-500" />
+                            <Trash2 size={24} className="text-red-600" />
                         </div>
 
-                        {/* TITLE */}
-                        <h3 className="text-gray-800 font-semibold text-base">
-                            Hapus gelombang
+                        {/* TITLE & DESC (Diperbarui) */}
+                        <h3 className="text-gray-900 font-bold text-lg">
+                            Hapus Data Gelombang?
                         </h3>
 
-                        {/* DESC */}
-                        <p className="text-sm text-gray-500 mt-1 leading-relaxed">
-                            Data yang sudah dihapus tidak dapat dikembalikan
-                        </p>
+                        <div className="text-sm text-gray-500 mt-2 mb-2 leading-relaxed">
+                            <p>
+                                Tindakan ini akan menghapus gelombang beserta <strong>seluruh data pendaftar</strong> di dalamnya secara permanen.
+                            </p>
+                            <div className="bg-yellow-50 text-yellow-800 p-3 rounded-lg mt-3 text-xs text-left flex gap-2 border border-yellow-200">
+                                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <p>Sangat disarankan untuk melakukan <b>Export PDF</b> terlebih dahulu untuk mencadangkan data pendaftaran.</p>
+                            </div>
+                        </div>
+
 
                         {/* BUTTON */}
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={() => setOpenDeleteModal(false)}
-                                className="flex-1 py-2.5 rounded-xl text-sm bg-gray-100 hover:bg-gray-200 transition"
+                                className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition cursor-pointer"
                             >
                                 Batal
                             </button>
 
                             <button
                                 onClick={handleDelete}
-                                className="flex-1 py-2.5 rounded-xl text-sm text-white bg-gradient-to-r from-red-500 to-red-600 hover:opacity-90 transition flex items-center justify-center gap-2 shadow-sm"
+                                className="flex-1 py-2.5 rounded-xl text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                             >
-                                <Trash2 size={14} />
-                                Hapus
+                                <Trash2 size={16} />
+                                Ya, Hapus
                             </button>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* MODAL DETAIL */}
-            {openModal && selectedGelombang && (
-                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex justify-center items-center p-5">
-                    <div
-                        className="bg-white w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl shadow-xl flex flex-col">
-                        {/* HEADER */}
-                        <div className="flex justify-between items-start p-6 border-b">
-                            <div>
-                                <h2 className="text-2xl font-bold">{selectedGelombang.nama}</h2>
-                                <p className="text-gray-500 mt-1">
-                                    {formatDate(selectedGelombang.tanggal_mulai)} -{" "}
-                                    {formatDate(selectedGelombang.tanggal_selesai)} •{" "}
-                                    {selectedGelombang.kuota} Kuota
-                                </p>
-                            </div>
-
-                            <button
-                                onClick={() => setOpenModal(false)}
-                                className="p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
-                            >
-                                <X size={24} />
-                            </button>
-                        </div>
-
-                        {/* CONTENT */}
-                        <div className="p-6 overflow-y-auto">
-                            <div
-                                className="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-6 flex items-center justify-between">
-                                <div>
-                                    <p className="text-blue-800 font-semibold text-lg">
-                                        {selectedGelombang.totalPendaftar || 0}
-                                    </p>
-                                    <p className="text-blue-600 text-sm">
-                                        Total Pendaftar Terdaftar
-                                    </p>
-                                </div>
-                                <Users className="text-blue-300" size={32} />
-                            </div>
-
-                            <div className="text-center py-10 border rounded-xl border-dashed">
-                                <p className="text-gray-400">
-                                    Daftar rincian pendaftar per gelombang dapat dilihat di menu
-                                    "Pendaftar"
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <Toast
+                show={toastConfig.show}
+                message={toastConfig.message}
+                type={toastConfig.type}
+                onClose={() => setToastConfig({ ...toastConfig, show: false })}
+            />
         </>
     );
 }
@@ -451,7 +427,6 @@ function InfoCard({ icon, title, value, desc, color }) {
 
             <div className="flex gap-2 items-end">
                 <span className="text-2xl font-bold">{value}</span>
-
                 <span className="text-sm text-gray-500 pb-1">{desc}</span>
             </div>
         </div>
@@ -462,10 +437,9 @@ function StatCard({ title, value, color }) {
     return (
         <div className="bg-[#f8f9fc] rounded-2xl p-5 border">
             <p className="text-sm text-gray-500">{title}</p>
-
             <h3 className={`text-3xl font-bold mt-2 ${color}`}>{value}</h3>
         </div>
     );
 }
 
-export default AdminGelombang;
+export default AdminGelombang; 

@@ -33,9 +33,7 @@ export const requestAPI = async ({
 }) => {
 	try {
 		const headers = {};
-		if (isMultipart) {
-			headers["Content-Type"] = "multipart/form-data";
-		} else {
+		if (!isMultipart) {
 			headers["Content-Type"] = "application/json";
 		}
 

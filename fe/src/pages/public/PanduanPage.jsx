@@ -3,7 +3,7 @@ import { FaCalendarAlt, FaCheck, FaThumbtack } from "react-icons/fa";
 import { waveApi } from "@services/waveService";
 
 export default function PanduanPage() {
-  const [gelombang, setGelombang] = useState({});
+  const [gelombang, setGelombang] = useState(null);
 
   async function handleGetGelombangAktif() {
     try {
@@ -46,8 +46,8 @@ export default function PanduanPage() {
             {
               gelombang ? (
                 <>
-                  <p className="text-md font-medium">Pendaftaran Dibuka</p>
-                  <p className="text-xs text-blue-600">{new Date(gelombang.tanggal_mulai).toLocaleDateString("id-ID", {
+                  <p className="text-md font-medium">Pendaftaran Dibuka {gelombang.nama ? <span className="text-blue-600">({gelombang.nama})</span> : ""}</p>
+                  <p className="text-xs text-gray-500">{new Date(gelombang.tanggal_mulai).toLocaleDateString("id-ID", {
                     day: "2-digit",
                     month: "long",
                     year: "numeric",

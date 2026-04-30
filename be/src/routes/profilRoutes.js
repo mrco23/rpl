@@ -8,6 +8,7 @@ import {
 	getPublicProfil,
 	getLandingPage,
 	getVisiMisi,
+	getFooter,
 } from "../controllers/ProfilController.js";
 import { verifyToken, authorizeRole } from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
@@ -18,6 +19,7 @@ const profilRoute = express.Router();
 profilRoute.get("", getPublicProfil);
 profilRoute.get("/landing-page", getLandingPage);
 profilRoute.get("/visi-misi", getVisiMisi);
+profilRoute.get("/footer", getFooter);
 
 // PRIVATE
 profilRoute.get("/admin", verifyToken, authorizeRole("admin"), getProfil);

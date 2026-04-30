@@ -16,6 +16,7 @@ import {
 import AdminHeader from "../../components/features/AdminHeader";
 import Modal from "../../components/ui/Modal";
 import Skeleton from "../../components/ui/Skeleton";
+import Toast from "../../components/ui/Toast";
 import {
   getAllPengumuman,
   createPengumuman,
@@ -42,8 +43,7 @@ function AdminPengumumanPage() {
   const [pendaftarFilter, setPendaftarFilter] = useState('');
   const [pendaftarSearch, setPendaftarSearch] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
 
   useEffect(() => {
@@ -61,15 +61,16 @@ function AdminPengumumanPage() {
   };
 
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const res = await getAllPengumuman();
       setNotifications(res.data || []);
     } catch (err) {
       console.error(err);
+      setToastConfig({ show: true, message: "Gagal memuat pengumuman", type: "error" });
     } finally {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
 
@@ -103,10 +104,9 @@ function AdminPengumumanPage() {
     try {
       await deletePengumuman(id);
       setNotifications(prev => prev.filter(item => item.id_pengumuman !== id));
-      setSuccessMessage("Data berhasil dihapus!");
-      setShowSuccessModal(true);
+      setToastConfig({ show: true, message: "Data berhasil dihapus!", type: "success" });
     } catch (err) {
-      alert("Gagal menghapus data");
+      setToastConfig({ show: true, message: "Gagal menghapus data", type: "error" });
     }
   };
 
@@ -116,16 +116,15 @@ function AdminPengumumanPage() {
     try {
       if (modalMode === 'add') {
         await createPengumuman(formData);
-        setSuccessMessage("Pengumuman berhasil ditambahkan!");
+        setToastConfig({ show: true, message: "Pengumuman berhasil ditambahkan!", type: "success" });
       } else {
         await updatePengumuman(selectedItem.id_pengumuman, formData);
-        setSuccessMessage("Pengumuman berhasil diperbarui!");
+        setToastConfig({ show: true, message: "Pengumuman berhasil diperbarui!", type: "success" });
       }
       setIsModalOpen(false);
-      fetchNotifications();
-      setShowSuccessModal(true);
+      fetchNotifications(false);
     } catch (err) {
-      alert("Gagal menyimpan data");
+      setToastConfig({ show: true, message: "Gagal menyimpan data", type: "error" });
     } finally {
       setSubmitting(false);
     }
@@ -165,7 +164,7 @@ function AdminPengumumanPage() {
   ];
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className=" bg-gray-100 min-h-screen">
       <AdminHeader
         text="Pengumuman PPDB"
         subText="Kelola informasi dan pengumuman untuk calon peserta didik baru."
@@ -417,24 +416,12 @@ function AdminPengumumanPage() {
         )}
       </Modal>
 
-      {/* Modal Sukses */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center mx-4">
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 animate-bounce">
-              <CheckCircle size={32} className="text-green-600" />
-            </div>
-            <h2 className="text-xl font-bold text-gray-800 mb-2">BERHASIL!</h2>
-            <p className="text-sm text-gray-500 mb-8">{successMessage}</p>
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="w-full py-3 bg-[#253b80] text-white rounded-xl font-bold hover:bg-[#1a2c66] transition-all cursor-pointer shadow-lg active:scale-95"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      )}
+      <Toast
+        show={toastConfig.show}
+        message={toastConfig.message}
+        type={toastConfig.type}
+        onClose={() => setToastConfig({ ...toastConfig, show: false })}
+      />
 
       {/* NOTE */}
       <div className="mt-8 bg-blue-50 text-[#253b80] p-4 rounded-xl text-sm flex items-start gap-3 border border-blue-100 shadow-sm">

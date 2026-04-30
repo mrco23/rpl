@@ -40,6 +40,7 @@ import { uploadFileToCloudinary } from "../utils/file.js";
 
 export const create = async (req, res) => {
 	try {
+		console.log("[FasilitasController] create called. Body:", req.body, "File:", req.file ? req.file.originalname : "No File");
 		const payload = { ...req.body };
 		if (req.file) {
 			const uploadResult = await uploadFileToCloudinary(req.file.buffer, "fasilitas");
@@ -51,6 +52,7 @@ export const create = async (req, res) => {
 			data: FasilitasService.serialize(req, created),
 		});
 	} catch (error) {
+		console.error("[FasilitasController] create Error:", error);
 		res.status(400).json({ message: error.message || "Gagal membuat Fasilitas" });
 	}
 };
@@ -73,6 +75,7 @@ export const updateData = async (req, res) => {
 
 export const updateImage = async (req, res) => {
 	try {
+		console.log(`[FasilitasController] updateImage called for ID: ${req.params.id}. File:`, req.file ? req.file.originalname : "No File");
 		if (!req.file) {
 			return res.status(400).json({ message: "Gambar belum diupload" });
 		}
@@ -87,6 +90,7 @@ export const updateImage = async (req, res) => {
 			data: FasilitasService.serialize(req, updated),
 		});
 	} catch (error) {
+		console.error("[FasilitasController] updateImage Error:", error);
 		res.status(400).json({ message: error.message || "Gagal update gambar Fasilitas" });
 	}
 };

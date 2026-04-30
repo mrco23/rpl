@@ -8,15 +8,11 @@ export const getAllProgramUnggulan = () => {
 };
 
 export const createProgramUnggulan = (formData) => {
-  return adminAxios.post("/program-unggulan", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.post("/program-unggulan", formData);
 };
 
 export const updateProgramUnggulan = (id, formData) => {
-  return adminAxios.put(`/program-unggulan/${id}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.put(`/program-unggulan/${id}`, formData);
 };
 
 export const deleteProgramUnggulan = (id) => {

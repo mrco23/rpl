@@ -3,6 +3,7 @@ import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
 import Modal from "../../components/ui/Modal.jsx";
 import Skeleton from "../../components/ui/Skeleton.jsx";
+import Toast from "../../components/ui/Toast.jsx";
 import {
   getAllFasilitas,
   createFasilitas,
@@ -26,23 +27,22 @@ export default function AdminFasilitasPage() {
   });
   const [formImage, setFormImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
   useEffect(() => {
     fetchFacilities();
   }, []);
 
-  const fetchFacilities = async () => {
+  const fetchFacilities = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const res = await getAllFasilitas();
       setFacilities(res.data || []);
     } catch (err) {
       console.error(err);
-      alert("Gagal memuat daftar fasilitas");
+      setToastConfig({ show: true, message: "Gagal memuat daftar fasilitas", type: "error" });
     } finally {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
 
@@ -74,9 +74,10 @@ export default function AdminFasilitasPage() {
     if (!window.confirm("Yakin ingin menghapus fasilitas ini?")) return;
     try {
       await deleteFasilitas(id);
-      fetchFacilities();
+      setToastConfig({ show: true, message: "Fasilitas berhasil dihapus!", type: "success" });
+      fetchFacilities(false);
     } catch (err) {
-      alert("Gagal menghapus fasilitas");
+      setToastConfig({ show: true, message: "Gagal menghapus fasilitas", type: "error" });
     }
   };
 
@@ -92,30 +93,40 @@ export default function AdminFasilitasPage() {
 
         await createFasilitas(payload);
       } else if (modalMode === "edit") {
+        const updateTasks = [];
+        
         // Update Data Text secara terpisah
-        await updateFasilitasData(selectedItem.id_fasilitas, {
-          nama_fasilitas: formData.nama_fasilitas,
-          deskripsi: formData.deskripsi,
-        });
+        updateTasks.push(
+          updateFasilitasData(selectedItem.id_fasilitas, {
+            nama_fasilitas: formData.nama_fasilitas,
+            deskripsi: formData.deskripsi,
+          })
+        );
 
         // Update Foto khusus jika ada file baru terpilih
         if (formImage) {
           const payloadImg = new FormData();
           payloadImg.append("gambar", formImage);
-          await updateFasilitasImage(selectedItem.id_fasilitas, payloadImg);
+          updateTasks.push(updateFasilitasImage(selectedItem.id_fasilitas, payloadImg));
         }
+        
+        // Jalankan secara paralel untuk optimasi waktu
+        await Promise.all(updateTasks);
       }
       setIsModalOpen(false);
-      fetchFacilities();
-      setSuccessMessage(
-        modalMode === "add"
-          ? "Fasilitas berhasil ditambahkan!"
-          : "Fasilitas berhasil diperbarui!",
-      );
-      setShowSuccessModal(true);
+      fetchFacilities(false);
+      setToastConfig({
+        show: true,
+        message: modalMode === "add" ? "Fasilitas berhasil ditambahkan!" : "Fasilitas berhasil diperbarui!",
+        type: "success"
+      });
     } catch (err) {
       console.error(err);
-      alert(`Gagal ${modalMode === "add" ? "menambah" : "mengubah"} fasilitas`);
+      setToastConfig({
+        show: true,
+        message: `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} fasilitas`,
+        type: "error"
+      });
     } finally {
       setSubmitting(false);
     }
@@ -346,22 +357,44 @@ export default function AdminFasilitasPage() {
                   </div>
                 ) : modalMode === "edit" &&
                   (selectedItem?.gambar_fasilitas || selectedItem?.gambar) ? (
-                  <div className="space-y-2">
-                    <img
-                      src={
-                        selectedItem?.gambar_fasilitas || selectedItem?.gambar
-                      }
-                      alt="existing"
-                      className="mx-auto h-32 object-cover rounded-lg"
-                    />
-                    <p className="text-xs text-gray-500">
-                      Gambar saat ini. Klik untuk mengganti.
+                  <div className="flex flex-col items-center justify-center text-gray-500">
+                    <svg
+                      className="w-12 h-12 mx-auto text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      ></path>
+                    </svg>
+                    <p className="text-sm mt-1">
+                      {formImage ? "Ganti Gambar" : "Klik untuk upload"}
                     </p>
+                    <span className="text-xs text-gray-400">PNG / JPG</span>
                   </div>
                 ) : (
-                  <div className="text-gray-400 text-sm">
-                    <p className="font-medium">Klik atau drag gambar ke sini</p>
-                    <p className="text-xs">PNG, JPG maksimal 2MB</p>
+                  <div className="flex flex-col items-center justify-center text-gray-500">
+                    <svg
+                      className="w-12 h-12 mx-auto text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      ></path>
+                    </svg>
+                    <p className="text-sm mt-1">
+                      {formImage ? "Ganti Gambar" : "Klik untuk upload"}
+                    </p>
+                    <span className="text-xs text-gray-400">PNG / JPG</span>
                   </div>
                 )}
               </div>
@@ -386,36 +419,12 @@ export default function AdminFasilitasPage() {
         )}
       </Modal>
 
-      {/* Modal Sukses */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center mx-4">
-            <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-              <svg
-                className="w-7 h-7 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </div>
-            <h2 className="text-lg font-bold text-gray-800 mb-2">Berhasil!</h2>
-            <p className="text-sm text-gray-500 mb-6">{successMessage}</p>
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="w-full py-2.5 bg-[#253b80] text-white rounded-lg font-semibold hover:bg-[#1a2c66] transition"
-            >
-              Tutup
-            </button>
-          </div>
-        </div>
-      )}
+      <Toast 
+        show={toastConfig.show} 
+        message={toastConfig.message} 
+        type={toastConfig.type} 
+        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      />
     </>
   );
 }

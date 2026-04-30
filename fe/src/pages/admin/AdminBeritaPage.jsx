@@ -3,6 +3,7 @@ import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
 import Modal from "../../components/ui/Modal.jsx";
 import Skeleton from "../../components/ui/Skeleton.jsx";
+import Toast from "../../components/ui/Toast.jsx";
 import {
   getAllBerita,
   createBerita,
@@ -23,21 +24,22 @@ export default function AdminBeritaPage() {
   const [formData, setFormData] = useState({ judul_berita: "", deskripsi: "" });
   const [formImage, setFormImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
   useEffect(() => {
     fetchNews();
   }, []);
 
-  const fetchNews = async () => {
+  const fetchNews = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const res = await getAllBerita();
       setNewsList(res.data || []);
     } catch (err) {
       console.error(err);
-      alert("Gagal memuat berita");
+      setToastConfig({ show: true, message: "Gagal memuat berita", type: "error" });
     } finally {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
 
@@ -69,9 +71,10 @@ export default function AdminBeritaPage() {
     if (!window.confirm("Yakin ingin menghapus berita ini?")) return;
     try {
       await deleteBerita(id);
-      fetchNews();
+      setToastConfig({ show: true, message: "Berita berhasil dihapus!", type: "success" });
+      fetchNews(false);
     } catch (err) {
-      alert("Gagal menghapus berita");
+      setToastConfig({ show: true, message: "Gagal menghapus berita", type: "error" });
     }
   };
 
@@ -101,10 +104,19 @@ export default function AdminBeritaPage() {
         }
       }
       setIsModalOpen(false);
-      fetchNews();
+      setToastConfig({
+        show: true,
+        message: modalMode === "add" ? "Berita berhasil ditambahkan!" : "Berita berhasil diperbarui!",
+        type: "success"
+      });
+      fetchNews(false);
     } catch (err) {
       console.error(err);
-      alert(`Gagal ${modalMode === "add" ? "menambah" : "mengubah"} berita`);
+      setToastConfig({
+        show: true,
+        message: `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} berita`,
+        type: "error"
+      });
     } finally {
       setSubmitting(false);
     }
@@ -198,8 +210,8 @@ export default function AdminBeritaPage() {
                     <td className="p-4 text-sm text-gray-800 font-semibold">
                       {item.tanggal_dibuat
                         ? new Date(item.tanggal_dibuat).toLocaleDateString(
-                            "id-ID",
-                          )
+                          "id-ID",
+                        )
                         : "-"}
                     </td>
                     <td className="p-4">
@@ -268,8 +280,8 @@ export default function AdminBeritaPage() {
               <p className="text-sm text-gray-500">
                 {selectedItem?.tanggal_dibuat
                   ? new Date(selectedItem.tanggal_dibuat).toLocaleDateString(
-                      "id-ID",
-                    )
+                    "id-ID",
+                  )
                   : "-"}
               </p>
             </div>
@@ -345,18 +357,34 @@ export default function AdminBeritaPage() {
                   <div className="space-y-2">
                     <img
                       src={selectedItem.gambar_berita}
-                      alt="existing"
+                      alt=""
                       className="mx-auto h-32 object-cover rounded-lg"
                     />
-                    <p className="text-xs text-gray-500">
-                      Gambar saat ini. Klik untuk mengganti.
+                    <p className="text-sm text-gray-500">
+                      Klik untuk mengunggah
                     </p>
                   </div>
                 ) : (
-                  <div className="text-gray-400 text-sm">
-                    <p className="font-medium">Klik atau drag gambar ke sini</p>
-                    <p className="text-xs">PNG, JPG maksimal 2MB</p>
+                  <div className="flex flex-col items-center justify-center text-gray-500">
+                    <svg
+                      className="w-12 h-12 mx-auto text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      ></path>
+                    </svg>
+                    <p className="text-sm mt-1">
+                      {formImage ? "Ganti Gambar" : "Klik untuk upload"}
+                    </p>
+                    <span className="text-xs text-gray-400">PNG / JPG</span>
                   </div>
+
                 )}
               </div>
             </div>
@@ -379,6 +407,12 @@ export default function AdminBeritaPage() {
           </form>
         )}
       </Modal>
+      <Toast 
+        show={toastConfig.show} 
+        message={toastConfig.message} 
+        type={toastConfig.type} 
+        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      />
     </>
   );
 }

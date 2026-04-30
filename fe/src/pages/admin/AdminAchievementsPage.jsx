@@ -3,6 +3,7 @@ import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
 import Modal from "../../components/ui/Modal.jsx";
 import Skeleton from "../../components/ui/Skeleton.jsx";
+import Toast from "../../components/ui/Toast.jsx";
 import {
   getAllPrestasi,
   createPrestasi,
@@ -26,21 +27,22 @@ export default function AdminAchievementsPage() {
   });
   const [formImage, setFormImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
   useEffect(() => {
     fetchAchievements();
   }, []);
 
-  const fetchAchievements = async () => {
+  const fetchAchievements = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const res = await getAllPrestasi();
       setAchievements(res.data || []);
     } catch (err) {
       console.error(err);
-      alert("Gagal memuat daftar prestasi");
+      setToastConfig({ show: true, message: "Gagal memuat daftar prestasi", type: "error" });
     } finally {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
 
@@ -73,9 +75,10 @@ export default function AdminAchievementsPage() {
     if (!window.confirm("Yakin ingin menghapus prestasi ini?")) return;
     try {
       await deletePrestasi(id);
-      fetchAchievements();
+      setToastConfig({ show: true, message: "Prestasi berhasil dihapus!", type: "success" });
+      fetchAchievements(false);
     } catch (err) {
-      alert("Gagal menghapus prestasi");
+      setToastConfig({ show: true, message: "Gagal menghapus prestasi", type: "error" });
     }
   };
 
@@ -97,10 +100,19 @@ export default function AdminAchievementsPage() {
         await updatePrestasi(selectedItem.id_prestasi, payload);
       }
       setIsModalOpen(false);
-      fetchAchievements();
+      setToastConfig({
+        show: true,
+        message: modalMode === "add" ? "Prestasi berhasil ditambahkan!" : "Prestasi berhasil diperbarui!",
+        type: "success"
+      });
+      fetchAchievements(false);
     } catch (err) {
       console.error(err);
-      alert(`Gagal ${modalMode === "add" ? "menambah" : "mengubah"} prestasi`);
+      setToastConfig({
+        show: true,
+        message: `Gagal ${modalMode === "add" ? "menambah" : "mengubah"} prestasi`,
+        type: "error"
+      });
     } finally {
       setSubmitting(false);
     }
@@ -390,6 +402,12 @@ export default function AdminAchievementsPage() {
           </form>
         )}
       </Modal>
+      <Toast 
+        show={toastConfig.show} 
+        message={toastConfig.message} 
+        type={toastConfig.type} 
+        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      />
     </>
   );
 }

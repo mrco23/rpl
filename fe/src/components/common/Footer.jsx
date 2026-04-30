@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import { Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import profileService from "../../services/profileService";
 
-function Footer({ profile }) {
+function Footer() {
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    profileService.getFooterData().then((res) => {
+      if (res.success) {
+        setProfile(res.data);
+      }
+    });
+  }, []);
   const menu = [
     { name: "Tentang", path: "/sejarah" },
     { name: "Akademik", path: "/program" },

@@ -8,9 +8,7 @@ export const getAllFasilitas = () => {
 };
 
 export const createFasilitas = (formData) => {
-  return adminAxios.post("/fasilitas", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.post("/fasilitas", formData);
 };
 
 export const updateFasilitasData = (id, payload) => {
@@ -18,9 +16,7 @@ export const updateFasilitasData = (id, payload) => {
 };
 
 export const updateFasilitasImage = (id, formData) => {
-  return adminAxios.patch(`/fasilitas/${id}/image`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.patch(`/fasilitas/${id}/image`, formData);
 };
 
 export const deleteFasilitas = (id) => {

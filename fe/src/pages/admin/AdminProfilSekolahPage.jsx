@@ -3,6 +3,7 @@ import { Edit2, CloudUpload, Upload } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
 import Modal from "../../components/ui/Modal.jsx";
 import Skeleton from "../../components/ui/Skeleton.jsx";
+import Toast from "../../components/ui/Toast.jsx";
 import {
   getAdminProfile,
   createProfile,
@@ -14,6 +15,7 @@ import {
 export default function AdminProfilSekolahPage() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
   // States for Modals
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -62,9 +64,9 @@ export default function AdminProfilSekolahPage() {
     fetchProfile();
   }, []);
 
-  const fetchProfile = async () => {
+  const fetchProfile = async (showLoader = true) => {
     try {
-      setLoading(true);
+      if (showLoader) setLoading(true);
       const res = await getAdminProfile();
       // adminAxios interceptor mengembalikan response.data langsung
       // Backend mengembalikan { message, data: {...} }
@@ -75,15 +77,10 @@ export default function AdminProfilSekolahPage() {
         setProfile(null);
       }
     } catch (err) {
-      // adminAxios error interceptor: err sudah berupa response.data (bukan axios error)
-      // Jika profil belum ada, backend throw error -> tampilkan empty state
-      console.warn(
-        "Profil belum dibuat atau gagal dimuat:",
-        err?.message || err,
-      );
+      console.warn("Profil belum dibuat atau gagal dimuat:", err?.message || err);
       setProfile(null);
     } finally {
-      setLoading(false);
+      if (showLoader) setLoading(false);
     }
   };
 
@@ -129,19 +126,18 @@ export default function AdminProfilSekolahPage() {
   };
 
   const handleLogoUpload = async () => {
-    if (!profile) return alert("Harap buat Profil Awal terlebih dahulu!");
-    if (!selectedImage) return alert("Pilih file gambar untuk diunggah!");
+    if (!profile) return setToastConfig({ show: true, message: "Harap buat Profil Awal terlebih dahulu!", type: "error" });
+    if (!selectedImage) return setToastConfig({ show: true, message: "Pilih file gambar untuk diunggah!", type: "error" });
     try {
       setUploadingImg(true);
       const fd = new FormData();
-      // Menggunakan foto_kepala_sekolah karena schema backend menangani gambar profil sekolah/kepsek di field ini
       fd.append("foto_kepala_sekolah", selectedImage);
       await updateProfileImage(fd);
-      alert("Gambar berhasil diunggah!");
+      setToastConfig({ show: true, message: "Gambar berhasil diunggah!", type: "success" });
       setSelectedImage(null);
-      fetchProfile();
+      fetchProfile(false);
     } catch (err) {
-      alert("Gagal mengunggah gambar.");
+      setToastConfig({ show: true, message: "Gagal mengunggah gambar.", type: "error" });
     } finally {
       setUploadingImg(false);
     }
@@ -156,9 +152,10 @@ export default function AdminProfilSekolahPage() {
         kata_sambutan: profile?.kata_sambutan || "",
       });
       setIsInfoModalOpen(false);
-      fetchProfile();
+      setToastConfig({ show: true, message: "Informasi sekolah berhasil diperbarui!", type: "success" });
+      fetchProfile(false);
     } catch (err) {
-      alert("Gagal update informasi sekolah");
+      setToastConfig({ show: true, message: "Gagal update informasi sekolah", type: "error" });
     }
   };
 
@@ -172,9 +169,10 @@ export default function AdminProfilSekolahPage() {
         ...kepsekData,
       });
       setIsKepsekModalOpen(false);
-      fetchProfile();
+      setToastConfig({ show: true, message: "Data kepala sekolah berhasil diperbarui!", type: "success" });
+      fetchProfile(false);
     } catch (err) {
-      alert("Gagal update data kepala sekolah");
+      setToastConfig({ show: true, message: "Gagal update data kepala sekolah", type: "error" });
     }
   };
 
@@ -183,9 +181,10 @@ export default function AdminProfilSekolahPage() {
     try {
       await upsertKontakProfile(kontakData);
       setIsKontakModalOpen(false);
-      fetchProfile();
+      setToastConfig({ show: true, message: "Kontak sekolah berhasil diperbarui!", type: "success" });
+      fetchProfile(false);
     } catch (err) {
-      alert("Gagal update kontak sekolah");
+      setToastConfig({ show: true, message: "Gagal update kontak sekolah", type: "error" });
     }
   };
 
@@ -202,9 +201,10 @@ export default function AdminProfilSekolahPage() {
 
       await createProfile(fd);
       setIsCreateModalOpen(false);
+      setToastConfig({ show: true, message: "Profil berhasil dibuat!", type: "success" });
       fetchProfile();
     } catch (err) {
-      alert(err.response?.data?.message || "Gagal membuat profil");
+      setToastConfig({ show: true, message: err.response?.data?.message || "Gagal membuat profil", type: "error" });
     }
   };
 
@@ -998,6 +998,12 @@ export default function AdminProfilSekolahPage() {
           </div>
         </form>
       </Modal>
+      <Toast 
+        show={toastConfig.show} 
+        message={toastConfig.message} 
+        type={toastConfig.type} 
+        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      />
     </>
   );
 }

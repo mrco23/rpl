@@ -133,3 +133,26 @@ export const getVisiMisi = async (req, res) => {
 		return res.status(500).json({ message: error.message || "Gagal mengambil visi misi" });
 	}
 };
+
+export const getFooter = async (req, res) => {
+	try {
+		const data = await ProfilService.getPublicProfil();
+		const footerData = {
+			nama_sekolah: data.profil?.nama_sekolah || "",
+			deskripsi: data.profil?.visi || "Mendidik generasi beriman, berkarakter, dan berprestasi untuk masa depan yang lebih baik.",
+			email: data.kontak?.email || "",
+			no_telpon: data.kontak?.no_telpon || "",
+			whatsapp: data.kontak?.whatsapp || "",
+			instagram: data.kontak?.instagram || "",
+			tiktok: data.kontak?.tiktok || "",
+			facebook: data.kontak?.facebook || "",
+			youtube: data.kontak?.youtube || "",
+		};
+		return res.status(200).json({
+			message: "success",
+			data: footerData,
+		});
+	} catch (error) {
+		return res.status(500).json({ message: error.message || "Gagal mengambil data footer" });
+	}
+};

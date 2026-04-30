@@ -18,13 +18,33 @@ function VisiMisiPage() {
     fetch();
   }, []);
 
-  // Parse misi: bisa berupa string panjang atau null
-  const misiLines = data?.misi
-    ? data.misi
-      .split(/\n|;/)
-      .map((s) => s.trim())
-      .filter(Boolean)
-    : [];
+  const parseMisi = (misiString) => {
+    if (!misiString) return [];
+
+    // Jika ada newline atau titik koma, pisahkan berdasarkan karakter tsb
+    if (misiString.includes('\n') || misiString.includes(';')) {
+      return misiString
+        .split(/\n|;/)
+        .map(s => s.trim())
+        // Hilangkan format penomoran di awal string (misal: "1. ", "2) ")
+        .map(s => s.replace(/^\d+[\.\)]\s*/, '').trim())
+        .filter(Boolean);
+    }
+
+    // Jika format inline panjang seperti "1. Misi satu 2. Misi dua"
+    const inlinePattern = /(?:^|\s+)\d+[\.\)]\s+/;
+    if (inlinePattern.test(misiString)) {
+      return misiString
+        .split(inlinePattern)
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
+
+    // Fallback: satu kalimat/paragraf utuh
+    return [misiString.trim()].filter(Boolean);
+  };
+
+  const misiLines = parseMisi(data?.misi);
 
   return (
     <>
@@ -96,10 +116,10 @@ function VisiMisiPage() {
                 ))}
               </div>
             ) : misiLines.length > 0 ? (
-              <div className="max-w-4xl ml-10 space-y-10">
+              <div className="max-w-full px-4 lg:px-10 ml-2 lg:ml-10 space-y-10">
                 {misiLines.map((misi, i) => (
                   <div key={i} className="flex items-start gap-16">
-                    <span className="text-7xl font-bold text-gray-300 w-16">
+                    <span className="text-5xl lg:text-7xl font-bold text-gray-300 w-16">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <p className="text-2xl">{misi}</p>
@@ -107,7 +127,7 @@ function VisiMisiPage() {
                 ))}
               </div>
             ) : (
-              <div className="max-w-4xl ml-10 space-y-10">
+              <div className="max-w-full ml-10 space-y-10">
                 {/* Fallback ke konten statis jika data kosong */}
                 {[
                   "Membentuk peserta didik menjadi manusia yang seutuhnya, beriman, unggul, bijaksana dan pancasilais sesuai semangat Santo Rafael",

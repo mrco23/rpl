@@ -12,9 +12,7 @@ export const getBeritaById = (id) => {
 };
 
 export const createBerita = (formData) => {
-  return adminAxios.post("/berita", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.post("/berita", formData);
 };
 
 export const updateBeritaData = (id, payload) => {
@@ -22,9 +20,7 @@ export const updateBeritaData = (id, payload) => {
 };
 
 export const updateBeritaImage = (id, formData) => {
-  return adminAxios.patch(`/berita/${id}/image`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return adminAxios.patch(`/berita/${id}/image`, formData);
 };
 
 export const deleteBerita = (id) => {
