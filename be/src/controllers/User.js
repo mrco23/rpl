@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import { generateToken, verifyToken } from "../utils/jwt.js";
 import { getUserProfil, putUserProfil, createUser, getUser } from "../services/UserService.js";
 
+import { uploadFileToCloudinary } from "../utils/file.js";
+
 class User {
   register = async (req, res) => {
     try {
@@ -70,7 +72,10 @@ class User {
       const updatedData = {};
 
       if (nama) updatedData.nama = nama;
-      if (req.file) updatedData.foto_profil = req.file.filename;
+      if (req.file) {
+        const uploadResult = await uploadFileToCloudinary(req.file.buffer, "user-profiles");
+        updatedData.foto_profil = uploadResult.secure_url;
+      }
 
       const updatedUser = await putUserProfil(userId, role, updatedData, req);
 

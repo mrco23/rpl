@@ -98,7 +98,7 @@ export const updateProfilImage = async (id_admin, newFiles) => {
 	if (newFiles.foto_kepala_sekolah) {
 		// Hapus foto lama jika ada
 		if (profil.foto_kepala_sekolah) {
-			deleteFile(profil.foto_kepala_sekolah);
+			await deleteFile(profil.foto_kepala_sekolah);
 		}
 		dataToUpdate.foto_kepala_sekolah = newFiles.foto_kepala_sekolah;
 	}

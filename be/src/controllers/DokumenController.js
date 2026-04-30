@@ -1,5 +1,7 @@
 import DokumenService from "../services/DokumenService.js";
 
+import { uploadFileToCloudinary } from "../utils/file.js";
+
 class DokumenController {
   getMe = async (req, res) => {
     try {
@@ -34,7 +36,8 @@ class DokumenController {
         return res.status(400).json({ message: "Nama dokumen wajib diisi" });
       }
 
-      const filePath = `/uploads/${req.file.filename}`;
+      const uploadResult = await uploadFileToCloudinary(req.file.buffer, "dokumen");
+      const filePath = uploadResult.secure_url;
       const data = await DokumenService.uploadDokumen(idPendaftar, nama_dokumen, filePath);
 
       return res.status(200).json({ message: "Dokumen berhasil diunggah", data });

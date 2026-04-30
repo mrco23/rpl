@@ -36,11 +36,14 @@ export const getDetailPublic = async (req, res) => {
 	}
 };
 
+import { uploadFileToCloudinary } from "../utils/file.js";
+
 export const create = async (req, res) => {
 	try {
 		const payload = { ...req.body };
 		if (req.file) {
-			payload.gambar = req.file.filename;
+			const uploadResult = await uploadFileToCloudinary(req.file.buffer, "fasilitas");
+			payload.gambar = uploadResult.secure_url;
 		}
 		const created = await FasilitasService.createFasilitas(req.user.id, payload);
 		res.status(201).json({
@@ -73,10 +76,11 @@ export const updateImage = async (req, res) => {
 		if (!req.file) {
 			return res.status(400).json({ message: "Gambar belum diupload" });
 		}
+		const uploadResult = await uploadFileToCloudinary(req.file.buffer, "fasilitas");
 		const updated = await FasilitasService.updateFasilitasImage(
 			req.user.id,
 			req.params.id,
-			req.file.filename,
+			uploadResult.secure_url,
 		);
 		res.json({
 			message: "Gambar berhasil diperbarui",

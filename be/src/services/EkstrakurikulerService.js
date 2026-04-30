@@ -62,7 +62,7 @@ export const updateEkstrakurikulerImage = async (id_admin, id, filename) => {
 
 	// Format lama dihapus (kalau ada)
 	if (existing.gambar_ekskul) {
-		deleteFile(existing.gambar_ekskul);
+		await deleteFile(existing.gambar_ekskul);
 	}
 
 	return prisma.ekstrakurikuler.update({
@@ -79,7 +79,7 @@ export const deleteEkstrakurikuler = async (id_admin, id) => {
 	if (!existing) throw new Error("Data tidak ditemukan");
 
 	if (existing.gambar_ekskul) {
-		deleteFile(existing.gambar_ekskul);
+		await deleteFile(existing.gambar_ekskul);
 	}
 
 	return prisma.ekstrakurikuler.delete({

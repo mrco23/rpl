@@ -19,11 +19,14 @@ export const getDetail = async (req, res) => {
 	}
 };
 
+import { uploadFileToCloudinary } from "../utils/file.js";
+
 export const create = async (req, res) => {
 	try {
 		const payload = { ...req.body };
 		if (req.file) {
-			payload.gambar = req.file.filename;
+			const uploadResult = await uploadFileToCloudinary(req.file.buffer, "berita");
+			payload.gambar = uploadResult.secure_url;
 		}
 
 		const created = await BeritaService.createBerita(req.user.id, payload);
@@ -49,10 +52,11 @@ export const updateImage = async (req, res) => {
 		if (!req.file) {
 			return res.status(400).json({ message: "Gambar belum diupload" });
 		}
+		const uploadResult = await uploadFileToCloudinary(req.file.buffer, "berita");
 		const updated = await BeritaService.updateBeritaImage(
 			req.user.id,
 			req.params.id,
-			req.file.filename,
+			uploadResult.secure_url,
 		);
 		res.json({
 			message: "Gambar berhasil diperbarui",

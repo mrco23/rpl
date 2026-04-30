@@ -51,7 +51,7 @@ export const updateBeritaImage = async (id_admin, id, filename) => {
 	if (!existing) throw new Error("Data tidak ditemukan");
 
 	if (existing.gambar_berita) {
-		deleteFile(existing.gambar_berita);
+		await deleteFile(existing.gambar_berita);
 	}
 
 	return prisma.berita.update({
@@ -68,7 +68,7 @@ export const deleteBerita = async (id_admin, id) => {
 	if (!existing) throw new Error("Data tidak ditemukan");
 
 	if (existing.gambar_berita) {
-		deleteFile(existing.gambar_berita);
+		await deleteFile(existing.gambar_berita);
 	}
 
 	return prisma.berita.delete({

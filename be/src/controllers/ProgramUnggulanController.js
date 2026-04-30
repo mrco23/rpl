@@ -28,11 +28,14 @@ export const getDetailPublic = async (req, res) => {
   }
 };
 
+import { uploadFileToCloudinary } from "../utils/file.js";
+
 export const create = async (req, res) => {
   try {
     const payload = { ...req.body };
     if (req.file) {
-      payload.gambar_pu = req.file.filename;
+      const uploadResult = await uploadFileToCloudinary(req.file.buffer, "program-unggulan");
+      payload.gambar_pu = uploadResult.secure_url;
     }
 
     const created = await ProgramUnggulanService.createProgram(req.user.id, payload);
@@ -46,7 +49,8 @@ export const updateData = async (req, res) => {
   try {
     const payload = { ...req.body };
     if (req.file) {
-      payload.gambar_pu = req.file.filename;
+      const uploadResult = await uploadFileToCloudinary(req.file.buffer, "program-unggulan");
+      payload.gambar_pu = uploadResult.secure_url;
     }
 
     const updated = await ProgramUnggulanService.updateProgramData(req.user.id, req.params.id, payload);

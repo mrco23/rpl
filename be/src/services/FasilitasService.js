@@ -53,7 +53,7 @@ export const updateFasilitasImage = async (id_admin, id, filename) => {
 	if (!existing) throw new Error("Data tidak ditemukan");
 
 	if (existing.gambar_fasilitas) {
-		deleteFile(existing.gambar_fasilitas);
+		await deleteFile(existing.gambar_fasilitas);
 	}
 
 	return prisma.fasilitas.update({
@@ -69,7 +69,7 @@ export const deleteFasilitas = async (id_admin, id) => {
 	if (!existing) throw new Error("Data tidak ditemukan");
 
 	if (existing.gambar_fasilitas) {
-		deleteFile(existing.gambar_fasilitas);
+		await deleteFile(existing.gambar_fasilitas);
 	}
 
 	return prisma.fasilitas.delete({

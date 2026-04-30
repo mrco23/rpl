@@ -1,5 +1,7 @@
 import * as ProfilService from "../services/ProfilService.js";
 
+import { uploadFileToCloudinary } from "../utils/file.js";
+
 /* 
   POST: Create Profil (Pertama kali isi, boleh dengan gambar)
 */
@@ -8,7 +10,8 @@ export const createProfil = async (req, res) => {
 		const idAdmin = req.user.id;
 		// Tambahkan nama file ke body jika ada file yang diunggah
 		if (req.files?.foto_kepala_sekolah?.[0]) {
-			req.body.foto_kepala_sekolah = req.files.foto_kepala_sekolah[0].filename;
+			const uploadResult = await uploadFileToCloudinary(req.files.foto_kepala_sekolah[0].buffer, "profil");
+			req.body.foto_kepala_sekolah = uploadResult.secure_url;
 		}
 
 		await ProfilService.createProfil(idAdmin, req.body);
@@ -49,7 +52,8 @@ export const updateProfilImage = async (req, res) => {
 		const idAdmin = req.user.id;
 		const newFiles = {};
 		if (req.files?.foto_kepala_sekolah?.[0]) {
-			newFiles.foto_kepala_sekolah = req.files.foto_kepala_sekolah[0].filename;
+			const uploadResult = await uploadFileToCloudinary(req.files.foto_kepala_sekolah[0].buffer, "profil");
+			newFiles.foto_kepala_sekolah = uploadResult.secure_url;
 		}
 
 		if (Object.keys(newFiles).length === 0) {

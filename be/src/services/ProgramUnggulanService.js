@@ -44,7 +44,7 @@ export const updateProgramData = async (id_admin, id, payload) => {
 
   if (payload.gambar_pu) {
     if (existing.gambar_pu) {
-      deleteFile(existing.gambar_pu);
+      await deleteFile(existing.gambar_pu);
     }
     dataToUpdate.gambar_pu = payload.gambar_pu;
   }
@@ -62,7 +62,7 @@ export const deleteProgram = async (id_admin, id) => {
   if (!existing) throw new Error("Data tidak ditemukan");
 
   if (existing.gambar_pu) {
-    deleteFile(existing.gambar_pu);
+    await deleteFile(existing.gambar_pu);
   }
 
   return prisma.programUnggulan.delete({

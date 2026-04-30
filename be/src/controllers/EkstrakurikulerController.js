@@ -34,6 +34,8 @@ export const getDetailPublic = async (req, res) => {
 	}
 };
 
+import { uploadFileToCloudinary } from "../utils/file.js";
+
 /* 
   POST: Membuat data baru beserta gambar (jika ada).
 */
@@ -41,7 +43,8 @@ export const create = async (req, res) => {
 	try {
 		const payload = { ...req.body };
 		if (req.file) {
-			payload.gambar_ekskul = req.file.filename;
+			const uploadResult = await uploadFileToCloudinary(req.file.buffer, "ekstrakurikuler");
+			payload.gambar_ekskul = uploadResult.secure_url;
 		}
 
 		const created = await EkstrakurikulerService.createEkstrakurikuler(req.user.id, payload);
@@ -81,10 +84,11 @@ export const updateImage = async (req, res) => {
 		if (!req.file) {
 			return res.status(400).json({ message: "Gambar belum diupload" });
 		}
+		const uploadResult = await uploadFileToCloudinary(req.file.buffer, "ekstrakurikuler");
 		const updated = await EkstrakurikulerService.updateEkstrakurikulerImage(
 			req.user.id,
 			req.params.id,
-			req.file.filename,
+			uploadResult.secure_url,
 		);
 		res.json({
 			message: "Gambar berhasil diperbarui",

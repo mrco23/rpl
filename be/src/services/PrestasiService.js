@@ -46,7 +46,7 @@ export const updatePrestasiData = async (id_admin, id, payload) => {
 
 	if (payload.gambar_prestasi) {
 		if (existing.gambar_prestasi) {
-			deleteFile(existing.gambar_prestasi);
+			await deleteFile(existing.gambar_prestasi);
 		}
 		dataToUpdate.gambar_prestasi = payload.gambar_prestasi;
 	}
@@ -64,7 +64,7 @@ export const updatePrestasiImage = async (id_admin, id, filename) => {
 	if (!existing) throw new Error("Data tidak ditemukan");
 
 	if (existing.gambar_prestasi) {
-		deleteFile(existing.gambar_prestasi);
+		await deleteFile(existing.gambar_prestasi);
 	}
 
 	return prisma.prestasi.update({
@@ -80,7 +80,7 @@ export const deletePrestasi = async (id_admin, id) => {
 	if (!existing) throw new Error("Data tidak ditemukan");
 
 	if (existing.gambar_prestasi) {
-		deleteFile(existing.gambar_prestasi);
+		await deleteFile(existing.gambar_prestasi);
 	}
 
 	return prisma.prestasi.delete({
