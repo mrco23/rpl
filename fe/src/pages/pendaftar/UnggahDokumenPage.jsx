@@ -13,11 +13,18 @@ import {
   uploadDocument,
 } from "../../services/dokumenService.js";
 import { getPendaftarMe } from "../../services/pendaftarService.js";
+import { resolveDocumentUrl, extractFileNameFromUrl } from "../../utils/documentHelper.js";
+import Toast from "../../components/ui/Toast.jsx";
 
 function UnggahDokumenPage() {
   const [documents, setDocuments] = useState([]);
   const [pendaftar, setPendaftar] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
+
+  const showToast = (message, type = "success") => {
+    setToastConfig({ show: true, message, type });
+  };
 
   useEffect(() => {
     loadData();
@@ -40,6 +47,7 @@ function UnggahDokumenPage() {
   };
 
   const getDocStatus = (nama) => {
+<<<<<<< HEAD
     const doc = documents.find((d) => d.nama_dokumen === nama);
     if (!doc)
       return { status: "empty", fileName: null, statusText: "Belum upload" };
@@ -48,6 +56,11 @@ function UnggahDokumenPage() {
       fileName: doc.jenis_dokumen.split("/").pop(),
       statusText: "Sudah diupload",
     };
+=======
+    const doc = documents.find(d => d.nama_dokumen === nama);
+    if (!doc) return { status: "empty", fileName: null, statusText: "Belum upload" };
+    return { status: "success", fileName: extractFileNameFromUrl(doc.jenis_dokumen), statusText: "Sudah diupload" };
+>>>>>>> 2058f56 (refactor code)
   };
 
   const docTypes = [
@@ -116,6 +129,7 @@ function UnggahDokumenPage() {
       <div className="flex flex-wrap gap-4">
         {docTypes.map((type, idx) => {
           const info = getDocStatus(type.title);
+          const isLocked = pendaftar && ['terverifikasi', 'wawancara orang tua', 'lulus', 'tidak lulus'].includes(pendaftar.status_pendaftaran);
           return (
             <DokumenCard
               key={idx}
@@ -125,10 +139,16 @@ function UnggahDokumenPage() {
               initialFileName={info.fileName}
               statusText={info.statusText}
               onUploadSuccess={loadData}
+<<<<<<< HEAD
               fileUrl={
                 documents.find((d) => d.nama_dokumen === type.title)
                   ?.jenis_dokumen
               }
+=======
+              fileUrl={documents.find(d => d.nama_dokumen === type.title)?.jenis_dokumen}
+              isLocked={isLocked}
+              showToast={showToast}
+>>>>>>> 2058f56 (refactor code)
             />
           );
         })}
@@ -148,22 +168,19 @@ function UnggahDokumenPage() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 w-full md:w-auto">
-            <button className="flex justify-center items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg w-full md:w-72 font-medium transition-colors cursor-pointer">
-              <Send size={18} />
-              Kirim Untuk Diverifikasi
-            </button>
-
-            <p className="text-sm text-gray-500 md:max-w-xs text-center md:text-left">
-              Pastikan semua dokumen sudah benar sebelum dikirim
-            </p>
-          </div>
         </div>
       )}
+      <Toast
+        show={toastConfig.show}
+        message={toastConfig.message}
+        type={toastConfig.type}
+        onClose={() => setToastConfig({ ...toastConfig, show: false })}
+      />
     </div>
   );
 }
 
+<<<<<<< HEAD
 function DokumenCard({
   title,
   initialStatus,
@@ -173,6 +190,9 @@ function DokumenCard({
   onUploadSuccess,
   fileUrl,
 }) {
+=======
+function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, statusText, onUploadSuccess, fileUrl, isLocked, showToast }) {
+>>>>>>> 2058f56 (refactor code)
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -182,10 +202,11 @@ function DokumenCard({
       try {
         setIsUploading(true);
         await uploadDocument(title, selectedFile);
+        showToast(`Dokumen ${title} berhasil diunggah!`, "success");
         onUploadSuccess();
       } catch (err) {
         console.error(err);
-        alert("Gagal mengunggah dokumen: " + (err.message || "Unknown error"));
+        showToast("Gagal mengunggah dokumen: " + (err.message || "Unknown error"), "error");
       } finally {
         setIsUploading(false);
       }
@@ -198,8 +219,12 @@ function DokumenCard({
 
   const handleViewFile = () => {
     if (fileUrl) {
+<<<<<<< HEAD
       const baseUrl = import.meta.env.VITE_API_URL.replace("/api", "");
       window.open(`${baseUrl}${fileUrl}`, "_blank");
+=======
+      window.open(resolveDocumentUrl(fileUrl), '_blank');
+>>>>>>> 2058f56 (refactor code)
     }
   };
 
@@ -279,17 +304,19 @@ function DokumenCard({
             >
               Lihat File
             </button>
-            <button
-              onClick={triggerUpload}
-              disabled={isUploading}
-              className="w-full text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
-            >
-              Ganti File
-            </button>
+            {!isLocked && (
+              <button
+                onClick={triggerUpload}
+                disabled={isUploading}
+                className="w-full text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+              >
+                Ganti File
+              </button>
+            )}
           </>
         )}
 
-        {initialStatus === "empty" && (
+        {initialStatus === "empty" && !isLocked && (
           <button
             onClick={triggerUpload}
             disabled={isUploading}
@@ -299,7 +326,7 @@ function DokumenCard({
           </button>
         )}
 
-        {initialStatus === "error" && (
+        {initialStatus === "error" && !isLocked && (
           <>
             <button className="w-full text-sm font-medium bg-orange-100 hover:bg-orange-200 text-orange-700 py-2 rounded-lg transition-colors cursor-pointer">
               Lihat Catatan

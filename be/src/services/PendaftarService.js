@@ -16,15 +16,7 @@ export const register = async (payload) => {
 		throw error;
 	}
 
-	const count = await prisma.pendaftar.count({
-		where: { id_gelombang: activeGelombang.id_gelombang },
-	});
 
-	if (count >= activeGelombang.kuota) {
-		const error = new Error("Kuota pendaftaran gelombang ini sudah penuh");
-		error.statusCode = 400;
-		throw error;
-	}
 
 	if (
 		!payload.nama_lengkap ||
@@ -86,24 +78,34 @@ export const getPendaftar = async (nisn) => {
 		include: { alamat: true },
 	});
 	if (pendaftar) {
-		return { ...pendaftar, id: pendaftar.id_pendaftar };
+		const { kata_sandi, ...pendaftarTanpaSandi } = pendaftar;
+		return { ...pendaftarTanpaSandi, id: pendaftar.id_pendaftar };
 	}
 	return null;
 };
 
 export const getPendaftarById = async (id) => {
-	return await prisma.pendaftar.findUnique({
+	const pendaftar = await prisma.pendaftar.findUnique({
 		where: { id_pendaftar: Number(id) },
 		include: { alamat: true },
 	});
+	if (pendaftar) {
+		const { kata_sandi, ...pendaftarTanpaSandi } = pendaftar;
+		return pendaftarTanpaSandi;
+	}
+	return null;
 };
 
 export const getAllPendaftar = async () => {
-	return await prisma.pendaftar.findMany({
+	const pendaftars = await prisma.pendaftar.findMany({
 		include: {
 			gelombang: true,
 			alamat: true,
 		},
+	});
+	return pendaftars.map(p => {
+		const { kata_sandi, ...rest } = p;
+		return rest;
 	});
 };
 

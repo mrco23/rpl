@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
 import { waveApi } from "@services/waveService.js";
-import { deleteGelombang, createGelombang, updateGelombang, getSemuaGelombang, getGelombangById, exportExcelGelombang } from "@services/adminGelombangService.js";
 import Skeleton from "@components/ui/Skeleton";
 import Toast from "../../components/ui/Toast.jsx";
 
@@ -72,7 +71,7 @@ function AdminGelombang() {
 
     const handleDelete = async () => {
         try {
-            await deleteGelombang(selectedDeleteId);
+            await waveApi.remove(selectedDeleteId);
             setToastConfig({ show: true, message: "Gelombang berhasil dihapus!", type: "success" });
             fetchGelombang(false);
             setOpenDeleteModal(false);
@@ -85,7 +84,7 @@ function AdminGelombang() {
     const handleExportExcel = async (id) => {
         try {
             setToastConfig({ show: true, message: "Mempersiapkan dokumen Excel...", type: "success" });
-            const response = await exportExcelGelombang(id);
+            const response = await waveApi.exportExcel(id);
             const url = window.URL.createObjectURL(new Blob([response]));
             const link = document.createElement("a");
             link.href = url;

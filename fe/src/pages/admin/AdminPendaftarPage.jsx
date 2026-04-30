@@ -296,7 +296,7 @@ export default function AdminPendaftarPage() {
                                     : 'cursor-pointer'
                                     }`}
                             >
-                                Ubah Status Massal
+                                {isUpdating ? 'Memperbarui...' : 'Ubah Status Massal'}
                             </button>
                         </div>
                     </div>

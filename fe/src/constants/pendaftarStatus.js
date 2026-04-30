@@ -41,6 +41,10 @@ export const filterStatus = [
 		value: "perlu perbaikan",
 	},
 	{
+		label: "Unggah Ulang",
+		value: "unggah ulang",
+	},
+	{
 		label: "Lulus",
 		value: "lulus",
 	},

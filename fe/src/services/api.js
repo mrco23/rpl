@@ -30,6 +30,7 @@ export const requestAPI = async ({
 	data = null,
 	params = null,
 	isMultipart = false,
+	responseType = "json",
 }) => {
 	try {
 		const headers = {};
@@ -43,6 +44,7 @@ export const requestAPI = async ({
 			data,
 			params,
 			headers,
+			responseType,
 		});
 
 		return response.data; // Mengembalikan payload 'data' dari response otomatis

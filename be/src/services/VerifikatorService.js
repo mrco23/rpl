@@ -125,7 +125,7 @@ export const deleteVerifikator = async (id) => {
 };
 
 export const getPendaftarForVerifikator = async () => {
-	return await prisma.pendaftar.findMany({
+	const data = await prisma.pendaftar.findMany({
 		where: {
 			status_pendaftaran: {
 				in: ["menunggu verifikasi", "unggah ulang", "perlu perbaikan"],
@@ -140,10 +140,14 @@ export const getPendaftarForVerifikator = async () => {
 		},
 		orderBy: { tanggal_daftar: "desc" },
 	});
+	return data.map(p => {
+		const { kata_sandi, ...rest } = p;
+		return rest;
+	});
 };
 
 export const getAssignedPendaftar = async (idVerifikator) => {
-	return await prisma.pendaftar.findFirst({
+	const pendaftar = await prisma.pendaftar.findFirst({
 		where: { id_verifikator: Number(idVerifikator) },
 		include: {
 			gelombang: true,
@@ -151,6 +155,11 @@ export const getAssignedPendaftar = async (idVerifikator) => {
 			alamat: true,
 		},
 	});
+	if (pendaftar) {
+		const { kata_sandi, ...rest } = pendaftar;
+		return rest;
+	}
+	return null;
 };
 
 export const assignPendaftar = async (idPendaftar, idVerifikator) => {
@@ -185,6 +194,11 @@ export const verifyPendaftar = async (idPendaftar, idVerifikator, status, catata
 		throw new Error(
 			"Anda tidak memiliki akses untuk memverifikasi pendaftar ini atau pendaftar tidak ditemukan",
 		);
+	}
+
+	const allowedStatuses = ["terverifikasi", "perlu perbaikan"];
+	if (!allowedStatuses.includes(status)) {
+		throw new Error("Status verifikasi tidak valid. Hanya boleh 'terverifikasi' atau 'perlu perbaikan'");
 	}
 
 	return await prisma.pendaftar.update({

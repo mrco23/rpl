@@ -27,6 +27,14 @@ export const waveApi = {
     const res = await requestAPI({ method: "DELETE", url: `/${resource}/${id}` });
     return res;
   },
+  exportExcel: async (id) => {
+    const res = await requestAPI({ 
+      method: "GET", 
+      url: `/${resource}/${id}/export`, 
+      responseType: "blob" 
+    });
+    return res;
+  },
 
   // Public endpoint
   getActiveWave: async () => {

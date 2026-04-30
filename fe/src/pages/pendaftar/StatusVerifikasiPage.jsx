@@ -17,6 +17,7 @@ export default function StatusVerifikasiPage() {
       const res = await getPendaftarStatus();
       setStatus(res.data);
     }
+<<<<<<< HEAD
     getStatus();
   }, []);
   // STEP CONFIG (JANGAN DIUBAH SEMBARANG)\
@@ -58,21 +59,44 @@ export default function StatusVerifikasiPage() {
       icon: FaClipboardList,
       keterangan: "Daftar ulang pendaftaran.",
     },
+=======
+    getStatus()
+  }, [])
+  // STEP CONFIG (Sesuai SOP)
+  const steps = [
+    { key: "verifikasi", label: "Verifikasi Dokumen", icon: FaShieldAlt, keterangan: "Pemeriksaan kelengkapan dan keabsahan dokumen." },
+    { key: "wawancara", label: "Wawancara", icon: FaUser, keterangan: "Tahap wawancara orang tua pendaftar." },
+    { key: "hasil", label: "Hasil Akhir", icon: FaBullhorn, keterangan: "Pengumuman hasil akhir PPDB." },
+>>>>>>> 2058f56 (refactor code)
   ];
 
-  // SIMULASI DATA BACKEND
-  const dataBackend = {
-    status: status.status_pendaftaran,
+  const statusKey = status.status_pendaftaran || "menunggu verifikasi";
+
+  let currentStep = 0;
+  if (statusKey === "terverifikasi") {
+    currentStep = 1;
+  } else if (statusKey === "wawancara orang tua") {
+    currentStep = 1; // It is on step wawancara
+  } else if (statusKey === "lulus" || statusKey === "tidak lulus") {
+    currentStep = 3; // All done
+  }
+
+  const getStatusDesc = (s) => {
+    switch (s) {
+      case "menunggu verifikasi": return "Dokumen Anda sedang mengantre untuk diperiksa.";
+      case "perlu perbaikan": return "Ada dokumen yang perlu diperbaiki. Segera cek menu Unggah Dokumen.";
+      case "unggah ulang": return "Dokumen perbaikan telah diunggah, menunggu pemeriksaan kembali.";
+      case "terverifikasi": return "Dokumen valid dan lengkap. Menunggu tahap selanjutnya.";
+      case "wawancara orang tua": return "Silakan hadir untuk wawancara orang tua sesuai jadwal.";
+      case "lulus": return "Selamat! Anda dinyatakan Lulus seleksi PPDB.";
+      case "tidak lulus": return "Mohon maaf, Anda dinyatakan Tidak Lulus.";
+      default: return "";
+    }
   };
-
-  const statusKey = dataBackend.status;
-
-  // CONVERT KE INDEX
-  const currentStep = steps.findIndex((s) => s.key === statusKey);
 
   // PROGRESS WIDTH
   const progressWidth =
-    currentStep <= 0 ? 0 : (currentStep / (steps.length - 1)) * 100;
+    currentStep <= 0 ? 0 : currentStep >= steps.length ? 100 : (currentStep / (steps.length - 1)) * 100;
 
   return (
     <div className="p-4 md:p-6 bg-gray-100 min-h-screen relative">
@@ -101,6 +125,7 @@ export default function StatusVerifikasiPage() {
               <p className="text-sm text-gray-500 uppercase">
                 Status Pendaftaran
               </p>
+<<<<<<< HEAD
               <h2
                 className={`text-${status.status_pendaftaran === "menunggu verifikasi" ? "yellow" : "green"}-600 text-2xl font-semibold uppercase`}
               >
@@ -108,6 +133,13 @@ export default function StatusVerifikasiPage() {
               </h2>
               <p className="text-sm text-gray-500">
                 {steps.find((s) => s.key === statusKey)?.keterangan}
+=======
+              <h2 className={`text-${(statusKey === "menunggu verifikasi" || statusKey === "unggah ulang") ? "yellow" : statusKey === "perlu perbaikan" || statusKey === "tidak lulus" ? "red" : "green"}-600 text-2xl font-semibold uppercase`}>
+                {statusKey}
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                {getStatusDesc(statusKey)}
+>>>>>>> 2058f56 (refactor code)
               </p>
             </div>
           </div>

@@ -47,11 +47,27 @@ export const getById = async (id) => {
 };
 
 export const create = async (payload) => {
+    const tanggal_mulai = new Date(payload.tanggal_mulai);
+    const tanggal_selesai = new Date(payload.tanggal_selesai);
+
+    const overlap = await prisma.gelombang.findFirst({
+        where: {
+            AND: [
+                { tanggal_mulai: { lte: tanggal_selesai } },
+                { tanggal_selesai: { gte: tanggal_mulai } }
+            ]
+        }
+    });
+
+    if (overlap) {
+        throw new Error("Gagal menyimpan: Rentang tanggal bentrok dengan gelombang lain.");
+    }
+
     return prisma.gelombang.create({
         data: {
             nama: payload.nama,
-            tanggal_mulai: new Date(payload.tanggal_mulai),
-            tanggal_selesai: new Date(payload.tanggal_selesai),
+            tanggal_mulai,
+            tanggal_selesai,
             kuota: Number(payload.kuota)
         }
     });
@@ -64,6 +80,22 @@ export const update = async (id, payload) => {
     if (payload.tanggal_mulai) data.tanggal_mulai = new Date(payload.tanggal_mulai);
     if (payload.tanggal_selesai) data.tanggal_selesai = new Date(payload.tanggal_selesai);
     if (payload.kuota) data.kuota = Number(payload.kuota);
+
+    if (data.tanggal_mulai && data.tanggal_selesai) {
+        const overlap = await prisma.gelombang.findFirst({
+            where: {
+                id_gelombang: { not: Number(id) },
+                AND: [
+                    { tanggal_mulai: { lte: data.tanggal_selesai } },
+                    { tanggal_selesai: { gte: data.tanggal_mulai } }
+                ]
+            }
+        });
+
+        if (overlap) {
+            throw new Error("Gagal memperbarui: Rentang tanggal bentrok dengan gelombang lain.");
+        }
+    }
 
     return prisma.gelombang.update({
         where: {id_gelombang: Number(id)},

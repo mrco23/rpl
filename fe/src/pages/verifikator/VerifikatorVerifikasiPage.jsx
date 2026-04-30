@@ -29,7 +29,11 @@ import { useSearchParams } from "react-router-dom";
 } from '../../services/verifikatorVerifikasiService';
 import Skeleton from '@components/ui/Skeleton';
 import { STATUS_LABELS } from '../../constants/pendaftarStatus';
+<<<<<<< HEAD
 >>>>>>> 19ee1dc (feat(button): batal verifikasi)
+=======
+import { resolveDocumentUrl, extractFileNameFromUrl, downloadDocumentFile } from '../../utils/documentHelper.js';
+>>>>>>> 2058f56 (refactor code)
 
 export default function VerifikatorVerifikasiPage() {
   const [loading, setLoading] = useState(true);
@@ -141,8 +145,12 @@ export default function VerifikatorVerifikasiPage() {
 
   const openDocument = (url) => {
     if (!url) return;
+<<<<<<< HEAD
     const baseUrl = import.meta.env.VITE_API_URL.replace("/api", "");
     window.open(`${baseUrl}${url}`, "_blank");
+=======
+    window.open(resolveDocumentUrl(url), '_blank');
+>>>>>>> 2058f56 (refactor code)
   };
 
   // Logic Filtering
@@ -449,7 +457,13 @@ export default function VerifikatorVerifikasiPage() {
                 memulai proses verifikasi dokumen.
               </p>
             </div>
-          ) : (
+          ) : (() => {
+            const requiredDocs = ["Ijazah", "Foto Copy Akte Keluarga", "Foto Copy Kartu Keluarga", "Pas Foto"];
+            const isComplete = requiredDocs.every(reqDoc =>
+              assignedApplicant.dokumen?.some(d => d.nama_dokumen === reqDoc && d.jenis_dokumen)
+            );
+
+            return (
             <div className="h-full flex flex-col">
               <div className="p-6 lg:p-8 flex-1 overflow-y-auto custom-scrollbar">
                 {/* Header Kanan */}
@@ -521,6 +535,16 @@ export default function VerifikatorVerifikasiPage() {
                   </p>
                 </div>
 
+                {!isComplete && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-8 flex items-start gap-3">
+                    <AlertCircle size={20} className="text-red-500 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-sm font-bold text-red-700">Dokumen Belum Lengkap!</p>
+                      <p className="text-sm text-red-600 mt-1">Pendaftar belum mengunggah seluruh 4 dokumen wajib (Ijazah, Akte, KK, Pas Foto). Mohon beri catatan perbaikan.</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Dokumen Section */}
                 <div className="mb-4">
                   <h3 className="text-lg font-bold text-gray-900">
@@ -543,12 +567,17 @@ export default function VerifikatorVerifikasiPage() {
                         className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors bg-white"
                       >
                         <div className="flex flex-col min-w-0 mr-4">
+<<<<<<< HEAD
                           <span className="text-sm font-bold text-[#253b80]">
                             {doc.nama_dokumen}
                           </span>
                           <span className="text-xs text-gray-500 mt-0.5 truncate">
                             {doc.jenis_dokumen?.split("/").pop()}
                           </span>
+=======
+                          <span className="text-sm font-bold text-[#253b80]">{doc.nama_dokumen}</span>
+                          <span className="text-xs text-gray-500 mt-0.5 truncate">{extractFileNameFromUrl(doc.jenis_dokumen)}</span>
+>>>>>>> 2058f56 (refactor code)
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
                           <button
@@ -556,6 +585,12 @@ export default function VerifikatorVerifikasiPage() {
                             className="bg-[#253b80] hover:bg-blue-800 text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors cursor-pointer"
                           >
                             Lihat
+                          </button>
+                          <button
+                            onClick={() => downloadDocumentFile(doc.jenis_dokumen, `${assignedApplicant.nama_lengkap.replace(/\s+/g, '_')}_${doc.nama_dokumen.replace(/\s+/g, '_')}`)}
+                            className="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors cursor-pointer flex items-center gap-1"
+                          >
+                            <Download size={14} /> Download
                           </button>
                         </div>
                       </div>
@@ -627,7 +662,8 @@ export default function VerifikatorVerifikasiPage() {
                 </div>
               </div>
             </div>
-          )}
+            );
+          })}
         </div>
       </div>
 

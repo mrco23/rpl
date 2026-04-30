@@ -86,6 +86,10 @@ class PendaftarController {
 			if (!ids || !status) {
 				return res.status(400).json({ message: "ID pendaftar dan status harus diisi" });
 			}
+			const allowedStatuses = ["wawancara orang tua", "lulus", "tidak lulus"];
+			if (!allowedStatuses.includes(status.toLowerCase())) {
+				return res.status(400).json({ message: "Status tidak valid. Admin hanya boleh set 'wawancara orang tua', 'lulus', atau 'tidak lulus'" });
+			}
 			console.log({ ids, status });
 			await updateStatusMassal(ids, status);
 			return res

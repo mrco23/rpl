@@ -34,6 +34,16 @@ app.get("/", (req, res) => {
 	res.json({ message: "Backend Torang Bersih is Running!", status: "Healthy" });
 });
 
+// Centralized Error Handling Middleware
+app.use((err, req, res, next) => {
+	console.error("Global Error Handler:", err);
+	const statusCode = err.statusCode || 500;
+	res.status(statusCode).json({
+		message: err.message || "Terjadi kesalahan internal server",
+		...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+	});
+});
+
 app.listen(PORT, "0.0.0.0", () => {
 	console.log(`Server running on http://localhost:${PORT}`);
 });
