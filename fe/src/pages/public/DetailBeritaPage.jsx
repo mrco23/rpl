@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import newsService from "@services/newsService";
+import { formatMediumDate } from "../../utils/dateHelper";
 
 export default function NewsDetail() {
   const { id } = useParams();
@@ -76,11 +77,7 @@ export default function NewsDetail() {
   const displayDesc = data.deskripsi || data.isi || "Tidak ada rincian berita.";
   const dateRaw = data.tanggal_dibuat || data.created_at;
   const displayDate = dateRaw
-    ? new Date(dateRaw).toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    })
+    ? formatMediumDate(dateRaw)
     : "Tanggal tidak tersedia";
 
   return (

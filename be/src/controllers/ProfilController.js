@@ -121,6 +121,7 @@ export const getLandingPage = async (req, res) => {
 			data: ProfilService.serializeLandingPage(req, data),
 		});
 	} catch (error) {
+		console.error("[ProfilController] getLandingPage Error:", error);
 		return res.status(500).json({ message: error.message || "Gagal mengambil data landing page" });
 	}
 };
@@ -153,6 +154,7 @@ export const getFooter = async (req, res) => {
 			data: footerData,
 		});
 	} catch (error) {
+		console.error("[ProfilController] getFooter Error:", error);
 		return res.status(500).json({ message: error.message || "Gagal mengambil data footer" });
 	}
 };

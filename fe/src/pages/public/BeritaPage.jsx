@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { FiCalendar } from "react-icons/fi";
 import newsService from "@services/newsService";
 import CardSkeleton from "@components/features/CardSkeleton";
+import { formatMediumDate } from "../../utils/dateHelper";
 
 export default function BeritaPage() {
   const [news, setNews] = useState([]);
@@ -61,11 +62,7 @@ export default function BeritaPage() {
               {news.map((item, index) => {
                 const dateRaw = item.tanggal_dibuat || item.created_at;
                 const displayDate = dateRaw
-                  ? new Date(dateRaw).toLocaleDateString("id-ID", {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  })
+                  ? formatMediumDate(dateRaw)
                   : "Tanggal tidak tersedia";
 
                 return (

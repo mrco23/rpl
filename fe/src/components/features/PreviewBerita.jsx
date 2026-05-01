@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { FiCalendar } from "react-icons/fi";
 import MoreButton from "../ui/MoreButton";
+import { formatMediumDate } from "../../utils/dateHelper";
 
 export default function PreviewBerita({ data = [], loading }) {
   return (
@@ -65,11 +66,7 @@ export default function PreviewBerita({ data = [], loading }) {
                       <FiCalendar className="text-gray-400 text-[14px]" />
                       <span>
                         {item.tanggal
-                          ? new Date(item.tanggal).toLocaleDateString("id-ID", {
-                            day: "2-digit",
-                            month: "long",
-                            year: "numeric",
-                          })
+                          ? formatMediumDate(item.tanggal)
                           : "Tanggal tidak tersedia"}
                       </span>
                     </div>

@@ -197,6 +197,8 @@ export default function AdminProfilSekolahPage() {
       fd.append("misi", createData.misi);
       fd.append("nama_kepala_sekolah", createData.nama_kepala_sekolah);
       fd.append("kata_sambutan", createData.kata_sambutan);
+      fd.append("akreditasi", createData.akreditasi);
+      fd.append("nomor_sk_akreditasi", createData.nomor_sk_akreditasi);
       if (createImage) fd.append("foto_kepala_sekolah", createImage);
 
       await createProfile(fd);
@@ -316,6 +318,41 @@ export default function AdminProfilSekolahPage() {
                 }
                 className="w-full border border-gray-300 rounded-md px-3 py-2 resize-none"
               />
+            </div>
+            <div className="flex items-center justify-center w-full gap-5">
+              <div className="w-1/4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Akreditasi
+                </label>
+                <select
+                  required
+                  value={createData.akreditasi}
+                  onChange={(e) =>
+                    setCreateData({ ...createData, akreditasi: e.target.value })
+                  }
+                  className="w-full text-center font-bold border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+                >
+                  <option value="">Pilih</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              </div>
+              <div className="w-3/4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nomor SK Akreditasi
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={createData.nomor_sk_akreditasi}
+                  onChange={(e) =>
+                    setCreateData({ ...createData, nomor_sk_akreditasi: e.target.value })
+                  }
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+                />
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">

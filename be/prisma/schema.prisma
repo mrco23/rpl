@@ -184,6 +184,8 @@ model Pendaftar {
   tanggal_daftar     DateTime  @default(now())
   id_gelombang       Int?
   id_verifikator     Int?
+  resetPasswordToken   String?   @unique
+  resetPasswordExpires DateTime?
 
   alamat               Alamat?
   dokumen              Dokumen[]

@@ -143,7 +143,7 @@ export const upsertKontak = async (id_admin, payload) => {
 };
 
 export const serialize = (req, data) => {
-	if (!data.profil && !data.kontak) return null;
+	if (!data || (!data.profil && !data.kontak)) return null;
 
 	const profil = data.profil || {};
 	const kontak = data.kontak || {};
@@ -192,8 +192,10 @@ export const getLandingPageData = async () => {
 		orderBy: { id_prestasi: "desc" },
 		take: 3,
 		select: {
+			id_prestasi: true,
 			gambar_prestasi: true,
 			judul_prestasi: true,
+			peraih_prestasi: true,
 			deskripsi: true,
 		},
 	});
@@ -212,6 +214,7 @@ export const getLandingPageData = async () => {
 		orderBy: { tanggal_dibuat: "desc" },
 		take: 3,
 		select: {
+			id_berita: true,
 			gambar_berita: true,
 			tanggal_dibuat: true,
 			judul_berita: true,
@@ -238,18 +241,28 @@ export const getLandingPageData = async () => {
 };
 
 export const serializeLandingPage = (req, data) => {
+	if (!data) return null;
+
 	return {
-		total_data: data.total_data,
-		fasilitas: data.fasilitas.map((f) => ({
+		total_data: data.total_data || {
+			program_unggulan: 0,
+			fasilitas: 0,
+			ekstrakurikuler: 0,
+			prestasi: 0,
+		},
+		fasilitas: (data.fasilitas || []).map((f) => ({
 			gambar: buildFileUrl(req, f.gambar_fasilitas),
 			nama_fasilitas: f.nama_fasilitas,
 		})),
-		prestasi: data.prestasi.map((p) => ({
+		prestasi: (data.prestasi || []).map((p) => ({
+			id_prestasi: p.id_prestasi,
 			gambar: buildFileUrl(req, p.gambar_prestasi),
 			nama_prestasi: p.judul_prestasi,
+			peraih: p.peraih_prestasi,
 			deskripsi: p.deskripsi,
 		})),
-		berita: data.berita_terbaru.map((b) => ({
+		berita: (data.berita_terbaru || []).map((b) => ({
+			id_berita: b.id_berita,
 			gambar: buildFileUrl(req, b.gambar_berita),
 			judul: b.judul_berita,
 			deskripsi: b.deskripsi,
@@ -262,7 +275,10 @@ export const serializeLandingPage = (req, data) => {
 					kata_sambutan: data.profil_kepala_sekolah.kata_sambutan,
 				}
 			: null,
-		akreditasi_sekolah: data.akreditasi_sekolah,
+		akreditasi_sekolah: data.akreditasi_sekolah || {
+			akreditasi: "",
+			nomor_sk_akreditasi: "",
+		},
 	};
 };
 

@@ -8,6 +8,7 @@ import {
   CalendarDays,
 } from "lucide-react";
 import api from "../../services/api.js";
+import { formatMediumDate } from "../../utils/dateHelper";
 
 function BerandaPendaftarPage() {
   const [biodata, setBiodata] = useState(null);
@@ -32,11 +33,7 @@ function BerandaPendaftarPage() {
   const formatTanggalLahir = (tempat, tanggal) => {
     if (!tempat && !tanggal) return "-";
     if (!tanggal) return tempat || "-";
-    const tgl = new Date(tanggal).toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
+    const tgl = formatMediumDate(tanggal);
     return tempat ? `${tempat}, ${tgl}` : tgl;
   };
 

@@ -26,6 +26,7 @@ import Skeleton from "@components/ui/Skeleton";
 import { STATUS_LABELS } from "../../constants/pendaftarStatus";
 import { useSearchParams } from "react-router-dom";
 import { resolveDocumentUrl, extractFileNameFromUrl, downloadDocumentFile } from '../../utils/documentHelper.js';
+import { formatMediumDate } from "../../utils/dateHelper";
 
 export default function VerifikatorVerifikasiPage() {
   const [loading, setLoading] = useState(true);
@@ -187,12 +188,7 @@ export default function VerifikatorVerifikasiPage() {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    return new Date(dateString).toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+    return formatMediumDate(dateString);
   };
 
   const stats = {
@@ -444,200 +440,20 @@ export default function VerifikatorVerifikasiPage() {
                 memulai proses verifikasi dokumen.
               </p>
             </div>
-          ) : (() => {
-            const requiredDocs = ["Ijazah", "Foto Copy Akte Keluarga", "Foto Copy Kartu Keluarga", "Pas Foto"];
-            const isComplete = requiredDocs.every(reqDoc =>
-              assignedApplicant.dokumen?.some(d => d.nama_dokumen === reqDoc && d.jenis_dokumen)
-            );
-
-            return (
-            <div className="h-full flex flex-col">
-              <div className="p-6 lg:p-8 flex-1 overflow-y-auto custom-scrollbar">
-                {/* Header Kanan */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                  <h2 className="text-xl font-bold text-gray-900">
-                    Data Verifikasi
-                  </h2>
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="flex items-center gap-2 text-[#253b80] text-sm font-semibold px-4 py-2 border border-[#253b80] rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
-                  >
-                    Lihat Biodata Lengkap <ArrowRight size={16} />
-                  </button>
-                </div>
-
-                {/* Active User Card */}
-                <div className="bg-blue-50/60 border border-blue-100 rounded-xl p-5 mb-6 flex flex-col sm:flex-row items-start justify-between gap-4">
-                  <div className="flex gap-4">
-                    <div className="w-14 h-14 rounded-full bg-orange-200 flex items-center justify-center text-orange-600 text-xl font-bold uppercase shrink-0">
-                      {assignedApplicant.nama_lengkap?.charAt(0)}
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-base text-gray-900">
-                        {assignedApplicant.nama_lengkap}
-                      </span>
-                      <span className="text-xs text-gray-600 mt-0.5">
-                        NISN : {assignedApplicant.nisn}
-                      </span>
-                      <div className="mt-1 mb-1">
-                        <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${getStatusStyle(assignedApplicant)}`}
-                        >
-                          {STATUS_LABELS[
-                            assignedApplicant.status_pendaftaran
-                          ] || assignedApplicant.status_pendaftaran}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-gray-500">
-                        Mendaftar:{" "}
-                        {formatDate(assignedApplicant.tanggal_daftar)}
-                      </span>
-                    </div>
-                  </div>
-                  <span className="px-3 py-1 bg-blue-600 text-white border border-blue-700 text-xs font-bold rounded-full sm:mt-2">
-                    Sedang Diperiksa
-                  </span>
-                </div>
-
-                {/* Status Alert */}
-                <div
-                  className={`border rounded-xl p-4 mb-8 flex flex-col gap-1 ${assignedApplicant.status_pendaftaran === "menunggu verifikasi" ? "bg-[#fff9e6] border-yellow-200" : "bg-blue-50 border-blue-200"}`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-gray-800">
-                      Status saat ini :
-                    </span>
-                    <span
-                      className={`px-2 py-0.5 rounded text-[11px] font-bold uppercase ${getStatusStyle(assignedApplicant)}`}
-                    >
-                      {STATUS_LABELS[assignedApplicant.status_pendaftaran] ||
-                        assignedApplicant.status_pendaftaran}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    {assignedApplicant.status_pendaftaran ===
-                    "menunggu verifikasi"
-                      ? "Dokumen belum pernah diperiksa"
-                      : "Pendaftar sedang memperbaiki dokumen"}
-                  </p>
-                </div>
-
-                {!isComplete && (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-8 flex items-start gap-3">
-                    <AlertCircle size={20} className="text-red-500 mt-0.5 shrink-0" />
-                    <div>
-                      <p className="text-sm font-bold text-red-700">Dokumen Belum Lengkap!</p>
-                      <p className="text-sm text-red-600 mt-1">Pendaftar belum mengunggah seluruh 4 dokumen wajib (Ijazah, Akte, KK, Pas Foto). Mohon beri catatan perbaikan.</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Dokumen Section */}
-                <div className="mb-4">
-                  <h3 className="text-lg font-bold text-gray-900">
-                    Dokumen Yang Diunggah
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    Periksa setiap dokumen dengan teliti
-                  </p>
-                </div>
-
-                <div className="space-y-3 mb-4">
-                  {assignedApplicant.dokumen?.length === 0 ? (
-                    <div className="p-10 text-center border-2 border-dashed border-gray-100 rounded-xl text-gray-400">
-                      Belum ada dokumen yang diunggah
-                    </div>
-                  ) : (
-                    assignedApplicant.dokumen?.map((doc) => (
-                      <div
-                        key={doc.id_dokumen}
-                        className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors bg-white"
-                      >
-                        <div className="flex flex-col min-w-0 mr-4">
-                          <span className="text-sm font-bold text-[#253b80]">{doc.nama_dokumen}</span>
-                          <span className="text-xs text-gray-500 mt-0.5 truncate">{extractFileNameFromUrl(doc.jenis_dokumen)}</span>
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <button
-                            onClick={() => openDocument(doc.jenis_dokumen)}
-                            className="bg-[#253b80] hover:bg-blue-800 text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors cursor-pointer"
-                          >
-                            Lihat
-                          </button>
-                          <button
-                            onClick={() => downloadDocumentFile(doc.jenis_dokumen, `${assignedApplicant.nama_lengkap.replace(/\s+/g, '_')}_${doc.nama_dokumen.replace(/\s+/g, '_')}`)}
-                            className="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors cursor-pointer flex items-center gap-1"
-                          >
-                            <Download size={14} /> Download
-                          </button>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-
-                {/* Info Banner */}
-                <div className="flex items-start gap-3 bg-white mb-8 mt-4 p-4 border border-blue-100 rounded-xl">
-                  <div className="mt-0.5 text-blue-600 bg-blue-100 p-1 rounded-full shrink-0">
-                    <Info size={16} strokeWidth={2.5} />
-                  </div>
-                  <p className="text-sm text-blue-900 font-medium leading-snug">
-                    Pastikan semua informasi dalam dokumen sesuai dengan data
-                    biodata.
-                    <br className="hidden md:block" />
-                    Isi catatan jika ada dokumen yang tidak sesuai atau tidak
-                    jelas.
-                  </p>
-                </div>
-
-                {/* Form Catatan & Action */}
-                <div className="mt-auto pt-4 border-t border-gray-100">
-                  <h3 className="text-sm font-bold text-[#253b80] mb-2 uppercase tracking-wide">
-                    Catatan Verifikasi
-                  </h3>
-                  <p className="text-xs text-gray-500 mb-3 font-medium font-italic">
-                    * Wajib diisi jika status "Perlu Perbaiki" dipilih
-                  </p>
-                  <textarea
-                    value={catatan}
-                    onChange={(e) => setCatatan(e.target.value)}
-                    className="w-full border border-gray-300 rounded-xl p-4 text-sm text-gray-800 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 mb-6 transition-all bg-gray-50/30"
-                    placeholder="Contoh: Foto KK kurang jelas, mohon unggah ulang foto yang lebih tajam..."
-                  ></textarea>
-
-                  <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
-                    <button
-                      onClick={() => handleVerifyAction("terverifikasi")}
-                      disabled={actionLoading}
-                      className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-green-500 text-green-600 rounded-xl text-sm font-bold hover:bg-green-50 transition-all cursor-pointer disabled:opacity-50"
-                    >
-                      Verifikasi & Lanjutkan <Check size={18} strokeWidth={3} />
-                    </button>
-                    <button
-                      onClick={() => handleVerifyAction("perlu perbaikan")}
-                      disabled={actionLoading}
-                      className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-red-500 text-red-500 rounded-xl text-sm font-bold hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
-                    >
-                      Minta Perbaikan <X size={18} strokeWidth={3} />
-                    </button>
-                    <button
-                      onClick={() => handleCancel()}
-                      disabled={actionLoading}
-                      className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-500 text-gray-500 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
-                    >
-                      Batal <X size={18} strokeWidth={3} />
-                    </button>
-                  </div>
-
-                  <p className="text-[11px] text-center text-gray-400 mt-2">
-                    Setelah melakukan tindakan, data pendaftar ini akan keluar
-                    dari penanganan Anda.
-                  </p>
-                </div>
-              </div>
-            </div>
-            );
-          })()}
+          ) : (
+            <AssignedApplicantDetail
+              assignedApplicant={assignedApplicant}
+              getStatusStyle={getStatusStyle}
+              formatDate={formatDate}
+              catatan={catatan}
+              setCatatan={setCatatan}
+              actionLoading={actionLoading}
+              handleVerifyAction={handleVerifyAction}
+              handleCancel={handleCancel}
+              openDocument={openDocument}
+              setIsModalOpen={setIsModalOpen}
+            />
+          )}
         </div>
       </div>
 
@@ -816,7 +632,213 @@ export default function VerifikatorVerifikasiPage() {
   );
 }
 
-// Sub-komponen chips
+// Sub-komponen untuk detail pendaftar yang sedang diperiksa (kolom kanan)
+function AssignedApplicantDetail({
+  assignedApplicant,
+  getStatusStyle,
+  formatDate,
+  catatan,
+  setCatatan,
+  actionLoading,
+  handleVerifyAction,
+  handleCancel,
+  openDocument,
+  setIsModalOpen,
+}) {
+  const requiredDocs = ["Ijazah", "Foto Copy Akte Kelahiran", "Foto Copy Kartu Keluarga", "Pas Foto"];
+  const isComplete = requiredDocs.every(reqDoc =>
+    assignedApplicant.dokumen?.some(d => d.nama_dokumen === reqDoc && d.jenis_dokumen)
+  );
+
+  return (
+    <div className="h-full flex flex-col">
+      <div className="p-6 lg:p-8 flex-1 overflow-y-auto custom-scrollbar">
+        {/* Header Kanan */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h2 className="text-xl font-bold text-gray-900">
+            Data Verifikasi
+          </h2>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 text-[#253b80] text-sm font-semibold px-4 py-2 border border-[#253b80] rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
+          >
+            Lihat Biodata Lengkap <ArrowRight size={16} />
+          </button>
+        </div>
+
+        {/* Active User Card */}
+        <div className="bg-blue-50/60 border border-blue-100 rounded-xl p-5 mb-6 flex flex-col sm:flex-row items-start justify-between gap-4">
+          <div className="flex gap-4">
+            <div className="w-14 h-14 rounded-full bg-orange-200 flex items-center justify-center text-orange-600 text-xl font-bold uppercase shrink-0">
+              {assignedApplicant.nama_lengkap?.charAt(0)}
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-base text-gray-900">
+                {assignedApplicant.nama_lengkap}
+              </span>
+              <span className="text-xs text-gray-600 mt-0.5">
+                NISN : {assignedApplicant.nisn}
+              </span>
+              <div className="mt-1 mb-1">
+                <span
+                  className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${getStatusStyle(assignedApplicant)}`}
+                >
+                  {STATUS_LABELS[
+                    assignedApplicant.status_pendaftaran
+                  ] || assignedApplicant.status_pendaftaran}
+                </span>
+              </div>
+              <span className="text-[11px] text-gray-500">
+                Mendaftar:{" "}
+                {formatDate(assignedApplicant.tanggal_daftar)}
+              </span>
+            </div>
+          </div>
+          <span className="px-3 py-1 bg-blue-600 text-white border border-blue-700 text-xs font-bold rounded-full sm:mt-2">
+            Sedang Diperiksa
+          </span>
+        </div>
+
+        {/* Status Alert */}
+        <div
+          className={`border rounded-xl p-4 mb-8 flex flex-col gap-1 ${assignedApplicant.status_pendaftaran === "menunggu verifikasi" ? "bg-[#fff9e6] border-yellow-200" : "bg-blue-50 border-blue-200"}`}
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-gray-800">
+              Status saat ini :
+            </span>
+            <span
+              className={`px-2 py-0.5 rounded text-[11px] font-bold uppercase ${getStatusStyle(assignedApplicant)}`}
+            >
+              {STATUS_LABELS[assignedApplicant.status_pendaftaran] ||
+                assignedApplicant.status_pendaftaran}
+            </span>
+          </div>
+          <p className="text-sm text-gray-600">
+            {assignedApplicant.status_pendaftaran ===
+            "menunggu verifikasi"
+              ? "Dokumen belum pernah diperiksa"
+              : "Pendaftar sedang memperbaiki dokumen"}
+          </p>
+        </div>
+
+        {!isComplete && (
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-8 flex items-start gap-3">
+            <AlertCircle size={20} className="text-red-500 mt-0.5 shrink-0" />
+            <div>
+              <p className="text-sm font-bold text-red-700">Dokumen Belum Lengkap!</p>
+              <p className="text-sm text-red-600 mt-1">Pendaftar belum mengunggah seluruh 4 dokumen wajib (Ijazah, Akte, KK, Pas Foto). Mohon beri catatan perbaikan.</p>
+            </div>
+          </div>
+        )}
+
+        {/* Dokumen Section */}
+        <div className="mb-4">
+          <h3 className="text-lg font-bold text-gray-900">
+            Dokumen Yang Diunggah
+          </h3>
+          <p className="text-sm text-gray-500">
+            Periksa setiap dokumen dengan teliti
+          </p>
+        </div>
+
+        <div className="space-y-3 mb-4">
+          {assignedApplicant.dokumen?.length === 0 ? (
+            <div className="p-10 text-center border-2 border-dashed border-gray-100 rounded-xl text-gray-400">
+              Belum ada dokumen yang diunggah
+            </div>
+          ) : (
+            assignedApplicant.dokumen?.map((doc) => (
+              <div
+                key={doc.id_dokumen}
+                className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors bg-white"
+              >
+                <div className="flex flex-col min-w-0 mr-4">
+                  <span className="text-sm font-bold text-[#253b80]">{doc.nama_dokumen}</span>
+                  <span className="text-xs text-gray-500 mt-0.5 truncate">{extractFileNameFromUrl(doc.jenis_dokumen)}</span>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => openDocument(doc.jenis_dokumen)}
+                    className="bg-[#253b80] hover:bg-blue-800 text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors cursor-pointer"
+                  >
+                    Lihat
+                  </button>
+                  <button
+                    onClick={() => downloadDocumentFile(doc.jenis_dokumen, `${assignedApplicant.nama_lengkap.replace(/\s+/g, '_')}_${doc.nama_dokumen.replace(/\s+/g, '_')}`)}
+                    className="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors cursor-pointer flex items-center gap-1"
+                  >
+                    <Download size={14} /> Download
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Info Banner */}
+        <div className="flex items-start gap-3 bg-white mb-8 mt-4 p-4 border border-blue-100 rounded-xl">
+          <div className="mt-0.5 text-blue-600 bg-blue-100 p-1 rounded-full shrink-0">
+            <Info size={16} strokeWidth={2.5} />
+          </div>
+          <p className="text-sm text-blue-900 font-medium leading-snug">
+            Pastikan semua informasi dalam dokumen sesuai dengan data
+            biodata.
+            <br className="hidden md:block" />
+            Isi catatan jika ada dokumen yang tidak sesuai atau tidak
+            jelas.
+          </p>
+        </div>
+
+        {/* Form Catatan & Action */}
+        <div className="mt-auto pt-4 border-t border-gray-100">
+          <h3 className="text-sm font-bold text-[#253b80] mb-2 uppercase tracking-wide">
+            Catatan Verifikasi
+          </h3>
+          <p className="text-xs text-gray-500 mb-3 font-medium font-italic">
+            * Wajib diisi jika status "Perlu Perbaiki" dipilih
+          </p>
+          <textarea
+            value={catatan}
+            onChange={(e) => setCatatan(e.target.value)}
+            className="w-full border border-gray-300 rounded-xl p-4 text-sm text-gray-800 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 mb-6 transition-all bg-gray-50/30"
+            placeholder="Contoh: Foto KK kurang jelas, mohon unggah ulang foto yang lebih tajam..."
+          ></textarea>
+
+          <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
+            <button
+              onClick={() => handleVerifyAction("terverifikasi")}
+              disabled={actionLoading}
+              className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-green-500 text-green-600 rounded-xl text-sm font-bold hover:bg-green-50 transition-all cursor-pointer disabled:opacity-50"
+            >
+              Verifikasi & Lanjutkan <Check size={18} strokeWidth={3} />
+            </button>
+            <button
+              onClick={() => handleVerifyAction("perlu perbaikan")}
+              disabled={actionLoading}
+              className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-red-500 text-red-500 rounded-xl text-sm font-bold hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
+            >
+              Minta Perbaikan <X size={18} strokeWidth={3} />
+            </button>
+            <button
+              onClick={() => handleCancel()}
+              disabled={actionLoading}
+              className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-500 text-gray-500 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+            >
+              Batal <X size={18} strokeWidth={3} />
+            </button>
+          </div>
+
+          <p className="text-[11px] text-center text-gray-400 mt-2">
+            Setelah melakukan tindakan, data pendaftar ini akan keluar
+            dari penanganan Anda.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FilterChip({ label, count, active, onClick }) {
   return (
     <button

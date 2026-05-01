@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { getPendaftarPengumuman } from "../../services/pendaftarPengumumanService";
 import Skeleton from "../../components/ui/Skeleton";
+import { formatMediumDate } from "../../utils/dateHelper";
 
 function PendaftarPengumumanPage() {
   const [dataPengumuman, setDataPengumuman] = useState([]);
@@ -39,13 +40,7 @@ function PendaftarPengumumanPage() {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
+    return formatMediumDate(dateString);
   };
 
   const formatTime = (dateString) => {

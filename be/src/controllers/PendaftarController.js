@@ -7,8 +7,14 @@ import {
 	getAllPendaftar,
 	updateStatusMassal,
 	updatePassword,
+	getPendaftarByEmail,
+	setResetToken,
+	getPendaftarByResetToken,
+	clearResetToken,
 } from "../services/PendaftarService.js";
 import { generateToken } from "../utils/jwt.js";
+import { nanoid } from "nanoid";
+import EmailService from "../services/EmailService.js";
 
 class PendaftarController {
 	register = async (req, res) => {
@@ -151,6 +157,83 @@ class PendaftarController {
 			return res
 				.status(500)
 				.json({ message: "Gagal mengambil status pendaftar", error: error.message });
+		}
+	};
+
+	forgotPassword = async (req, res) => {
+		try {
+			const { email } = req.body;
+			if (!email) return res.status(400).json({ message: "Email wajib diisi" });
+
+			const pendaftar = await getPendaftarByEmail(email);
+			
+			// Generic message to avoid email enumeration
+			const successMessage = "Jika email terdaftar, link ubah kata sandi telah dikirim.";
+
+			if (pendaftar) {
+				const token = nanoid(32);
+				const expires = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
+
+				await setResetToken(pendaftar.id_pendaftar, token, expires);
+				await EmailService.sendResetPasswordEmail(pendaftar.email, pendaftar.nama_lengkap, token);
+			}
+
+			return res.status(200).json({ message: successMessage });
+		} catch (error) {
+			console.error("Forgot Password Error:", error);
+			return res.status(500).json({ message: "Terjadi kesalahan saat memproses permintaan reset password" });
+		}
+	};
+
+	validateResetToken = async (req, res) => {
+		try {
+			const { token } = req.params;
+			if (!token) return res.status(400).json({ message: "Token tidak valid" });
+
+			const pendaftar = await getPendaftarByResetToken(token);
+			if (!pendaftar) return res.status(400).json({ message: "Token tidak valid atau telah kadaluarsa" });
+
+			return res.status(200).json({ 
+				message: "Token valid", 
+				data: { 
+					nama: pendaftar.nama_lengkap,
+					nisn: pendaftar.nisn 
+				} 
+			});
+		} catch (error) {
+			return res.status(500).json({ message: "Gagal memvalidasi token" });
+		}
+	};
+
+	resetPassword = async (req, res) => {
+		try {
+			const { token, newPassword, confirmPassword } = req.body;
+			
+			if (!token || !newPassword || !confirmPassword) {
+				return res.status(400).json({ message: "Data tidak lengkap" });
+			}
+
+			if (newPassword !== confirmPassword) {
+				return res.status(400).json({ message: "Konfirmasi kata sandi tidak cocok" });
+			}
+
+			// Password policy validation
+			const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+			if (!passwordRegex.test(newPassword)) {
+				return res.status(400).json({ 
+					message: "Kata sandi harus minimal 8 karakter, mengandung huruf besar, huruf kecil, angka, dan simbol" 
+				});
+			}
+
+			const pendaftar = await getPendaftarByResetToken(token);
+			if (!pendaftar) return res.status(400).json({ message: "Token tidak valid atau telah kadaluarsa" });
+
+			await updatePassword(pendaftar.id_pendaftar, newPassword);
+			await clearResetToken(pendaftar.id_pendaftar);
+
+			return res.status(200).json({ message: "Kata sandi berhasil direset. Silakan login kembali." });
+		} catch (error) {
+			return res.status(500).json({ message: "Gagal mereset kata sandi" });
 		}
 	};
 }

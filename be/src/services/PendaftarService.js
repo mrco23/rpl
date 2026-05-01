@@ -78,10 +78,46 @@ export const getPendaftar = async (nisn) => {
 		include: { alamat: true },
 	});
 	if (pendaftar) {
-		const { kata_sandi, ...pendaftarTanpaSandi } = pendaftar;
-		return { ...pendaftarTanpaSandi, id: pendaftar.id_pendaftar };
+		return { ...pendaftar, id: pendaftar.id_pendaftar };
 	}
 	return null;
+};
+
+export const getPendaftarByEmail = async (email) => {
+	return await prisma.pendaftar.findFirst({
+		where: { email },
+	});
+};
+
+export const setResetToken = async (id, token, expires) => {
+	return await prisma.pendaftar.update({
+		where: { id_pendaftar: Number(id) },
+		data: {
+			resetPasswordToken: token,
+			resetPasswordExpires: expires,
+		},
+	});
+};
+
+export const getPendaftarByResetToken = async (token) => {
+	return await prisma.pendaftar.findFirst({
+		where: {
+			resetPasswordToken: token,
+			resetPasswordExpires: {
+				gt: new Date(),
+			},
+		},
+	});
+};
+
+export const clearResetToken = async (id) => {
+	return await prisma.pendaftar.update({
+		where: { id_pendaftar: Number(id) },
+		data: {
+			resetPasswordToken: null,
+			resetPasswordExpires: null,
+		},
+	});
 };
 
 export const getPendaftarById = async (id) => {

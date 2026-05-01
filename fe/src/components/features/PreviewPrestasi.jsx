@@ -59,7 +59,7 @@ export default function PreviewPrestasi({ data = [], loading }) {
                 {/* Content */}
                 <div className="p-4">
                   <h3 className="text-blue-900 font-semibold text-xl">{item.nama_prestasi}</h3>
-                  <p className="text-xs text-blue-800 font-medium">Peraih Prestasi</p>
+                  <p className="text-xs text-blue-800 font-medium">{item.peraih || "Siswa Sekolah"}</p>
                   <p className="text-sm text-blue-800 font-medium mt-2 leading-relaxed line-clamp-3">
                     {item.deskripsi}
                   </p>

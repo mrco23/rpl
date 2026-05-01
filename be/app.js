@@ -13,12 +13,19 @@ const PORT = process.env.PORT || 3000;
 app.use(morgan("dev"));
 app.use(
 	cors({
-		origin: [
-			"http://localhost:5173",
-			"https://vicious-kore-mrco23-5f44984d.koyeb.app",
-			"https://smpkatolikstrafael.netlify.app",
-			"https://smpkatolikstrafael.vercel.app",
-		],
+		origin: (origin, callback) => {
+			const allowedOrigins = [
+				"http://localhost:5173",
+				"https://vicious-kore-mrco23-5f44984d.koyeb.app",
+				"https://smpkatolikstrafael.netlify.app",
+				"https://smpkatolikstrafael.vercel.app",
+			];
+			if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+				callback(null, true);
+			} else {
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
 		methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 		allowedHeaders: "*",
 		credentials: true,
@@ -44,6 +51,10 @@ app.use((err, req, res, next) => {
 	});
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-	console.log(`Server running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "production" || process.env.VERCEL !== "1") {
+	app.listen(PORT, "0.0.0.0", () => {
+		console.log(`Server running on http://localhost:${PORT}`);
+	});
+}
+
+export default app;

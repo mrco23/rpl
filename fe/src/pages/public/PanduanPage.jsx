@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaCalendarAlt, FaCheck, FaThumbtack } from "react-icons/fa";
 import { waveApi } from "@services/waveService";
+import { formatMediumDate } from "../../utils/dateHelper";
 
 export default function PanduanPage() {
   const [gelombang, setGelombang] = useState(null);
@@ -47,15 +48,7 @@ export default function PanduanPage() {
               gelombang ? (
                 <>
                   <p className="text-md font-medium">Pendaftaran Dibuka {gelombang.nama ? <span className="text-blue-600">({gelombang.nama})</span> : ""}</p>
-                  <p className="text-xs text-gray-500">{new Date(gelombang.tanggal_mulai).toLocaleDateString("id-ID", {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  })} - {new Date(gelombang.tanggal_selesai).toLocaleDateString("id-ID", {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  })}</p>
+                  <p className="text-xs text-gray-500">{formatMediumDate(gelombang.tanggal_mulai)} - {formatMediumDate(gelombang.tanggal_selesai)}</p>
                 </>
               ) : (
                 <>

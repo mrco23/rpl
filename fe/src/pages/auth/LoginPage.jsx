@@ -8,6 +8,9 @@ import {
 } from "@services/authService.js";
 import useAuth from "@contexts/useAuth.js";
 import { useNavigate, Link } from "react-router";
+import Modal from "../../components/ui/Modal.jsx";
+import { forgotPassword as forgotPasswordApi } from "../../services/pendaftarService.js";
+import { Info, CheckCircle2 } from "lucide-react";
 
 export default function LoginPage() {
   const [role, setRole] = useState("pendaftar");
@@ -18,6 +21,11 @@ export default function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotSuccess, setForgotSuccess] = useState(false);
+  const [forgotError, setForgotError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -104,6 +112,27 @@ export default function LoginPage() {
       setError(err.response?.data?.message || "Login gagal");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    if (!forgotEmail) {
+      setForgotError("Email wajib diisi");
+      return;
+    }
+
+    setForgotLoading(true);
+    setForgotError("");
+
+    try {
+      await forgotPasswordApi(forgotEmail);
+      setForgotSuccess(true);
+    } catch (err) {
+      // Generic success message to maintain security policy
+      setForgotSuccess(true);
+    } finally {
+      setForgotLoading(false);
     }
   };
 
@@ -200,13 +229,17 @@ export default function LoginPage() {
               </span>
             </div>
             <p className="text-xs text-end mt-2">
-              {" "}
-              <Link
-                to={"/ubah-kata-sandi"}
-                className="text-slate-500 font-medium active:text-blue-800 cursor-pointer"
+              <button
+                type="button"
+                onClick={() => {
+                  setForgotError("");
+                  setForgotSuccess(false);
+                  setShowForgotModal(true);
+                }}
+                className="text-slate-500 font-medium active:text-blue-800 cursor-pointer border-none bg-transparent p-0"
               >
                 Lupa kata sandi?
-              </Link>
+              </button>
             </p>
           </div>
 
@@ -248,6 +281,73 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
+
+      {/* FORGOT PASSWORD MODAL */}
+      <Modal 
+        open={showForgotModal} 
+        onClose={() => !forgotLoading && setShowForgotModal(false)} 
+        title={forgotSuccess ? "Email Terkirim" : "Lupa Kata Sandi"}
+      >
+        <div className="p-2">
+          {!forgotSuccess ? (
+            <form onSubmit={handleForgotPassword}>
+              <div className="flex items-center gap-3 bg-blue-50 p-4 rounded-xl mb-6 border border-blue-100">
+                <Info className="text-blue-600 shrink-0" size={20} />
+                <p className="text-sm text-blue-800 leading-relaxed">
+                  Masukkan alamat email Anda yang terdaftar. Kami akan mengirimkan tautan untuk mereset kata sandi Anda.
+                </p>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Alamat Email</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="nama@email.com"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition"
+                />
+                {forgotError && <p className="text-red-500 text-xs mt-2">{forgotError}</p>}
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <button
+                  type="submit"
+                  disabled={forgotLoading}
+                  className="w-full bg-blue-dark text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition-colors disabled:opacity-50 cursor-pointer shadow-md"
+                >
+                  {forgotLoading ? "Mengirim..." : "Kirim Link Reset"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowForgotModal(false)}
+                  disabled={forgotLoading}
+                  className="w-full py-3 text-gray-500 font-medium hover:text-gray-800 transition-colors cursor-pointer"
+                >
+                  Batal
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="flex flex-col items-center text-center py-4">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                <CheckCircle2 size={48} className="text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Periksa Email Anda</h3>
+              <p className="text-gray-600 mb-8 max-w-sm leading-relaxed">
+                Tautan untuk mengatur ulang kata sandi Anda telah dikirim ke <strong>{forgotEmail}</strong> jika alamat tersebut terdaftar dalam sistem kami.
+              </p>
+              <button
+                onClick={() => setShowForgotModal(false)}
+                className="w-full bg-blue-dark text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition-colors cursor-pointer shadow-md"
+              >
+                Tutup
+              </button>
+            </div>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import hero from "@assets/hero.png";
 import { Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { changePasswordService } from "@services/authService.js";
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link, useSearchParams } from "react-router";
 import Modal from "../../components/ui/Modal.jsx";
+import { validateResetToken, resetPassword as resetPasswordApi } from "../../services/pendaftarService.js";
+import { useEffect } from "react";
 
 export default function UbahKataSandiPage() {
   const [showPassword, setShowPassword] = useState({
@@ -16,12 +18,37 @@ export default function UbahKataSandiPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
+  const isResetMode = !!token;
+
+  const [accountInfo, setAccountInfo] = useState(null);
+  const [isValidatingToken, setIsValidatingToken] = useState(isResetMode);
+
   const [formData, setFormData] = useState({
     nisn: "",
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
+
+  useEffect(() => {
+    if (isResetMode) {
+      handleValidateToken();
+    }
+  }, [token]);
+
+  const handleValidateToken = async () => {
+    try {
+      setIsValidatingToken(true);
+      const res = await validateResetToken(token);
+      setAccountInfo(res.data);
+    } catch (err) {
+      setError(err.response?.data?.message || "Token tidak valid atau telah kadaluarsa");
+    } finally {
+      setIsValidatingToken(false);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,8 +63,13 @@ export default function UbahKataSandiPage() {
     setError("");
 
     // Frontend Validation
-    if (!formData.nisn || !formData.oldPassword || !formData.newPassword || !formData.confirmPassword) {
-      setError("Semua field wajib diisi");
+    if (!isResetMode && (!formData.nisn || !formData.oldPassword)) {
+      setError("NISN dan kata sandi lama wajib diisi");
+      return;
+    }
+
+    if (!formData.newPassword || !formData.confirmPassword) {
+      setError("Kata sandi baru wajib diisi");
       return;
     }
 
@@ -46,14 +78,29 @@ export default function UbahKataSandiPage() {
       return;
     }
 
+    // Password policy check
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(formData.newPassword)) {
+      setError("Kata sandi harus minimal 8 karakter, mengandung huruf besar, huruf kecil, angka, dan simbol");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
-      await changePasswordService({
-        nisn: formData.nisn,
-        oldPassword: formData.oldPassword,
-        newPassword: formData.newPassword,
-      });
+      if (isResetMode) {
+        await resetPasswordApi({
+          token,
+          newPassword: formData.newPassword,
+          confirmPassword: formData.confirmPassword,
+        });
+      } else {
+        await changePasswordService({
+          nisn: formData.nisn,
+          oldPassword: formData.oldPassword,
+          newPassword: formData.newPassword,
+        });
+      }
       setSuccess(true);
     } catch (err) {
       console.error("ERROR:", err.response?.data);
@@ -92,105 +139,130 @@ export default function UbahKataSandiPage() {
           onSubmit={handleSubmit}
           className="w-full max-w-xl rounded-2xl p-9"
         >
-          <h2 className="text-2xl text-center font-bold mb-2 text-slate-800">Ubah Kata Sandi</h2>
+          <h2 className="text-2xl text-center font-bold mb-2 text-slate-800">
+            {isResetMode ? "Atur Ulang Kata Sandi" : "Ubah Kata Sandi"}
+          </h2>
 
-          {/* NISN */}
-          <div className="mb-5">
-            <label className="text-base font-medium text-slate-700">NISN</label>
-            <input
-              type="text"
-              name="nisn"
-              placeholder="Masukkan NISN"
-              value={formData.nisn}
-              onChange={handleChange}
-              className="w-full border border-blue-400 rounded-lg px-3 py-3 mt-1
-                focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition"
-            />
-          </div>
-
-          {/* KATA SANDI LAMA */}
-          <div className="mb-5">
-            <label className="text-base font-medium text-slate-700">Kata Sandi Lama</label>
-            <div className="relative mt-1">
-              <input
-                type={showPassword.lama ? "text" : "password"}
-                name="oldPassword"
-                placeholder="Masukkan kata sandi lama"
-                value={formData.oldPassword}
-                onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg px-3 py-3
-                  focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-              />
-              <span
-                onClick={() => toggleShowPassword("lama")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-blue-500 transition"
-              >
-                {showPassword.lama ? <EyeOff size={18} /> : <Eye size={18} />}
-              </span>
-            </div>
-          </div>
-
-          {/* KATA SANDI BARU */}
-          <div className="mb-5">
-            <label className="text-base font-medium text-slate-700">Kata Sandi Baru</label>
-            <div className="relative mt-1">
-              <input
-                type={showPassword.baru ? "text" : "password"}
-                name="newPassword"
-                placeholder="Masukkan kata sandi baru"
-                value={formData.newPassword}
-                onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg px-3 py-3
-                  focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-              />
-              <span
-                onClick={() => toggleShowPassword("baru")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-blue-500 transition"
-              >
-                {showPassword.baru ? <EyeOff size={18} /> : <Eye size={18} />}
-              </span>
-            </div>
-          </div>
-
-          {/* KONFIRMASI KATA SANDI BARU */}
-          <div className="mb-6">
-            <label className="text-base font-medium text-slate-700">Konfirmasi Kata Sandi Baru</label>
-            <div className="relative mt-1">
-              <input
-                type={showPassword.konfirmasi ? "text" : "password"}
-                name="confirmPassword"
-                placeholder="Ulangi kata sandi baru"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="w-full border border-slate-300 rounded-lg px-3 py-3
-                  focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-              />
-              <span
-                onClick={() => toggleShowPassword("konfirmasi")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-blue-500 transition"
-              >
-                {showPassword.konfirmasi ? <EyeOff size={18} /> : <Eye size={18} />}
-              </span>
-            </div>
-          </div>
-
-          {error && (
-            <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-5 text-sm font-medium border border-red-200">
-              {error}
+          {isResetMode && accountInfo && (
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 flex items-start gap-3">
+              <CheckCircle2 className="text-blue-600 mt-1 shrink-0" size={20} />
+              <div>
+                <p className="text-sm font-bold text-gray-800">Akun ditemukan:</p>
+                <p className="text-xs text-gray-600 mt-0.5">Nama: {accountInfo.nama}</p>
+                <p className="text-xs text-gray-600">NISN: {accountInfo.nisn}</p>
+              </div>
             </div>
           )}
 
-          {/* BUTTON */}
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-blue-dark text-white py-3 rounded-lg hover:bg-blue-dark-hover cursor-pointer active:bg-blue-dark-active transition"
+          {isResetMode && isValidatingToken && (
+            <div className="text-center py-10">
+              <p className="text-sm text-gray-500 animate-pulse">Memvalidasi token...</p>
+            </div>
+          )}
 
-          >
-            {submitting ? "Memproses..." : "Simpan Perubahan"}
-          </button>
+          {!isValidatingToken && (
+            <>
+              {/* NISN (Hanya jika bukan mode reset) */}
+              {!isResetMode && (
+                <div className="mb-5">
+                  <label className="text-base font-medium text-slate-700">NISN</label>
+                  <input
+                    type="text"
+                    name="nisn"
+                    placeholder="Masukkan NISN"
+                    value={formData.nisn}
+                    onChange={handleChange}
+                    className="w-full border border-blue-400 rounded-lg px-3 py-3 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transition"
+                  />
+                </div>
+              )}
 
-          <div className="text-center border-t border-gray-100 pt-6">
+              {/* KATA SANDI LAMA (Hanya jika bukan mode reset) */}
+              {!isResetMode && (
+                <div className="mb-5">
+                  <label className="text-base font-medium text-slate-700">Kata Sandi Lama</label>
+                  <div className="relative mt-1">
+                    <input
+                      type={showPassword.lama ? "text" : "password"}
+                      name="oldPassword"
+                      placeholder="Masukkan kata sandi lama"
+                      value={formData.oldPassword}
+                      onChange={handleChange}
+                      className="w-full border border-slate-300 rounded-lg px-3 py-3 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    <span
+                      onClick={() => toggleShowPassword("lama")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-blue-500 transition"
+                    >
+                      {showPassword.lama ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* KATA SANDI BARU */}
+              <div className="mb-5">
+                <label className="text-base font-medium text-slate-700">Kata Sandi Baru</label>
+                <div className="relative mt-1">
+                  <input
+                    type={showPassword.baru ? "text" : "password"}
+                    name="newPassword"
+                    placeholder="Masukkan kata sandi baru"
+                    value={formData.newPassword}
+                    onChange={handleChange}
+                    className="w-full border border-slate-300 rounded-lg px-3 py-3 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <span
+                    onClick={() => toggleShowPassword("baru")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-blue-500 transition"
+                  >
+                    {showPassword.baru ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </span>
+                </div>
+                <p className="text-[10px] text-gray-500 mt-1">
+                  Minimal 8 karakter, harus ada huruf besar, huruf kecil, angka, dan simbol.
+                </p>
+              </div>
+
+              {/* KONFIRMASI KATA SANDI BARU */}
+              <div className="mb-6">
+                <label className="text-base font-medium text-slate-700">Konfirmasi Kata Sandi Baru</label>
+                <div className="relative mt-1">
+                  <input
+                    type={showPassword.konfirmasi ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder="Ulangi kata sandi baru"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="w-full border border-slate-300 rounded-lg px-3 py-3 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <span
+                    onClick={() => toggleShowPassword("konfirmasi")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-blue-500 transition"
+                  >
+                    {showPassword.konfirmasi ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </span>
+                </div>
+              </div>
+
+              {error && (
+                <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-5 text-sm font-medium border border-red-200">
+                  {error}
+                </div>
+              )}
+
+              {/* BUTTON */}
+              <button
+                type="submit"
+                disabled={submitting || (isResetMode && !accountInfo)}
+                className="w-full bg-blue-dark text-white py-3 rounded-lg hover:bg-blue-dark-hover cursor-pointer active:bg-blue-dark-active transition disabled:opacity-50"
+              >
+                {submitting ? "Memproses..." : isResetMode ? "Reset Kata Sandi" : "Simpan Perubahan"}
+              </button>
+            </>
+          )}
+
+          <div className="text-center border-t border-gray-100 pt-6 mt-4">
             <Link
               to="/login"
               className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#253b80] transition-all duration-300 font-medium group"
