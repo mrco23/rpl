@@ -34,11 +34,10 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 // Routes
 app.use("/api", routes);
 app.get("/", (req, res) => {
-	res.json({ message: "Backend Torang Bersih is Running!", status: "Healthy" });
+	res.json({ message: "Express is Running!", status: "Healthy" });
 });
 
 // Centralized Error Handling Middleware
