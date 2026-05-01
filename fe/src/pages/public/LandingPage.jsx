@@ -220,12 +220,12 @@ export default function LandingPage() {
               </div>
             </div>
             <h2 className="text-lg xl:text-3xl font-bold text-slate-800 mb-4">
-              Terakreditasi {data.akreditasi_sekolah.akreditasi}
+              Terakreditasi {data?.akreditasi_sekolah?.akreditasi || "-"}
             </h2>
             <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-4xl mx-auto font-medium">
               Nomor SK Akreditasi{" "}
               <span className="font-bold">
-                {data.akreditasi_sekolah.nomor_sk_akreditasi}
+                {data?.akreditasi_sekolah?.nomor_sk_akreditasi || "-"}
               </span>
             </p>
           </div>

@@ -12,6 +12,7 @@ import {
   UserCircle2,
   XCircle,
   FileText,
+  AlertCircle,
 } from "lucide-react";
 import VerifikatorHeader from "@components/features/VerifikatorHeader";
 import {
@@ -19,21 +20,12 @@ import {
   getMyAssignedPendaftar,
   assignPendaftar,
   verifyPendaftar,
-<<<<<<< HEAD
+  cancelVerifikasi
 } from "../../services/verifikatorVerifikasiService";
 import Skeleton from "@components/ui/Skeleton";
 import { STATUS_LABELS } from "../../constants/pendaftarStatus";
 import { useSearchParams } from "react-router-dom";
-=======
-  cancelVerifikasi
-} from '../../services/verifikatorVerifikasiService';
-import Skeleton from '@components/ui/Skeleton';
-import { STATUS_LABELS } from '../../constants/pendaftarStatus';
-<<<<<<< HEAD
->>>>>>> 19ee1dc (feat(button): batal verifikasi)
-=======
 import { resolveDocumentUrl, extractFileNameFromUrl, downloadDocumentFile } from '../../utils/documentHelper.js';
->>>>>>> 2058f56 (refactor code)
 
 export default function VerifikatorVerifikasiPage() {
   const [loading, setLoading] = useState(true);
@@ -145,12 +137,7 @@ export default function VerifikatorVerifikasiPage() {
 
   const openDocument = (url) => {
     if (!url) return;
-<<<<<<< HEAD
-    const baseUrl = import.meta.env.VITE_API_URL.replace("/api", "");
-    window.open(`${baseUrl}${url}`, "_blank");
-=======
     window.open(resolveDocumentUrl(url), '_blank');
->>>>>>> 2058f56 (refactor code)
   };
 
   // Logic Filtering
@@ -567,17 +554,8 @@ export default function VerifikatorVerifikasiPage() {
                         className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors bg-white"
                       >
                         <div className="flex flex-col min-w-0 mr-4">
-<<<<<<< HEAD
-                          <span className="text-sm font-bold text-[#253b80]">
-                            {doc.nama_dokumen}
-                          </span>
-                          <span className="text-xs text-gray-500 mt-0.5 truncate">
-                            {doc.jenis_dokumen?.split("/").pop()}
-                          </span>
-=======
                           <span className="text-sm font-bold text-[#253b80]">{doc.nama_dokumen}</span>
                           <span className="text-xs text-gray-500 mt-0.5 truncate">{extractFileNameFromUrl(doc.jenis_dokumen)}</span>
->>>>>>> 2058f56 (refactor code)
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
                           <button
@@ -643,11 +621,7 @@ export default function VerifikatorVerifikasiPage() {
                       Minta Perbaikan <X size={18} strokeWidth={3} />
                     </button>
                     <button
-<<<<<<< HEAD
-                      onClick={() => handleVerifyAction("")}
-=======
                       onClick={() => handleCancel()}
->>>>>>> 19ee1dc (feat(button): batal verifikasi)
                       disabled={actionLoading}
                       className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-500 text-gray-500 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
                     >
@@ -663,7 +637,7 @@ export default function VerifikatorVerifikasiPage() {
               </div>
             </div>
             );
-          })}
+          })()}
         </div>
       </div>
 

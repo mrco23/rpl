@@ -47,20 +47,9 @@ function UnggahDokumenPage() {
   };
 
   const getDocStatus = (nama) => {
-<<<<<<< HEAD
-    const doc = documents.find((d) => d.nama_dokumen === nama);
-    if (!doc)
-      return { status: "empty", fileName: null, statusText: "Belum upload" };
-    return {
-      status: "success",
-      fileName: doc.jenis_dokumen.split("/").pop(),
-      statusText: "Sudah diupload",
-    };
-=======
     const doc = documents.find(d => d.nama_dokumen === nama);
     if (!doc) return { status: "empty", fileName: null, statusText: "Belum upload" };
     return { status: "success", fileName: extractFileNameFromUrl(doc.jenis_dokumen), statusText: "Sudah diupload" };
->>>>>>> 2058f56 (refactor code)
   };
 
   const docTypes = [
@@ -139,16 +128,9 @@ function UnggahDokumenPage() {
               initialFileName={info.fileName}
               statusText={info.statusText}
               onUploadSuccess={loadData}
-<<<<<<< HEAD
-              fileUrl={
-                documents.find((d) => d.nama_dokumen === type.title)
-                  ?.jenis_dokumen
-              }
-=======
               fileUrl={documents.find(d => d.nama_dokumen === type.title)?.jenis_dokumen}
               isLocked={isLocked}
               showToast={showToast}
->>>>>>> 2058f56 (refactor code)
             />
           );
         })}
@@ -180,19 +162,7 @@ function UnggahDokumenPage() {
   );
 }
 
-<<<<<<< HEAD
-function DokumenCard({
-  title,
-  initialStatus,
-  deskcripsi,
-  initialFileName,
-  statusText,
-  onUploadSuccess,
-  fileUrl,
-}) {
-=======
 function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, statusText, onUploadSuccess, fileUrl, isLocked, showToast }) {
->>>>>>> 2058f56 (refactor code)
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -219,12 +189,7 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
 
   const handleViewFile = () => {
     if (fileUrl) {
-<<<<<<< HEAD
-      const baseUrl = import.meta.env.VITE_API_URL.replace("/api", "");
-      window.open(`${baseUrl}${fileUrl}`, "_blank");
-=======
       window.open(resolveDocumentUrl(fileUrl), '_blank');
->>>>>>> 2058f56 (refactor code)
     }
   };
 

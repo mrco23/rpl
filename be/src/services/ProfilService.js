@@ -231,8 +231,8 @@ export const getLandingPageData = async () => {
 		profil_kepala_sekolah: profil,
 		berita_terbaru: berita,
 		akreditasi_sekolah: {
-			akreditasi: profil.akreditasi,
-			nomor_sk_akreditasi: profil.nomor_sk_akreditasi,
+			akreditasi: profil?.akreditasi || "",
+			nomor_sk_akreditasi: profil?.nomor_sk_akreditasi || "",
 		},
 	};
 };
