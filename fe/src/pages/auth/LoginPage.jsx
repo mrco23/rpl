@@ -10,7 +10,7 @@ import useAuth from "@contexts/useAuth.js";
 import { useNavigate, Link } from "react-router";
 import Modal from "../../components/ui/Modal.jsx";
 import { forgotPassword as forgotPasswordApi } from "../../services/pendaftarService.js";
-import { Info, CheckCircle2 } from "lucide-react";
+import { Info, CheckCircle2, XCircle } from "lucide-react";
 
 export default function LoginPage() {
   const [role, setRole] = useState("pendaftar");
@@ -115,6 +115,8 @@ export default function LoginPage() {
     }
   };
 
+  const [forgotErrorCode, setForgotErrorCode] = useState("");
+
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     if (!forgotEmail) {
@@ -124,13 +126,17 @@ export default function LoginPage() {
 
     setForgotLoading(true);
     setForgotError("");
+    setForgotErrorCode("");
+    setForgotSuccess(false);
 
     try {
       await forgotPasswordApi(forgotEmail);
       setForgotSuccess(true);
     } catch (err) {
-      // Generic success message to maintain security policy
-      setForgotSuccess(true);
+      const message = err.message || "Terjadi kesalahan";
+      const code = err.code || "";
+      setForgotError(message);
+      setForgotErrorCode(code);
     } finally {
       setForgotLoading(false);
     }
@@ -286,10 +292,67 @@ export default function LoginPage() {
       <Modal 
         open={showForgotModal} 
         onClose={() => !forgotLoading && setShowForgotModal(false)} 
-        title={forgotSuccess ? "Email Terkirim" : "Lupa Kata Sandi"}
+        title={
+          forgotSuccess 
+            ? "Email Terkirim" 
+            : forgotError === "Email tidak terdaftar di sistem" 
+              ? "Email Tidak Terdaftar" 
+              : "Lupa Kata Sandi"
+        }
       >
         <div className="p-2">
-          {!forgotSuccess ? (
+          {forgotSuccess ? (
+            <div className="flex flex-col items-center text-center py-4">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                <CheckCircle2 size={48} className="text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Periksa Email Anda</h3>
+              <p className="text-gray-600 mb-8 max-w-sm leading-relaxed">
+                Tautan untuk mengatur ulang kata sandi Anda telah dikirim ke <strong>{forgotEmail}</strong>. Silakan periksa kotak masuk atau spam email Anda.
+              </p>
+              <button
+                onClick={() => setShowForgotModal(false)}
+                className="w-full bg-blue-dark text-white py-3 rounded-xl font-bold hover:bg-blue-dark-hover active:bg-blue-dark-active transition-colors cursor-pointer shadow-md"
+              >
+                Tutup
+              </button>
+            </div>
+          ) : (forgotError === "Email tidak terdaftar di sistem" || forgotErrorCode === "RESEND_TESTING_MODE") ? (
+            <div className="flex flex-col items-center text-center py-4">
+              <div className={`w-20 h-20 ${forgotErrorCode === "RESEND_TESTING_MODE" ? 'bg-orange-100' : 'bg-red-100'} rounded-full flex items-center justify-center mb-6`}>
+                {forgotErrorCode === "RESEND_TESTING_MODE" ? (
+                   <Info size={48} className="text-orange-600" />
+                ) : (
+                   <XCircle size={48} className="text-red-600" />
+                )}
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                {forgotErrorCode === "RESEND_TESTING_MODE" ? "Batas Testing Mode" : "Email Tidak Terdaftar"}
+              </h3>
+              <p className="text-gray-600 mb-8 max-w-sm leading-relaxed">
+                {forgotErrorCode === "RESEND_TESTING_MODE" ? (
+                  <>
+                    Layanan email saat ini dalam <strong>Mode Testing</strong>. Email hanya dapat dikirim ke email pemilik akun Resend (Developer).
+                    <br/><br/>
+                    <span className="text-xs text-orange-700 bg-orange-50 p-2 rounded block">
+                      <strong>Developer Note:</strong> {forgotError}
+                    </span>
+                  </>
+                ) : (
+                  <>Maaf, email <strong>{forgotEmail}</strong> tidak ditemukan di sistem kami. Pastikan email yang Anda masukkan sudah terdaftar.</>
+                )}
+              </p>
+              <button
+                onClick={() => {
+                  setForgotError("");
+                  setForgotErrorCode("");
+                }}
+                className="w-full bg-blue-dark text-white py-3 rounded-xl font-bold hover:bg-blue-dark-hover active:bg-blue-dark-active transition-colors cursor-pointer shadow-md"
+              >
+                Coba Lagi
+              </button>
+            </div>
+          ) : (
             <form onSubmit={handleForgotPassword}>
               <div className="flex items-center gap-3 bg-blue-50 p-4 rounded-xl mb-6 border border-blue-100">
                 <Info className="text-blue-600 shrink-0" size={20} />
@@ -315,7 +378,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={forgotLoading}
-                  className="w-full bg-blue-dark text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition-colors disabled:opacity-50 cursor-pointer shadow-md"
+                  className="w-full bg-blue-dark text-white py-3 rounded-xl font-bold hover:bg-blue-dark-hover active:bg-blue-dark-active transition-colors disabled:opacity-50 cursor-pointer shadow-md"
                 >
                   {forgotLoading ? "Mengirim..." : "Kirim Link Reset"}
                 </button>
@@ -329,22 +392,6 @@ export default function LoginPage() {
                 </button>
               </div>
             </form>
-          ) : (
-            <div className="flex flex-col items-center text-center py-4">
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                <CheckCircle2 size={48} className="text-green-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Periksa Email Anda</h3>
-              <p className="text-gray-600 mb-8 max-w-sm leading-relaxed">
-                Tautan untuk mengatur ulang kata sandi Anda telah dikirim ke <strong>{forgotEmail}</strong> jika alamat tersebut terdaftar dalam sistem kami.
-              </p>
-              <button
-                onClick={() => setShowForgotModal(false)}
-                className="w-full bg-blue-dark text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition-colors cursor-pointer shadow-md"
-              >
-                Tutup
-              </button>
-            </div>
           )}
         </div>
       </Modal>

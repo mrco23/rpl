@@ -45,7 +45,7 @@ export default function PreviewPrestasi({ data = [], loading }) {
                 className="group bg-white rounded-2xl shadow-md overflow-hidden w-90 md:w-70 max-w-[520px] cursor-pointer transition-all duration-800 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl"
                 data-aos={index == 0 ? "fade-up-right" : index == 1 ? "fade-up" : "fade-up-left"}
                 data-aos-duration="800"
-                data-aos-delay={index * 500}
+                data-aos-delay={Math.min(index * 80, 240)}
               >
                 {/* IMAGE */}
                 <div className="p-3 pb-0 overflow-hidden">

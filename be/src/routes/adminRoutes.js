@@ -7,7 +7,7 @@ const adminRoutes = express.Router();
 const adminController = new AdminController();
 const { register, login, getBeranda } = adminController;
 
-adminRoutes.post("/register", register);
+adminRoutes.post("/register", verifyToken, authorizeRole("admin"), register);
 adminRoutes.post("/login", login);
 adminRoutes.get("/beranda", verifyToken, authorizeRole("admin"), getBeranda);
 

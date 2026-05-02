@@ -11,7 +11,7 @@ export default function QuotePage({ data = null, loading }) {
         {loading ? (<div className="w-81 h-97 animate-pulse">
           <div className="h-97 w-81 bg-slate-300 rounded-2xl "></div>
         </div>
-        ) : (<div className="w-81 h-97 bg-gray-300 rounded-2xl mx-auto overflow-hidden shadow-md mb-10 lg:mb-0" data-aos="flip-right" data-aos-duration="500" data-aos-delay={500}>
+        ) : (<div className="w-81 h-97 bg-gray-300 rounded-2xl mx-auto overflow-hidden shadow-md mb-10 lg:mb-0" data-aos="fade-up" data-aos-duration="500" data-aos-delay={100}>
           <img
             src={gambar}
             alt="Kepala Sekolah"

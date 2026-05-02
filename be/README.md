@@ -87,3 +87,9 @@ Gunakan Aplikasi [Bruno](https://www.usebruno.com) untuk menjalankan request pen
    npm run dev
    ```
    *Express server akan berjalan pada `http://localhost:3000` atau PORT pilihan Anda.*
+
+---
+
+## ⚠️ Catatan Keamanan
+Karena file `.env` pernah terunggah ke dalam *version control* atau didistribusikan dalam *archive/project*, rahasia-rahasia asli (seperti `JWT_SECRET`, sandi database, atau API Keys) **harus dirotasi (diubah nilainya)** secara manual di environment produksi untuk menjaga keamanan sistem.
+

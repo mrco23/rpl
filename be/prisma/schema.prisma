@@ -9,50 +9,97 @@ datasource db {
 }
 
 model Admin {
-  id_admin Int     @id @default(autoincrement())
-  username String? @unique
-  password String
-
-  profil           Profil[]
-  kontak           Kontak[]
+  id_admin         Int               @id @default(autoincrement())
+  username         String?           @unique
+  password         String
   berita           Berita[]
-  pengumuman       Pengumuman[]
-  fasilitas        Fasilitas[]
-  program_unggulan ProgramUnggulan[]
   ekstrakurikuler  Ekstrakurikuler[]
+  fasilitas        Fasilitas[]
+  kontak           Kontak[]
+  pengumuman       Pengumuman[]
   prestasi         Prestasi[]
+  profil           Profil[]
+  program_unggulan ProgramUnggulan[]
 
   @@map("admin")
 }
 
-model Verifikator {
-  id_verifikator Int    @id @default(autoincrement())
-  username       String @unique
-  password       String
-  nama           String
+model Alamat {
+  id_alamat      Int       @id @default(autoincrement())
+  provinsi       String
+  kota_kabupaten String
+  kecamatan      String
+  kelurahan      String
+  rt_rw          String
+  kode_pos       String
+  id_pendaftar   Int       @unique
+  pendaftar      Pendaftar @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
 
-  dokumen   Dokumen[]
-  pendaftar Pendaftar[]
-
-  @@map("verifikator")
+  @@map("alamat")
 }
 
-model Profil {
-  id_profil           Int     @id @default(autoincrement())
-  nama_sekolah        String  @unique
-  visi                String  @db.Text
-  misi                String  @db.Text
-  nama_kepala_sekolah String
-  foto_kepala_sekolah String
-  akreditasi          String? @db.Char(1)
-  nomor_sk_akreditasi String?
-  kata_sambutan       String  @db.Text
-  id_admin            Int
+model Berita {
+  id_berita      Int      @id @default(autoincrement())
+  judul_berita   String
+  deskripsi      String   @db.Text
+  gambar_berita  String?
+  tanggal_dibuat DateTime @default(now())
+  id_admin       Int
+  admin          Admin    @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
-  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+  @@index([id_admin])
+  @@map("berita")
+}
 
-  @@index([id_admin], map: "profil_id_admin_idx")
-  @@map("profil")
+model Dokumen {
+  id_dokumen     Int          @id @default(autoincrement())
+  nama_dokumen   String
+  jenis_dokumen  String
+  id_pendaftar   Int
+  id_verifikator Int?
+  pendaftar      Pendaftar    @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
+  verifikator    Verifikator? @relation(fields: [id_verifikator], references: [id_verifikator])
+
+  @@unique([id_pendaftar, nama_dokumen], map: "dokumen_unique")
+  @@index([id_pendaftar])
+  @@index([id_verifikator])
+  @@map("dokumen")
+}
+
+model Ekstrakurikuler {
+  id_ekstrakurikuler Int     @id @default(autoincrement())
+  nama_ekskul        String
+  p_jwb_ekskul       String
+  gambar_ekskul      String?
+  deskripsi          String  @db.Text
+  id_admin           Int
+  admin              Admin   @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin])
+  @@map("ekstrakurikuler")
+}
+
+model Fasilitas {
+  id_fasilitas     Int     @id @default(autoincrement())
+  nama_fasilitas   String
+  deskripsi        String  @db.Text
+  gambar_fasilitas String?
+  id_admin         Int
+  admin            Admin   @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+
+  @@index([id_admin])
+  @@map("fasilitas")
+}
+
+model Gelombang {
+  id_gelombang    Int         @id @default(autoincrement())
+  nama            String
+  tanggal_mulai   DateTime
+  tanggal_selesai DateTime
+  kuota           Int
+  pendaftar       Pendaftar[]
+
+  @@map("gelombang")
 }
 
 model Kontak {
@@ -65,92 +112,66 @@ model Kontak {
   email     String
   whatsapp  String?
   id_admin  Int
+  admin     Admin   @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
-  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
-
-  @@index([id_admin], map: "kontak_id_admin_idx")
+  @@index([id_admin])
   @@map("kontak")
 }
 
-model Berita {
-  id_berita      Int      @id @default(autoincrement())
-  judul_berita   String
-  deskripsi      String   @db.Text
-  gambar_berita  String?
-  tanggal_dibuat DateTime @default(now())
-  id_admin       Int
+model Pendaftar {
+  id_pendaftar         Int                    @id @default(autoincrement())
+  nama_lengkap         String
+  kata_sandi           String?
+  nisn                 String?                @unique
+  tempat_lahir         String?
+  tanggal_lahir        DateTime?              @db.Date
+  jenis_kelamin        String
+  no_hp                String
+  asal_sekolah         String
+  email                String                 @unique(map: "email")
+  nama_wali            String?
+  status_pendaftaran   String                 @default("menunggu verifikasi")
+  catatan_dokumen      String?                @db.Text
+  tanggal_daftar       DateTime               @default(now())
+  id_gelombang         Int?
+  id_verifikator       Int?
+  resetPasswordToken   String?                @unique
+  resetPasswordExpires DateTime?              @db.DateTime(0)
+  alamat               Alamat?
+  dokumen              Dokumen[]
+  gelombang            Gelombang?             @relation(fields: [id_gelombang], references: [id_gelombang])
+  verifikator          Verifikator?           @relation(fields: [id_verifikator], references: [id_verifikator])
+  pengumuman_pendaftar PengumumanPendaftar[]
 
-  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
-
-  @@index([id_admin], map: "berita_id_admin_idx")
-  @@map("berita")
+  @@index([id_gelombang], map: "pendaftar_id_gelombang_fkey")
+  @@index([id_verifikator])
+  @@index([status_pendaftaran], map: "pendaftar_status_idx")
+  @@map("pendaftar")
 }
 
 model Pengumuman {
-  id_pengumuman    Int      @id @default(autoincrement())
-  judul_pengumuman String
-  deksripsi        String?  @db.Text
-  tanggal_dibuat   DateTime @default(now())
-  id_admin         Int
-
-  admin                Admin                 @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+  id_pengumuman        Int                    @id @default(autoincrement())
+  judul_pengumuman     String
+  deksripsi            String?                @db.Text
+  tanggal_dibuat       DateTime               @default(now())
+  id_admin             Int
+  admin                Admin                  @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
   pengumuman_pendaftar PengumumanPendaftar[]
 
-  @@index([id_admin], map: "pengumuman_id_admin_idx")
+  @@index([id_admin])
   @@map("pengumuman")
 }
 
 model PengumumanPendaftar {
-  id_pengumuman_pendaftar Int @id @default(autoincrement())
+  id_pengumuman_pendaftar Int        @id @default(autoincrement())
   id_pendaftar            Int
   id_pengumuman           Int
+  pendaftar               Pendaftar  @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
+  pengumuman              Pengumuman @relation(fields: [id_pengumuman], references: [id_pengumuman], onDelete: Cascade)
 
-  pendaftar  Pendaftar  @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
-  pengumuman Pengumuman @relation(fields: [id_pengumuman], references: [id_pengumuman], onDelete: Cascade)
-
-  @@index([id_pendaftar], map: "pengumuman_pendaftar_id_pendaftar_idx")
-  @@index([id_pengumuman], map: "pengumuman_pendaftar_id_pengumuman_idx")
+  @@index([id_pendaftar])
+  @@index([id_pengumuman])
   @@map("pengumuman_pendaftar")
-}
-
-model Fasilitas {
-  id_fasilitas     Int     @id @default(autoincrement())
-  nama_fasilitas   String
-  deskripsi        String  @db.Text
-  gambar_fasilitas String?
-  id_admin         Int
-
-  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
-
-  @@index([id_admin], map: "fasilitas_id_admin_idx")
-  @@map("fasilitas")
-}
-
-model ProgramUnggulan {
-  id_program Int     @id @default(autoincrement())
-  nama_pu    String
-  deskripsi  String  @db.Text
-  gambar_pu  String?
-  id_admin   Int
-
-  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
-
-  @@index([id_admin], map: "program_unggulan_id_admin_idx")
-  @@map("program_unggulan")
-}
-
-model Ekstrakurikuler {
-  id_ekstrakurikuler Int     @id @default(autoincrement())
-  nama_ekskul        String
-  p_jwb_ekskul       String
-  gambar_ekskul      String?
-  deskripsi          String  @db.Text
-  id_admin           Int
-
-  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
-
-  @@index([id_admin], map: "ekstrakurikuler_id_admin_idx")
-  @@map("ekstrakurikuler")
 }
 
 model Prestasi {
@@ -160,83 +181,48 @@ model Prestasi {
   peraih_prestasi String
   gambar_prestasi String?
   id_admin        Int
+  admin           Admin   @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
-  admin Admin @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
-
-  @@index([id_admin], map: "prestasi_id_admin_idx")
+  @@index([id_admin])
   @@map("prestasi")
 }
 
-model Pendaftar {
-  id_pendaftar       Int       @id @default(autoincrement())
-  nama_lengkap       String
-  kata_sandi         String?
-  nisn               String?   @unique
-  tempat_lahir       String?
-  tanggal_lahir      DateTime? @db.Date
-  jenis_kelamin      String
-  no_hp              String
-  asal_sekolah       String
-  email              String?
-  nama_wali          String?
-  status_pendaftaran String    @default("menunggu verifikasi")
-  catatan_dokumen    String?   @db.Text
-  tanggal_daftar     DateTime  @default(now())
-  id_gelombang       Int?
-  id_verifikator     Int?
-  resetPasswordToken   String?   @unique
-  resetPasswordExpires DateTime?
+model Profil {
+  id_profil           Int    @id @default(autoincrement())
+  nama_sekolah        String @unique
+  visi                String @db.Text
+  misi                String @db.Text
+  nama_kepala_sekolah String
+  foto_kepala_sekolah String
+  kata_sambutan       String @db.Text
+  id_admin            Int
+  akreditasi          String @db.Char(1)
+  nomor_sk_akreditasi String
+  admin               Admin  @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
-  alamat               Alamat?
-  dokumen              Dokumen[]
-  gelombang            Gelombang?            @relation(fields: [id_gelombang], references: [id_gelombang])
-  verifikator          Verifikator?          @relation(fields: [id_verifikator], references: [id_verifikator], onDelete: SetNull)
-  pengumuman_pendaftar PengumumanPendaftar[]
-
-  @@index([status_pendaftaran], map: "pendaftar_status_idx")
-  @@index([id_verifikator], map: "pendaftar_id_verifikator_idx")
-  @@map("pendaftar")
+  @@index([id_admin])
+  @@map("profil")
 }
 
-model Alamat {
-  id_alamat      Int    @id @default(autoincrement())
-  provinsi       String
-  kota_kabupaten String
-  kecamatan      String
-  kelurahan      String
-  rt_rw          String
-  kode_pos       String
-  id_pendaftar   Int    @unique
+model ProgramUnggulan {
+  id_program Int     @id @default(autoincrement())
+  nama_pu    String
+  deskripsi  String  @db.Text
+  gambar_pu  String?
+  id_admin   Int
+  admin      Admin   @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 
-  pendaftar Pendaftar @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
-
-  @@map("alamat")
+  @@index([id_admin])
+  @@map("program_unggulan")
 }
 
-model Dokumen {
-  id_dokumen     Int    @id @default(autoincrement())
-  nama_dokumen   String
-  jenis_dokumen  String
-  id_pendaftar   Int
-  id_verifikator Int?
+model Verifikator {
+  id_verifikator Int         @id @default(autoincrement())
+  username       String      @unique
+  password       String
+  nama           String
+  dokumen        Dokumen[]
+  pendaftar      Pendaftar[]
 
-  pendaftar   Pendaftar    @relation(fields: [id_pendaftar], references: [id_pendaftar], onDelete: Cascade)
-  verifikator Verifikator? @relation(fields: [id_verifikator], references: [id_verifikator], onDelete: SetNull)
-
-  @@unique([id_pendaftar, nama_dokumen], map: "dokumen_unique")
-  @@index([id_pendaftar], map: "dokumen_id_pendaftar_idx")
-  @@index([id_verifikator], map: "dokumen_id_verifikator_idx")
-  @@map("dokumen")
-}
-
-model Gelombang {
-  id_gelombang    Int      @id @default(autoincrement())
-  nama            String
-  tanggal_mulai   DateTime
-  tanggal_selesai DateTime
-  kuota           Int
-
-  pendaftar Pendaftar[]
-
-  @@map("gelombang")
+  @@map("verifikator")
 }

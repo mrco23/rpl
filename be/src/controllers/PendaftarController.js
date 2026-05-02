@@ -166,22 +166,32 @@ class PendaftarController {
 			if (!email) return res.status(400).json({ message: "Email wajib diisi" });
 
 			const pendaftar = await getPendaftarByEmail(email);
-			
-			// Generic message to avoid email enumeration
-			const successMessage = "Jika email terdaftar, link ubah kata sandi telah dikirim.";
 
-			if (pendaftar) {
-				const token = nanoid(32);
-				const expires = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
-
-				await setResetToken(pendaftar.id_pendaftar, token, expires);
-				await EmailService.sendResetPasswordEmail(pendaftar.email, pendaftar.nama_lengkap, token);
+			if (!pendaftar) {
+				return res.status(404).json({ message: "Email tidak terdaftar di sistem" });
 			}
 
-			return res.status(200).json({ message: successMessage });
+			const token = nanoid(32);
+			const expires = new Date(Date.now() + 30 * 60 * 1000); // 30 minutes
+
+			await setResetToken(pendaftar.id_pendaftar, token, expires);
+			await EmailService.sendResetPasswordEmail(pendaftar.email, pendaftar.nama_lengkap, token);
+
+			return res.status(200).json({ message: "Link reset password telah dikirim ke email Anda" });
 		} catch (error) {
 			console.error("Forgot Password Error:", error);
-			return res.status(500).json({ message: "Terjadi kesalahan saat memproses permintaan reset password" });
+
+			// Specific handling for Resend testing mode (Developer friendly message)
+			if (error.message === "RESEND_TESTING_RESTRICTION") {
+				return res.status(403).json({ 
+					message: "Pembatasan Resend Testing Mode: Email hanya bisa dikirim ke email pemilik akun Resend. Mohon verifikasi domain atau gunakan email owner untuk testing.",
+					code: "RESEND_TESTING_MODE"
+				});
+			}
+
+			return res.status(500).json({ 
+				message: error.message || "Terjadi kesalahan saat memproses permintaan reset password" 
+			});
 		}
 	};
 

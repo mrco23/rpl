@@ -5,6 +5,12 @@ import { buildFileUrl, deleteFile } from "../utils/file.js";
 export const getAll = async () => {
 	return prisma.berita.findMany({
 		orderBy: { tanggal_dibuat: "desc" },
+		select: {
+			id_berita: true,
+			judul_berita: true,
+			gambar_berita: true,
+			tanggal_dibuat: true,
+		}
 	});
 };
 

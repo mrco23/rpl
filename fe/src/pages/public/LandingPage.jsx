@@ -6,8 +6,7 @@ import PreviewPrestasi from "@components/features/PreviewPrestasi.jsx";
 import PreviewBerita from "@components/features/PreviewBerita.jsx";
 import { useNavigate, Link } from "react-router-dom";
 import profileService from "../../services/profileService";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { useAos } from "../../hooks/useAos";
 
 // ─── Sub-components extracted to prevent re-render of static skeletons ────────
 
@@ -66,12 +65,7 @@ export default function LandingPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Init AOS once on mount
-  useEffect(() => {
-    AOS.init({ easing: "ease-in-out", once: false });
-  }, []);
-
-  // Fetch data — no artificial delay, refresh AOS after state settles
+  // Fetch data
   const fetchData = useCallback(async () => {
     setLoading(true);
     const res = await profileService.getLandingPageData();
@@ -85,13 +79,7 @@ export default function LandingPage() {
     fetchData();
   }, [fetchData]);
 
-  // Refresh AOS after loading state changes (after paint)
-  useEffect(() => {
-    if (!loading) {
-      // Defer to next frame so DOM is fully painted before AOS measures elements
-      requestAnimationFrame(() => AOS.refresh());
-    }
-  }, [loading]);
+  useAos([loading]);
 
   // Memoize derived values — recalculated only when `data` changes
   const total_data = useMemo(() => data?.total_data ?? {}, [data]);
@@ -180,7 +168,7 @@ export default function LandingPage() {
                   className="flex flex-col mx-auto group w-30 sm:w-50 md:w-35 lg:w-40 xl:w-50"
                   data-aos={getAosDirection(index, stats.length)}
                   data-aos-duration="500"
-                  data-aos-delay={index * 100}
+                  data-aos-delay={Math.min(index * 80, 240)}
                 >
                   <Link to={item.path}>
                     <div className="bg-white rounded-lg py-6 sm:py-8 px-0 lg:px-8 text-center shadow-md relative w-full h-30 sm:h-38 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 overflow-hidden">

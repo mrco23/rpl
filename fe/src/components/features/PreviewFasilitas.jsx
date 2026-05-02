@@ -19,7 +19,7 @@ export default function PreviewFasilitas({ data = [], loading }) {
           ))}
         </div>) : (<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {data.map((item, index) => (
-            <div key={index} className="text-center " data-aos={`zoom-in`} data-aos-duration="600" data-aos-delay={index * 100}>
+            <div key={index} className="text-center " data-aos={`zoom-in`} data-aos-duration="600" data-aos-delay={Math.min(index * 80, 240)}>
               <img
                 src={item.gambar || null}
                 alt={item.nama_fasilitas}

@@ -19,10 +19,11 @@ class EmailService {
   async sendResetPasswordEmail(email, name, token) {
     const resend = this.#getResendClient();
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
     
     try {
       const { data, error } = await resend.emails.send({
-        from: 'PPDB SMP Katolik St. Rafael <onboarding@resend.dev>', // Gunakan domain terverifikasi di produksi
+        from: `PPDB SMP Katolik St. Rafael <${fromEmail}>`,
         to: [email],
         subject: 'Reset Kata Sandi Akun PPDB',
         html: `
@@ -41,14 +42,27 @@ class EmailService {
       });
 
       if (error) {
-        console.error("[EmailService] Resend Send Error:", error);
-        throw new Error("Gagal mengirim email reset password. Silakan coba lagi nanti.");
+        console.error("[EmailService] Resend API Error:", error);
+        
+        // Handle Resend testing mode restriction (Error 403)
+        if (error.statusCode === 403 || error.name === 'forbidden') {
+          const isTestingMode = fromEmail === 'onboarding@resend.dev';
+          if (isTestingMode) {
+            throw new Error("RESEND_TESTING_RESTRICTION");
+          }
+        }
+        
+        throw new Error(error.message || "Gagal mengirim email reset password.");
       }
 
       return data;
     } catch (err) {
       console.error("[EmailService] catch Error:", err);
-      throw err;
+      // Re-throw special error or generic error
+      if (err.message === "RESEND_TESTING_RESTRICTION") {
+        throw err;
+      }
+      throw new Error(err.message || "Terjadi kesalahan pada layanan email.");
     }
   }
 }

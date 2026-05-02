@@ -15,9 +15,6 @@ const apiClient = axios.create({
 // Request interceptor to prevent 304 Cache issues
 apiClient.interceptors.request.use(
   (config) => {
-    config.headers['Cache-Control'] = 'no-cache';
-    config.headers['Pragma'] = 'no-cache';
-    config.headers['Expires'] = '0';
     return config;
   },
   (error) => Promise.reject(error)

@@ -110,7 +110,7 @@ function FasilitasPage() {
               <div
                 data-aos={index % 2 === 0 ? "fade-up-right" : "fade-up-left"}
                 data-aos-duration="500"
-                data-aos-delay={index * 100}
+                data-aos-delay={Math.min(index * 80, 240)}
                 key={index}
                 className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 1 ? "md:flex-row-reverse" : ""
                   }`}
