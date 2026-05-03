@@ -1,4 +1,17 @@
 import { getImageUrl } from "../../utils/imageHelper.js";
+import React, { useState, useEffect } from "react";
+import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
+import AdminHeader from "@components/features/AdminHeader";
+import Modal from "../../components/ui/Modal.jsx";
+import Skeleton from "../../components/ui/Skeleton.jsx";
+import Toast from "../../components/ui/Toast.jsx";
+import {
+  getAllFasilitas,
+  createFasilitas,
+  updateFasilitasData,
+  updateFasilitasImage,
+  deleteFasilitas,
+} from "../../services/adminFasilitasService.js";
 
 export default function AdminFasilitasPage() {
   const [facilities, setFacilities] = useState([]);
@@ -82,7 +95,7 @@ export default function AdminFasilitasPage() {
         await createFasilitas(payload);
       } else if (modalMode === "edit") {
         const updateTasks = [];
-        
+
         // Update Data Text secara terpisah
         updateTasks.push(
           updateFasilitasData(selectedItem.id_fasilitas, {
@@ -97,7 +110,7 @@ export default function AdminFasilitasPage() {
           payloadImg.append("gambar", formImage);
           updateTasks.push(updateFasilitasImage(selectedItem.id_fasilitas, payloadImg));
         }
-        
+
         // Jalankan secara paralel untuk optimasi waktu
         await Promise.all(updateTasks);
       }
@@ -407,11 +420,11 @@ export default function AdminFasilitasPage() {
         )}
       </Modal>
 
-      <Toast 
-        show={toastConfig.show} 
-        message={toastConfig.message} 
-        type={toastConfig.type} 
-        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      <Toast
+        show={toastConfig.show}
+        message={toastConfig.message}
+        type={toastConfig.type}
+        onClose={() => setToastConfig({ ...toastConfig, show: false })}
       />
     </>
   );

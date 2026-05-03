@@ -1,4 +1,17 @@
 import { getImageUrl } from "../../utils/imageHelper.js";
+import React, { useState, useEffect } from "react";
+import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
+import AdminHeader from "../../components/features/AdminHeader";
+import Modal from "../../components/ui/Modal.jsx";
+import Skeleton from "../../components/ui/Skeleton.jsx";
+import Toast from "../../components/ui/Toast.jsx";
+import {
+  getAllEkstrakurikuler,
+  createEkstrakurikuler,
+  updateEkstrakurikulerData,
+  updateEkstrakurikulerImage,
+  deleteEkstrakurikuler,
+} from "../../services/adminEkskulService.js";
 
 export default function AdminEkstrakurikulerPage() {
   const [ekskuls, setEkskuls] = useState([]);
