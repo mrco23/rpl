@@ -1,4 +1,5 @@
 import MoreButton from "../ui/MoreButton";
+import { getImageUrl } from "../../utils/imageHelper";
 
 export default function PreviewPrestasi({ data = [], loading }) {
   return (
@@ -50,7 +51,7 @@ export default function PreviewPrestasi({ data = [], loading }) {
                 {/* IMAGE */}
                 <div className="p-3 pb-0 overflow-hidden">
                   <img
-                    src={item.gambar || null}
+                    src={getImageUrl(item.gambar)}
                     alt={item.nama_prestasi || "Prestasi"}
                     className="w-full aspect-4/3 object-cover rounded-xl"
                   />

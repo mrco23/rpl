@@ -1,15 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
-import AdminHeader from "@components/features/AdminHeader";
-import Modal from "../../components/ui/Modal.jsx";
-import Skeleton from "../../components/ui/Skeleton.jsx";
-import Toast from "../../components/ui/Toast.jsx";
-import {
-  getAllPrestasi,
-  createPrestasi,
-  updatePrestasi,
-  deletePrestasi,
-} from "../../services/adminAchievementService.js";
+import { getImageUrl } from "../../utils/imageHelper.js";
 
 export default function AdminAchievementsPage() {
   const [achievements, setAchievements] = useState([]);
@@ -260,7 +249,7 @@ export default function AdminAchievementsPage() {
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
             {selectedItem?.gambar_prestasi && !selectedItem.gambar_prestasi.includes('null') ? (
               <img
-                src={selectedItem.gambar_prestasi}
+                src={getImageUrl(selectedItem.gambar_prestasi)}
                 alt="Prestasi"
                 className="w-full h-auto rounded-lg max-h-60 object-cover"
               />
@@ -348,7 +337,7 @@ export default function AdminAchievementsPage() {
                     src={
                       formImage
                         ? URL.createObjectURL(formImage)
-                        : selectedItem?.gambar_prestasi
+                        : getImageUrl(selectedItem?.gambar_prestasi)
                     }
                     alt="Preview"
                     className="w-full h-40 object-cover rounded-lg border"

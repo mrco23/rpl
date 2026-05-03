@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FiCalendar } from "react-icons/fi";
 import newsService from "@services/newsService";
-import CardSkeleton from "@components/features/CardSkeleton";
+import CardSkeleton from "../../components/features/CardSkeleton";
 import { formatMediumDate } from "../../utils/dateHelper";
+
+import { getImageUrl } from "../../utils/imageHelper";
 
 export default function BeritaPage() {
   const [news, setNews] = useState([]);
@@ -71,7 +73,7 @@ export default function BeritaPage() {
                       {/* IMAGE */}
 
                       <img
-                        src={item.gambar_berita || item.gambar || null}
+                        src={getImageUrl(item.gambar_berita || item.gambar)}
                         alt={item.judul_berita || item.judul || "Berita"}
                         className="w-full h-52 object-cover rounded-2xl"
                       />

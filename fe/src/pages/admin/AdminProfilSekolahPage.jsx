@@ -1,16 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Edit2, CloudUpload, Upload } from "lucide-react";
-import AdminHeader from "@components/features/AdminHeader";
-import Modal from "../../components/ui/Modal.jsx";
-import Skeleton from "../../components/ui/Skeleton.jsx";
-import Toast from "../../components/ui/Toast.jsx";
-import {
-  getAdminProfile,
-  createProfile,
-  updateProfileData,
-  updateProfileImage,
-  upsertKontakProfile,
-} from "../../services/adminProfileService.js";
+import { getImageUrl } from "../../utils/imageHelper.js";
 
 export default function AdminProfilSekolahPage() {
   const [profile, setProfile] = useState(null);
@@ -569,7 +557,7 @@ export default function AdminProfilSekolahPage() {
               >
                 {previewLogo || (profile?.foto_kepala_sekolah && !profile.foto_kepala_sekolah.includes('null')) ? (
                   <img
-                    src={previewLogo || profile?.foto_kepala_sekolah}
+                    src={previewLogo || getImageUrl(profile?.foto_kepala_sekolah)}
                     alt="Preview"
                     className="w-full h-full object-cover"
                   />
@@ -1035,11 +1023,11 @@ export default function AdminProfilSekolahPage() {
           </div>
         </form>
       </Modal>
-      <Toast 
-        show={toastConfig.show} 
-        message={toastConfig.message} 
-        type={toastConfig.type} 
-        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      <Toast
+        show={toastConfig.show}
+        message={toastConfig.message}
+        type={toastConfig.type}
+        onClose={() => setToastConfig({ ...toastConfig, show: false })}
       />
     </>
   );

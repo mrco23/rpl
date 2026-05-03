@@ -18,7 +18,14 @@ class EmailService {
 
   async sendResetPasswordEmail(email, name, token) {
     const resend = this.#getResendClient();
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+    
+    const frontendUrl = process.env.FRONTEND_URL;
+    if (!frontendUrl) {
+      console.error("[EmailService] Error: FRONTEND_URL is not defined in environment variables.");
+      throw new Error("Konfigurasi tautan reset password belum lengkap (FRONTEND_URL Kosong). Mohon hubungi administrator.");
+    }
+
+    const resetUrl = `${frontendUrl}/reset-password?token=${token}`;
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
     
     try {

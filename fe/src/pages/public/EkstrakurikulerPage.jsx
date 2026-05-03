@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
+import CardSkeleton from "../../components/features/CardSkeleton";
+import { getImageUrl } from "../../utils/imageHelper";
+import { useState, useEffect } from "react";
 import extracurricularService from "@services/extracurricularService";
-import CardSkeleton from "@components/features/CardSkeleton";
+import { Link } from "react-router-dom";
 
 export default function EkstrakurikulerPage() {
   const [data, setData] = useState([]);
@@ -97,7 +98,7 @@ export default function EkstrakurikulerPage() {
               <div key={index} className=" flex flex-col">
                 {displayImage && (
                   <img
-                    src={displayImage}
+                    src={getImageUrl(displayImage)}
                     alt={displayTitle}
                     className="w-full h-full object-cover"
                   />

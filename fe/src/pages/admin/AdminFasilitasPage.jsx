@@ -1,16 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
-import AdminHeader from "@components/features/AdminHeader";
-import Modal from "../../components/ui/Modal.jsx";
-import Skeleton from "../../components/ui/Skeleton.jsx";
-import Toast from "../../components/ui/Toast.jsx";
-import {
-  getAllFasilitas,
-  createFasilitas,
-  updateFasilitasData,
-  updateFasilitasImage,
-  deleteFasilitas,
-} from "../../services/adminFasilitasService.js";
+import { getImageUrl } from "../../utils/imageHelper.js";
 
 export default function AdminFasilitasPage() {
   const [facilities, setFacilities] = useState([]);
@@ -265,7 +253,7 @@ export default function AdminFasilitasPage() {
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
             {selectedItem?.gambar_fasilitas || selectedItem?.gambar ? (
               <img
-                src={selectedItem?.gambar_fasilitas || selectedItem?.gambar}
+                src={getImageUrl(selectedItem?.gambar_fasilitas || selectedItem?.gambar)}
                 alt="Fasilitas"
                 className="w-full h-auto rounded-lg max-h-60 object-cover"
                 onError={(e) => {

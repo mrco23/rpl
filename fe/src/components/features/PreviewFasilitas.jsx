@@ -1,4 +1,5 @@
 import MoreButton from "../ui/MoreButton";
+import { getImageUrl } from "../../utils/imageHelper";
 
 export default function PreviewFasilitas({ data = [], loading }) {
   return (
@@ -21,7 +22,7 @@ export default function PreviewFasilitas({ data = [], loading }) {
           {data.map((item, index) => (
             <div key={index} className="text-center " data-aos={`zoom-in`} data-aos-duration="600" data-aos-delay={Math.min(index * 80, 240)}>
               <img
-                src={item.gambar || null}
+                src={getImageUrl(item.gambar)}
                 alt={item.nama_fasilitas}
                 className="w-100 mx-auto lg:w-full aspect-3.5/2.5 object-cover rounded-lg shadow-sm mb-2"
               />

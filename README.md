@@ -22,6 +22,11 @@ Folder `be` menangani logika bisnis, akses database, dan manajemen file.
    - Ubah nama atau buat file `.env` di dalam folder `be`.
    - Sesuaikan `DATABASE_URL` (Support MySQL/MariaDB).
    - Pastikan variabel `JWT_SECRET` dan `PORT` sudah terisi.
+   - **Konfigurasi Reset Password:**
+     - Isi `FRONTEND_URL` di `.env`. 
+     - Untuk pengembangan lokal: `FRONTEND_URL=http://localhost:5173`.
+     - Untuk produksi: Wajib menggunakan domain frontend (misal: `https://ppdb-rafael.vercel.app`).
+     - Backend harus direstart setelah mengubah nilai ini.
 
 ### Manajemen Database (Prisma):
 

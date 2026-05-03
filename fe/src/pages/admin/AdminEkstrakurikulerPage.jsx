@@ -1,16 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
-import AdminHeader from "../../components/features/AdminHeader";
-import Modal from "../../components/ui/Modal.jsx";
-import Skeleton from "../../components/ui/Skeleton.jsx";
-import Toast from "../../components/ui/Toast.jsx";
-import {
-  getAllEkstrakurikuler,
-  createEkstrakurikuler,
-  updateEkstrakurikulerData,
-  updateEkstrakurikulerImage,
-  deleteEkstrakurikuler,
-} from "../../services/adminEkskulService.js";
+import { getImageUrl } from "../../utils/imageHelper.js";
 
 export default function AdminEkstrakurikulerPage() {
   const [ekskuls, setEkskuls] = useState([]);
@@ -275,7 +263,7 @@ export default function AdminEkstrakurikulerPage() {
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto pr-1">
             {selectedItem?.gambar_ekskul ? (
               <img
-                src={selectedItem.gambar_ekskul}
+                src={getImageUrl(selectedItem.gambar_ekskul)}
                 alt="Ekskul"
                 className="w-full h-auto rounded-lg max-h-60 object-cover"
               />
@@ -361,7 +349,7 @@ export default function AdminEkstrakurikulerPage() {
                     src={
                       formImage
                         ? URL.createObjectURL(formImage)
-                        : selectedItem?.gambar_ekskul
+                        : getImageUrl(selectedItem?.gambar_ekskul)
                     }
                     alt="Preview"
                     className="w-full h-40 object-cover rounded-lg border"
@@ -416,11 +404,11 @@ export default function AdminEkstrakurikulerPage() {
         )}
       </Modal>
 
-      <Toast 
-        show={toastConfig.show} 
-        message={toastConfig.message} 
-        type={toastConfig.type} 
-        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      <Toast
+        show={toastConfig.show}
+        message={toastConfig.message}
+        type={toastConfig.type}
+        onClose={() => setToastConfig({ ...toastConfig, show: false })}
       />
     </>
   );

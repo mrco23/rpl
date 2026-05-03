@@ -1,4 +1,5 @@
 import MoreButton from "../ui/MoreButton";
+import { getImageUrl } from "../../utils/imageHelper";
 
 export default function QuotePage({ data = null, loading }) {
   const gambar = data?.gambar || "";
@@ -13,7 +14,7 @@ export default function QuotePage({ data = null, loading }) {
         </div>
         ) : (<div className="w-81 h-97 bg-gray-300 rounded-2xl mx-auto overflow-hidden shadow-md mb-10 lg:mb-0" data-aos="fade-up" data-aos-duration="500" data-aos-delay={100}>
           <img
-            src={gambar}
+            src={getImageUrl(gambar)}
             alt="Kepala Sekolah"
             className="w-full h-full object-cover"
           />

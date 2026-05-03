@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router"; // Jika menggunakan react-router-dom, pastikan import dari "react-router-dom"
+import { Link } from "react-router-dom";
 import programService from "@services/programService";
+import { getImageUrl } from "../../utils/imageHelper";
 
 function Program() {
   const [data, setData] = useState([]);
@@ -132,7 +133,7 @@ function TimelineItem({ item, index, icon }) {
       <div className="flex justify-center md:justify-end w-full">
         {!isEven && item.gambar_pu && (
           <img
-            src={item.gambar_pu}
+            src={getImageUrl(item.gambar_pu)}
             alt={item.nama_pu}
             className="w-full max-w-[300px] object-cover rounded-sm"
           />
@@ -158,7 +159,7 @@ function TimelineItem({ item, index, icon }) {
       <div className="flex justify-center md:justify-start w-full">
         {isEven && item.gambar_pu && (
           <img
-            src={item.gambar_pu}
+            src={getImageUrl(item.gambar_pu)}
             alt={item.nama_pu}
             className="w-full max-w-[300px] object-cover rounded-sm"
           />

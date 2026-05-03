@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
-import achievementService from "../../services/achievementService";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { getImageUrl } from "../../utils/imageHelper";
 import CardSkeleton from "../../components/features/CardSkeleton";
+import achievementService from "../../services/achievementService";
 
 export default function PrestasiPage() {
   const [data, setData] = useState([]);
@@ -90,7 +91,7 @@ export default function PrestasiPage() {
                 {/* Image */}
                 <div className="p-3 pb-0">
                   <img
-                    src={displayImage}
+                    src={getImageUrl(displayImage)}
                     alt={displayTitle}
                     className="w-full h-72 object-cover rounded-xl"
                   />

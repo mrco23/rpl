@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
-import { getPublicProfile } from '../../services/profileService';
-import CardSkeleton from '../../components/features/CardSkeleton';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { getImageUrl } from "../../utils/imageHelper";
+import CardSkeleton from "../../components/features/CardSkeleton";
+import { getPublicProfile } from "../../services/profileService";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
@@ -38,7 +40,7 @@ const ProfilePage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <section>
           <img
-            src={`${import.meta.env.VITE_API_URL.replace('/api', '')}/uploads/${profile?.foto_kepala_sekolah}`}
+            src={getImageUrl(profile?.foto_kepala_sekolah)}
             alt="Kepala Sekolah"
             className="w-full aspect-[3/4] object-cover rounded-2xl shadow-md mb-4"
           />

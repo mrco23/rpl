@@ -32,13 +32,18 @@ export const uploadFileToCloudinary = (fileBuffer, folderName = "rpl") => {
 
 export const buildFileUrl = (req, fileName) => {
   if (!fileName) return null;
-  // Karena kita sekarang menyimpan URL Cloudinary (secure_url) langsung di database,
-  // kita cukup mengembalikan fileName jika itu adalah URL valid.
+  
+  // Jika sudah berupa URL (Cloudinary atau external), kembalikan langsung
   if (/^https?:\/\//i.test(fileName)) return fileName;
   
-  // Jika karena alasan tertentu yang tersimpan masih nama file lama tanpa HTTP,
-  // maka kita anggap data ini sudah usang dan dikembalikan null atau fileName as-is.
-  return fileName;
+  // Jika hanya berupa filename, berikan prefix URL backend
+  // Prioritas: BACKEND_URL dari env > protocol + host dari request
+  const baseUrl = process.env.BACKEND_URL || (req ? `${req.protocol}://${req.get("host")}` : "");
+  
+  // Pastikan tidak ada double slash jika baseUrl diakhiri /
+  const cleanBaseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+  
+  return `${cleanBaseUrl}/uploads/${fileName}`;
 };
 
 export const deleteFile = async (fileIdentifier) => {

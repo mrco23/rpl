@@ -71,6 +71,7 @@ function App() {
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/ubah-kata-sandi" element={<UbahKataSandiPage />} />
+          <Route path="/reset-password" element={<UbahKataSandiPage />} />
           <Route path="/register" element={<Register />} />
 
           {/* Admin Routes */}

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import newsService from "@services/newsService";
 import { formatMediumDate } from "../../utils/dateHelper";
 
+import { getImageUrl } from "../../utils/imageHelper";
+
 export default function NewsDetail() {
   const { id } = useParams();
   const [data, setData] = useState(null);
@@ -86,7 +88,7 @@ export default function NewsDetail() {
         <div className="max-w-4xl mx-auto px-6">
           {/* IMAGE */}
           <img
-            src={displayImage}
+            src={getImageUrl(displayImage)}
             alt={displayTitle}
             className="w-full h-96 object-cover rounded-xl mb-6"
           />

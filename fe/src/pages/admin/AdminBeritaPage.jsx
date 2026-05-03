@@ -1,16 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
-import AdminHeader from "@components/features/AdminHeader";
-import Modal from "../../components/ui/Modal.jsx";
-import Skeleton from "../../components/ui/Skeleton.jsx";
-import Toast from "../../components/ui/Toast.jsx";
-import {
-  getAllBerita,
-  createBerita,
-  updateBeritaData,
-  updateBeritaImage,
-  deleteBerita,
-} from "../../services/adminNewsService.js";
+import { getImageUrl } from "../../utils/imageHelper.js";
 
 export default function AdminBeritaPage() {
   const [newsList, setNewsList] = useState([]);
@@ -268,7 +256,7 @@ export default function AdminBeritaPage() {
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
             {selectedItem?.gambar_berita && (
               <img
-                src={selectedItem.gambar_berita}
+                src={getImageUrl(selectedItem.gambar_berita)}
                 alt="Berita"
                 className="w-full h-auto rounded-lg max-h-60 object-cover"
               />
@@ -356,7 +344,7 @@ export default function AdminBeritaPage() {
                 ) : modalMode === "edit" && selectedItem?.gambar_berita ? (
                   <div className="space-y-2">
                     <img
-                      src={selectedItem.gambar_berita}
+                      src={getImageUrl(selectedItem.gambar_berita)}
                       alt=""
                       className="mx-auto h-32 object-cover rounded-lg"
                     />

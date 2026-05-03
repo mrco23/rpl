@@ -1,15 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
-import AdminHeader from "@components/features/AdminHeader";
-import Modal from "../../components/ui/Modal.jsx";
-import Skeleton from "../../components/ui/Skeleton.jsx";
-import Toast from "../../components/ui/Toast.jsx";
-import {
-  getAllProgramUnggulan,
-  createProgramUnggulan,
-  updateProgramUnggulan,
-  deleteProgramUnggulan,
-} from "../../services/adminProgramService.js";
+import { getImageUrl } from "../../utils/imageHelper.js";
 
 export default function AdminProgramUnggulanPage() {
   const [programs, setPrograms] = useState([]);
@@ -245,7 +234,7 @@ export default function AdminProgramUnggulanPage() {
           <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
             {selectedItem?.gambar_pu ? (
               <img
-                src={selectedItem.gambar_pu}
+                src={getImageUrl(selectedItem.gambar_pu)}
                 alt="Program"
                 className="w-full h-auto rounded-lg max-h-60 object-cover"
               />
@@ -340,11 +329,11 @@ export default function AdminProgramUnggulanPage() {
         )}
       </Modal>
 
-      <Toast 
-        show={toastConfig.show} 
-        message={toastConfig.message} 
-        type={toastConfig.type} 
-        onClose={() => setToastConfig({ ...toastConfig, show: false })} 
+      <Toast
+        show={toastConfig.show}
+        message={toastConfig.message}
+        type={toastConfig.type}
+        onClose={() => setToastConfig({ ...toastConfig, show: false })}
       />
     </>
   );

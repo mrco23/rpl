@@ -4,6 +4,8 @@ import fasilitasService from "@services/fasilitasService";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+import { getImageUrl } from "../../utils/imageHelper";
+
 function FasilitasPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -118,7 +120,7 @@ function FasilitasPage() {
                 {/* IMAGE */}
                 <div className="w-full md:w-1/2">
                   <img
-                    src={displayImage}
+                    src={getImageUrl(displayImage)}
                     alt={displayTitle}
                     className="w-full h-[300px] object-cover rounded-xl"
                   />

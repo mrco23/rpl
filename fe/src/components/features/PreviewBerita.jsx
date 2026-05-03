@@ -3,6 +3,8 @@ import { FiCalendar } from "react-icons/fi";
 import MoreButton from "../ui/MoreButton";
 import { formatMediumDate } from "../../utils/dateHelper";
 
+import { getImageUrl } from "../../utils/imageHelper";
+
 export default function PreviewBerita({ data = [], loading }) {
   return (
     <section className="w-full py-1 font-sans mb-7">
@@ -54,7 +56,7 @@ export default function PreviewBerita({ data = [], loading }) {
                 >
                   {/* IMAGE */}
                   <img
-                    src={item.gambar || null}
+                    src={getImageUrl(item.gambar)}
                     alt={item.judul}
                     className="w-full aspect-3.5/2.5 object-cover rounded-2xl hover:scale-[1.02] transition-all duration-500"
                   />
