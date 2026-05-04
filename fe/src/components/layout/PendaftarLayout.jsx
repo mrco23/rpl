@@ -9,7 +9,7 @@ function PendaftarLayout() {
   return (
     <div className="flex h-screen overflow-hidden relative">
       {/* Mobile Toggle */}
-      <button 
+      <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         className="lg:hidden fixed top-4 right-4 z-[60] p-2 bg-blue-dark text-white rounded-lg shadow-lg cursor-pointer"
       >
@@ -21,20 +21,20 @@ function PendaftarLayout() {
         fixed inset-y-0 left-0 z-50 transform lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
-          <SidebarPendaftar onClose={() => setIsSidebarOpen(false)} />
+        <SidebarPendaftar onClose={() => setIsSidebarOpen(false)} />
       </div>
 
       {/* Overlay */}
       {isSidebarOpen && (
-        <div 
+        <div
           onClick={() => setIsSidebarOpen(false)}
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
         />
       )}
 
-      <main className="flex-1 bg-gray-100 overflow-y-auto w-full relative">
+      <main className="flex-1 bg-gray-100 w-full relative">
         <div className="p-4 lg:p-6">
-           <Outlet />
+          <Outlet />
         </div>
       </main>
     </div>

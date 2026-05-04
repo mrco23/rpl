@@ -74,7 +74,7 @@ function UnggahDokumenPage() {
   }
 
   return (
-    <div className="p-4 md:p-6 bg-gray-100 min-h-screen relative">
+    <div className="p-4 md:p-6 bg-gray-100 h-full relative">
       {/* Header */}
       <h2 className="text-2xl md:text-3xl font-semibold">Unggah Dokumen</h2>
       <p className="text-gray-600 mt-1 max-w-xl text-sm md:text-base">
@@ -84,20 +84,36 @@ function UnggahDokumenPage() {
 
       {/* Info */}
       <div className="flex flex-col md:flex-row items-start mt-6 gap-4 md:gap-16">
-        {/* Kiri */}
-        <div className="bg-gray-300 text-sm md:text-md text-gray-700 p-5 md:p-7 rounded-lg flex gap-2 items-start w-full md:max-w-4xl">
-          <AlertCircle size={20} className="flex-shrink-0" />
-          <p>
-            Setelah semua dokumen diunggah klik tombol{" "}
-            <span className="font-medium text-black">
-              "Kirim untuk Diverifikasi"
-            </span>{" "}
-            agar dokumen dapat diperiksa oleh panitia PPDB
-          </p>
-        </div>
+
+        {/* Catatan */}
+        {pendaftar.catatan_dokumen ? <div className="mt-8 w-full md:max-w-4xl flex flex-col md:flex-row justify-between items-start gap-6">
+          <div className="bg-yellow-100 p-4 rounded-lg flex gap-2 w-full md:flex-1">
+            <AlertCircle className="text-yellow-600 shrink-0" size={18} />
+            <div>
+              <p className="font-semibold">Catatan Verifikator</p>
+              <p className="text-sm mt-1">{pendaftar.catatan_dokumen}</p>
+              <span className="text-xs text-gray-600 block mt-2">
+                Mohon segera lakukan perbaikan jika diminta.
+              </span>
+            </div>
+          </div>
+        </div> :
+          <div className=" w-full md:max-w-4xl flex flex-col md:flex-row justify-between items-start gap-6">
+            <div className="bg-gray-300 p-4 rounded-lg flex gap-2 w-full md:flex-1">
+              <AlertCircle className="text-gray-600 shrink-0" size={18} />
+              <div>
+                <p className="font-semibold">Catatan Verifikator</p>
+                <p className="text-sm mt-1">{pendaftar.catatan_dokumen}</p>
+                <span className="text-xs text-gray-600 block mt-2">
+                  Apabila Terdapat Catatan perbaikan dari pihak verifikator.
+                </span>
+              </div>
+            </div>
+          </div>}
+
 
         {/* Kanan */}
-        <div className="bg-white shadow p-4 rounded-lg border-0 outline-2 w-full md:w-52 shrink-0">
+        <div className="bg-white shadow-lg p-4 rounded-lg border-0 outline-2 outline-gray-200 w-full md:w-52 shrink-0">
           <div className="flex items-start gap-2">
             <Calendar size={18} className="text-gray-500 mt-1" />
             <div>
@@ -110,7 +126,7 @@ function UnggahDokumenPage() {
       </div>
 
       {/* Section */}
-      <h4 className="mt-8 mb-4 font-semibold text-gray-700">
+      <h4 className="mt-4 mb-4 font-semibold text-gray-700">
         Dokumen yang diperlukan
       </h4>
 
@@ -136,22 +152,7 @@ function UnggahDokumenPage() {
         })}
       </div>
 
-      {/* Catatan */}
-      {pendaftar?.catatan_dokumen && (
-        <div className="mt-8 flex flex-col md:flex-row justify-between items-start gap-6">
-          <div className="bg-yellow-100 p-4 rounded-lg flex gap-2 w-full md:flex-1">
-            <AlertCircle className="text-yellow-600 flex-shrink-0" size={18} />
-            <div>
-              <p className="font-semibold">Catatan Verifikator</p>
-              <p className="text-sm mt-1">{pendaftar.catatan_dokumen}</p>
-              <span className="text-xs text-gray-600 block mt-2">
-                Mohon segera lakukan perbaikan jika diminta.
-              </span>
-            </div>
-          </div>
 
-        </div>
-      )}
       <Toast
         show={toastConfig.show}
         message={toastConfig.message}
@@ -223,12 +224,11 @@ function DokumenCard({ title, initialStatus, deskcripsi, initialFileName, status
       {/* Upload Box */}
       <div
         className={`h-24 border-2 border-dashed rounded-lg flex items-center justify-center mt-4 transition-colors
-          ${
-            initialStatus === "error"
-              ? "border-orange-400 bg-orange-100"
-              : initialStatus === "success"
-                ? "border-green-400 bg-green-50"
-                : "border-gray-300 bg-gray-50"
+          ${initialStatus === "error"
+            ? "border-orange-400 bg-orange-100"
+            : initialStatus === "success"
+              ? "border-green-400 bg-green-50"
+              : "border-gray-300 bg-gray-50"
           }`}
       >
         {isUploading ? (
