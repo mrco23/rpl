@@ -123,7 +123,7 @@ function App() {
           >
             <Route index element={<BerandaPendaftarPage />} />
             <Route path="unggah-dokumen" element={<UnggahDokumenPage />} />
-            <Route path="status-verifikasi" element={<StatusVerifikasiPage />} />
+            <Route path="status-pendaftaran" element={<StatusVerifikasiPage />} />
             <Route path="pengumuman" element={<PendaftarPengumumanPage />} />
           </Route>
 

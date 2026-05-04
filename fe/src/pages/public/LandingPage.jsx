@@ -198,7 +198,7 @@ export default function LandingPage() {
           <AkreditasiSkeleton />
         ) : (
           <div
-            className="bg-white rounded-4xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-4 xl:px-8 pt-16 w-75 sm:w-97 lg:w-130 xl:w-140 mx-auto pb-12 text-center relative mt-100 sm:mt-65 lg:mt-70 xl:mt-90"
+            className="bg-white rounded-2xl shadow-[0_15px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 px-4 xl:px-8 pt-16 w-75 sm:w-97 lg:w-130 xl:w-140 mx-auto pb-12 text-center relative mt-100 sm:mt-65 lg:mt-70 xl:mt-90"
             data-aos="fade-up"
             data-aos-duration="800"
           >

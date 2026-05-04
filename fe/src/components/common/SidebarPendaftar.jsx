@@ -34,9 +34,9 @@ function SidebarPendaftar({ onClose }) {
       path: "/pendaftar/unggah-dokumen",
     },
     {
-      title: "Status Verifikasi",
+      title: "Status Pendaftaran",
       icon: <ShieldCheck size={18} />,
-      path: "/pendaftar/status-verifikasi",
+      path: "/pendaftar/status-pendaftaran",
     },
     {
       title: "Pengumuman",

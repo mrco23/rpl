@@ -128,7 +128,7 @@ export default function VerifikatorVerifikasiPage() {
       setAssignedApplicant(null);
       setCatatan('');
       await fetchData(true);
-      alert("Pendaftaran berhasil dibatalkan");
+      alert("Verifikasi berhasil dibatalkan");
     } catch (err) {
       alert(err.message || "Gagal membatalkan pendaftaran");
     } finally {
@@ -805,14 +805,14 @@ function AssignedApplicantDetail({
               disabled={actionLoading}
               className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-green-500 text-green-600 rounded-xl text-sm font-bold hover:bg-green-50 transition-all cursor-pointer disabled:opacity-50"
             >
-              Verifikasi & Lanjutkan <Check size={18} strokeWidth={3} />
+              Verifikasi <Check size={18} strokeWidth={3} />
             </button>
             <button
               onClick={() => handleVerifyAction("perlu perbaikan")}
               disabled={actionLoading}
               className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-red-500 text-red-500 rounded-xl text-sm font-bold hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
             >
-              Minta Perbaikan <X size={18} strokeWidth={3} />
+              Perlu Perbaikan <X size={18} strokeWidth={3} />
             </button>
             <button
               onClick={() => handleCancel()}
