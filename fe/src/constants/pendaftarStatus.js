@@ -45,13 +45,14 @@ export const filterStatus = [
 		value: "unggah ulang",
 	},
 	{
-		label: "Lulus",
-		value: "lulus",
-	},
-	{
 		label: "Wawancara",
 		value: "wawancara orang tua",
 	},
+	{
+		label: "Lulus",
+		value: "lulus",
+	},
+
 	{
 		label: "Tidak Lulus",
 		value: "tidak lulus",
