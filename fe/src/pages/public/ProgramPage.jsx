@@ -57,7 +57,7 @@ function Program() {
 
       {/* Intro Text */}
       <section className="text-center max-w-5xl mx-auto px-6 mb-12 mt-14">
-        <p className="text-gray-900 text-lg sm:text-2xl leading-relaxed font-semibold mb-6">
+        <p className="text-gray-800 text-lg sm:text-2xl leading-relaxed font-semibold mb-6">
           SMP Katolik St. Rafael Manado, proses belajar tidak hanya berfokus
           pada penguasaan materi, tetapi juga pada pemahaman yang mendalam,
           pengembangan karakter, serta pembentukan pola pikir kritis dan
@@ -147,10 +147,10 @@ function TimelineItem({ item, index, icon }) {
             {icon}
           </div>
         </div>
-        <h3 className="font-semibold text-blue-900 text-xl mb-3">
+        <h3 className="font-semibold text-blue-900 text-2xl mb-3">
           {item.nama_pu}
         </h3>
-        <p className="text-sm text-gray-800 leading-relaxed max-w-xs">
+        <p className="text-lg text-gray-800 leading-relaxed max-w-xs">
           {item.deskripsi}
         </p>
       </div>

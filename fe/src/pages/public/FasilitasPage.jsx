@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import fasilitasService from "@services/fasilitasService";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import NavbarAbout from "@components/common/NavbarAbout";
 
 import { getImageUrl } from "../../utils/imageHelper";
 
@@ -36,36 +37,12 @@ function FasilitasPage() {
 
   return (
     <>
-      <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-35 mb-10">
+      <section className="w-full bg-blue-dark text-white rounded-b-3xl py-8 px-6 md:px-35 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">
           Fasilitas Sekolah
         </h2>
       </section>
-      <div className="max-w-7xl mx-auto px-6 mt-6">
-        <div className="hidden sm:flex items-center gap-7 text-sm text-gray-500">
-          {/* Tentang */}
-          <Link to="/tentang" className="text-black font-semibold">
-            Tentang
-          </Link>
-
-          <span className="mx-2">{">"}</span>
-
-          {/* Sejarah */}
-          <Link to="/sejarah" className="hover:text-blue-800 font-semibold">
-            Sejarah Sekolah
-          </Link>
-
-          {/* Visi Misi (active) */}
-
-          <Link to="/visi-misi" className="hover:text-blue-800 font-semibold">
-            Visi Misi
-          </Link>
-
-          <Link to="/fasilitas" className="text-blue-800 font-semibold">
-            Fasilitas sekolah
-          </Link>
-        </div>
-      </div>
+      <NavbarAbout location="fasilitas" />
 
       {/* State Renderings */}
       {loading ? (

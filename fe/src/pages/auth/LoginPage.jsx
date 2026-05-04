@@ -197,13 +197,13 @@ export default function LoginPage() {
           {/* EMAIL */}
           <div className="mb-5">
             <label className="text-sm">
-              {role === "pendaftar" ? "NISN" : "username  "}
+              {role === "pendaftar" ? "NISN" : "Nama Pengguna  "}
             </label>
             <input
               type="text"
               required
               placeholder={
-                role === "pendaftar" ? "Masukkan NISN" : "Masukkan username"
+                role === "pendaftar" ? "Masukkan NISN" : "Masukkan Nama Pengguna"
               }
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
@@ -289,14 +289,14 @@ export default function LoginPage() {
       </div>
 
       {/* FORGOT PASSWORD MODAL */}
-      <Modal 
-        open={showForgotModal} 
-        onClose={() => !forgotLoading && setShowForgotModal(false)} 
+      <Modal
+        open={showForgotModal}
+        onClose={() => !forgotLoading && setShowForgotModal(false)}
         title={
-          forgotSuccess 
-            ? "Email Terkirim" 
-            : forgotError === "Email tidak terdaftar di sistem" 
-              ? "Email Tidak Terdaftar" 
+          forgotSuccess
+            ? "Email Terkirim"
+            : forgotError === "Email tidak terdaftar di sistem"
+              ? "Email Tidak Terdaftar"
               : "Lupa Kata Sandi"
         }
       >
@@ -321,9 +321,9 @@ export default function LoginPage() {
             <div className="flex flex-col items-center text-center py-4">
               <div className={`w-20 h-20 ${forgotErrorCode === "RESEND_TESTING_MODE" ? 'bg-orange-100' : 'bg-red-100'} rounded-full flex items-center justify-center mb-6`}>
                 {forgotErrorCode === "RESEND_TESTING_MODE" ? (
-                   <Info size={48} className="text-orange-600" />
+                  <Info size={48} className="text-orange-600" />
                 ) : (
-                   <XCircle size={48} className="text-red-600" />
+                  <XCircle size={48} className="text-red-600" />
                 )}
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -333,7 +333,7 @@ export default function LoginPage() {
                 {forgotErrorCode === "RESEND_TESTING_MODE" ? (
                   <>
                     Layanan email saat ini dalam <strong>Mode Testing</strong>. Email hanya dapat dikirim ke email pemilik akun Resend (Developer).
-                    <br/><br/>
+                    <br /><br />
                     <span className="text-xs text-orange-700 bg-orange-50 p-2 rounded block">
                       <strong>Developer Note:</strong> {forgotError}
                     </span>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { getVisiMisi } from "../../services/profileService.js";
+import NavbarAbout from "@components/common/NavbarAbout";
 
 function VisiMisiPage() {
   const [data, setData] = useState(null);
@@ -49,35 +50,14 @@ function VisiMisiPage() {
   return (
     <>
       <main>
-        <section className="w-full bg-blue-dark text-white rounded-b-3xl py-8 px-6 md:px-10 mb-10">
+        <section className="w-full bg-blue-dark text-white rounded-b-3xl py-8 px-6 md:px-35 mb-10">
           <h2 className="text-2xl font-medium translate-y-4">Visi dan Misi</h2>
         </section>
-        <div className="max-w-7xl mx-auto px-6 mt-6">
-          <div className="hidden sm:flex items-center gap-7 text-sm text-gray-500">
-            {/* Tentang */}
-            <Link to="/tentang" className="text-black font-semibold">
-              Tentang
-            </Link>
-
-            <span className="mx-2">{">"}</span>
-
-            {/* Sejarah */}
-            <Link to="/sejarah" className="hover:text-blue-800 font-semibold">
-              Sejarah Sekolah
-            </Link>
-
-            {/* Visi Misi (active) */}
-            <span className="text-blue-800 font-semibold">Visi Misi</span>
-
-            <Link to="/fasilitas" className="hover:text-blue-800 font-semibold">
-              Fasilitas sekolah
-            </Link>
-          </div>
-        </div>
+        <NavbarAbout location='visi-misi' />
 
         {/* VISI SECTION */}
         <section className="text-center py-20 px-6">
-          <h2 className="text-5xl font-semibold mb-4">Visi</h2>
+          <h2 className="text-5xl font-semibold mb-8">Visi</h2>
           {loading ? (
             <div className="max-w-3xl mx-auto space-y-3 animate-pulse">
               <div className="h-6 bg-slate-200 rounded w-full mx-auto" />
@@ -85,7 +65,7 @@ function VisiMisiPage() {
               <div className="h-6 bg-slate-200 rounded w-4/6 mx-auto" />
             </div>
           ) : (
-            <p className="max-w-3xl text-3xl mx-auto text-black-700 leading-relaxed font-semibold">
+            <p className="max-w-7xl text-2xl mx-auto text-black-700 leading-relaxed">
               {data?.visi || "Data visi belum tersedia."}
             </p>
           )}

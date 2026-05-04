@@ -30,7 +30,7 @@ export default function BeritaPage() {
   return (
     <>
       {/* HEADER BIRU */}
-      <section className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 mb-10">
+      <section className="w-full bg-blue-dark text-white rounded-b-3xl py-8 mb-10">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl font-medium translate-y-4">Berita</h2>
         </div>

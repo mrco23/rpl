@@ -8,9 +8,10 @@ export const getAll = async () => {
 		select: {
 			id_berita: true,
 			judul_berita: true,
+			deskripsi: true,
 			gambar_berita: true,
 			tanggal_dibuat: true,
-		}
+		},
 	});
 };
 

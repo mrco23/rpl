@@ -49,7 +49,7 @@ export default function EkstrakurikulerPage() {
       </div>
       <div className="px-20 py-6 text-gray-700">
         <section className="text-center max-w-7xl mx-auto px-6 mb-12 mt-10">
-          <p className="text-gray-900 text-md leading-relaxed font-semibold">
+          <p className="text-gray-800 text-xl leading-relaxed font-semibold">
             Melalui berbagai kegiatan yang menarik dan bermanfaat, siswa
             didorong untuk mengembangkan bakat, membangun kepercayaan diri,
             serta belajar bekerja sama dan berprestasi di berbagai bidang.
@@ -59,7 +59,7 @@ export default function EkstrakurikulerPage() {
             yang aktif dan berkarakter.
           </p>
         </section>
-        <h2 className="text-3xl font-medium font-serif mt-6 mb-4">
+        <h2 className="text-3xl font-medium mt-6 mb-4">
           Mari Jelajahi!
         </h2>
       </div>

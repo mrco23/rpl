@@ -205,7 +205,7 @@ export default function AdminBeritaPage() {
                     <td className="p-4 text-sm text-gray-800 font-semibold truncate max-w-[200px]">
                       {item.judul_berita}
                     </td>
-                    <td className="p-4 text-sm text-gray-800 font-semibold text-gray-600 truncate max-w-[300px]">
+                    <td className="p-4 text-sm font-semibold text-gray-600 truncate max-w-[300px]">
                       {item.deskripsi}
                     </td>
                     <td className="p-4 text-sm text-gray-800 font-semibold">

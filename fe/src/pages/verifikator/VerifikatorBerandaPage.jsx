@@ -58,79 +58,79 @@ export default function VerifikatorBerandaPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {loading
           ? Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl px-6 py-4 border border-gray-200 shadow-sm border-l-4 border-l-gray-300"
+            >
+              <Skeleton className="h-4 w-24 mb-2" />
+              <Skeleton className="h-8 w-16 mb-4" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+          ))
+          : stats.map((stat, i) => {
+            const colors = [
+              {
+                bg: "bg-[#fff9f0]",
+                border: "border-l-orange-400",
+                iconBg: "bg-orange-100",
+                iconCol: "text-orange-500",
+                icon: <Clock size={24} />,
+                link: "/verifikator/menunggu",
+              },
+              {
+                bg: "bg-[#fff5f5]",
+                border: "border-l-red-400",
+                iconBg: "bg-red-100",
+                iconCol: "text-red-500",
+                icon: <AlertTriangle size={24} />,
+                link: "/verifikator/revisi",
+              },
+              {
+                bg: "bg-[#f0fdf4]",
+                border: "border-l-green-400",
+                iconBg: "bg-green-100",
+                iconCol: "text-green-600",
+                icon: <CheckCircle size={24} />,
+                link: "/verifikator/selesai",
+              },
+              {
+                bg: "bg-[#f4f7ff]",
+                border: "border-l-blue-600",
+                iconBg: "bg-blue-100",
+                iconCol: "text-blue-600",
+                icon: <Users size={24} />,
+                link: "/verifikator/pendaftar",
+              },
+            ];
+            // Try to match by index if available, else use a default
+            const config = colors[i] || colors[3];
+
+            return (
               <div
                 key={i}
-                className="bg-white rounded-xl px-6 py-4 border border-gray-200 shadow-sm border-l-4 border-l-gray-300"
+                className={`${config.bg} rounded-xl px-6 py-4 border border-gray-200 shadow-sm flex flex-col border-l-4 ${config.border}`}
               >
-                <Skeleton className="h-4 w-24 mb-2" />
-                <Skeleton className="h-8 w-16 mb-4" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-            ))
-          : stats.map((stat, i) => {
-              const colors = [
-                {
-                  bg: "bg-[#fff9f0]",
-                  border: "border-l-orange-400",
-                  iconBg: "bg-orange-100",
-                  iconCol: "text-orange-500",
-                  icon: <Clock size={24} />,
-                  link: "/verifikator/menunggu",
-                },
-                {
-                  bg: "bg-[#fff5f5]",
-                  border: "border-l-red-400",
-                  iconBg: "bg-red-100",
-                  iconCol: "text-red-500",
-                  icon: <AlertTriangle size={24} />,
-                  link: "/verifikator/revisi",
-                },
-                {
-                  bg: "bg-[#f0fdf4]",
-                  border: "border-l-green-400",
-                  iconBg: "bg-green-100",
-                  iconCol: "text-green-600",
-                  icon: <CheckCircle size={24} />,
-                  link: "/verifikator/selesai",
-                },
-                {
-                  bg: "bg-[#f4f7ff]",
-                  border: "border-l-blue-600",
-                  iconBg: "bg-blue-100",
-                  iconCol: "text-blue-600",
-                  icon: <Users size={24} />,
-                  link: "/verifikator/pendaftar",
-                },
-              ];
-              // Try to match by index if available, else use a default
-              const config = colors[i] || colors[3];
-
-              return (
-                <div
-                  key={i}
-                  className={`${config.bg} rounded-xl px-6 py-4 border border-gray-200 shadow-sm flex flex-col border-l-4 ${config.border}`}
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-gray-600 text-sm font-medium capitalize">
-                        {stat.status}
-                      </h3>
-                      <p className="text-3xl font-bold text-gray-800 mt-1 flex items-baseline gap-1">
-                        {stat.jumlah}{" "}
-                        <span className="text-sm font-medium text-gray-500">
-                          siswa
-                        </span>
-                      </p>
-                    </div>
-                    <div
-                      className={`p-3 ${config.iconBg} ${config.iconCol} rounded-full`}
-                    >
-                      {config.icon}
-                    </div>
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="text-gray-600 text-sm font-medium capitalize">
+                      {stat.status}
+                    </h3>
+                    <p className="text-3xl font-bold text-gray-800 mt-1 flex items-baseline gap-1">
+                      {stat.jumlah}{" "}
+                      <span className="text-sm font-medium text-gray-500">
+                        siswa
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    className={`p-3 ${config.iconBg} ${config.iconCol} rounded-full`}
+                  >
+                    {config.icon}
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
       </div>
 
       {/* Info Banner */}
@@ -142,7 +142,7 @@ export default function VerifikatorBerandaPage() {
           <h3 className="font-bold text-gray-800 text-sm">Informasi</h3>
           <p className="text-gray-600 text-sm mt-0.5">
             Periksa dan verifikasi dokumen pendaftar dengan teliti. Jika ada
-            kekurangan, pilih "Perlu Revisi" dan tuliskan catatan yang jelas.
+            kekurangan, pilih "Perlu Perbaikan" dan tuliskan catatan yang jelas.
           </p>
         </div>
       </div>
@@ -242,7 +242,7 @@ export default function VerifikatorBerandaPage() {
                 <AlertTriangle size={20} />
               </div>
               <h2 className="text-lg font-bold text-[#253b80]">
-                Yang Perlu Revisi
+                Yang Perlu Perbaikan
               </h2>
             </div>
           </div>
@@ -276,7 +276,7 @@ export default function VerifikatorBerandaPage() {
                   ))
                 ) : revisionApplicants.length === 0 ? (
                   <div className="p-10 text-center text-gray-400">
-                    Tidak ada pendaftar yang perlu revisi
+                    Tidak ada pendaftar yang perlu perbaikan
                   </div>
                 ) : (
                   revisionApplicants.map((app, i) => (

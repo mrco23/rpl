@@ -14,7 +14,7 @@ import {
   FileText,
   AlertCircle,
 } from "lucide-react";
-import VerifikatorHeader from "@components/features/VerifikatorHeader";
+import VerifikatorHeader from "../../components/features/VerifikatorHeader";
 import {
   getPendaftarVerifikasiList,
   getMyAssignedPendaftar,
@@ -321,13 +321,12 @@ export default function VerifikatorVerifikasiPage() {
                 return (
                   <div
                     key={app.id_pendaftar}
-                    className={`p-4 rounded-xl border flex items-center justify-between transition-all ${
-                      isMyAssigned
-                        ? "bg-blue-50/50 border-blue-200"
-                        : isLockedOther
-                          ? "bg-gray-100 border-gray-200 opacity-70"
-                          : "bg-white border-gray-200 hover:border-blue-300"
-                    }`}
+                    className={`p-4 rounded-xl border flex items-center justify-between transition-all ${isMyAssigned
+                      ? "bg-blue-50/50 border-blue-200"
+                      : isLockedOther
+                        ? "bg-gray-100 border-gray-200 opacity-70"
+                        : "bg-white border-gray-200 hover:border-blue-300"
+                      }`}
                   >
                     <div className="flex items-start gap-3 overflow-hidden">
                       <div className="w-10 h-10 rounded-full bg-orange-200 shrink-0 flex items-center justify-center text-orange-600 font-bold overflow-hidden uppercase">
@@ -359,7 +358,7 @@ export default function VerifikatorVerifikasiPage() {
                                 {app.id_verifikator
                                   ? "Sedang Diproses"
                                   : STATUS_LABELS[app.status_pendaftaran] ||
-                                    app.status_pendaftaran}
+                                  app.status_pendaftaran}
                               </span>
                             </div>
                             <span className="text-[10px] text-gray-400 mt-1">
@@ -378,10 +377,9 @@ export default function VerifikatorVerifikasiPage() {
                         onClick={() => handleAssign(app.id_pendaftar)}
                         disabled={isMyAssigned || actionLoading}
                         className={`flex items-center gap-1 text-[11px] font-semibold px-3 py-1.5 border rounded-full transition-colors shrink-0 
-                          ${
-                            isMyAssigned
-                              ? "bg-blue-600 text-white border-blue-600"
-                              : "text-blue-600 border-blue-200 hover:bg-blue-50 bg-white cursor-pointer"
+                          ${isMyAssigned
+                            ? "bg-blue-600 text-white border-blue-600"
+                            : "text-blue-600 border-blue-200 hover:bg-blue-50 bg-white cursor-pointer"
                           } 
                           disabled:opacity-50`}
                       >
@@ -537,10 +535,6 @@ export default function VerifikatorVerifikasiPage() {
                           ? "Laki-laki"
                           : "Perempuan"
                       }
-                    />
-                    <DataRow
-                      label="Agama"
-                      value={assignedApplicant.agama || "-"}
                     />
                     <DataRow label="No. HP" value={assignedApplicant.no_hp} />
                     <DataRow
@@ -716,7 +710,7 @@ function AssignedApplicantDetail({
           </div>
           <p className="text-sm text-gray-600">
             {assignedApplicant.status_pendaftaran ===
-            "menunggu verifikasi"
+              "menunggu verifikasi"
               ? "Dokumen belum pernah diperiksa"
               : "Pendaftar sedang memperbaiki dokumen"}
           </p>

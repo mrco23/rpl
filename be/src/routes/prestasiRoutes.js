@@ -1,23 +1,35 @@
 import express from "express";
 import {
-  getAll,
-  getPublic,
-  getDetailPublic,
-  create,
-  updateData,
-  remove,
+	getAll,
+	getPublic,
+	getDetailPublic,
+	create,
+	updateData,
+	remove,
 } from "../controllers/PrestasiController.js";
 import { verifyToken, authorizeRole } from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 
 const prestasiRoutes = express.Router();
 
-prestasiRoutes.get("/public", getPublic);
-prestasiRoutes.get("/public/:id", getDetailPublic);
+prestasiRoutes.get("", getPublic);
+prestasiRoutes.get("/:id", getDetailPublic);
 
-prestasiRoutes.get("", verifyToken, getAll);
-prestasiRoutes.post("", verifyToken, authorizeRole("admin"), upload.single("gambar_prestasi"), create);
-prestasiRoutes.put("/:id", verifyToken, authorizeRole("admin"), upload.single("gambar_prestasi"), updateData);
+// prestasiRoutes.get("", verifyToken, getAll);
+prestasiRoutes.post(
+	"",
+	verifyToken,
+	authorizeRole("admin"),
+	upload.single("gambar_prestasi"),
+	create,
+);
+prestasiRoutes.put(
+	"/:id",
+	verifyToken,
+	authorizeRole("admin"),
+	upload.single("gambar_prestasi"),
+	updateData,
+);
 prestasiRoutes.delete("/:id", verifyToken, authorizeRole("admin"), remove);
 
 export default prestasiRoutes;

@@ -145,7 +145,7 @@ function Navbar() {
           <div className="hidden lg:flex space-x-4">
             <button
               onClick={() => navigate("/login")}
-              className="px-3 py-1 border-2 border-blue-800 text-blue-900 rounded-md font-normal hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
+              className="px-3 py-1 border-2 border-blue-800 text-blue-900 rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
             >
               Masuk
             </button>
