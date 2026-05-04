@@ -65,7 +65,7 @@ export const exportExcel = async (req, res) => {
 	try {
 		const id = Number(req.params.id);
 		const gelombang = await prisma.gelombang.findUnique({
-			where: { id_gelombang: id }
+			where: { id_gelombang: id },
 		});
 
 		if (!gelombang) {
@@ -74,93 +74,114 @@ export const exportExcel = async (req, res) => {
 
 		const pendaftarList = await prisma.pendaftar.findMany({
 			where: { id_gelombang: id },
-			include: { alamat: true }
+			include: { alamat: true },
 		});
 
 		// Filter data
 		const totalPendaftar = pendaftarList.length;
-		
-		const listLulus = pendaftarList.filter(p => {
+
+		const listLulus = pendaftarList.filter((p) => {
 			const status = p.status_pendaftaran.toLowerCase();
-			return status === 'lulus' || status === 'diterima' || status === 'lolos';
+			return status === "lulus" || status === "diterima" || status === "lolos";
 		});
-		
-		const listTidakLolos = pendaftarList.filter(p => {
+
+		const listTidakLolos = pendaftarList.filter((p) => {
 			const status = p.status_pendaftaran.toLowerCase();
-			return status === 'tidak lulus' || status === 'gagal' || status === 'ditolak' || status === 'tidak lolos';
+			return (
+				status === "tidak lulus" ||
+				status === "gagal" ||
+				status === "ditolak" ||
+				status === "tidak lolos"
+			);
 		});
 
 		const totalDiterima = listLulus.length;
-		const rasioKelulusan = totalPendaftar > 0 ? ((totalDiterima / totalPendaftar) * 100).toFixed(2) + "%" : "0%";
+		const rasioKelulusan =
+			totalPendaftar > 0 ? ((totalDiterima / totalPendaftar) * 100).toFixed(2) + "%" : "0%";
 		const sisaKuota = Math.max(0, gelombang.kuota - totalDiterima);
 
 		const workbook = new ExcelJS.Workbook();
-		workbook.creator = 'PPDB System';
+		workbook.creator = "PPDB System";
 
 		// Sheet 1: Ringkasan
 		const sheetRingkasan = workbook.addWorksheet("Ringkasan");
 		sheetRingkasan.columns = [
-			{ header: 'Metrik', key: 'metrik', width: 30 },
-			{ header: 'Nilai', key: 'nilai', width: 20 }
+			{ header: "Metrik", key: "metrik", width: 30 },
+			{ header: "Nilai", key: "nilai", width: 20 },
 		];
-		
-		sheetRingkasan.addRow({ metrik: 'Nama Gelombang', nilai: gelombang.nama });
-		sheetRingkasan.addRow({ metrik: 'Kuota Total', nilai: gelombang.kuota });
-		sheetRingkasan.addRow({ metrik: 'Total Pendaftar', nilai: totalPendaftar });
-		sheetRingkasan.addRow({ metrik: 'Total Diterima', nilai: totalDiterima });
-		sheetRingkasan.addRow({ metrik: 'Rasio Kelulusan', nilai: rasioKelulusan });
-		sheetRingkasan.addRow({ metrik: 'Sisa Kuota', nilai: sisaKuota });
+
+		sheetRingkasan.addRow({ metrik: "Nama Gelombang", nilai: gelombang.nama });
+		sheetRingkasan.addRow({ metrik: "Kuota Total", nilai: gelombang.kuota });
+		sheetRingkasan.addRow({ metrik: "Total Pendaftar", nilai: totalPendaftar });
+		sheetRingkasan.addRow({ metrik: "Total Diterima", nilai: totalDiterima });
+		sheetRingkasan.addRow({ metrik: "Rasio Kelulusan", nilai: rasioKelulusan });
+		sheetRingkasan.addRow({ metrik: "Sisa Kuota", nilai: sisaKuota });
 
 		// Styling Header Ringkasan
 		sheetRingkasan.getRow(1).font = { bold: true };
-		sheetRingkasan.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } };
+		sheetRingkasan.getRow(1).fill = {
+			type: "pattern",
+			pattern: "solid",
+			fgColor: { argb: "FFD3D3D3" },
+		};
 
 		const columnsPendaftar = [
-			{ header: 'No', key: 'no', width: 5 },
-			{ header: 'NISN', key: 'nisn', width: 15 },
-			{ header: 'Nama Lengkap', key: 'nama_lengkap', width: 30 },
-			{ header: 'Jenis Kelamin', key: 'jenis_kelamin', width: 15 },
-			{ header: 'Asal Sekolah', key: 'asal_sekolah', width: 25 },
-			{ header: 'No HP', key: 'no_hp', width: 15 },
-			{ header: 'Status', key: 'status_pendaftaran', width: 20 },
+			{ header: "No", key: "no", width: 5 },
+			{ header: "NISN", key: "nisn", width: 15 },
+			{ header: "Nama Lengkap", key: "nama_lengkap", width: 30 },
+			{ header: "Jenis Kelamin", key: "jenis_kelamin", width: 15 },
+			{ header: "Asal Sekolah", key: "asal_sekolah", width: 25 },
+			{ header: "No HP", key: "no_hp", width: 15 },
+			{ header: "Status", key: "status_pendaftaran", width: 20 },
 		];
 
 		// Sheet 2: Diterima
-		const sheetDiterima = workbook.addWorksheet("Diterima");
+		const sheetDiterima = workbook.addWorksheet("Lulus");
 		sheetDiterima.columns = columnsPendaftar;
 		listLulus.forEach((p, index) => {
 			sheetDiterima.addRow({
 				no: index + 1,
-				nisn: p.nisn || '-',
+				nisn: p.nisn || "-",
 				nama_lengkap: p.nama_lengkap,
 				jenis_kelamin: p.jenis_kelamin,
 				asal_sekolah: p.asal_sekolah,
 				no_hp: p.no_hp,
-				status_pendaftaran: p.status_pendaftaran
+				status_pendaftaran: p.status_pendaftaran,
 			});
 		});
 		sheetDiterima.getRow(1).font = { bold: true };
-		sheetDiterima.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF90EE90' } }; // Light green
+		sheetDiterima.getRow(1).fill = {
+			type: "pattern",
+			pattern: "solid",
+			fgColor: { argb: "FF90EE90" },
+		}; // Light green
 
 		// Sheet 3: Tidak Lolos
-		const sheetTidakLolos = workbook.addWorksheet("Tidak Lolos");
+		const sheetTidakLolos = workbook.addWorksheet("Tidak Lulus");
 		sheetTidakLolos.columns = columnsPendaftar;
 		listTidakLolos.forEach((p, index) => {
 			sheetTidakLolos.addRow({
 				no: index + 1,
-				nisn: p.nisn || '-',
+				nisn: p.nisn || "-",
 				nama_lengkap: p.nama_lengkap,
 				jenis_kelamin: p.jenis_kelamin,
 				asal_sekolah: p.asal_sekolah,
 				no_hp: p.no_hp,
-				status_pendaftaran: p.status_pendaftaran
+				status_pendaftaran: p.status_pendaftaran,
 			});
 		});
 		sheetTidakLolos.getRow(1).font = { bold: true };
-		sheetTidakLolos.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFB6C1' } }; // Light pink
+		sheetTidakLolos.getRow(1).fill = {
+			type: "pattern",
+			pattern: "solid",
+			fgColor: { argb: "FFFFB6C1" },
+		}; // Light pink
 
-		res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		res.setHeader('Content-Disposition', `attachment; filename=Export_Gelombang_${id}.xlsx`);
+		res.setHeader(
+			"Content-Type",
+			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+		);
+		res.setHeader("Content-Disposition", `attachment; filename=Export_Gelombang_${id}.xlsx`);
 
 		await workbook.xlsx.write(res);
 		res.end();
