@@ -12,6 +12,7 @@ import {
   updateBeritaImage,
   deleteBerita,
 } from "../../services/adminNewsService.js";
+import formateDate from "../../utils/formateDate.js";
 
 export default function AdminBeritaPage() {
   const [newsList, setNewsList] = useState([]);
@@ -43,11 +44,7 @@ export default function AdminBeritaPage() {
       if (showLoader) setLoading(false);
     }
   };
-  const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
-  };
+
   const handleOpenAdd = () => {
     setModalMode("add");
     setFormData({ judul_berita: "", deskripsi: "" });
@@ -214,7 +211,7 @@ export default function AdminBeritaPage() {
                     </td>
                     <td className="p-4 text-sm text-gray-800 font-semibold">
                       {item.tanggal_dibuat
-                        ? formatDate(item.tanggal_dibuat)
+                        ? formateDate(item.tanggal_dibuat)
                         : "-"}
                     </td>
                     <td className="p-4">

@@ -39,11 +39,11 @@ export default function PreviewPrestasi({ data = [], loading }) {
             ))}
           </div>
         ) : (
-          <div className="px-10 mb-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-4 gap-10 justify-items-center">
+          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-10 ">
             {data.slice(0, 3).map((item, index) => (
               <div
                 key={index}
-                className="group bg-white rounded-2xl shadow-md overflow-hidden w-90 md:w-70 max-w-[520px] cursor-pointer transition-all duration-800 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl"
+                className="bg-white rounded-3xl shadow-sm overflow-hidden p-2 cursor-pointer sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-95 sm:w-130 md:w-60 lg:w-full"
                 data-aos={index == 0 ? "fade-up-right" : index == 1 ? "fade-up" : "fade-up-left"}
                 data-aos-duration="800"
                 data-aos-delay={Math.min(index * 80, 240)}
@@ -53,15 +53,15 @@ export default function PreviewPrestasi({ data = [], loading }) {
                   <img
                     src={getImageUrl(item.gambar)}
                     alt={item.nama_prestasi || "Prestasi"}
-                    className="w-full aspect-4/3 object-cover rounded-xl"
+                    className="w-full aspect-5/3 object-cover rounded-2xl hover:scale-[1.01] transition-all duration-500"
                   />
                 </div>
 
                 {/* Content */}
                 <div className="p-4">
-                  <h3 className="text-blue-900 font-semibold text-xl">{item.nama_prestasi}</h3>
-                  <p className="text-xs text-blue-800 font-medium">{item.peraih || "Siswa Sekolah"}</p>
-                  <p className="text-sm text-blue-800 font-medium mt-2 leading-relaxed line-clamp-3">
+                  <p className="text-xs text-gray-800 font-semibold mb-2">Peraih: {item.peraih || "Siswa Sekolah"}</p>
+                  <h3 className="text-blue-900 font-bold text-xl">{item.nama_prestasi}</h3>
+                  <p className="text-sm text-gray-600 font-medium mt-4 leading-relaxed">
                     {item.deskripsi}
                   </p>
                 </div>

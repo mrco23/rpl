@@ -291,7 +291,7 @@ export default function AdminPendaftarPage() {
                             <button
                                 onClick={handleMassUpdate}
                                 disabled={isMassUpdateDisabled}
-                                className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#253b80] text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-[#2646ae] transition-all ${isMassUpdateDisabled
+                                className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#253b80] text-white text-xs font-medium px-4 py-3 rounded-md hover:bg-[#2646ae] transition-all ${isMassUpdateDisabled
                                     ? 'opacity-50 cursor-not-allowed'
                                     : 'cursor-pointer'
                                     }`}

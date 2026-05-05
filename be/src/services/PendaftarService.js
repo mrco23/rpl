@@ -16,8 +16,6 @@ export const register = async (payload) => {
 		throw error;
 	}
 
-
-
 	if (
 		!payload.nama_lengkap ||
 		!payload.alamat ||
@@ -139,7 +137,7 @@ export const getAllPendaftar = async () => {
 			alamat: true,
 		},
 	});
-	return pendaftars.map(p => {
+	return pendaftars.map((p) => {
 		const { kata_sandi, ...rest } = p;
 		return rest;
 	});

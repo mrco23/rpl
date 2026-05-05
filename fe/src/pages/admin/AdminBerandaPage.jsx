@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Users, ArrowRight, UserCircle2
+  LayoutDashboard,
+  User,
+  Trophy,
+  Newspaper,
+  Building,
+  Megaphone,
+  UserCheck,
+  FileText,
+  LogOut,
+  Layers,
+  Users,
+  ArrowRight,
+  UserCircle2,
+  Building2
 } from 'lucide-react';
 import AdminHeader from '../../components/features/AdminHeader';
 import { NavLink } from 'react-router';
 import { getAdminBeranda } from '../../services/adminDashboardService';
 import Skeleton from '../../components/ui/Skeleton';
+import formateDate from '../../utils/formateDate';
 
 export default function AdminBerandaPage() {
   const [data, setData] = useState(null);
@@ -107,7 +121,7 @@ export default function AdminBerandaPage() {
                   <p className="text-3xl font-semibold text-gray-800 mt-1">{val}</p>
                 </div>
                 <div className="p-3 bg-blue-100 text-blue-600 rounded-full">
-                  <Users size={24} />
+                  {keyName === 'totalFasilitas' ? <Building2 size={24} /> : keyName === 'totalPrestasi' ? <Trophy size={24} /> : keyName === 'totalBerita' ? <Newspaper size={24} /> : <Users size={24} />}
                 </div>
               </div>
               <NavLink
@@ -157,7 +171,7 @@ export default function AdminBerandaPage() {
                       </div>
                     </div>
                     <div className="col-span-3 text-sm text-gray-800 font-medium">
-                      {app.tanggalDaftar}
+                      {formateDate(app.tanggalDaftar)}
                     </div>
                     <div className="col-span-3 text-center">
                       <span className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${getStatusBadge(app.status)}`}>
