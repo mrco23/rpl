@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, CalendarDays } from "lucide-react";
 import { requestAPI } from "@services/api.js";
 import { waveApi } from "@services/waveService.js";
+import Toast from "../../components/ui/Toast.jsx"; // Pastikan path ini sesuai dengan struktur folder Anda
 
 export default function ApplicantRegisterPage() {
   const navigate = useNavigate();
@@ -29,7 +30,9 @@ export default function ApplicantRegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+
+  // State Toaster menggantikan state error
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [gelombangLoading, setGelombangLoading] = useState(true);
   const [gelombangAktif, setGelombangAktif] = useState(null);
@@ -74,27 +77,30 @@ export default function ApplicantRegisterPage() {
       !formData.namaWali ||
       !formData.emailWali
     ) {
-      setError("Harap lengkapi semua data wajib.");
+      setToastConfig({ show: true, message: "Harap lengkapi semua data wajib bertanda bintang (*).", type: "error" });
       return;
     }
-    setError("");
+
+    // Sembunyikan toaster (jika ada error sebelumnya) lalu lanjut ke step 2
+    setToastConfig({ ...toastConfig, show: false });
     setStep(2);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     if (!password) {
-      setError("Kata sandi wajib diisi.");
+      setToastConfig({ show: true, message: "Kata sandi wajib diisi.", type: "error" });
       return;
     }
     if (password !== confirmPassword) {
-      setError("Kata sandi dan konfirmasi kata sandi tidak cocok.");
+      setToastConfig({ show: true, message: "Kata sandi dan konfirmasi kata sandi tidak cocok.", type: "error" });
       return;
     }
 
     setSubmitting(true);
+    setToastConfig({ ...toastConfig, show: false }); // Reset toaster sebelum submit
+
     try {
       const payload = {
         nama_lengkap: formData.namaLengkap,
@@ -125,7 +131,11 @@ export default function ApplicantRegisterPage() {
 
       setShowSuccessModal(true);
     } catch (err) {
-      setError(err.message || err.error || "Gagal melakukan registrasi. Silakan coba lagi.");
+      setToastConfig({
+        show: true,
+        message: err.message || err.error || "Gagal melakukan registrasi. Silakan coba lagi.",
+        type: "error"
+      });
     } finally {
       setSubmitting(false);
     }
@@ -230,13 +240,6 @@ export default function ApplicantRegisterPage() {
                 </li>
               </ul>
             </div>
-
-            {/* Error message */}
-            {error && (
-              <div className="bg-red-100 text-red-700 border border-red-300 px-4 py-3 rounded-lg mb-4 text-sm">
-                {error}
-              </div>
-            )}
 
             {/* Form Step 1 */}
             {step === 1 && (
@@ -454,7 +457,7 @@ export default function ApplicantRegisterPage() {
                         value={formData.namaWali}
                         onChange={handleChange}
                         placeholder="Isi Nama Lengkap OrangTua/Wali"
-                        className="w-full px-4 py-3 border border-gray-300   rounded-xl focus:border-blue-700 focus:outline-none"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-700 focus:outline-none"
                       />
                     </div>
                     <div>
@@ -467,7 +470,7 @@ export default function ApplicantRegisterPage() {
                         value={formData.emailWali}
                         onChange={handleChange}
                         placeholder="Isi Alamat Email OrangTua/Wali"
-                        className="w-full px-4 py-3 border border-gray-300   rounded-xl focus:border-blue-700 focus:outline-none"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-700 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -477,21 +480,13 @@ export default function ApplicantRegisterPage() {
                 <div className="flex justify-end mt-6">
                   <button
                     type="submit"
-                    className="
-    px-6 py-2 bg-[#274ac0] text-white rounded-md 
-    hover:bg-[#2343ad] 
-    transition-all duration-300 
-    flex items-center gap-2 group cursor-pointer
-  "
+                    className="px-6 py-2 bg-[#274ac0] text-white rounded-md hover:bg-[#2343ad] transition-all duration-300 flex items-center gap-2 group cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
                       LANJUT
                       <ArrowRight
                         size={14}
-                        className="
-        transition-transform duration-300
-        group-hover:translate-x-1
-      "
+                        className="transition-transform duration-300 group-hover:translate-x-1"
                       />
                     </span>
                   </button>
@@ -536,7 +531,7 @@ export default function ApplicantRegisterPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Minimal 6 karakter"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  focus:border-blue-400 focus:outline-none"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-400 focus:outline-none"
                   />
                 </div>
 
@@ -551,7 +546,7 @@ export default function ApplicantRegisterPage() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Ulangi kata sandi"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl  focus:border-blue-700 focus:outline-none"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-700 focus:outline-none"
                   />
                 </div>
 
@@ -559,7 +554,7 @@ export default function ApplicantRegisterPage() {
                 <div className="flex justify-center md:justify-end sm:justify-end gap-12 mt-6 w-full">
                   <button
                     type="button"
-                    onClick={() => { setStep(1); setError(""); }}
+                    onClick={() => { setStep(1); setToastConfig({ ...toastConfig, show: false }); }}
                     className="px-5 lg:px-10 py-2 cursor-pointer bg-gray-300 rounded-md"
                   >
                     ← Kembali
@@ -568,7 +563,7 @@ export default function ApplicantRegisterPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="px-5 lg:px-10 py-2 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md disabled:opacity-50"
+                    className="px-5 lg:px-10 py-2 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md disabled:opacity-50 cursor-pointer"
                   >
                     {submitting ? "Mendaftarkan..." : "Selesaikan"}
                   </button>
@@ -594,13 +589,21 @@ export default function ApplicantRegisterPage() {
             </p>
             <button
               onClick={() => navigate("/login")}
-              className="w-full py-3 bg-[#274ac0] text-white rounded-xl font-semibold hover:bg-[#2343ad] transition"
+              className="w-full py-3 bg-[#274ac0] text-white rounded-xl font-semibold hover:bg-[#2343ad] transition cursor-pointer"
             >
               Pergi ke Halaman Login
             </button>
           </div>
         </div>
       )}
+
+      {/* Komponen Toaster Global */}
+      <Toast
+        show={toastConfig.show}
+        message={toastConfig.message}
+        type={toastConfig.type}
+        onClose={() => setToastConfig({ ...toastConfig, show: false })}
+      />
     </main>
   );
 }
