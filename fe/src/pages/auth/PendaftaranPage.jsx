@@ -178,7 +178,7 @@ export default function ApplicantRegisterPage() {
             </p>
             <button
               onClick={() => navigate("/")}
-              className="px-8 py-3 bg-[#274ac0] text-white rounded-xl font-semibold hover:bg-[#2343ad] transition shadow-md"
+              className="px-8 py-3 bg-blue-dark text-white rounded-xl font-semibold hover:bg-blue-dark-hover transition shadow-md"
             >
               Kembali ke Beranda
             </button>
@@ -480,7 +480,7 @@ export default function ApplicantRegisterPage() {
                 <div className="flex justify-end mt-6">
                   <button
                     type="submit"
-                    className="px-6 py-2 bg-[#274ac0] text-white rounded-md hover:bg-[#2343ad] transition-all duration-300 flex items-center gap-2 group cursor-pointer"
+                    className="px-6 py-2 bg-blue-dark text-white rounded-md hover:bg-blue-dark-hover transition-all duration-300 flex items-center gap-2 group cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
                       LANJUT
@@ -563,7 +563,7 @@ export default function ApplicantRegisterPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="px-5 lg:px-10 py-2 border border-[#274ac0] bg-[#274ac0] hover:bg-[#2343ad] text-white rounded-md disabled:opacity-50 cursor-pointer"
+                    className="px-5 lg:px-10 py-2 border border-blue-dark bg-blue-dark hover:bg-blue-dark-hover text-white rounded-md disabled:opacity-50 cursor-pointer"
                   >
                     {submitting ? "Mendaftarkan..." : "Selesaikan"}
                   </button>
@@ -589,7 +589,7 @@ export default function ApplicantRegisterPage() {
             </p>
             <button
               onClick={() => navigate("/login")}
-              className="w-full py-3 bg-[#274ac0] text-white rounded-xl font-semibold hover:bg-[#2343ad] transition cursor-pointer"
+              className="w-full py-3 bg-blue-dark text-white rounded-xl font-semibold hover:bg-blue-dark-hover transition cursor-pointer"
             >
               Pergi ke Halaman Login
             </button>

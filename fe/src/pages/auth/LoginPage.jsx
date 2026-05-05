@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import hero from "@assets/hero.png";
+import hero from "@assets/hero.webp";
 import { Eye, EyeOff } from "lucide-react";
 import {
   loginService,

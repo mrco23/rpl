@@ -294,7 +294,7 @@ function AdminGelombang() {
 
             {/* ================= MODAL TAMBAH ================= */}
             {openAddModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
                     <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl relative flex flex-col max-h-[90vh] zoom-in-95 animate-in duration-200">
 
                         {/* Modal Header */}
@@ -406,7 +406,7 @@ function AdminGelombang() {
 
             {/* ================= MODAL HAPUS ================= */}
             {openDeleteModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
                     <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-8 text-center zoom-in-95 animate-in duration-200">
                         {/* ICON */}
                         <div className="w-20 h-20 mx-auto flex items-center justify-center rounded-full bg-red-50 mb-5 border-[6px] border-red-100">

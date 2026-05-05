@@ -422,7 +422,7 @@ export default function VerifikatorVerifikasiPage() {
 
       {/* ================= MODAL DATA LENGKAP ================= */}
       {isBiodataModalOpen && assignedApplicant && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
             {/* Modal Header (Sticky) */}
             <div className="flex justify-between items-start p-6 border-b border-gray-100 bg-white rounded-t-2xl sticky top-0 z-10">

@@ -134,7 +134,7 @@ function TimelineContainer({ children }) {
     // overflow-hidden dihapus dari sini agar animasi geser AOS tidak terpotong
     <section className="relative max-w-6xl mx-auto px-6 py-10 mb-20 overflow-x-clip">
       {/* Garis vertikal utama di tengah */}
-      <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gray-300 -translate-x-1/2 hidden md:block z-0"></div>
+      <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-300 -translate-x-1/2 hidden md:block z-0"></div>
       <div className="flex flex-col gap-24 relative z-10">{children}</div>
     </section>
   );
