@@ -1,6 +1,6 @@
 import { getImageUrl } from "../../utils/imageHelper.js";
 import React, { useState, useEffect } from "react";
-import { Search, Plus, Eye, Edit2, Trash2 } from "lucide-react";
+import { Search, Plus, Eye, Edit2, Trash2, Image as ImageIcon, UploadCloud, Trophy, Tag, FileText as FileIcon } from "lucide-react";
 import AdminHeader from "@components/features/AdminHeader";
 import Modal from "../../components/ui/Modal.jsx";
 import Skeleton from "../../components/ui/Skeleton.jsx";
@@ -47,10 +47,22 @@ export default function AdminAchievementsPage() {
     }
   };
 
+  // Fungsi khusus untuk menutup modal dan membersihkan semua state
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    // Memberi sedikit jeda agar animasi tutup modal selesai sebelum state dikosongkan
+    setTimeout(() => {
+      setFormData({ judul_prestasi: "", deskripsi: "", peraih_prestasi: "" });
+      setFormImage(null);
+      setSelectedItem(null);
+    }, 200);
+  };
+
   const handleOpenAdd = () => {
     setModalMode("add");
     setFormData({ judul_prestasi: "", deskripsi: "", peraih_prestasi: "" });
     setFormImage(null);
+    setSelectedItem(null); // Perbaikan Utama: Memastikan data lama tidak tertinggal
     setIsModalOpen(true);
   };
 
@@ -69,6 +81,7 @@ export default function AdminAchievementsPage() {
   const handleOpenDetail = (item) => {
     setModalMode("detail");
     setSelectedItem(item);
+    setFormImage(null);
     setIsModalOpen(true);
   };
 
@@ -100,7 +113,7 @@ export default function AdminAchievementsPage() {
       } else if (modalMode === "edit") {
         await updatePrestasi(selectedItem.id_prestasi, payload);
       }
-      setIsModalOpen(false);
+      handleCloseModal(); // Gunakan handleCloseModal di sini
       setToastConfig({
         show: true,
         message: modalMode === "add" ? "Prestasi berhasil ditambahkan!" : "Prestasi berhasil diperbarui!",
@@ -248,167 +261,226 @@ export default function AdminAchievementsPage() {
       {/* Modal Reusable */}
       <Modal
         open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal} // Gunakan handleCloseModal di sini
         title={
           modalMode === "add"
             ? "Tambah Prestasi Baru"
             : modalMode === "edit"
-              ? "Edit Prestasi"
-              : "Detail Prestasi"
+              ? "Edit Data Prestasi"
+              : "Informasi Detail Prestasi"
         }
       >
         {modalMode === "detail" ? (
-          <div className="space-y-4 text-gray-800 max-h-[80vh] overflow-y-auto">
-            {selectedItem?.gambar_prestasi && !selectedItem.gambar_prestasi.includes('null') ? (
-              <img
-                src={getImageUrl(selectedItem.gambar_prestasi)}
-                alt="Prestasi"
-                className="w-full h-auto rounded-lg max-h-60 object-cover"
-              />
-            ) : (
-              <div className="w-full h-40 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 font-medium">
-                Gambar tidak ada
-              </div>
-            )}
-            <div>
-              <h3 className="font-bold text-lg">
-                {selectedItem?.judul_prestasi}
-              </h3>
-              {selectedItem?.peraih_prestasi && (
-                <p className="text-sm font-semibold text-blue-700">
-                  Peraih: {selectedItem.peraih_prestasi}
-                </p>
+          <div className="flex flex-col gap-6 w-full max-h-[80vh] overflow-y-auto pb-4 pr-2 custom-scrollbar">
+            {/* Header Gambar */}
+            <div className="w-full rounded-xl overflow-hidden bg-slate-50 border border-slate-100 relative group">
+              {selectedItem?.gambar_prestasi && !selectedItem.gambar_prestasi.includes('null') ? (
+                <img
+                  src={getImageUrl(selectedItem.gambar_prestasi)}
+                  alt="Prestasi"
+                  className="w-full h-56 object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                />
+              ) : (
+                <div className="w-full h-56 flex flex-col items-center justify-center text-slate-400">
+                  <ImageIcon size={48} strokeWidth={1.5} className="mb-2 opacity-50" />
+                  <span className="text-sm font-medium">Tidak ada gambar terlampir</span>
+                </div>
               )}
             </div>
-            <p className="whitespace-pre-wrap">{selectedItem?.deskripsi}</p>
-            <div className="pt-4 flex justify-end">
+
+            {/* Konten Detail */}
+            <div className="flex flex-col gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-blue-700 mb-1">
+                  <Tag size={16} />
+                  <span className="text-xs font-bold uppercase tracking-wider">Judul Prestasi</span>
+                </div>
+                <h3 className="font-extrabold text-2xl text-gray-900 leading-tight">
+                  {selectedItem?.judul_prestasi}
+                </h3>
+              </div>
+
+              {selectedItem?.peraih_prestasi && (
+                <div className="bg-blue-50/50 border border-blue-100 rounded-lg p-3 flex items-start gap-3">
+                  <div className="bg-blue-100 text-blue-700 p-2 rounded-md shrink-0">
+                    <Trophy size={18} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-blue-600 uppercase mb-0.5">Peraih Prestasi</p>
+                    <p className="font-semibold text-gray-800">{selectedItem.peraih_prestasi}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2 mt-2">
+                <div className="flex items-center gap-2 text-gray-500 border-b border-gray-100 pb-2">
+                  <FileIcon size={16} />
+                  <span className="text-xs font-bold uppercase tracking-wider">Deskripsi Lengkap</span>
+                </div>
+                <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap pt-1">
+                  {selectedItem?.deskripsi || "Tidak ada deskripsi."}
+                </p>
+              </div>
+            </div>
+
+            {/* Aksi Modal Detail */}
+            <div className="pt-4 mt-2 border-t border-gray-100 flex justify-end">
               <button
-                onClick={() => setIsModalOpen(false)}
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 font-medium transition-colors cursor-pointer"
+                onClick={handleCloseModal} // Gunakan handleCloseModal di sini
+                className="bg-gray-100 text-gray-700 px-5 py-2.5 rounded-lg hover:bg-gray-200 font-semibold transition-colors cursor-pointer text-sm"
               >
-                Tutup
+                Tutup Jendela
               </button>
             </div>
           </div>
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="space-y-4 max-h-[80vh] overflow-y-auto pr-1"
+            className="flex flex-col gap-5 max-h-[80vh] overflow-y-auto pb-4 pr-2 custom-scrollbar"
           >
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Judul Prestasi
+            <div className="space-y-1.5">
+              <label className="block text-sm font-semibold text-gray-700">
+                Judul Prestasi <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 required
+                placeholder="Masukkan judul prestasi..."
                 value={formData.judul_prestasi}
                 onChange={(e) =>
                   setFormData({ ...formData, judul_prestasi: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nama Peraih Prestasi
+
+            <div className="space-y-1.5">
+              <label className="block text-sm font-semibold text-gray-700">
+                Nama Peraih <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 required
+                placeholder="Contoh: Tim Robotik, John Doe, dll."
                 value={formData.peraih_prestasi}
                 onChange={(e) =>
                   setFormData({ ...formData, peraih_prestasi: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Deskripsi
+
+            <div className="space-y-1.5">
+              <label className="block text-sm font-semibold text-gray-700">
+                Deskripsi <span className="text-red-500">*</span>
               </label>
               <textarea
                 required
                 rows={4}
+                placeholder="Tuliskan deskripsi lengkap mengenai prestasi ini..."
                 value={formData.deskripsi}
                 onChange={(e) =>
                   setFormData({ ...formData, deskripsi: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm resize-none focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Gambar (Opsional)
+
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700">
+                Media Gambar <span className="text-gray-400 font-normal">(Opsional)</span>
               </label>
 
-              {/* PREVIEW */}
-              {(formImage || (selectedItem?.gambar_prestasi && !selectedItem.gambar_prestasi.includes('null'))) && (
-                <div className="mb-3">
-                  <img
-                    src={
-                      formImage
-                        ? URL.createObjectURL(formImage)
-                        : getImageUrl(selectedItem?.gambar_prestasi)
-                    }
-                    alt="Preview"
-                    className="w-full h-40 object-cover rounded-lg border"
-                  />
-                </div>
-              )}
-
-              {/* CUSTOM FILE INPUT */}
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#253b80] hover:bg-blue-50 transition">
-                <div className="flex flex-col items-center justify-center text-gray-500">
-                  <Plus size={20} />
-                  <p className="text-sm mt-1">
-                    {formImage ? "Ganti Gambar" : "Klik untuk upload"}
-                  </p>
-                  <span className="text-xs text-gray-400">PNG / JPG</span>
-                </div>
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setFormImage(e.target.files[0])}
-                  className="hidden"
-                />
-              </label>
-
-              {/* NOTE */}
-              {modalMode === "edit" &&
-                selectedItem?.gambar_prestasi &&
-                !formImage && (
-                  <p className="text-xs text-gray-500 mt-2">
-                    Kosongkan jika tidak ingin mengganti gambar.
-                  </p>
+              {/* Area Preview dan Upload */}
+              <div className="flex flex-col gap-3">
+                {(formImage || (selectedItem?.gambar_prestasi && !selectedItem.gambar_prestasi.includes('null'))) && (
+                  <div className="relative w-full rounded-lg overflow-hidden border border-slate-200 group">
+                    <img
+                      src={
+                        formImage
+                          ? URL.createObjectURL(formImage)
+                          : getImageUrl(selectedItem?.gambar_prestasi)
+                      }
+                      alt="Preview"
+                      className="w-full h-48 object-cover"
+                    />
+                    {/* Overlay indikator gambar aktif */}
+                    <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-md backdrop-blur-sm">
+                      {formImage ? 'Gambar Baru' : 'Gambar Saat Ini'}
+                    </div>
+                  </div>
                 )}
+
+                <label className="group flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-slate-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 transition-all bg-slate-50">
+                  <div className="flex flex-col items-center justify-center text-slate-500 group-hover:text-blue-600 transition-colors">
+                    <UploadCloud size={28} className="mb-2" />
+                    <p className="text-sm font-medium">
+                      {formImage ? "Pilih gambar lain" : "Klik untuk mengunggah gambar"}
+                    </p>
+                    <span className="text-xs text-slate-400 mt-1">Format JPG, PNG, atau JPEG</span>
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setFormImage(e.target.files[0])}
+                    className="hidden"
+                  />
+                </label>
+              </div>
             </div>
-            <div className="pt-4 flex justify-end gap-3 ">
+
+            {/* Aksi Modal Form */}
+            <div className="pt-4 mt-2 border-t border-gray-100 flex justify-end gap-3">
               <button
                 type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                onClick={handleCloseModal} // Gunakan handleCloseModal di sini
+                className="px-5 py-2.5 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#253b80] rounded-md hover:bg-[#1a2c66] transition-colors disabled:opacity-50 cursor-pointer"
+                className="px-5 py-2.5 text-sm font-semibold text-white bg-[#253b80] rounded-lg hover:bg-[#1a2c66] shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"
               >
-                {submitting ? "Menyimpan..." : "Simpan"}
+                {submitting ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
+                    Menyimpan...
+                  </>
+                ) : (
+                  "Simpan Data"
+                )}
               </button>
             </div>
           </form>
         )}
       </Modal>
+
       <Toast
         show={toastConfig.show}
         message={toastConfig.message}
         type={toastConfig.type}
         onClose={() => setToastConfig({ ...toastConfig, show: false })}
       />
+
+      {/* Tambahkan CSS ringan untuk menyembunyikan scrollbar bawaan tapi tetap bisa di-scroll */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #e2e8f0;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: #cbd5e1;
+        }
+      `}} />
     </>
   );
 }

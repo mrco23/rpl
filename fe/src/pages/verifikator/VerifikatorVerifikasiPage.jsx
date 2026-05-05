@@ -22,7 +22,9 @@ import {
   verifyPendaftar,
   cancelVerifikasi
 } from "../../services/verifikatorVerifikasiService";
-import Skeleton from "@components/ui/Skeleton";
+import Skeleton from "../../components/ui/Skeleton.jsx";
+import Modal from "../../components/ui/Modal.jsx";
+import Toast from "../../components/ui/Toast.jsx";
 import { STATUS_LABELS } from "../../constants/pendaftarStatus";
 import { useSearchParams } from "react-router-dom";
 import { resolveDocumentUrl, extractFileNameFromUrl, downloadDocumentFile } from '../../utils/documentHelper.js';
@@ -40,17 +42,20 @@ export default function VerifikatorVerifikasiPage() {
   const [searchParams] = useSearchParams();
   const filterFromURL = searchParams.get("filter");
   const [filterStatus, setFilterStatus] = useState("Semua"); // 'Semua', 'Menunggu', 'Unggah Ulang', 'Diproses'
+
+  // State untuk Toaster dan Modal Peringatan
+  const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [isBiodataModalOpen, setIsBiodataModalOpen] = useState(false);
+
+  const [catatan, setCatatan] = useState("");
+
   useEffect(() => {
     if (filterFromURL === "menunggu") setFilterStatus("Menunggu");
     else if (filterFromURL === "revisi") setFilterStatus("Unggah Ulang");
     else if (filterFromURL === "diproses") setFilterStatus("Diproses");
     else setFilterStatus("Semua");
   }, [filterFromURL]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [catatan, setCatatan] = useState("");
 
   // Fetch all data
   const fetchData = useCallback(async (isRefresh = false) => {
@@ -70,6 +75,7 @@ export default function VerifikatorVerifikasiPage() {
       }
     } catch (err) {
       console.error("Gagal mengambil data:", err);
+      setToastConfig({ show: true, message: "Gagal mengambil data dari server", type: "error" });
     } finally {
       setLoading(false);
       setListLoading(false);
@@ -88,8 +94,10 @@ export default function VerifikatorVerifikasiPage() {
       setActionLoading(true);
       await assignPendaftar(id);
       await fetchData(true);
+      // Optional: Toast saat berhasil assign
+      // setToastConfig({ show: true, message: "Pendaftar berhasil diambil alih", type: "success" });
     } catch (err) {
-      alert(err.message || "Gagal mengambil alih pemeriksaan");
+      setToastConfig({ show: true, message: err.message || "Gagal mengambil alih pemeriksaan", type: "error" });
     } finally {
       setActionLoading(false);
     }
@@ -97,8 +105,10 @@ export default function VerifikatorVerifikasiPage() {
 
   const handleVerifyAction = async (status) => {
     if (!assignedApplicant || actionLoading) return;
+
+    // Logika menampilkan Modal Peringatan jika catatan kosong
     if (status === "perlu perbaikan" && !catatan.trim()) {
-      alert("Mohon isi catatan perbaikan terlebih dahulu");
+      setIsAlertModalOpen(true);
       return;
     }
 
@@ -111,9 +121,14 @@ export default function VerifikatorVerifikasiPage() {
       setAssignedApplicant(null);
       setCatatan("");
       await fetchData(true);
-      status ? alert("Status berhasil diperbarui") : "";
+
+      if (status === "terverifikasi") {
+        setToastConfig({ show: true, message: "Dokumen pendaftar berhasil diverifikasi!", type: "success" });
+      } else if (status === "perlu perbaikan") {
+        setToastConfig({ show: true, message: "Permintaan perbaikan berhasil dikirim ke pendaftar!", type: "success" });
+      }
     } catch (err) {
-      alert(err.message || "Gagal memperbarui status");
+      setToastConfig({ show: true, message: err.message || "Gagal memperbarui status", type: "error" });
     } finally {
       setActionLoading(false);
     }
@@ -128,9 +143,9 @@ export default function VerifikatorVerifikasiPage() {
       setAssignedApplicant(null);
       setCatatan('');
       await fetchData(true);
-      alert("Verifikasi berhasil dibatalkan");
+      setToastConfig({ show: true, message: "Pemeriksaan berhasil dibatalkan!", type: "success" });
     } catch (err) {
-      alert(err.message || "Gagal membatalkan pendaftaran");
+      setToastConfig({ show: true, message: err.message || "Gagal membatalkan pemeriksaan", type: "error" });
     } finally {
       setActionLoading(false);
     }
@@ -164,14 +179,6 @@ export default function VerifikatorVerifikasiPage() {
 
     return matchesSearch;
   });
-
-  // Pagination
-  const totalPages = Math.ceil(filteredApplicants.length / itemsPerPage) || 1;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedApplicants = filteredApplicants.slice(
-    startIndex,
-    startIndex + itemsPerPage,
-  );
 
   const getStatusStyle = (app) => {
     if (app.id_verifikator) return "text-blue-500 font-medium";
@@ -208,8 +215,8 @@ export default function VerifikatorVerifikasiPage() {
       <div className="max-w-7xl mx-auto p-6">
         <Skeleton className="h-20 w-full mb-6 rounded-xl" />
         <div className="flex flex-col lg:flex-row gap-6">
-          <Skeleton className="h-[80vh] w-full lg:w-[40%] rounded-xl" />
-          <Skeleton className="h-[80vh] flex-1 rounded-xl" />
+          <Skeleton className="h-[70vh] w-full lg:w-[40%] rounded-xl" />
+          <Skeleton className="h-[70vh] flex-1 rounded-xl" />
         </div>
       </div>
     );
@@ -222,9 +229,9 @@ export default function VerifikatorVerifikasiPage() {
         subText="Selamat datang di sistem verifikasi dokumen PPDB"
       />
 
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 pb-8 px-4 lg:px-0">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 px-4 lg:px-0 h-[calc(100vh-130px)] pb-4">
         {/* ================= KOLOM KIRI (Daftar Pendaftar) ================= */}
-        <div className="w-full lg:w-[45%] xl:w-[40%] bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-[70vh] lg:h-[85vh]">
+        <div className="w-full lg:w-[45%] xl:w-[40%] bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden">
           <div className="p-5 border-b border-gray-100">
             <div className="flex justify-between items-start mb-1">
               <h2 className="text-xl font-bold text-gray-900">
@@ -248,10 +255,7 @@ export default function VerifikatorVerifikasiPage() {
                 type="text"
                 placeholder="Cari nama / NISN..."
                 value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setCurrentPage(1);
-                }}
+                onChange={(e) => setSearch(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg pl-4 pr-10 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
               <Search
@@ -266,54 +270,42 @@ export default function VerifikatorVerifikasiPage() {
                 label="Semua"
                 count={stats.semua}
                 active={filterStatus === "Semua"}
-                onClick={() => {
-                  setFilterStatus("Semua");
-                  setCurrentPage(1);
-                }}
+                onClick={() => setFilterStatus("Semua")}
               />
               <FilterChip
                 label="Menunggu"
                 count={stats.menunggu}
                 active={filterStatus === "Menunggu"}
-                onClick={() => {
-                  setFilterStatus("Menunggu");
-                  setCurrentPage(1);
-                }}
+                onClick={() => setFilterStatus("Menunggu")}
               />
               <FilterChip
                 label="Unggah Ulang"
                 count={stats.unggahUlang}
                 active={filterStatus === "Unggah Ulang"}
-                onClick={() => {
-                  setFilterStatus("Unggah Ulang");
-                  setCurrentPage(1);
-                }}
+                onClick={() => setFilterStatus("Unggah Ulang")}
               />
               <FilterChip
                 label="Diproses"
                 count={stats.diproses}
                 active={filterStatus === "Diproses"}
-                onClick={() => {
-                  setFilterStatus("Diproses");
-                  setCurrentPage(1);
-                }}
+                onClick={() => setFilterStatus("Diproses")}
               />
             </div>
           </div>
 
-          {/* List Pendaftar (Scrollable) */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {/* List Pendaftar (Scrollable dengan scrollbar kustom) */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
             {listLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <Skeleton key={i} className="h-24 w-full rounded-xl" />
               ))
-            ) : paginatedApplicants.length === 0 ? (
+            ) : filteredApplicants.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-gray-400 py-10">
                 <FileText size={48} className="mb-2 opacity-20" />
                 <p className="text-sm">Tidak ada pendaftar ditemukan</p>
               </div>
             ) : (
-              paginatedApplicants.map((app) => {
+              filteredApplicants.map((app) => {
                 const isMyAssigned =
                   assignedApplicant?.id_pendaftar === app.id_pendaftar;
                 const isLockedOther = app.id_verifikator && !isMyAssigned;
@@ -394,37 +386,10 @@ export default function VerifikatorVerifikasiPage() {
               })
             )}
           </div>
-
-          {/* Pagination */}
-          <div className="p-4 border-t border-gray-100 flex justify-center items-center gap-1.5 overflow-x-auto">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-              className="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-500 hover:bg-gray-50 text-sm font-medium disabled:opacity-30 cursor-pointer"
-            >
-              «
-            </button>
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`w-8 h-8 flex items-center justify-center rounded border text-sm font-bold cursor-pointer ${currentPage === i + 1 ? "bg-blue-100 text-blue-600 border-blue-200" : "border-gray-200 text-gray-600 hover:bg-gray-50"}`}
-              >
-                {i + 1}
-              </button>
-            ))}
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              className="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-500 hover:bg-gray-50 text-sm font-medium disabled:opacity-30 cursor-pointer"
-            >
-              »
-            </button>
-          </div>
         </div>
 
         {/* ================= KOLOM KANAN (Detail Verifikasi) ================= */}
-        <div className="flex-1 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-[85vh] overflow-hidden">
+        <div className="flex-1 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden">
           {!assignedApplicant ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-8 text-gray-400">
               <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
@@ -449,14 +414,14 @@ export default function VerifikatorVerifikasiPage() {
               handleVerifyAction={handleVerifyAction}
               handleCancel={handleCancel}
               openDocument={openDocument}
-              setIsModalOpen={setIsModalOpen}
+              setIsBiodataModalOpen={setIsBiodataModalOpen}
             />
           )}
         </div>
       </div>
 
       {/* ================= MODAL DATA LENGKAP ================= */}
-      {isModalOpen && assignedApplicant && (
+      {isBiodataModalOpen && assignedApplicant && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
             {/* Modal Header (Sticky) */}
@@ -470,7 +435,7 @@ export default function VerifikatorVerifikasiPage() {
                 </p>
               </div>
               <button
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => setIsBiodataModalOpen(false)}
                 className="p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
               >
                 <XCircle size={32} strokeWidth={1.5} />
@@ -613,7 +578,7 @@ export default function VerifikatorVerifikasiPage() {
             {/* Modal Footer */}
             <div className="p-6 border-t border-gray-100 bg-gray-50/80 rounded-b-2xl">
               <button
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => setIsBiodataModalOpen(false)}
                 className="w-full bg-[#253b80] text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition-all cursor-pointer shadow-md"
               >
                 TUTUP BIODATA
@@ -622,6 +587,55 @@ export default function VerifikatorVerifikasiPage() {
           </div>
         </div>
       )}
+
+      {/* ================= MODAL PERINGATAN CATATAN ================= */}
+      <Modal
+        open={isAlertModalOpen}
+        onClose={() => setIsAlertModalOpen(false)}
+        title="Catatan Diperlukan"
+      >
+        <div className="flex flex-col items-center justify-center p-6 pb-2">
+          <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4 border border-red-100 ">
+            <AlertCircle size={32} className="text-red-500" />
+          </div>
+          <h3 className="text-lg font-bold text-gray-900 mb-2">Gagal Meminta Perbaikan</h3>
+          <p className="text-center text-gray-600 text-sm mb-6 leading-relaxed">
+            Anda wajib mengisi <strong>Catatan Verifikasi</strong> untuk memberi tahu pendaftar dokumen mana yang harus diperbaiki atau diunggah ulang.
+          </p>
+          <button
+            onClick={() => setIsAlertModalOpen(false)}
+            className="w-full py-2.5 bg-blue-dark text-white rounded-xl font-bold hover:bg-blue-dark-hover transition-colors shadow-sm cursor-pointer"
+          >
+            Mengerti
+          </button>
+        </div>
+      </Modal>
+
+      {/* Komponen Toaster Global */}
+      <Toast
+        show={toastConfig.show}
+        message={toastConfig.message}
+        type={toastConfig.type}
+        onClose={() => setToastConfig({ ...toastConfig, show: false })}
+      />
+
+      {/* CSS untuk Scrollbar Kustom */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #e2e8f0;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: #cbd5e1;
+        }
+      `}} />
     </>
   );
 }
@@ -637,7 +651,7 @@ function AssignedApplicantDetail({
   handleVerifyAction,
   handleCancel,
   openDocument,
-  setIsModalOpen,
+  setIsBiodataModalOpen,
 }) {
   const requiredDocs = ["Ijazah", "Foto Copy Akte Kelahiran", "Foto Copy Kartu Keluarga", "Pas Foto"];
   const isComplete = requiredDocs.every(reqDoc =>
@@ -653,7 +667,7 @@ function AssignedApplicantDetail({
             Data Verifikasi
           </h2>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setIsBiodataModalOpen(true)}
             className="flex items-center gap-2 text-[#253b80] text-sm font-semibold px-4 py-2 border border-[#253b80] rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
           >
             Lihat Biodata Lengkap <ArrowRight size={16} />
@@ -754,7 +768,7 @@ function AssignedApplicantDetail({
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={() => openDocument(doc.jenis_dokumen)}
-                    className="bg-[#253b80] hover:bg-blue-800 text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors cursor-pointer"
+                    className="bg-blue-dark hover:bg-blue-dark-hover text-white text-xs font-semibold px-4 py-1.5 rounded transition-colors cursor-pointer"
                   >
                     Lihat
                   </button>
@@ -789,13 +803,13 @@ function AssignedApplicantDetail({
           <h3 className="text-sm font-bold text-[#253b80] mb-2 uppercase tracking-wide">
             Catatan Verifikasi
           </h3>
-          <p className="text-xs text-gray-500 mb-3 font-medium font-italic">
-            * Wajib diisi jika status "Perlu Perbaiki" dipilih
+          <p className="text-xs text-gray-500 mb-3 font-medium italic">
+            * Wajib diisi jika status "Perlu Perbaikan" dipilih
           </p>
           <textarea
             value={catatan}
             onChange={(e) => setCatatan(e.target.value)}
-            className="w-full border border-gray-300 rounded-xl p-4 text-sm text-gray-800 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 mb-6 transition-all bg-gray-50/30"
+            className="w-full border border-gray-300 rounded-xl p-4 text-sm text-gray-800 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 mb-6 transition-all bg-gray-50/30 custom-scrollbar"
             placeholder="Contoh: Foto KK kurang jelas, mohon unggah ulang foto yang lebih tajam..."
           ></textarea>
 
@@ -803,21 +817,21 @@ function AssignedApplicantDetail({
             <button
               onClick={() => handleVerifyAction("terverifikasi")}
               disabled={actionLoading}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-green-500 text-green-600 rounded-xl text-sm font-bold hover:bg-green-50 transition-all cursor-pointer disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-green-500 text-green-600 rounded-lg text-sm font-bold hover:bg-green-50 transition-all cursor-pointer disabled:opacity-50"
             >
               Verifikasi <Check size={18} strokeWidth={3} />
             </button>
             <button
               onClick={() => handleVerifyAction("perlu perbaikan")}
               disabled={actionLoading}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-red-500 text-red-500 rounded-xl text-sm font-bold hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-red-500 text-red-500 rounded-lg text-sm font-bold hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
             >
               Perlu Perbaikan <X size={18} strokeWidth={3} />
             </button>
             <button
               onClick={() => handleCancel()}
               disabled={actionLoading}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-500 text-gray-500 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-gray-500 text-gray-500 rounded-lg text-sm font-bold hover:bg-gray-100 transition-all cursor-pointer disabled:opacity-50"
             >
               Batal <X size={18} strokeWidth={3} />
             </button>
