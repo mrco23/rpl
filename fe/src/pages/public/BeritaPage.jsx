@@ -69,7 +69,7 @@ export default function BeritaPage() {
 
                 return (
                   <Link to={`/berita/${item.id_berita || ''}`} key={item.id_berita || index}>
-                    <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition overflow-hidden cursor-pointer">
+                    <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition overflow-hidden cursor-pointer h-full">
                       {/* IMAGE */}
 
                       <img
