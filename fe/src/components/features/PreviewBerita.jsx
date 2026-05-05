@@ -7,7 +7,7 @@ import { getImageUrl } from "../../utils/imageHelper";
 
 export default function PreviewBerita({ data = [], loading }) {
   return (
-    <section className="w-full py-40 font-sans mb-7">
+    <section className="w-full py-20 font-sans mb-10">
       <div className="max-w-7xl mx-auto px-0 sm:px-10">
         {/* TITLE */}
         <div className="text-center mb-12">

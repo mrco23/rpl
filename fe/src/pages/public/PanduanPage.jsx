@@ -20,9 +20,10 @@ export default function PanduanPage() {
   }, []);
 
   const steps = [
-    "Isi formulir pendaftaran secara online",
+    "Isi formulir pendaftaran online",
     "Upload dokumen yang dibutuhkan",
     "Verifikasi data oleh panitia",
+    "Wawancara Orang Tua",
     "Pengumuman hasil seleksi",
     "Daftar ulang",
   ];
@@ -36,7 +37,7 @@ export default function PanduanPage() {
 
   return (
     <>
-      <div className="w-full bg-[#1f3b9a] text-white rounded-b-3xl py-8 px-6 md:px-16 mb-10">
+      <div className="w-full bg-blue-dark text-white rounded-b-3xl py-8 px-6 md:px-16 mb-10">
         <h2 className="text-2xl font-medium translate-y-4">Panduan</h2>
       </div>
       <main className="px-6 md:px-10 pb-10 md:pl-16">

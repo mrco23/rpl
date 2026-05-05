@@ -139,7 +139,7 @@ export default function ApplicantRegisterPage() {
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-slate-700 hover:text-blue-800 transition"
           >
-            <IoArrowBackSharp className="text-lg" />
+            <IoArrowBackSharp size={25} className="cursor-pointer" />
           </button>
         </div>
         {/* Header */}

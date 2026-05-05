@@ -29,9 +29,9 @@ function SejarahPage() {
 
 
       {/* CONTENT */}
-      <section className="px-6 md:px-16 py-10 text-center text-gray-900 flex flex-col gap-10">
+      <section className="px-6 md:px-16 py-10 text-center text-gray-900 flex flex-col gap-10 mb-5">
         <h2 className="text-4xl font-semibold">Sejarah Sekolah</h2>
-        <div className="max-w-7xl mx-auto space-y-6 text-2xl flex flex-col gap-10">
+        <div className="max-w-6xl mx-auto space-y-6 text-2xl flex flex-col gap-10">
           <p className="">
             SMP Katolik St. Rafael Manado bernaung di bawah Yayasan Pendidikan
             Katolik Keuskupan Manado (YPK-KM)
@@ -58,11 +58,11 @@ function SejarahPage() {
       {/* BLUE SECTION */}
       <section className="relative">
         <div className="flex">
-          <div className="bg-blue-dark h-20 w-[70%] rounded-tr-[100px]"></div>
-          <div className="bg-blue-dark h-20 w-[30%] rounded-tl-[100px]"></div>
+          <div className="bg-blue-dark h-12 w-[70%] rounded-tr-[100px]"></div>
+          <div className="bg-blue-dark h-12 w-[30%] rounded-tl-[100px]"></div>
         </div>
 
-        <section className="bg-blue-dark text-white px-6 md:px-20 py-12 w-full flex flex-col items-center">
+        <section className="bg-blue-dark text-white px-6 md:px-25 py-12 w-full flex flex-col items-center">
           {/* curve atas */}
 
           {/* BAGIAN ATAS (FULL WIDTH) */}
@@ -76,7 +76,7 @@ function SejarahPage() {
           </div>
 
           {/* BAGIAN BAWAH (TETAP DI TENGAH) */}
-          <div className="max-w-7xl mx-auto text-center text-xl">
+          <div className="max-w-6xl mx-auto text-center text-xl my-3">
             <div className="border-t border-white/30 mt-6 pt-4 text-md text-white/90">
               Berlandaskan nilai kasih, pelayanan, dan kejujuran, kami berupaya
               mendampingi setiap siswa untuk bertumbuh menjadi pribadi yang

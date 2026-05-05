@@ -35,8 +35,8 @@ export default function BeritaPage() {
           <h2 className="text-3xl font-medium translate-y-4">Berita</h2>
         </div>
       </section>
-      <section className="w-full py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-10 md:px-6">
+      <section className="w-full py-10 lg:py-15 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-10 lg:px-6">
           {/* State Renderings */}
           {loading ? (
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
@@ -69,13 +69,13 @@ export default function BeritaPage() {
 
                 return (
                   <Link to={`/berita/${item.id_berita || ''}`} key={item.id_berita || index}>
-                    <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition overflow-hidden cursor-pointer h-full">
+                    <div className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition duration-700 overflow-hidden cursor-pointer h-full flex flex-col">
                       {/* IMAGE */}
 
                       <img
                         src={getImageUrl(item.gambar_berita || item.gambar)}
                         alt={item.judul_berita || item.judul || "Berita"}
-                        className="w-full h-52 object-cover rounded-2xl"
+                        className="w-9/10 self-center h-55 object-cover rounded-2xl hover:scale-102 transition duration-500"
                       />
 
                       {/* CONTENT */}
