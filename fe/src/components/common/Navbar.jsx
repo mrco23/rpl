@@ -41,7 +41,7 @@ function Navbar() {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center h-full gap-2 ml-2">
-            <img src={logo} alt="logo" className="w-12 xl:w-14 h-auto  object-contain" />
+            <img src={logo} alt="logo" className="w-12 xl:w-14 h-auto object-contain" />
           </div>
 
           {/* Menu */}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import hero from "@assets/hero.png";
+import hero from "@assets/hero.webp";
 import PreviewFasilitas from "@components/features/PreviewFasilitas.jsx";
 import QuotePage from "@components/features/Sambutan";
 import PreviewPrestasi from "@components/features/PreviewPrestasi.jsx";

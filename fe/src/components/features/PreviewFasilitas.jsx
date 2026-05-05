@@ -20,13 +20,13 @@ export default function PreviewFasilitas({ data = [], loading }) {
           ))}
         </div>) : (<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {data.map((item, index) => (
-            <div key={index} className="text-center " data-aos={`zoom-in`} data-aos-duration="600" data-aos-delay={Math.min(index * 80, 240)}>
+            <div key={index} className="text-center " data-aos={`zoom-in`} data-aos-duration="700" data-aos-delay="100">
               <img
                 src={getImageUrl(item.gambar)}
                 alt={item.nama_fasilitas}
-                className="w-100 mx-auto lg:w-full aspect-3.5/2.5 object-cover rounded-lg shadow-sm mb-2"
+                className="w-100 mx-auto lg:w-full aspect-3.5/2.5 object-cover rounded-xl hover:scale-[1.02] transition-all duration-700"
               />
-              <p className="text-gray-700 text-sm">{item.nama_fasilitas}</p>
+              <p className="text-gray-700 text-lg mt-3">{item.nama_fasilitas}</p>
             </div>
           ))}
         </div>)}

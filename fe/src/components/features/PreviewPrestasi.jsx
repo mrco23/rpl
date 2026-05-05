@@ -43,17 +43,17 @@ export default function PreviewPrestasi({ data = [], loading }) {
             {data.slice(0, 3).map((item, index) => (
               <div
                 key={index}
-                className="bg-white rounded-3xl shadow-sm overflow-hidden p-2 cursor-pointer sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-80 sm:w-130 md:w-60 lg:w-80 xl:w-90"
+                className="bg-white rounded-xl shadow-sm overflow-hidden p-1 cursor-pointer sm:h-full md:h-80 lg:h-100 xl:h-109 mx-auto w-80 sm:w-130 md:w-60 lg:w-80"
                 data-aos={index == 0 ? "fade-up-right" : index == 1 ? "fade-up" : "fade-up-left"}
                 data-aos-duration="800"
                 data-aos-delay={Math.min(index * 80, 240)}
               >
                 {/* IMAGE */}
-                <div className="p-3 pb-0 overflow-hidden">
+                <div className="p-1 pb-0 overflow-hidden">
                   <img
                     src={getImageUrl(item.gambar)}
                     alt={item.nama_prestasi || "Prestasi"}
-                    className="w-full aspect-5/3 object-cover rounded-2xl hover:scale-[1.01] transition-all duration-500"
+                    className="w-full aspect-4/3 object-cover rounded-xl hover:scale-[1.03] transition-all duration-500"
                   />
                 </div>
 
