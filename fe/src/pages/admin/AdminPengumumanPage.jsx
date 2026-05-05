@@ -11,7 +11,13 @@ import {
   Clock,
   ClipboardList,
   Plus,
-  Loader2
+  Loader2,
+  Search,
+  Filter,
+  CheckSquare,
+  Square,
+  Users,
+  Check
 } from "lucide-react";
 import AdminHeader from "../../components/features/AdminHeader";
 import Modal from "../../components/ui/Modal";
@@ -25,8 +31,6 @@ import {
 } from "../../services/adminPengumumanService";
 import { getAllPendaftar } from "../../services/adminPendaftarService";
 import { PENDAFTAR_STATUS, STATUS_LABELS } from "../../constants/pendaftarStatus";
-import { Search, Filter, CheckSquare, Square } from "lucide-react";
-
 
 function AdminPengumumanPage() {
   const [loading, setLoading] = useState(true);
@@ -45,7 +49,6 @@ function AdminPengumumanPage() {
   const [submitting, setSubmitting] = useState(false);
   const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
 
-
   useEffect(() => {
     fetchNotifications();
     fetchPendaftar();
@@ -60,7 +63,6 @@ function AdminPengumumanPage() {
     }
   };
 
-
   const fetchNotifications = async (showLoader = true) => {
     try {
       if (showLoader) setLoading(true);
@@ -74,12 +76,23 @@ function AdminPengumumanPage() {
     }
   };
 
+  // Fungsi pembersih modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => {
+      setFormData({ judul_pengumuman: '', deksripsi: '', recipients: [] });
+      setSelectedItem(null);
+      setPendaftarSearch('');
+      setPendaftarFilter('');
+    }, 200);
+  };
+
   const handleOpenAdd = () => {
     setModalMode('add');
     setFormData({ judul_pengumuman: '', deksripsi: '', recipients: [] });
+    setSelectedItem(null);
     setIsModalOpen(true);
   };
-
 
   const handleOpenEdit = (item) => {
     setModalMode('edit');
@@ -91,7 +104,6 @@ function AdminPengumumanPage() {
     });
     setIsModalOpen(true);
   };
-
 
   const handleOpenDetail = (item) => {
     setModalMode('detail');
@@ -121,7 +133,7 @@ function AdminPengumumanPage() {
         await updatePengumuman(selectedItem.id_pengumuman, formData);
         setToastConfig({ show: true, message: "Pengumuman berhasil diperbarui!", type: "success" });
       }
-      setIsModalOpen(false);
+      handleCloseModal();
       fetchNotifications(false);
     } catch (err) {
       setToastConfig({ show: true, message: "Gagal menyimpan data", type: "error" });
@@ -163,8 +175,42 @@ function AdminPengumumanPage() {
     }
   ];
 
+  // Helper List Pendaftar Berdasarkan Filter
+  const filteredPendaftar = pendaftarList
+    .filter(p => !pendaftarFilter || p.status_pendaftaran === pendaftarFilter)
+    .filter(p => !pendaftarSearch || p.nama_lengkap.toLowerCase().includes(pendaftarSearch.toLowerCase()));
+
+  // Logika "Pilih Semua" berdasarkan filter yang aktif
+  const handleSelectAllFiltered = () => {
+    const filteredIds = filteredPendaftar.map(p => p.id_pendaftar);
+    const allSelected = filteredIds.every(id => formData.recipients.includes(id));
+
+    if (allSelected) {
+      // Hapus pilihan yang difilter dari recipients
+      setFormData({
+        ...formData,
+        recipients: formData.recipients.filter(id => !filteredIds.includes(id))
+      });
+    } else {
+      // Tambahkan yang difilter ke recipients (hindari duplikat)
+      const newRecipients = [...new Set([...formData.recipients, ...filteredIds])];
+      setFormData({ ...formData, recipients: newRecipients });
+    }
+  };
+
+  const isAllFilteredSelected = filteredPendaftar.length > 0 && filteredPendaftar.every(p => formData.recipients.includes(p.id_pendaftar));
+
+  // Helper gaya status
+  const getBadgeStyle = (status) => {
+    const s = status?.toLowerCase() || '';
+    if (s.includes('menunggu')) return 'bg-orange-100 text-orange-700';
+    if (s.includes('terverifikasi') || s.includes('lolos') || s.includes('lulus')) return 'bg-green-100 text-green-700';
+    if (s.includes('perbaikan') || s.includes('ditolak')) return 'bg-red-100 text-red-700';
+    return 'bg-gray-100 text-gray-700';
+  };
+
   return (
-    <div className=" bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen">
       <AdminHeader
         text="Pengumuman PPDB"
         subText="Kelola informasi dan pengumuman untuk calon peserta didik baru."
@@ -296,65 +342,114 @@ function AdminPengumumanPage() {
       {/* Modal Reusable */}
       <Modal
         open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         title={modalMode === 'add' ? 'Buat Pengumuman Baru' : modalMode === 'edit' ? 'Edit Pengumuman' : 'Detail Pengumuman'}
       >
         {modalMode === 'detail' ? (
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-bold text-xl text-gray-800">{selectedItem?.judul_pengumuman}</h3>
-              <div className="flex gap-4 mt-1 text-xs text-gray-500">
-                <span className="flex items-center gap-1"><Calendar size={12} /> {formatDate(selectedItem?.tanggal_dibuat)}</span>
-                <span className="flex items-center gap-1"><Clock size={12} /> {formatTime(selectedItem?.tanggal_dibuat)}</span>
+          <div className="space-y-6 max-h-[80vh] overflow-y-auto pr-2 custom-scrollbar pb-4">
+            <div className="bg-blue-50/50 p-5 rounded-2xl border border-blue-100">
+              <h3 className="font-extrabold text-2xl text-gray-900 leading-tight mb-2">{selectedItem?.judul_pengumuman}</h3>
+              <div className="flex gap-4 mt-1 text-sm text-gray-500 font-medium">
+                <span className="flex items-center gap-1.5"><Calendar size={14} className="text-[#253b80]" /> {formatDate(selectedItem?.tanggal_dibuat)}</span>
+                <span className="flex items-center gap-1.5"><Clock size={14} className="text-[#253b80]" /> {formatTime(selectedItem?.tanggal_dibuat)}</span>
               </div>
             </div>
-            <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{selectedItem?.deksripsi}</p>
-            <div className="pt-6 flex justify-end">
-              <button onClick={() => setIsModalOpen(false)} className="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg hover:bg-gray-300 font-bold text-sm transition-colors cursor-pointer">TUTUP</button>
+
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-gray-500 border-b border-gray-100 pb-2">
+                <FileText size={16} />
+                <span className="text-xs font-bold uppercase tracking-wider">Isi Pengumuman</span>
+              </div>
+              <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap pt-1">{selectedItem?.deksripsi}</p>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-gray-500 border-b border-gray-100 pb-2">
+                <div className="flex items-center gap-2">
+                  <Users size={16} />
+                  <span className="text-xs font-bold uppercase tracking-wider">Dikirim Kepada</span>
+                </div>
+                <span className="text-xs font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                  {selectedItem?.pengumuman_pendaftar?.length || 0} Pendaftar
+                </span>
+              </div>
+              <div className="bg-gray-50 border border-gray-200 rounded-xl p-3 max-h-40 overflow-y-auto custom-scrollbar">
+                {selectedItem?.pengumuman_pendaftar && selectedItem.pengumuman_pendaftar.length > 0 ? (
+                  <ul className="list-disc list-inside text-sm text-gray-600 pl-2 space-y-1">
+                    {selectedItem.pengumuman_pendaftar.map((p) => (
+                      <li key={p.id_pendaftar}>{p.pendaftar?.nama_lengkap || 'Unknown'}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-gray-400 italic">Tidak ada pendaftar terpilih.</p>
+                )}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-gray-100 flex justify-end">
+              <button onClick={handleCloseModal} className="bg-gray-100 text-gray-700 px-6 py-2.5 rounded-xl hover:bg-gray-200 font-bold text-sm transition-colors cursor-pointer">Tutup Jendela</button>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Judul Pengumuman</label>
-              <input
-                type="text"
-                required
-                placeholder="Contoh: Hasil Seleksi Gelombang 1"
-                value={formData.judul_pengumuman}
-                onChange={(e) => setFormData({ ...formData, judul_pengumuman: e.target.value })}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-[#253b80] focus:border-[#253b80] shadow-sm transition-all"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Isi Pengumuman</label>
-              <textarea
-                required
-                rows={4}
-                placeholder="Tuliskan isi pengumuman di sini..."
-                value={formData.deksripsi}
-                onChange={(e) => setFormData({ ...formData, deksripsi: e.target.value })}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-[#253b80] focus:border-[#253b80] shadow-sm transition-all resize-none"
-              />
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6 max-h-[80vh] overflow-y-auto pr-2 custom-scrollbar pb-4">
+
+            {/* Informasi Utama */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 border-b border-gray-200 pb-2">
+                <FileText size={18} className="text-[#253b80]" />
+                <h3 className="font-bold text-gray-800">Informasi Utama</h3>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-sm font-semibold text-gray-700">Judul Pengumuman <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Contoh: Hasil Seleksi Gelombang 1"
+                  value={formData.judul_pengumuman}
+                  onChange={(e) => setFormData({ ...formData, judul_pengumuman: e.target.value })}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#253b80]/50 focus:border-[#253b80] transition-all"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-sm font-semibold text-gray-700">Isi Pengumuman <span className="text-red-500">*</span></label>
+                <textarea
+                  required
+                  rows={4}
+                  placeholder="Tuliskan pesan pengumuman secara lengkap di sini..."
+                  value={formData.deksripsi}
+                  onChange={(e) => setFormData({ ...formData, deksripsi: e.target.value })}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#253b80]/50 focus:border-[#253b80] transition-all resize-none custom-scrollbar"
+                />
+              </div>
             </div>
 
-            {/* RECIPIENTS SELECTION */}
-            <div className="border-t pt-4">
-              <label className="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Penerima Pengumuman</label>
+            {/* Target Penerima */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b border-gray-200 pb-2">
+                <div className="flex items-center gap-2">
+                  <Users size={18} className="text-[#253b80]" />
+                  <h3 className="font-bold text-gray-800">Target Penerima <span className="text-red-500">*</span></h3>
+                </div>
+                <div className="text-xs font-bold bg-[#253b80]/10 text-[#253b80] px-3 py-1 rounded-full">
+                  {formData.recipients.length} Dipilih
+                </div>
+              </div>
 
-              <div className="flex gap-2 mb-3">
+              <div className="flex flex-col sm:flex-row gap-2 mt-2">
                 <div className="relative flex-1">
                   <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Cari nama..."
-                    className="w-full pl-9 pr-3 py-2 text-xs border rounded-lg outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="Cari nama pendaftar..."
+                    className="w-full bg-white pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-[#253b80]/50 focus:border-[#253b80] transition-all"
                     value={pendaftarSearch}
                     onChange={e => setPendaftarSearch(e.target.value)}
                   />
                 </div>
                 <select
-                  className="text-xs border rounded-lg px-2 outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+                  className="text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#253b80]/50 focus:border-[#253b80] bg-white transition-all min-w-[150px]"
                   value={pendaftarFilter}
                   onChange={e => setPendaftarFilter(e.target.value)}
                 >
@@ -365,16 +460,36 @@ function AdminPengumumanPage() {
                 </select>
               </div>
 
-              <div className="max-h-48 overflow-y-auto border rounded-xl divide-y">
-                {pendaftarList
-                  .filter(p => !pendaftarFilter || p.status_pendaftaran === pendaftarFilter)
-                  .filter(p => !pendaftarSearch || p.nama_lengkap.toLowerCase().includes(pendaftarSearch.toLowerCase()))
-                  .map(p => {
+              <div className="flex items-center justify-between pt-1 pb-1">
+                <span className="text-xs text-gray-500 font-medium italic">
+                  Menampilkan {filteredPendaftar.length} pendaftar sesuai pencarian.
+                </span>
+                {filteredPendaftar.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleSelectAllFiltered}
+                    className="text-xs font-bold text-[#253b80] hover:text-[#1a2c66] hover:underline cursor-pointer transition-all"
+                  >
+                    {isAllFilteredSelected ? "Batal Pilih Semua" : "Pilih Semua (Hasil Filter)"}
+                  </button>
+                )}
+              </div>
+
+              <div className="max-h-56 overflow-y-auto border border-gray-200 rounded-xl bg-slate-50 custom-scrollbar p-1.5 space-y-1">
+                {filteredPendaftar.length === 0 ? (
+                  <div className="p-6 text-center text-gray-400 text-sm italic">
+                    Tidak ada pendaftar yang cocok.
+                  </div>
+                ) : (
+                  filteredPendaftar.map(p => {
                     const isSelected = formData.recipients.includes(p.id_pendaftar);
                     return (
                       <div
                         key={p.id_pendaftar}
-                        className="flex items-center gap-3 p-3 hover:bg-gray-50 cursor-pointer"
+                        className={`flex items-center gap-3 p-2.5 rounded-lg border transition-all cursor-pointer ${isSelected
+                          ? "bg-blue-50/80 border-blue-200 shadow-sm"
+                          : "bg-white border-transparent hover:border-gray-200 hover:shadow-sm"
+                          }`}
                         onClick={() => {
                           const newRecipients = isSelected
                             ? formData.recipients.filter(id => id !== p.id_pendaftar)
@@ -382,34 +497,56 @@ function AdminPengumumanPage() {
                           setFormData({ ...formData, recipients: newRecipients });
                         }}
                       >
-                        {isSelected ? <CheckSquare size={18} className="text-[#253b80]" /> : <Square size={18} className="text-gray-300" />}
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-800">{p.nama_lengkap}</p>
-                          <p className="text-[10px] text-gray-500 uppercase">{STATUS_LABELS[p.status_pendaftaran] || p.status_pendaftaran}</p>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${isSelected ? "bg-[#253b80] text-white" : "bg-gray-200 text-gray-500"
+                          }`}>
+                          {p.nama_lengkap.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-sm font-bold truncate ${isSelected ? "text-[#253b80]" : "text-gray-800"}`}>
+                            {p.nama_lengkap}
+                          </p>
+                          <span className={`px-2 py-0.5 mt-1 inline-block rounded text-[9px] font-bold uppercase tracking-wider ${getBadgeStyle(p.status_pendaftaran)}`}>
+                            {STATUS_LABELS[p.status_pendaftaran] || p.status_pendaftaran}
+                          </span>
+                        </div>
+                        <div className="shrink-0 pr-1">
+                          {isSelected ? (
+                            <div className="bg-[#253b80] text-white p-0.5 rounded-full">
+                              <Check size={14} strokeWidth={3} />
+                            </div>
+                          ) : (
+                            <Square size={18} className="text-gray-300" />
+                          )}
                         </div>
                       </div>
                     );
-                  })}
-                {pendaftarList.length === 0 && <div className="p-4 text-center text-gray-400 text-sm">Tidak ada pendaftar</div>}
+                  })
+                )}
               </div>
-              <p className="text-[10px] text-gray-400 mt-2 italic">* {formData.recipients.length} pendaftar dipilih</p>
             </div>
 
-            <div className="pt-4 flex justify-end gap-3">
-
+            {/* ACTION FOOTER */}
+            <div className="pt-4 mt-2 border-t border-gray-100 flex justify-end gap-3">
               <button
                 type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="px-6 py-2.5 text-sm font-bold text-gray-500 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all cursor-pointer shadow-sm"
+                onClick={handleCloseModal}
+                className="px-5 py-2.5 text-sm font-semibold text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
               >
-                BATAL
+                Batal
               </button>
               <button
                 type="submit"
-                disabled={submitting}
-                className="px-8 py-2.5 text-sm font-bold text-white bg-[#253b80] rounded-xl hover:bg-[#1a2c66] transition-all disabled:opacity-50 cursor-pointer shadow-md"
+                disabled={submitting || formData.recipients.length === 0}
+                className="px-5 py-2.5 text-sm font-semibold text-white bg-[#253b80] rounded-lg hover:bg-[#1a2c66] shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"
               >
-                {submitting ? 'MENYIMPAN...' : 'SIMPAN'}
+                {submitting ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Menyimpan...
+                  </>
+                ) : (
+                  "Simpan Pengumuman"
+                )}
               </button>
             </div>
           </form>
@@ -431,6 +568,24 @@ function AdminPengumumanPage() {
           pendaftar pada halaman pengumuman di akun pendaftar masing-masing.
         </p>
       </div>
+
+      {/* CSS untuk Scrollbar Kustom Modal */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #cbd5e1;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: #94a3b8;
+        }
+      `}} />
     </div>
   );
 }
