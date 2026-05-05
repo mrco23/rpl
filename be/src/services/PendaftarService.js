@@ -169,3 +169,21 @@ export const getStatusById = async (id) => {
 		select: { status_pendaftaran: true },
 	});
 };
+
+export const deletePendaftar = async (id) => {
+	const idNum = Number(id);
+
+	const pendaftar = await prisma.pendaftar.findUnique({
+		where: { id_pendaftar: idNum },
+	});
+	if (!pendaftar) throw new Error("Pendaftar tidak ditemukan");
+
+	// Hapus secara eksplisit dalam transaksi agar aman di TiDB
+	// (TiDB tidak selalu menegakkan FK CASCADE)
+	return await prisma.$transaction(async (tx) => {
+		await tx.pengumumanPendaftar.deleteMany({ where: { id_pendaftar: idNum } });
+		await tx.dokumen.deleteMany({ where: { id_pendaftar: idNum } });
+		await tx.alamat.deleteMany({ where: { id_pendaftar: idNum } });
+		return tx.pendaftar.delete({ where: { id_pendaftar: idNum } });
+	});
+};

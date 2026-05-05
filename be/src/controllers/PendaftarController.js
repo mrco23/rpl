@@ -11,6 +11,7 @@ import {
 	setResetToken,
 	getPendaftarByResetToken,
 	clearResetToken,
+	deletePendaftar,
 } from "../services/PendaftarService.js";
 import { generateToken } from "../utils/jwt.js";
 import { nanoid } from "nanoid";
@@ -244,6 +245,22 @@ class PendaftarController {
 			return res.status(200).json({ message: "Kata sandi berhasil direset. Silakan login kembali." });
 		} catch (error) {
 			return res.status(500).json({ message: "Gagal mereset kata sandi" });
+		}
+	};
+
+	deletePendaftarById = async (req, res) => {
+		try {
+			const { id } = req.params;
+			if (!id) return res.status(400).json({ message: "ID pendaftar harus diisi" });
+
+			await deletePendaftar(id);
+			return res.status(200).json({ message: "Pendaftar berhasil dihapus" });
+		} catch (error) {
+			const status = error.message === "Pendaftar tidak ditemukan" ? 404 : 500;
+			return res.status(status).json({
+				message: "Gagal menghapus pendaftar",
+				error: error.message,
+			});
 		}
 	};
 }

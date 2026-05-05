@@ -6,8 +6,14 @@ async function main() {
   console.log("🗑️  Mulai proses reset semua data...\n");
 
   /* Urutan penghapusan harus mengikuti dependency FK (tabel anak dulu) */
+  await prisma.pengumumanPendaftar.deleteMany();
+  console.log("✅ Tabel pengumuman_pendaftar dikosongkan");
+
   await prisma.dokumen.deleteMany();
   console.log("✅ Tabel dokumen dikosongkan");
+
+  await prisma.alamat.deleteMany();
+  console.log("✅ Tabel alamat dikosongkan");
 
   await prisma.pendaftar.deleteMany();
   console.log("✅ Tabel pendaftar dikosongkan");

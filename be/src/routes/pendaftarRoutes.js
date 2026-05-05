@@ -38,4 +38,12 @@ pendaftarRoute.get(
 	PendaftarController.getStatusById,
 );
 
+// Endpoint Hapus Pendaftar (Admin only)
+pendaftarRoute.delete(
+	"/:id",
+	verifyToken,
+	authorizeRole("admin"),
+	PendaftarController.deletePendaftarById,
+);
+
 export default pendaftarRoute;
