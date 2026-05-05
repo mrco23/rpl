@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import programService from "@services/programService";
+import programService from "../../services/programService";
 import { getImageUrl } from "../../utils/imageHelper";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function Program() {
   const [data, setData] = useState([]);
@@ -9,12 +11,23 @@ function Program() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Inisialisasi AOS secara global
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 50,
+    });
+
     const fetchData = async () => {
       setLoading(true);
       setError(null);
       const res = await programService.getPublicPrograms();
       if (res.success) {
         setData(res.data || []);
+        // Refresh AOS setelah data berhasil dimuat agar animasi mendeteksi elemen baru
+        setTimeout(() => {
+          AOS.refresh();
+        }, 100);
       } else {
         setError(res.message);
       }
@@ -25,7 +38,7 @@ function Program() {
 
   // Fungsi pembantu untuk merender ikon berdasarkan indeks
   const renderIcon = (index) => {
-    const icons = ["🎓", "👩‍🏫", "💻", "🤝"]; // Sesuaikan dengan kebutuhan ikon Anda
+    const icons = ["🎓", "👩‍🏫", "💻", "🤝"];
     return icons[index % icons.length];
   };
 
@@ -55,8 +68,11 @@ function Program() {
         </Link>
       </div>
 
-      {/* Intro Text */}
-      <section className="text-center max-w-5xl mx-auto px-6 mb-12 mt-14">
+      {/* Intro Text dengan AOS */}
+      <section
+        data-aos="fade-up"
+        className="text-center max-w-5xl mx-auto px-6 mb-12 mt-14 overflow-hidden"
+      >
         <p className="text-gray-800 text-lg sm:text-2xl leading-relaxed font-semibold mb-6">
           SMP Katolik St. Rafael Manado, proses belajar tidak hanya berfokus
           pada penguasaan materi, tetapi juga pada pemahaman yang mendalam,
@@ -85,7 +101,7 @@ function Program() {
           <p className="text-xl text-red-600 mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="bg-blue-900 px-6 py-2 text-white rounded-md hover:bg-blue-800 transition"
+            className="bg-blue-900 px-6 py-2 text-white rounded-md hover:bg-blue-800 transition cursor-pointer"
           >
             Coba Lagi
           </button>
@@ -115,7 +131,8 @@ function Program() {
 // Sub-komponen untuk kontainer garis waktu
 function TimelineContainer({ children }) {
   return (
-    <section className="relative max-w-6xl mx-auto px-6 py-10 mb-20">
+    // overflow-hidden dihapus dari sini agar animasi geser AOS tidak terpotong
+    <section className="relative max-w-6xl mx-auto px-6 py-10 mb-20 overflow-x-clip">
       {/* Garis vertikal utama di tengah */}
       <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gray-300 -translate-x-1/2 hidden md:block z-0"></div>
       <div className="flex flex-col gap-24 relative z-10">{children}</div>
@@ -127,23 +144,33 @@ function TimelineContainer({ children }) {
 function TimelineItem({ item, index, icon }) {
   const isEven = index % 2 === 0;
 
+  // Cek apakah gambar valid (tidak null atau string 'null')
+  const hasImage = item.gambar_pu && !item.gambar_pu.includes('null');
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center w-full">
       {/* Kolom Kiri (Gambar muncul di kiri untuk indeks ganjil) */}
-      <div className="flex justify-center md:justify-end w-full">
-        {!isEven && item.gambar_pu && (
+      <div
+        className="flex justify-center md:justify-end w-full"
+        data-aos={!isEven ? "fade-right" : ""}
+      >
+        {!isEven && hasImage && (
           <img
             src={getImageUrl(item.gambar_pu)}
             alt={item.nama_pu}
-            className="w-full max-w-[300px] object-cover rounded-sm"
+            className="w-full max-w-[380px] h-64 object-cover rounded-xl shadow-lg"
+          // onError dihilangkan sementara agar kita tahu jika link gambarnya yang mati
           />
         )}
       </div>
 
       {/* Kolom Tengah (Ikon dan Teks) */}
-      <div className="flex flex-col items-center text-center bg-white py-4 px-2">
-        <div className="bg-white p-2 rounded-full inline-block mb-4">
-          <div className="bg-blue-900 text-white w-14 h-14 flex items-center justify-center rounded-full text-2xl shadow-md">
+      <div
+        className="flex flex-col items-center text-center bg-white py-4 px-2"
+        data-aos="zoom-in"
+      >
+        <div className="bg-white p-2 rounded-full inline-block mb-4 shadow-sm">
+          <div className="bg-blue-900 text-white w-14 h-14 flex items-center justify-center rounded-full text-2xl shadow-inner">
             {icon}
           </div>
         </div>
@@ -156,12 +183,16 @@ function TimelineItem({ item, index, icon }) {
       </div>
 
       {/* Kolom Kanan (Gambar muncul di kanan untuk indeks genap) */}
-      <div className="flex justify-center md:justify-start w-full">
-        {isEven && item.gambar_pu && (
+      <div
+        className="flex justify-center md:justify-start w-full"
+        data-aos={isEven ? "fade-left" : ""}
+      >
+        {isEven && hasImage && (
           <img
             src={getImageUrl(item.gambar_pu)}
             alt={item.nama_pu}
-            className="w-full max-w-[300px] object-cover rounded-sm"
+            className="w-full max-w-[380px] h-64 object-cover rounded-xl shadow-lg"
+          // onError dihilangkan sementara agar kita tahu jika link gambarnya yang mati
           />
         )}
       </div>
@@ -176,7 +207,7 @@ function TimelineSkeletonItem({ index }) {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center w-full">
       <div className="flex justify-center md:justify-end w-full">
         {!isEven && (
-          <div className="w-full max-w-[300px] h-64 bg-slate-200 rounded-sm animate-pulse"></div>
+          <div className="w-full max-w-[380px] h-64 bg-slate-200 rounded-xl animate-pulse shadow-sm"></div>
         )}
       </div>
 
@@ -190,7 +221,7 @@ function TimelineSkeletonItem({ index }) {
 
       <div className="flex justify-center md:justify-start w-full">
         {isEven && (
-          <div className="w-full max-w-[300px] h-64 bg-slate-200 rounded-sm animate-pulse"></div>
+          <div className="w-full max-w-[380px] h-64 bg-slate-200 rounded-xl animate-pulse shadow-sm"></div>
         )}
       </div>
     </div>
