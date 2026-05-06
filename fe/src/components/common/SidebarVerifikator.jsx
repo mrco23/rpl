@@ -52,7 +52,7 @@ function SidebarVerifikator({ onClose }) {
           {/* Text Container */}
           <div className="flex flex-col">
             <h3 className="text-base font-bold text-gray-900 leading-tight">
-              PPDB
+              SPMB
             </h3>
             <p className="text-xs text-gray-800 font-medium leading-snug mt-1">
               SMP Katolik St. Rafael<br />Manado

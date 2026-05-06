@@ -225,8 +225,8 @@ export default function VerifikatorVerifikasiPage() {
   return (
     <>
       <VerifikatorHeader
-        text="Verifikasi Dokumen PPDB"
-        subText="Selamat datang di sistem verifikasi dokumen PPDB"
+        text="Verifikasi Dokumen SPMB"
+        subText="Selamat datang di sistem verifikasi dokumen SPMB"
       />
 
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 px-4 lg:px-0 h-[calc(100vh-130px)] pb-4">
