@@ -63,7 +63,7 @@ export default function PanduanPage() {
         {/* Card Alur */}
         <div className="bg-[#f5f6f8] rounded-2xl p-5 mb-6 shadow-[0_4px_10px_rgba(0,0,0,0.08)] max-w-5xl ">
           <h3 className="font-semibold text-2xl text-blue-800">
-            Alur Pendaftaran PPDB
+            Alur Pendaftaran SPMB
           </h3>
           <p className="text-md  text-gray-900">
             Alur sistem dibuat sederhana, tetapi pengguna tetap perlu memahami
