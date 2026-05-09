@@ -121,7 +121,7 @@ export default function VerifikatorBerandaPage() {
                       <p className="text-3xl font-bold text-gray-800 mt-1 flex items-baseline gap-1">
                         {stat.jumlah}{" "}
                         <span className="text-sm font-medium text-gray-500">
-                          siswa
+                          pendaftar
                         </span>
                       </p>
                     </div>

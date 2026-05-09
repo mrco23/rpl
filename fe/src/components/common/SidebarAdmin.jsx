@@ -55,7 +55,7 @@ const menu = [
     path: "/admin/program",
   },
   {
-    section: "SPMB",
+    section: "PPDB",
   },
   {
     title: "Akun Verifikator",
@@ -63,12 +63,12 @@ const menu = [
     path: "/admin/verifikator",
   },
   {
-    title: "SPMB",
+    title: "PPDB",
     icon: <FileText size={16} />,
     path: "/admin/ppdb",
   },
   {
-    title: "Pengumuman SPMB",
+    title: "Pengumuman PPDB",
     icon: <Megaphone size={16} />,
     path: "/admin/pengumuman",
   },

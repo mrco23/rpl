@@ -1,5 +1,5 @@
 import React from "react";
-import hero from "@assets/hero.png";
+import hero from "@assets/hero.webp";
 import NavbarAbout from "@components/common/NavbarAbout";
 
 function SejarahPage() {

@@ -242,7 +242,7 @@ export default function LoginPage() {
                   setForgotSuccess(false);
                   setShowForgotModal(true);
                 }}
-                className="text-slate-500 font-medium active:text-blue-800 cursor-pointer border-none bg-transparent p-0"
+                className="text-slate-500 font-medium active:text-blue-800 hover:text-blue-800 hover:underline cursor-pointer border-none bg-transparent p-0"
               >
                 Lupa kata sandi?
               </button>
@@ -265,12 +265,12 @@ export default function LoginPage() {
 
           {/* REGISTER */}
           <p className="text-sm text-center mt-4">
-            Belum punya akun?{" "}
+            Kamu Belum Mendaftar?{" "}
             <Link
               to={"/register"}
-              className="text-blue-600 active:text-blue-800 cursor-pointer"
+              className="text-blue-600 active:text-blue-800 cursor-pointer hover:text-blue-700 hover:text-semibold hover:underline"
             >
-              Daftar disini
+              daftar disini!
             </Link>
           </p>
 
