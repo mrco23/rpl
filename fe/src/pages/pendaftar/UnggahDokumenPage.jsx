@@ -86,7 +86,7 @@ function UnggahDokumenPage() {
       <div className="flex flex-col md:flex-row items-start mt-6 gap-4 md:gap-16">
 
         {/* Catatan */}
-        {pendaftar.catatan_dokumen ? <div className="mt-8 w-full md:max-w-4xl flex flex-col md:flex-row justify-between items-start gap-6">
+        {pendaftar.catatan_dokumen ? <div className="w-full md:max-w-4xl flex flex-col md:flex-row justify-between items-start gap-6">
           <div className="bg-yellow-100 p-4 rounded-lg flex gap-2 w-full md:flex-1">
             <AlertCircle className="text-yellow-600 shrink-0" size={18} />
             <div>

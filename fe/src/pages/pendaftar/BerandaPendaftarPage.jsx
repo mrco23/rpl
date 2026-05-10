@@ -54,7 +54,7 @@ function BerandaPendaftarPage() {
         <div className="bg-indigo-100 text-[#2443a8] px-4 py-3 rounded-xl text-sm max-w-xs">
           <p className="font-medium">ⓘ Data inti tidak dapat diubah.</p>
           <p className="text-xs mt-1">
-            Ajukan perubahan jika ada kesalahan.
+
           </p>
         </div>
       </div>
