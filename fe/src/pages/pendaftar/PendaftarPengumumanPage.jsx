@@ -56,7 +56,7 @@ function PendaftarPengumumanPage() {
     <div className="min-h-screen bg-gray-100 p-6 flex justify-start ml-1">
       <div className="w-full max-w-3xl">
         {/* TITLE */}
-        <h1 className="text-2xl font-semibold uppercase">Pengumuman</h1>
+        <h1 className="text-3xl font-semibold uppercase">Pengumuman</h1>
         <p className="text-gray-500 mb-12">
           Informasi penting terkait proses seleksi PPDB dapat anda lihat disini.
         </p>

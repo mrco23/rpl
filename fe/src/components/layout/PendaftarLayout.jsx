@@ -32,8 +32,8 @@ function PendaftarLayout() {
         />
       )}
 
-      <main className="flex-1 bg-gray-100 w-full relative">
-        <div className="p-4 lg:p-6">
+      <main className="flex-1 bg-gray-100 h-screen w-full relative overflow-y-auto">
+        <div className="p-4">
           <Outlet />
         </div>
       </main>
