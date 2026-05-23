@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk Berita
@@ -6,7 +6,7 @@ import apiClient from "./apiClient";
  */
 export const getAllNews = async (params = {}) => {
   try {
-    const response = await apiClient.get("/berita", { params });
+    const response = await httpClient.get("/berita", { params });
     
     // Sanitasi: Pastikan data list berita adalah array
     // Tergantung struktur backend, biasanya di dalam data.data atau data
@@ -32,7 +32,7 @@ export const getAllNews = async (params = {}) => {
  */
 export const getNewsDetail = async (id) => {
   try {
-    const response = await apiClient.get(`/berita/${id}`);
+    const response = await httpClient.get(`/berita/${id}`);
     
     return {
       success: true,

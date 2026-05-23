@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { STATUS_PENDAFTARAN } from "../src/constants/statusPendaftaran.js";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -175,11 +176,11 @@ function buatDokumenDummy(jenisKelamin, idVerifikator = null) {
 }
 
 function buatCatatanDokumen(statusPendaftaran) {
-	if (statusPendaftaran === "lulus") {
+	if (statusPendaftaran === STATUS_PENDAFTARAN.LULUS) {
 		return "Dokumen lengkap dan memenuhi kriteria seleksi.";
 	}
 
-	if (statusPendaftaran === "tidak lulus") {
+	if (statusPendaftaran === STATUS_PENDAFTARAN.TIDAK_LULUS) {
 		return "Belum memenuhi kriteria seleksi pada Gelombang 1.";
 	}
 
@@ -187,7 +188,7 @@ function buatCatatanDokumen(statusPendaftaran) {
 }
 
 function sudahDiverifikasi(statusPendaftaran) {
-	return ["lulus", "tidak lulus"].includes(statusPendaftaran);
+	return [STATUS_PENDAFTARAN.LULUS, STATUS_PENDAFTARAN.TIDAK_LULUS].includes(statusPendaftaran);
 }
 
 function buatPendaftarDummy({
@@ -313,6 +314,7 @@ async function main() {
 	const hashedVerifPass = await bcrypt.hash("Mitha123!", 10);
 	const hashedAngiePass = await bcrypt.hash("Angie123!", 10);
 	const hashedPendaftarPass = await bcrypt.hash("Maltrian123!", 10);
+	const hashedKepsekPass = await bcrypt.hash("password123", 10);
 
 	/* ADMIN */
 	const admin = await prisma.admin.upsert({
@@ -351,6 +353,22 @@ async function main() {
 		},
 	});
 	console.log("✅ Verifikator dibuat:", verifikatorAngie.username);
+
+	/* KEPALA SEKOLAH */
+	const kepalaSekolah = await prisma.kepalaSekolah.upsert({
+		where: { username: "kepsek" },
+		update: {
+			nama: "Kepala Sekolah",
+			status_aktif: true,
+		},
+		create: {
+			username: "kepsek",
+			password: hashedKepsekPass,
+			nama: "Kepala Sekolah",
+			status_aktif: true,
+		},
+	});
+	console.log("✅ Kepala Sekolah dibuat:", kepalaSekolah.username);
 
 	/* PROFIL */
 	const profilData = {
@@ -503,7 +521,7 @@ async function main() {
 	});
 	console.log(`✅ ${prestasiData.length} Prestasi dibuat`);
 
-	/* EKSTRAKURIKULER */
+	/* EKSTRAKURIKULUR */
 	const ekstrakurikulerData = [
 		{
 			nama_ekskul: "Pramuka",
@@ -682,7 +700,7 @@ async function main() {
 	const pendaftarGelombang1 = await buatPendaftarGelombang({
 		nomorGelombang: 1,
 		jumlah: 70,
-		statusPendaftaranResolver: (urutan) => (urutan <= 68 ? "lulus" : "tidak lulus"),
+		statusPendaftaranResolver: (urutan) => (urutan <= 68 ? STATUS_PENDAFTARAN.LULUS : STATUS_PENDAFTARAN.TIDAK_LULUS),
 		idGelombang: gelombang1.id_gelombang,
 		idVerifikator: verifikator.id_verifikator,
 		password: hashedPendaftarPass,
@@ -693,7 +711,7 @@ async function main() {
 	const pendaftarGelombang2 = await buatPendaftarGelombang({
 		nomorGelombang: 2,
 		jumlah: 50,
-		statusPendaftaran: "menunggu verifikasi",
+		statusPendaftaran: STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI,
 		idGelombang: gelombang2.id_gelombang,
 		idVerifikator: verifikatorAngie.id_verifikator,
 		password: hashedPendaftarPass,
@@ -702,11 +720,11 @@ async function main() {
 	});
 
 	const pendaftarGelombang1Lulus = pendaftarGelombang1.filter(
-		(item) => item.status_pendaftaran === "lulus",
+		(item) => item.status_pendaftaran === STATUS_PENDAFTARAN.LULUS,
 	);
 
 	const pendaftarGelombang1TidakLulus = pendaftarGelombang1.filter(
-		(item) => item.status_pendaftaran === "tidak lulus",
+		(item) => item.status_pendaftaran === STATUS_PENDAFTARAN.TIDAK_LULUS,
 	);
 
 	await prisma.pengumuman.deleteMany({
@@ -778,6 +796,7 @@ async function main() {
 	console.log("──────────────────────────────");
 	console.log("  Login Akun:");
 	console.log("  Admin        → username: admin     | password: Admin123!");
+	console.log("  Kepsek       → username: kepsek    | password: password123");
 	console.log("  Verifikator  → username: selomitha | password: Mitha123!");
 	console.log("  Verifikator  → username: angie     | password: Angie123!");
 	console.log("  Pendaftar G1 → nisn: 2026010001-2026010070 | password: Maltrian123!");

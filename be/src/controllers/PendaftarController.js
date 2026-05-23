@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import { validatePendaftarRegisterPayload } from "../utils/pendaftarValidation.js";
 import {
 	getPendaftar,
 	getPendaftarById,
@@ -16,11 +17,21 @@ import {
 import { generateToken } from "../utils/jwt.js";
 import { nanoid } from "nanoid";
 import EmailService from "../services/EmailService.js";
+import { normalizeStatusPendaftaran, isStatusAdminAllowed } from "../constants/statusPendaftaran.js";
 
 class PendaftarController {
 	register = async (req, res) => {
 		try {
-			const pendaftar = await register(req.body);
+			const { isValid, errors, sanitizedData } = validatePendaftarRegisterPayload(req.body);
+
+			if (!isValid) {
+				return res.status(400).json({
+					message: "Validasi pendaftaran gagal",
+					errors,
+				});
+			}
+
+			const pendaftar = await register(sanitizedData);
 			return res.status(201).json({
 				message: "Registrasi berhasil",
 				data: pendaftar,
@@ -93,12 +104,12 @@ class PendaftarController {
 			if (!ids || !status) {
 				return res.status(400).json({ message: "ID pendaftar dan status harus diisi" });
 			}
-			const allowedStatuses = ["wawancara orang tua", "lulus", "tidak lulus"];
-			if (!allowedStatuses.includes(status.toLowerCase())) {
+			const mappedStatus = normalizeStatusPendaftaran(status);
+			if (!mappedStatus || !isStatusAdminAllowed(mappedStatus)) {
 				return res.status(400).json({ message: "Status tidak valid. Admin hanya boleh set 'wawancara orang tua', 'lulus', atau 'tidak lulus'" });
 			}
-			console.log({ ids, status });
-			await updateStatusMassal(ids, status);
+			console.log({ ids, status: mappedStatus });
+			await updateStatusMassal(ids, mappedStatus);
 			return res
 				.status(200)
 				.json({ message: "Berhasil memperbarui status pendaftar secara massal" });

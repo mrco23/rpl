@@ -1,28 +1,28 @@
-import adminAxios from "./adminAxios.js";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk entitas Berita
  */
 export const getAllBerita = () => {
-  return adminAxios.get("/berita");
+  return httpClient.get("/berita");
 };
 
 export const getBeritaById = (id) => {
-  return adminAxios.get(`/berita/${id}`);
+  return httpClient.get(`/berita/${id}`);
 };
 
 export const createBerita = (formData) => {
-  return adminAxios.post("/berita", formData);
+  return httpClient.post("/berita", formData);
 };
 
 export const updateBeritaData = (id, payload) => {
-  return adminAxios.put(`/berita/${id}`, payload);
+  return httpClient.put(`/berita/${id}`, payload);
 };
 
 export const updateBeritaImage = (id, formData) => {
-  return adminAxios.patch(`/berita/${id}/image`, formData);
+  return httpClient.patch(`/berita/${id}/image`, formData);
 };
 
 export const deleteBerita = (id) => {
-  return adminAxios.delete(`/berita/${id}`);
+  return httpClient.delete(`/berita/${id}`);
 };

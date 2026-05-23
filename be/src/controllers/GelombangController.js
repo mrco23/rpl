@@ -1,6 +1,7 @@
 import * as GelombangService from "../services/GelombangService.js";
 import ExcelJS from "exceljs";
 import prisma from "../config/prisma.js";
+import { STATUS_PENDAFTARAN } from "../constants/statusPendaftaran.js";
 
 export const getAktif = async (req, res) => {
 	try {
@@ -15,6 +16,15 @@ export const getAktif = async (req, res) => {
 export const getAll = async (req, res) => {
 	try {
 		const gelombang = await GelombangService.getAll();
+		return res.status(200).json({ message: "success", data: gelombang });
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+};
+
+export const getPublic = async (req, res) => {
+	try {
+		const gelombang = await GelombangService.getPublicAll();
 		return res.status(200).json({ message: "success", data: gelombang });
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
@@ -81,18 +91,11 @@ export const exportExcel = async (req, res) => {
 		const totalPendaftar = pendaftarList.length;
 
 		const listLulus = pendaftarList.filter((p) => {
-			const status = p.status_pendaftaran.toLowerCase();
-			return status === "lulus" || status === "diterima" || status === "lolos";
+			return p.status_pendaftaran === STATUS_PENDAFTARAN.LULUS;
 		});
 
 		const listTidakLolos = pendaftarList.filter((p) => {
-			const status = p.status_pendaftaran.toLowerCase();
-			return (
-				status === "tidak lulus" ||
-				status === "gagal" ||
-				status === "ditolak" ||
-				status === "tidak lolos"
-			);
+			return p.status_pendaftaran === STATUS_PENDAFTARAN.TIDAK_LULUS;
 		});
 
 		const totalDiterima = listLulus.length;

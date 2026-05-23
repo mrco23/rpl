@@ -1,12 +1,12 @@
-import adminAxios from "./adminAxios.js";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk Pendaftar (bisa diakses admin atau verifikator)
  */
 export const getAllPendaftar = () => {
-	return adminAxios.get("/pendaftar");
+	return httpClient.get("/pendaftar");
 };
 
 export const updateStatusMassal = (ids, status) => {
-	return adminAxios.patch("/pendaftar/mass-status", { ids, status });
+	return httpClient.patch("/pendaftar/mass-status", { ids, status });
 };

@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk Profil Sekolah (Public)
@@ -6,7 +6,7 @@ import apiClient from "./apiClient";
  */
 export const getLandingPageData = async () => {
   try {
-    const response = await apiClient.get("/profile/landing-page");
+    const response = await httpClient.get("/profile/landing-page");
     
     // Sanitasi data
     const data = response.data?.data || null;
@@ -30,7 +30,7 @@ export const getLandingPageData = async () => {
  */
 export const getPublicProfile = async () => {
   try {
-    const response = await apiClient.get("/profile");
+    const response = await httpClient.get("/profile");
     return {
       success: true,
       data: response.data?.data || null,
@@ -50,7 +50,7 @@ export const getPublicProfile = async () => {
  */
 export const getVisiMisi = async () => {
   try {
-    const response = await apiClient.get("/profile/visi-misi");
+    const response = await httpClient.get("/profile/visi-misi");
     return {
       success: true,
       data: response.data?.data || null,
@@ -70,7 +70,7 @@ export const getVisiMisi = async () => {
  */
 export const getFooterData = async () => {
   try {
-    const response = await apiClient.get("/profile/footer");
+    const response = await httpClient.get("/profile/footer");
     return {
       success: true,
       data: response.data?.data || null,
@@ -88,7 +88,7 @@ export const getFooterData = async () => {
  * Service untuk mendapatkan Profil admin
  */
 export const getAdminProfile = async () => {
-  const response = await apiClient.get("/profile/admin");
+  const response = await httpClient.get("/profile/admin");
   return response.data?.data || response.data;
 };
 
@@ -103,7 +103,7 @@ export const updateProfile = async (payload) => {
     }
   });
 
-  const response = await apiClient.put("/profile", formData);
+  const response = await httpClient.put("/profile", formData);
   return response.data?.data || response.data;
 };
 

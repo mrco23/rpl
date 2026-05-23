@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk Ekstrakurikuler
@@ -6,7 +6,7 @@ import apiClient from "./apiClient";
  */
 export const getEkstrakurikuler = async () => {
   try {
-    const response = await apiClient.get("/ekstrakurikuler");
+    const response = await httpClient.get("/ekstrakurikuler");
     
     // Sanitasi data: Pastikan array
     const data = Array.isArray(response.data?.data) ? response.data.data : [];

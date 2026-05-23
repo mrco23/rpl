@@ -1,4 +1,4 @@
-import { requestAPI } from "./api.js";
+import httpClient, { requestAPI } from "./httpClient.js";
 
 const buildFormData = (payload) => {
   const formData = new FormData();
@@ -20,11 +20,17 @@ export const createContentService = (resource) => ({
     return res.data;
   },
   getPublicList: async () => {
-    const res = await requestAPI({ method: "GET", url: `/${resource}/public` });
+    const publicPath = ["program-unggulan", "pengumuman"].includes(resource)
+      ? `/${resource}/public`
+      : `/${resource}`;
+    const res = await requestAPI({ method: "GET", url: publicPath });
     return res.data;
   },
   getPublicDetail: async (id) => {
-    const res = await requestAPI({ method: "GET", url: `/${resource}/public/${id}` });
+    const publicPath = ["program-unggulan", "pengumuman"].includes(resource)
+      ? `/${resource}/public/${id}`
+      : `/${resource}/${id}`;
+    const res = await requestAPI({ method: "GET", url: publicPath });
     return res.data;
   },
   // Saat create, jika ada file gambar akan dikirim sebagai multipart

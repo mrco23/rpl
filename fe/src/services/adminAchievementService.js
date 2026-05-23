@@ -1,20 +1,20 @@
-import adminAxios from "./adminAxios.js";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk entitas Prestasi
  */
 export const getAllPrestasi = () => {
-  return adminAxios.get("/prestasi");
+  return httpClient.get("/prestasi");
 };
 
 export const createPrestasi = (formData) => {
-  return adminAxios.post("/prestasi", formData);
+  return httpClient.post("/prestasi", formData);
 };
 
 export const updatePrestasi = (id, formData) => {
-  return adminAxios.put(`/prestasi/${id}`, formData);
+  return httpClient.put(`/prestasi/${id}`, formData);
 };
 
 export const deletePrestasi = (id) => {
-  return adminAxios.delete(`/prestasi/${id}`);
+  return httpClient.delete(`/prestasi/${id}`);
 };

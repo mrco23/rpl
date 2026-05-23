@@ -20,13 +20,13 @@ if (process.env.NODE_ENV !== "production") {
 app.use(
 	cors({
 		origin: (origin, callback) => {
-			const allowedOrigins = process.env.CLIENT_URL 
-				? process.env.CLIENT_URL.split(',') 
+			const allowedOrigins = process.env.CLIENT_URL
+				? process.env.CLIENT_URL.split(',')
 				: [
-						"http://localhost:5173",
-						"https://smpkatolikstrafael.netlify.app",
-						"https://smpkatolikstrafael.vercel.app",
-				  ];
+					"http://localhost:5173",
+					"http://10.31.135.12:5173",
+					"https://smpkatolikstrafael.vercel.app",
+				];
 			if (!origin || allowedOrigins.includes(origin)) {
 				callback(null, true);
 			} else {
@@ -53,16 +53,31 @@ app.use("/api/verifikator/login", authLimiter);
 app.use("/api/pendaftar/register", authLimiter);
 app.use("/api/pendaftar/login", authLimiter);
 
+// Request logger manual untuk memastikan terbaca
+app.use((req, res, next) => {
+	if (process.env.NODE_ENV !== "production") {
+		console.log(`[Backend Request] ${req.method} ${req.originalUrl}`);
+	}
+	next();
+});
+
 app.use("/api", routes);
 app.get("/", (req, res) => {
 	res.json({ message: "Express is Running!", status: "Healthy" });
 });
 
+// 404 Handler
+app.use((req, res, next) => {
+	res.status(404).json({
+		message: "Endpoint tidak ditemukan",
+		method: req.method,
+		path: req.originalUrl,
+	});
+});
+
 // Centralized Error Handling Middleware
 app.use((err, req, res, next) => {
-	if (process.env.NODE_ENV !== "production") {
-		console.error("Global Error Handler:", err);
-	}
+	console.error("[Global Error Handler]", err);
 	const statusCode = err.statusCode || 500;
 	res.status(statusCode).json({
 		message: err.message || "Terjadi kesalahan internal server",

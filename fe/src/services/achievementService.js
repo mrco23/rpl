@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk Prestasi (Public)
@@ -6,7 +6,7 @@ import apiClient from "./apiClient";
  */
 export const getPublicAchievements = async () => {
 	try {
-		const response = await apiClient.get("/prestasi");
+		const response = await httpClient.get("/prestasi");
 
 		// Sanitasi data: Pastikan array
 		const data = Array.isArray(response.data?.data) ? response.data.data : [];

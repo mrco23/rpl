@@ -1,4 +1,4 @@
-﻿-- CreateTable
+-- CreateTable
 CREATE TABLE `admin` (
     `id_admin` INTEGER NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(191) NULL,

@@ -1,30 +1,30 @@
-import adminAxios from "./adminAxios.js";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk entitas Gelombang
  */
 export const getSemuaGelombang = () => {
-	return adminAxios.get("/gelombang");
+	return httpClient.get("/gelombang");
 };
 
 export const createGelombang = (payload) => {
-	return adminAxios.post("/gelombang", payload);
+	return httpClient.post("/gelombang", payload);
 };
 
 export const getGelombangById = (id) => {
-	return adminAxios.get(`/gelombang/${id}`);
+	return httpClient.get(`/gelombang/${id}`);
 };
 
 export const updateGelombang = (id, payload) => {
-	return adminAxios.put(`/gelombang/${id}`, payload);
+	return httpClient.put(`/gelombang/${id}`, payload);
 };
 
 export const deleteGelombang = (id) => {
-	return adminAxios.delete(`/gelombang/${id}`);
+	return httpClient.delete(`/gelombang/${id}`);
 };
 
 export const exportExcelGelombang = (id) => {
-	return adminAxios.get(`/gelombang/${id}/export`, {
+	return httpClient.get(`/gelombang/${id}/export`, {
 		responseType: "blob",
 	});
 };

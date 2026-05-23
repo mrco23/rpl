@@ -1,5 +1,6 @@
 import prisma from "../config/prisma.js";
 import bcrypt from "bcryptjs";
+import { STATUS_PENDAFTARAN } from "../constants/statusPendaftaran.js";
 
 export const register = async (payload) => {
 	const now = new Date();
@@ -51,7 +52,7 @@ export const register = async (payload) => {
 		email: payload.email || null,
 		nama_wali: payload.nama_wali || null,
 		id_gelombang: activeGelombang.id_gelombang,
-		status_pendaftaran: "menunggu verifikasi",
+		status_pendaftaran: STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI,
 		alamat: {
 			create: {
 				provinsi: payload.alamat.provinsi,

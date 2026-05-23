@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/jwt.js";
 import * as VerifikatorService from "../services/VerifikatorService.js";
+import { normalizeStatusPendaftaran } from "../constants/statusPendaftaran.js";
 
 class VerifikatorController {
 	register = async (req, res) => {
@@ -52,6 +53,10 @@ class VerifikatorController {
 				return res.status(401).json({ message: "Username atau password salah" });
 			}
 
+			if (!verifikator.status_aktif) {
+				return res.status(403).json({ message: "Akun verifikator tidak aktif." });
+			}
+
 			const token = generateToken({ id: verifikator.id_verifikator, role: "verifikator" });
 
 			res.status(200).json({
@@ -89,6 +94,17 @@ class VerifikatorController {
 			const { id } = req.params;
 			const updated = await VerifikatorService.updateVerifikator(id, req.body);
 			res.status(200).json({ message: "Update verifikator berhasil", data: updated });
+		} catch (error) {
+			res.status(500).json({ message: error.message });
+		}
+	};
+
+	updateStatus = async (req, res) => {
+		try {
+			const { id } = req.params;
+			const { status_aktif } = req.body;
+			const updated = await VerifikatorService.updateStatusVerifikator(id, status_aktif);
+			res.status(200).json({ message: "Status verifikator berhasil diperbarui", data: updated });
 		} catch (error) {
 			res.status(500).json({ message: error.message });
 		}
@@ -138,7 +154,8 @@ class VerifikatorController {
 		try {
 			const { id } = req.params;
 			const { status, catatan } = req.body;
-			const updated = await VerifikatorService.verifyPendaftar(id, req.user.id, status, catatan);
+			const mappedStatus = normalizeStatusPendaftaran(status);
+			const updated = await VerifikatorService.verifyPendaftar(id, req.user.id, mappedStatus, catatan);
 			res.status(200).json({ message: "Proses verifikasi pendaftar selesai", data: updated });
 		} catch (error) {
 			res.status(400).json({ message: error.message });

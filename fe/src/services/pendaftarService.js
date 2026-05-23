@@ -1,4 +1,4 @@
-import { requestAPI } from "./api.js";
+import httpClient, { requestAPI } from "./httpClient.js";
 
 /**
  * Mengambil data profil pendaftar yang sedang login.

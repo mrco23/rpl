@@ -1,8 +1,8 @@
-import adminAxios from "./adminAxios.js";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk Dashboard Beranda Admin
  */
 export const getAdminBeranda = () => {
-  return adminAxios.get("/admin/beranda");
+  return httpClient.get("/admin/beranda");
 };

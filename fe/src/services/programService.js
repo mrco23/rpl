@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk Program Unggulan (Public)
@@ -6,7 +6,7 @@ import apiClient from "./apiClient";
  */
 export const getPublicPrograms = async () => {
   try {
-    const response = await apiClient.get("/program-unggulan/public");
+    const response = await httpClient.get("/program-unggulan/public");
     
     // Sanitasi: Pastikan mengembalikan array meskipun API gagal atau data kosong
     const data = Array.isArray(response.data?.data) ? response.data.data : [];

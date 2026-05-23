@@ -1,20 +1,20 @@
-import adminAxios from "./adminAxios.js";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk entitas PendaftarPengumumanPage
  */
 export const getAllPengumuman = () => {
-  return adminAxios.get("/pengumuman");
+  return httpClient.get("/pengumuman");
 };
 
 export const createPengumuman = (payload) => {
-  return adminAxios.post("/pengumuman", payload);
+  return httpClient.post("/pengumuman", payload);
 };
 
 export const updatePengumuman = (id, payload) => {
-  return adminAxios.put(`/pengumuman/${id}`, payload);
+  return httpClient.put(`/pengumuman/${id}`, payload);
 };
 
 export const deletePengumuman = (id) => {
-  return adminAxios.delete(`/pengumuman/${id}`);
+  return httpClient.delete(`/pengumuman/${id}`);
 };

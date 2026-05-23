@@ -40,6 +40,47 @@ export const getAll = async () => {
     }));
 };
 
+export const getPublicAll = async () => {
+    const data = await prisma.gelombang.findMany({
+        orderBy: {tanggal_mulai: "desc"},
+        include: {
+            _count: {
+                select: {pendaftar: true}
+            }
+        }
+    });
+
+    const now = new Date();
+
+    return data.map(item => {
+        const totalPendaftar = item._count.pendaftar;
+        const sisaKuota = Math.max(0, item.kuota - totalPendaftar);
+        
+        let statusGelombang = "";
+        const startDate = new Date(item.tanggal_mulai);
+        const endDate = new Date(item.tanggal_selesai);
+        
+        if (now < startDate) {
+            statusGelombang = "belum dibuka";
+        } else if (now > endDate) {
+            statusGelombang = "ditutup";
+        } else {
+            statusGelombang = "aktif";
+        }
+
+        return {
+            id_gelombang: item.id_gelombang,
+            nama: item.nama,
+            tanggal_mulai: item.tanggal_mulai,
+            tanggal_selesai: item.tanggal_selesai,
+            kuota: item.kuota,
+            totalPendaftar,
+            sisaKuota,
+            statusGelombang
+        };
+    });
+};
+
 export const getById = async (id) => {
     return prisma.gelombang.findUnique({
         where: {id_gelombang: Number(id)}

@@ -1,4 +1,5 @@
 import prisma from "../config/prisma.js";
+import { STATUS_PENDAFTARAN, isStatusEditableForDokumen } from "../constants/statusPendaftaran.js";
 
 import { deleteFile } from "../utils/file.js";
 
@@ -17,7 +18,7 @@ class DokumenService {
 
     if (pendaftar) {
       const status = pendaftar.status_pendaftaran;
-      if (status === 'terverifikasi' || status === 'wawancara orang tua' || status === 'lulus' || status === 'tidak lulus') {
+      if (!isStatusEditableForDokumen(status)) {
         throw new Error("Pendaftaran sudah terverifikasi. Tidak dapat mengubah dokumen lagi.");
       }
     }
@@ -55,10 +56,10 @@ class DokumenService {
     });
 
     // Jika sebelumnya "perlu perbaikan", ubah menjadi "unggah ulang"
-    if (pendaftar && pendaftar.status_pendaftaran === 'perlu perbaikan') {
+    if (pendaftar && pendaftar.status_pendaftaran === STATUS_PENDAFTARAN.PERLU_PERBAIKAN) {
       await prisma.pendaftar.update({
         where: { id_pendaftar: Number(id_pendaftar) },
-        data: { status_pendaftaran: 'unggah ulang' }
+        data: { status_pendaftaran: STATUS_PENDAFTARAN.UNGGAH_ULANG }
       });
     }
 

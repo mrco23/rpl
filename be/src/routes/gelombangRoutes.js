@@ -2,6 +2,7 @@ import express from "express";
 import {
 	getAktif,
 	getAll,
+	getPublic,
 	getById,
 	create,
 	update,
@@ -13,6 +14,7 @@ import { verifyToken, authorizeRole } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.get("/aktif", getAktif);
+router.get("/public", getPublic);
 
 router.get("", verifyToken, authorizeRole("admin"), getAll);
 router.post("", verifyToken, authorizeRole("admin"), create);

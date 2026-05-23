@@ -1,20 +1,20 @@
-import adminAxios from "./adminAxios.js";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk Manajemen Akun Verifikator oleh Admin
  */
 export const getAllVerifikator = () => {
-    return adminAxios.get("/verifikator");
+    return httpClient.get("/verifikator");
 };
 
 export const createVerifikator = (payload) => {
-    return adminAxios.post("/verifikator", payload);
+    return httpClient.post("/verifikator", payload);
 };
 
 export const updateVerifikator = (id, payload) => {
-    return adminAxios.put(`/verifikator/${id}`, payload);
+    return httpClient.put(`/verifikator/${id}`, payload);
 };
 
 export const deleteVerifikator = (id) => {
-    return adminAxios.delete(`/verifikator/${id}`);
+    return httpClient.delete(`/verifikator/${id}`);
 };

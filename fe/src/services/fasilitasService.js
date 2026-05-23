@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import httpClient from "./httpClient.js";
 
 /**
  * Service untuk Fasilitas
@@ -6,7 +6,7 @@ import apiClient from "./apiClient";
  */
 export const getFasilitas = async () => {
   try {
-    const response = await apiClient.get("/fasilitas");
+    const response = await httpClient.get("/fasilitas");
     
     // Sanitasi data: Pastikan array
     const data = Array.isArray(response.data?.data) ? response.data.data : [];
