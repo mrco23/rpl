@@ -1,0 +1,19 @@
+meta {
+  name: Get Validate Token By Token
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/pendaftar/validate-token/:token
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

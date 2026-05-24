@@ -30,7 +30,7 @@ export default function AuthProvider({ children }) {
 
     const nextUser = {
       username: payload.username || "",
-      name: payload.name || "",
+      name: payload.name || payload.nama || payload.nama_lengkap || "",
       role: finalRole,
     };
     localStorage.setItem("user", JSON.stringify(nextUser));

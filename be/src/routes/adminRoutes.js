@@ -19,6 +19,7 @@ adminRoutes.get("/kepala-sekolah", verifyToken, authorizeRole("admin"), adminKep
 adminRoutes.post("/kepala-sekolah", verifyToken, authorizeRole("admin"), adminKepalaSekolahController.create);
 adminRoutes.put("/kepala-sekolah/:id", verifyToken, authorizeRole("admin"), adminKepalaSekolahController.update);
 adminRoutes.patch("/kepala-sekolah/:id/status", verifyToken, authorizeRole("admin"), adminKepalaSekolahController.updateStatus);
+adminRoutes.delete("/kepala-sekolah/:id", verifyToken, authorizeRole("admin"), adminKepalaSekolahController.remove);
 
 // Manajemen Verifikator
 adminRoutes.patch("/verifikator/:id/status", verifyToken, authorizeRole("admin"), verifikatorController.updateStatus);

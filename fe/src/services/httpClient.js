@@ -3,13 +3,14 @@ import { getToken } from "../shared/utils/token.js";
 import { normalizeApiError } from "../shared/utils/normalizeApiError.js";
 
 const httpClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://vicious-kore-mrco23-5f44984d.koyeb.app/api",
+  baseURL: import.meta.env.VITE_API_URL || "/api",
   timeout: 15000,
 });
 
 httpClient.interceptors.request.use(
   (config) => {
     const token = getToken() || localStorage.getItem("token");
+
     if (token && token !== "undefined" && token !== "null") {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -25,8 +26,10 @@ httpClient.interceptors.request.use(
         "[API Request]",
         config.method?.toUpperCase(),
         (config.baseURL || "") + (config.url || ""),
-        "| Params:", config.params,
-        "| Token:", token ? "Exists" : "None"
+        "| Params:",
+        config.params,
+        "| Token:",
+        token ? "Exists" : "None"
       );
     }
 
@@ -42,10 +45,13 @@ httpClient.interceptors.response.use(
         "[API Response Success]",
         response.config?.method?.toUpperCase(),
         (response.config?.baseURL || "") + (response.config?.url || ""),
-        "| Status:", response.status
+        "| Status:",
+        response.status
       );
     }
+
     const resData = response.data;
+
     return {
       data: resData?.data !== undefined ? resData.data : resData,
       message: resData?.message || "Operasi berhasil",
@@ -54,11 +60,20 @@ httpClient.interceptors.response.use(
   },
   (error) => {
     const normalizedError = normalizeApiError(error);
+
     const method = error.config?.method?.toUpperCase() || "UNKNOWN";
-    const url = (error.config?.baseURL || "") + (error.config?.url || "");
-    const status = error.response?.status || "NETWORK_ERROR";
-    
-    console.error(`[API Error] ${method} ${url} ${status} ${normalizedError.message}`);
+
+    const url =
+      (error.config?.baseURL || "") +
+      (error.config?.url || "");
+
+    const status =
+      error.response?.status || "NETWORK_ERROR";
+
+    console.error(
+      `[API Error] ${method} ${url} ${status} ${normalizedError.message}`
+    );
+
     return Promise.reject(normalizedError);
   }
 );
@@ -72,7 +87,13 @@ export const requestAPI = async ({
   isMultipart = false,
   responseType = "json",
 }) => {
-  return httpClient({ method, url, data, params, responseType });
+  return httpClient({
+    method,
+    url,
+    data,
+    params,
+    responseType,
+  });
 };
 
 export default httpClient;

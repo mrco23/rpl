@@ -9,16 +9,20 @@ import {
 } from "lucide-react";
 import logo from "../../../shared/assets/logo.png";
 
+import useAuth from "../../auth/contexts/useAuth.js";
+
 function SidebarPendaftar({ onClose }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Apakah Anda yakin ingin keluar?");
 
     if (confirmLogout) {
       if (onClose) onClose();
-      navigate("/login");
+      logout();
+      navigate("/");
     }
   };
 

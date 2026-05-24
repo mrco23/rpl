@@ -165,10 +165,27 @@ export const updatePassword = async (id, newPassword) => {
 };
 
 export const getStatusById = async (id) => {
-	return await prisma.pendaftar.findUnique({
+	const data = await prisma.pendaftar.findUnique({
 		where: { id_pendaftar: Number(id) },
-		select: { status_pendaftaran: true },
+		select: {
+			status_pendaftaran: true,
+			tanggal_daftar: true,
+			catatan_dokumen: true,
+			gelombang: {
+				select: {
+					id_gelombang: true,
+					nama: true,
+					tanggal_mulai: true,
+					tanggal_selesai: true,
+				},
+			},
+		},
 	});
+
+	if (data) {
+		return data;
+	}
+	return null;
 };
 
 export const deletePendaftar = async (id) => {

@@ -1,0 +1,25 @@
+meta {
+  name: Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/kepala-sekolah/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "kepsekSanrafa",
+    "password": "Kepsek123!"
+  }
+}
+
+script:post-response {
+  let resBody = res.getBody();
+  if (resBody && resBody.token) {
+    bru.setEnvVar("token", resBody.token);
+  }
+}

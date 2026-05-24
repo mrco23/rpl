@@ -58,14 +58,9 @@ const menu = [
     section: "PPDB",
   },
   {
-    title: "Akun Kepala Sekolah",
+    title: "Akun Internal",
     icon: <UserCheck size={16} />,
-    path: "/admin/kepala-sekolah",
-  },
-  {
-    title: "Akun Verifikator",
-    icon: <UserCheck size={16} />,
-    path: "/admin/verifikator",
+    path: "/admin/akun-internal",
   },
   {
     title: "PPDB",
@@ -91,7 +86,8 @@ function SidebarAdmin() {
     if (confirmLogout) {
       localStorage.removeItem("token");
       localStorage.removeItem("role");
-      window.location.href = "/login";
+      localStorage.removeItem("user");
+      window.location.href = "/";
     }
   };
 

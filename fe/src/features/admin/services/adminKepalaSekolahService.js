@@ -5,7 +5,7 @@ export const getKepalaSekolahList = async () => {
     method: "GET",
     url: "/admin/kepala-sekolah",
   });
-  return response.data;
+  return response;
 };
 
 export const createKepalaSekolah = async (data) => {
@@ -14,7 +14,7 @@ export const createKepalaSekolah = async (data) => {
     url: "/admin/kepala-sekolah",
     data,
   });
-  return response.data;
+  return response;
 };
 
 export const updateKepalaSekolah = async (id, data) => {
@@ -23,7 +23,7 @@ export const updateKepalaSekolah = async (id, data) => {
     url: `/admin/kepala-sekolah/${id}`,
     data,
   });
-  return response.data;
+  return response;
 };
 
 export const updateStatusKepalaSekolah = async (id, status_aktif) => {
@@ -32,5 +32,13 @@ export const updateStatusKepalaSekolah = async (id, status_aktif) => {
     url: `/admin/kepala-sekolah/${id}/status`,
     data: { status_aktif },
   });
-  return response.data;
+  return response;
+};
+
+export const deleteKepalaSekolah = async (id) => {
+  const response = await requestAPI({
+    method: "DELETE",
+    url: `/admin/kepala-sekolah/${id}`,
+  });
+  return response;
 };

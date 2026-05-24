@@ -8,6 +8,12 @@ export const getVerifikatorByUsername = async (username) => {
 	});
 };
 
+export const getVerifikatorById = async (id) => {
+	return await prisma.verifikator.findUnique({
+		where: { id_verifikator: Number(id) },
+	});
+};
+
 export const createVerifikator = async (data) => {
 	const { username, password, nama } = data;
 	const salt = await bcrypt.genSalt(10);
@@ -91,6 +97,7 @@ export const getAllVerifikator = async () => {
 			id_verifikator: true,
 			username: true,
 			nama: true,
+			status_aktif: true,
 		},
 	});
 };

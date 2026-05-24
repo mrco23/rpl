@@ -51,7 +51,7 @@ export default function BerandaKepalaSekolah() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-10">
-      
+
       {/* 1. HEADER CARD BIRU */}
       <div className="bg-blue-dark text-white p-6 md:p-8 rounded-2xl shadow-lg relative overflow-hidden">
         <div className="absolute right-0 top-0 opacity-10 pointer-events-none translate-x-1/4 -translate-y-1/4">
@@ -62,12 +62,6 @@ export default function BerandaKepalaSekolah() {
           <p className="text-blue-100 text-sm md:text-base max-w-xl">
             Ringkasan Manajerial PPDB
           </p>
-          <div className="mt-6 inline-flex items-center gap-2 bg-white/20 px-4 py-2 rounded-lg backdrop-blur-sm">
-            <Calendar size={18} />
-            <span className="font-medium text-sm">
-              Tahun Ajaran Aktif: {data.tahun_ajaran || "Belum diset"}
-            </span>
-          </div>
         </div>
       </div>
 
@@ -77,7 +71,7 @@ export default function BerandaKepalaSekolah() {
         <KpiCard title="Kuota Total" value={data.kuota_total} icon={ClipboardCheck} color="text-indigo-600" bg="bg-indigo-50" />
         <KpiCard title="Lulus" value={data.lulus} icon={UserCheck} color="text-green-600" bg="bg-green-50" />
         <KpiCard title="Tidak Lulus" value={data.tidak_lulus} icon={UserX} color="text-red-600" bg="bg-red-50" />
-        
+
         <KpiCard title="Menunggu Verifikasi" value={data.menunggu_verifikasi} icon={FileCheck} color="text-yellow-600" bg="bg-yellow-50" />
         <KpiCard title="Terverifikasi" value={data.terverifikasi} icon={FileCheck} color="text-teal-600" bg="bg-teal-50" />
         <KpiCard title="Perlu Perbaikan" value={data.perlu_perbaikan} icon={UserCog} color="text-orange-600" bg="bg-orange-50" />
@@ -101,7 +95,7 @@ export default function BerandaKepalaSekolah() {
         {/* 4. REKAP PER GELOMBANG */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 lg:col-span-2 h-full">
           <h2 className="text-lg font-bold text-gray-800 mb-6">Rekap Per Gelombang</h2>
-          
+
           {data.gelombang && data.gelombang.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -111,7 +105,6 @@ export default function BerandaKepalaSekolah() {
                     <th className="pb-3 px-2 font-semibold">Periode</th>
                     <th className="pb-3 px-2 font-semibold text-center">Kuota</th>
                     <th className="pb-3 px-2 font-semibold text-center">Pendaftar</th>
-                    <th className="pb-3 px-2 font-semibold text-center">Lulus</th>
                     <th className="pb-3 px-2 font-semibold text-center">Status</th>
                   </tr>
                 </thead>
@@ -122,15 +115,13 @@ export default function BerandaKepalaSekolah() {
                       <td className="py-3 px-2 text-gray-600">{g.periode}</td>
                       <td className="py-3 px-2 text-center text-gray-600">{g.kuota}</td>
                       <td className="py-3 px-2 text-center text-gray-600">{g.total_pendaftar}</td>
-                      <td className="py-3 px-2 text-center text-green-600 font-medium">{g.lulus}</td>
                       <td className="py-3 px-2 text-center">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-md ${
-                          g.status.toLowerCase() === "aktif" 
-                            ? "bg-green-100 text-green-700" 
-                            : g.status.toLowerCase() === "selesai" 
-                              ? "bg-gray-100 text-gray-700"
-                              : "bg-blue-100 text-blue-700"
-                        }`}>
+                        <span className={`px-2 py-1 text-xs font-medium rounded-md ${g.status.toLowerCase() === "aktif"
+                          ? "bg-green-100 text-green-700"
+                          : g.status.toLowerCase() === "selesai"
+                            ? "bg-gray-100 text-gray-700"
+                            : "bg-blue-100 text-blue-700"
+                          }`}>
                           {g.status}
                         </span>
                       </td>
@@ -167,7 +158,7 @@ function KpiCard({ title, value, icon: Icon, color, bg }) {
 
 function ProgressBar({ label, value, total, color }) {
   const percent = total > 0 ? Math.round(((value || 0) / total) * 100) : 0;
-  
+
   return (
     <div>
       <div className="flex justify-between items-end mb-1">

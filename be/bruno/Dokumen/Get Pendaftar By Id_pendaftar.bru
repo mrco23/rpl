@@ -1,0 +1,19 @@
+meta {
+  name: Get Pendaftar By Id_pendaftar
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/dokumen/pendaftar/:id_pendaftar
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

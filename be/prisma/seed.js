@@ -203,9 +203,8 @@ function buatPendaftarDummy({
 }) {
 	const jenisKelamin = indexGlobal % 2 === 0 ? "L" : "P";
 	const namaDepan = jenisKelamin === "L" ? namaDepanLakiLaki : namaDepanPerempuan;
-	const namaLengkap = `${namaDepan[indexGlobal % namaDepan.length]} ${
-		namaTengah[(indexGlobal + urutan) % namaTengah.length]
-	} ${namaBelakang[(indexGlobal * 3) % namaBelakang.length]}`;
+	const namaLengkap = `${namaDepan[indexGlobal % namaDepan.length]} ${namaTengah[(indexGlobal + urutan) % namaTengah.length]
+		} ${namaBelakang[(indexGlobal * 3) % namaBelakang.length]}`;
 	const nisn = `20260${nomorGelombang}${nomorUrut(urutan, 4)}`;
 	const idVerifikatorTerpilih = sudahDiverifikasi(statusPendaftaran) ? idVerifikator : null;
 
@@ -314,14 +313,22 @@ async function main() {
 	const hashedVerifPass = await bcrypt.hash("Mitha123!", 10);
 	const hashedAngiePass = await bcrypt.hash("Angie123!", 10);
 	const hashedPendaftarPass = await bcrypt.hash("Maltrian123!", 10);
-	const hashedKepsekPass = await bcrypt.hash("password123", 10);
+	const hashedKepsekPass = await bcrypt.hash("Kepsek123!", 10);
 
 	/* ADMIN */
+	const existingAdmin = await prisma.admin.findUnique({ where: { username: "admin" } });
+	if (existingAdmin) {
+		await prisma.admin.update({
+			where: { username: "admin" },
+			data: { username: "adminSanrafa", password: hashedAdminPass }
+		});
+	}
+
 	const admin = await prisma.admin.upsert({
-		where: { username: "admin" },
-		update: {},
+		where: { username: "adminSanrafa" },
+		update: { password: hashedAdminPass },
 		create: {
-			username: "admin",
+			username: "adminSanrafa",
 			password: hashedAdminPass,
 		},
 	});
@@ -355,14 +362,23 @@ async function main() {
 	console.log("✅ Verifikator dibuat:", verifikatorAngie.username);
 
 	/* KEPALA SEKOLAH */
+	const existingKepsek = await prisma.kepalaSekolah.findUnique({ where: { username: "kepsek" } });
+	if (existingKepsek) {
+		await prisma.kepalaSekolah.update({
+			where: { username: "kepsek" },
+			data: { username: "kepsekSanrafa", password: hashedKepsekPass, nama: "Kepala Sekolah", status_aktif: true }
+		});
+	}
+
 	const kepalaSekolah = await prisma.kepalaSekolah.upsert({
-		where: { username: "kepsek" },
+		where: { username: "kepsekSanrafa" },
 		update: {
 			nama: "Kepala Sekolah",
+			password: hashedKepsekPass,
 			status_aktif: true,
 		},
 		create: {
-			username: "kepsek",
+			username: "kepsekSanrafa",
 			password: hashedKepsekPass,
 			nama: "Kepala Sekolah",
 			status_aktif: true,
@@ -786,8 +802,7 @@ async function main() {
 	console.log("✅ Gelombang 1 dibuat: kuota 68, pendaftar 70, lulus 68, tidak lulus 2");
 	console.log("✅ Gelombang 2 dibuat: kuota 68, pendaftar 50, status menunggu verifikasi");
 	console.log(
-		`✅ ${
-			pendaftarGelombang1.length + pendaftarGelombang2.length
+		`✅ ${pendaftarGelombang1.length + pendaftarGelombang2.length
 		} Alamat dan ${(pendaftarGelombang1.length + pendaftarGelombang2.length) * 4} Dokumen pendaftar dibuat`,
 	);
 	console.log("✅ 3 Pengumuman gelombang dibuat dan dikirim ke pendaftar yang sesuai");
@@ -795,9 +810,9 @@ async function main() {
 	console.log("\n🎉 Seeding selesai!\n");
 	console.log("──────────────────────────────");
 	console.log("  Login Akun:");
-	console.log("  Admin        → username: admin     | password: Admin123!");
-	console.log("  Kepsek       → username: kepsek    | password: password123");
-	console.log("  Verifikator  → username: selomitha | password: Mitha123!");
+	console.log("  Admin        → username: adminSanrafa | password: Admin123!");
+	console.log("  Kepsek       → username: kepsekSanrafa| password: Kepsek123!");
+	console.log("  Verifikator  → username: selomitha    | password: Mitha123!");
 	console.log("  Verifikator  → username: angie     | password: Angie123!");
 	console.log("  Pendaftar G1 → nisn: 2026010001-2026010070 | password: Maltrian123!");
 	console.log("  Pendaftar G2 → nisn: 2026020001-2026020050 | password: Maltrian123!");

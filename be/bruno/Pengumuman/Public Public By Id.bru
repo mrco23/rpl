@@ -1,0 +1,15 @@
+meta {
+  name: Public Public By Id
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/pengumuman/public/:id
+  body: json
+  auth: none
+}
+
+body:json {
+  {}
+}

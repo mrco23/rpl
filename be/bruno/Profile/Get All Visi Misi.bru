@@ -1,0 +1,19 @@
+meta {
+  name: Get All Visi Misi
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/profile/visi-misi
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

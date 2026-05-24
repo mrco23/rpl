@@ -291,7 +291,7 @@ export default function AdminBerandaPage() {
             </div>
           </div>
           <div className="p-6 border-t border-gray-100 text-center">
-            <NavLink to="/admin/verifikator" className="text-slate-600 hover:text-blue-normal transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:underline underline-offset-4">
+            <NavLink to="/admin/akun-internal" className="text-slate-600 hover:text-blue-normal transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:underline underline-offset-4">
               Lihat Semua Verifikator <ArrowRight size={16} />
             </NavLink>
           </div>

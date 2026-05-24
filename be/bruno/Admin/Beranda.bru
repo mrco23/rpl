@@ -1,0 +1,19 @@
+meta {
+  name: Beranda
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/admin/beranda
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

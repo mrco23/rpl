@@ -1,0 +1,19 @@
+meta {
+  name: Get All Kepala Sekolah
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/admin/kepala-sekolah
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

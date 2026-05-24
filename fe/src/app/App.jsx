@@ -34,7 +34,7 @@ const VerifikatorVerifikasiPage = lazy(() => import("../features/verifikator/pag
 /* Admin */
 const AdminBerandaPage = lazy(() => import("../features/admin/pages/AdminBerandaPage.jsx"));
 const AdminProgramUnggulanPage = lazy(() => import("../features/admin/pages/AdminProgramUnggulanPage.jsx"));
-const AdminVerifikatorPage = lazy(() => import("../features/admin/pages/AdminVerifikatorPage.jsx"));
+const AkunInternalPage = lazy(() => import("../features/admin/pages/AkunInternalPage.jsx"));
 const AdminFasilitasPage = lazy(() => import("../features/admin/pages/AdminFasilitasPage"));
 const AdminAchievementsPage = lazy(() => import("../features/admin/pages/AdminAchievementsPage"));
 const AdminExtracurricularsPage = lazy(() => import("../features/admin/pages/AdminEkstrakurikulerPage"));
@@ -46,7 +46,6 @@ const AdminProfilSekolahPage = lazy(() => import("../features/admin/pages/AdminP
 /* Pendaftar */
 const BerandaPendaftarPage = lazy(() => import("../features/pendaftar/pages/BerandaPendaftarPage.jsx"));
 const AdminPendaftarPage = lazy(() => import("../features/admin/pages/AdminPendaftarPage.jsx"));
-const KepalaSekolahPage = lazy(() => import("../features/admin/pages/KepalaSekolahPage.jsx"));
 const UnggahDokumenPage = lazy(() => import("../features/pendaftar/pages/UnggahDokumenPage.jsx"));
 
 const StatusVerifikasiPage = lazy(() => import("../features/pendaftar/pages/StatusVerifikasiPage.jsx"));
@@ -55,7 +54,7 @@ const PendaftarPengumumanPage = lazy(() => import("../features/pendaftar/pages/P
 /* Kepala Sekolah */
 const BerandaKepalaSekolah = lazy(() => import("../features/kepala-sekolah/pages/BerandaKepalaSekolah.jsx"));
 const LaporanPPDBPage = lazy(() => import("../features/kepala-sekolah/pages/LaporanPPDBPage.jsx"));
-const MonitoringKontenPage = lazy(() => import("../features/kepala-sekolah/pages/MonitoringKontenPage.jsx"));
+
 
 /* scrool */
 import ScrolTop from "../shared/components/ScrolTop";
@@ -106,11 +105,10 @@ function App() {
             <Route path="berita" element={<AdminBeritaPage />} />
             <Route path="program" element={<AdminProgramUnggulanPage />} />
             <Route path="pengumuman" element={<AdminPengumumanPage />} />
-            <Route path="verifikator" element={<AdminVerifikatorPage />} />
+            <Route path="akun-internal" element={<AkunInternalPage />} />
             <Route path="fasilitas" element={<AdminFasilitasPage />} />
             <Route path="ppdb" element={<AdminPendaftarPage />} />
             <Route path="gelombang" element={<AdminGelombang />} />
-            <Route path="kepala-sekolah" element={<KepalaSekolahPage />} />
           </Route>
 
           {/* Verifier Routes */}
@@ -138,7 +136,7 @@ function App() {
             <Route index element={<BerandaKepalaSekolah />} />
             <Route path="beranda" element={<BerandaKepalaSekolah />} />
             <Route path="laporan" element={<LaporanPPDBPage />} />
-            <Route path="monitoring-konten" element={<MonitoringKontenPage />} />
+
           </Route>
 
           {/* pendaftar Routes */}

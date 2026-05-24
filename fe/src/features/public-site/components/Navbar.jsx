@@ -152,15 +152,10 @@ function Navbar() {
 
           {/* Button DESKTOP*/}
           <div className="hidden lg:flex space-x-3 items-center">
-            <button
-              onClick={() => navigate("/akses-internal")}
-              className="text-sm px-3 py-1 border border-blue-800/30 text-blue-900 rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
-            >
-              Akses Internal
-            </button>
+
             <button
               onClick={() => navigate("/login")}
-              className="px-3 py-1 bg-white border-2 border-blue-900 text-blue-900 rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
+              className="px-3 py-1 bg-white border border-blue-dark text-blue-dark rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
             >
               Masuk Pendaftar
             </button>
@@ -175,6 +170,12 @@ function Navbar() {
           {/* ✅ HAMBURGER BUTTON (MOBILE) */}
           <button className="lg:hidden" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={28} className="" /> : <Menu size={28} />}
+          </button>
+          <button
+            onClick={() => navigate("/akses-internal")}
+            className="text-sm px-3 py-1 text-blue-dark rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
+          >
+            Akses Internal
           </button>
         </div>
 
@@ -261,10 +262,10 @@ function Navbar() {
               >
                 Masuk Pendaftar
               </button>
-              
+
               <hr className="my-2 border-gray-200" />
               <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Akses Internal Sekolah</p>
-              <Link 
+              <Link
                 to="/akses-internal"
                 onClick={closeAllMenus}
                 className="text-blue-900 font-medium"

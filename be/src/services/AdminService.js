@@ -18,10 +18,7 @@ export const createAdmin = async (username, password) => {
     const created = await prisma.admin.create({data});
     return {...created, id: created.id_admin};
 }
-export const getAdminProfil = async () => {
-}
-export const putAdminProfil = async () => {
-}
+
 export const getBerandaData = async () => {
     const [totalFasilitas, totalEkstrakurikuler, totalPrestasi, totalBerita, totalProgramUnggulan] = await Promise.all([
         prisma.fasilitas.count(),

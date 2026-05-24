@@ -98,6 +98,7 @@ export default function StatusVerifikasiPage() {
     const fetchStatus = async () => {
       try {
         const res = await getPendaftarStatus();
+        console.log(statusData)
         setStatusData(res?.data || null);
       } catch (error) {
         console.error("Gagal mengambil status pendaftar:", error);
@@ -172,24 +173,12 @@ export default function StatusVerifikasiPage() {
               <div>
                 <p className="text-sm font-medium text-gray-500">Gelombang</p>
                 <p className="text-sm md:text-base font-semibold text-gray-900 mt-1">
-                  {statusData?.gelombang?.nama_gelombang || "-"}
+                  {statusData?.gelombang?.nama || "-"}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* CATATAN */}
-          <div className="py-6">
-            <div className="bg-yellow-light border border-yellow-normal/30 rounded-2xl p-5 flex items-start gap-4">
-              <AlertCircle className="text-yellow-700 mt-0.5 shrink-0" />
-              <div>
-                <h4 className="text-sm md:text-base font-semibold text-yellow-900">Catatan Pendaftar</h4>
-                <p className="text-sm md:text-base text-yellow-800 mt-1 leading-7">
-                  {statusData?.catatan_dokumen ? statusData.catatan_dokumen : "Belum ada catatan baru."}
-                </p>
-              </div>
-            </div>
-          </div>
 
           {/* PROGRESS */}
           <div className="mt-8 pt-8 border-t border-gray-100 relative">

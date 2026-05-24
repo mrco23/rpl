@@ -146,6 +146,11 @@ class PendaftarController {
 				return res.status(400).json({ message: "Kata sandi lama salah" });
 			}
 
+			const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
+			if (!passwordRegex.test(newPassword)) {
+				return res.status(400).json({ message: "Kata sandi minimal 6 karakter dan harus mengandung huruf kecil, huruf besar, angka, dan simbol." });
+			}
+
 			await updatePassword(pendaftar.id_pendaftar, newPassword);
 
 			return res.status(200).json({ message: "Kata sandi berhasil diperbarui" });
@@ -240,10 +245,10 @@ class PendaftarController {
 			}
 
 			// Password policy validation
-			const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+			const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
 			if (!passwordRegex.test(newPassword)) {
 				return res.status(400).json({ 
-					message: "Kata sandi harus minimal 8 karakter, mengandung huruf besar, huruf kecil, angka, dan simbol" 
+					message: "Kata sandi minimal 6 karakter dan harus mengandung huruf kecil, huruf besar, angka, dan simbol." 
 				});
 			}
 

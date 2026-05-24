@@ -1,25 +1,22 @@
 meta {
   name: Login
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
-  url: {{base_url}}/pendaftar/login
+  url: {{baseUrl}}/api/pendaftar/login
   body: json
   auth: none
 }
 
 body:json {
-  {
-    "nisn": "0091234561",
-    "password": "Budi123!"
-  }
+  {}
 }
 
 script:post-response {
-  const data = res.getBody();
-  if (data.token) {
-    bru.setEnvVar("token", data.token);
+  let resBody = res.getBody();
+  if (resBody && resBody.token) {
+    bru.setEnvVar("token", resBody.token);
   }
 }

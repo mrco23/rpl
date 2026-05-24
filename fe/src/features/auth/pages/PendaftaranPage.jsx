@@ -180,8 +180,8 @@ export default function ApplicantRegisterPage() {
     e.preventDefault();
 
     const newErrors = {};
-    if (!/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(password)) {
-      newErrors.password = "Kata sandi minimal 8 karakter dan harus mengandung huruf serta angka.";
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/.test(password)) {
+      newErrors.password = "Kata sandi minimal 6 karakter dan harus mengandung huruf kecil, huruf besar, angka, dan simbol.";
     }
     if (password !== confirmPassword) {
       newErrors.confirmPassword = "Konfirmasi kata sandi tidak cocok.";
@@ -606,6 +606,9 @@ export default function ApplicantRegisterPage() {
                   <p className="text-sm text-gray-600 mt-1">
                     Buat password yang kuat untuk menjaga privasi data pendaftaran Anda.
                   </p>
+                  <p className="text-sm font-medium text-blue-700 mt-2">
+                    Kata sandi minimal 6 karakter, harus mengandung huruf kecil, huruf besar, angka, dan simbol.
+                  </p>
                 </div>
 
                 {/* NISN */}
@@ -635,7 +638,7 @@ export default function ApplicantRegisterPage() {
                       setPassword(e.target.value);
                       if (errors.password) setErrors({ ...errors, password: null });
                     }}
-                    placeholder="Minimal 8 karakter (Huruf & Angka)"
+                    placeholder="Minimal 6 karakter, huruf besar, huruf kecil, angka, dan simbol"
                     className={`w-full px-4 py-3 border rounded-xl focus:outline-none ${errors.password ? 'border-red-500 bg-red-50 focus:border-red-600 error-input' : 'border-gray-300 focus:border-blue-600'}`}
                   />
                   {errors.password && <p className="text-red-500 text-xs mt-1 font-medium">{errors.password}</p>}

@@ -34,9 +34,9 @@ class KepalaSekolahController {
 
 			res.status(200).json({
 				message: "Login kepala sekolah berhasil",
-				token,
-				role: "kepala_sekolah",
 				data: {
+					token,
+					role: "kepala_sekolah",
 					id_kepala_sekolah: kepsek.id_kepala_sekolah,
 					username: kepsek.username,
 					nama: kepsek.nama,

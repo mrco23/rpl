@@ -9,7 +9,7 @@ export default function DashboardLayout({ role, title, subtitle, sidebarItems, c
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/");
   };
 
   return (

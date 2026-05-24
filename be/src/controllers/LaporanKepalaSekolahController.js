@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import exceljs from "exceljs";
 import PDFDocument from "pdfkit-table";
+import { STATUS_PENDAFTARAN } from "../constants/statusPendaftaran.js";
 
 const prisma = new PrismaClient();
 
@@ -8,7 +9,7 @@ const prisma = new PrismaClient();
 const getKopSuratData = async () => {
   const profil = await prisma.profil.findFirst();
   const kontak = await prisma.kontak.findFirst();
-  
+
   return {
     namaSekolah: profil?.nama_sekolah || "SMP Katolik St. Rafael Manado",
     akreditasi: profil?.akreditasi || "A",
@@ -25,11 +26,11 @@ const drawKopSurat = (doc, data, title) => {
   doc.fontSize(10).font("Helvetica").text(`Akreditasi: ${data.akreditasi}`, { align: "center" });
   doc.fontSize(10).text(`${data.alamat}`, { align: "center" });
   doc.fontSize(10).text(`Telp: ${data.telepon} | Email: ${data.email}`, { align: "center" });
-  
+
   // Garis bawah kop
   doc.moveTo(50, 115).lineTo(550, 115).lineWidth(2).stroke();
   doc.moveTo(50, 118).lineTo(550, 118).lineWidth(1).stroke();
-  
+
   // Judul Laporan
   doc.moveDown(3);
   doc.fontSize(14).font("Helvetica-Bold").text(title, { align: "center" });
@@ -49,10 +50,10 @@ export const LaporanKepalaSekolahController = {
   getRekapPPDB: async (req, res) => {
     try {
       const total = await prisma.pendaftar.count();
-      const lulus = await prisma.pendaftar.count({ where: { status_pendaftaran: "Lulus" } });
-      const tidakLulus = await prisma.pendaftar.count({ where: { status_pendaftaran: "Tidak Lulus" } });
-      const menunggu = await prisma.pendaftar.count({ where: { status_pendaftaran: "menunggu verifikasi" } });
-      
+      const lulus = await prisma.pendaftar.count({ where: { status_pendaftaran: STATUS_PENDAFTARAN.LULUS } });
+      const tidakLulus = await prisma.pendaftar.count({ where: { status_pendaftaran: STATUS_PENDAFTARAN.TIDAK_LULUS } });
+      const menunggu = await prisma.pendaftar.count({ where: { status_pendaftaran: STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI } });
+
       res.json({ success: true, data: { total, lulus, tidakLulus, menunggu } });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
@@ -123,7 +124,7 @@ export const LaporanKepalaSekolahController = {
   getFinalPenerimaan: async (req, res) => {
     try {
       const data = await prisma.pendaftar.findMany({
-        where: { status_pendaftaran: "Lulus" },
+        where: { status_pendaftaran: STATUS_PENDAFTARAN.LULUS },
         select: { nisn: true, nama_lengkap: true, asal_sekolah: true, gelombang: { select: { nama: true } } }
       });
       res.json({ success: true, data });
@@ -174,7 +175,7 @@ export const LaporanKepalaSekolahController = {
       drawKopSurat(doc, data, "LAPORAN REKAPITULASI PPDB");
 
       const pendaftar = await prisma.pendaftar.findMany();
-      
+
       const table = {
         title: "Daftar Seluruh Pendaftar",
         headers: ["No", "NISN", "Nama Lengkap", "Status"],
@@ -187,7 +188,7 @@ export const LaporanKepalaSekolahController = {
       };
 
       await doc.table(table, { width: 500 });
-      
+
       drawSignature(doc, data.namaKepsek);
       doc.end();
     } catch (error) {
@@ -210,7 +211,7 @@ export const LaporanKepalaSekolahController = {
       sheet.addRow(["No", "NISN", "Nama", "Asal Sekolah"]);
       sheet.getRow(5).font = { bold: true };
 
-      const pendaftar = await prisma.pendaftar.findMany({ where: { status_pendaftaran: "Lulus" } });
+      const pendaftar = await prisma.pendaftar.findMany({ where: { status_pendaftaran: STATUS_PENDAFTARAN.LULUS } });
       pendaftar.forEach((p, idx) => {
         sheet.addRow([idx + 1, p.nisn, p.nama_lengkap, p.asal_sekolah]);
       });
@@ -236,8 +237,8 @@ export const LaporanKepalaSekolahController = {
 
       drawKopSurat(doc, data, "LAPORAN FINAL PENERIMAAN SISWA BARU");
 
-      const pendaftar = await prisma.pendaftar.findMany({ where: { status_pendaftaran: "Lulus" } });
-      
+      const pendaftar = await prisma.pendaftar.findMany({ where: { status_pendaftaran: STATUS_PENDAFTARAN.LULUS } });
+
       const table = {
         title: "Daftar Pendaftar Lulus",
         headers: ["No", "NISN", "Nama Lengkap", "Asal Sekolah"],
@@ -250,7 +251,7 @@ export const LaporanKepalaSekolahController = {
       };
 
       await doc.table(table, { width: 500 });
-      
+
       drawSignature(doc, data.namaKepsek);
       doc.end();
     } catch (error) {

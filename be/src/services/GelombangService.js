@@ -4,12 +4,12 @@ export const getAktif = async () => {
     const now = new Date();
     const gelombang = await prisma.gelombang.findFirst({
         where: {
-            tanggal_mulai: {lte: now},
-            tanggal_selesai: {gte: now}
+            tanggal_mulai: { lte: now },
+            tanggal_selesai: { gte: now }
         },
         include: {
             _count: {
-                select: {pendaftar: true}
+                select: { pendaftar: true }
             }
         }
     });
@@ -25,15 +25,13 @@ export const getAktif = async () => {
 
 export const getAll = async () => {
     const data = await prisma.gelombang.findMany({
-        orderBy: {tanggal_mulai: "desc"},
+        orderBy: { tanggal_mulai: "desc" },
         include: {
             _count: {
-                select: {pendaftar: true}
+                select: { pendaftar: true }
             }
         }
     });
-    console.log(data)
-
     return data.map(item => ({
         ...item,
         totalPendaftar: item._count.pendaftar
@@ -42,10 +40,10 @@ export const getAll = async () => {
 
 export const getPublicAll = async () => {
     const data = await prisma.gelombang.findMany({
-        orderBy: {tanggal_mulai: "desc"},
+        orderBy: { tanggal_mulai: "desc" },
         include: {
             _count: {
-                select: {pendaftar: true}
+                select: { pendaftar: true }
             }
         }
     });
@@ -55,11 +53,11 @@ export const getPublicAll = async () => {
     return data.map(item => {
         const totalPendaftar = item._count.pendaftar;
         const sisaKuota = Math.max(0, item.kuota - totalPendaftar);
-        
+
         let statusGelombang = "";
         const startDate = new Date(item.tanggal_mulai);
         const endDate = new Date(item.tanggal_selesai);
-        
+
         if (now < startDate) {
             statusGelombang = "belum dibuka";
         } else if (now > endDate) {
@@ -83,7 +81,7 @@ export const getPublicAll = async () => {
 
 export const getById = async (id) => {
     return prisma.gelombang.findUnique({
-        where: {id_gelombang: Number(id)}
+        where: { id_gelombang: Number(id) }
     });
 };
 
@@ -139,14 +137,14 @@ export const update = async (id, payload) => {
     }
 
     return prisma.gelombang.update({
-        where: {id_gelombang: Number(id)},
+        where: { id_gelombang: Number(id) },
         data
     });
 };
 
 export const remove = async (id) => {
     return prisma.gelombang.delete({
-        where: {id_gelombang: Number(id)}
+        where: { id_gelombang: Number(id) }
     });
 };
 
@@ -155,8 +153,8 @@ export const checkActive = async (id) => {
     const gelombang = await prisma.gelombang.findFirst({
         where: {
             id_gelombang: Number(id),
-            tanggal_mulai: {lte: now},
-            tanggal_selesai: {gte: now}
+            tanggal_mulai: { lte: now },
+            tanggal_selesai: { gte: now }
         }
     })
     return !!gelombang;

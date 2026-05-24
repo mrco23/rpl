@@ -14,7 +14,7 @@ function SidebarKepalaSekolah({ onClose }) {
     if (confirmLogout) {
       if (onClose) onClose();
       logout();
-      navigate("/login");
+      navigate("/");
     }
   };
 
@@ -28,11 +28,6 @@ function SidebarKepalaSekolah({ onClose }) {
       name: "Laporan PPDB",
       path: "/kepala-sekolah/laporan",
       icon: FileText,
-    },
-    {
-      name: "Monitoring Konten",
-      path: "/kepala-sekolah/monitoring-konten",
-      icon: MonitorPlay,
     },
   ];
 

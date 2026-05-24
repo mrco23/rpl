@@ -1,0 +1,19 @@
+meta {
+  name: Delete Kepala Sekolah By Id
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{baseUrl}}/api/admin/kepala-sekolah/:id
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

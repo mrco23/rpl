@@ -133,9 +133,9 @@ export const validatePendaftarRegisterPayload = (payload) => {
 	}
 
 	// K. kata_sandi
-	if (!d.kata_sandi || !/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(d.kata_sandi)) {
+	if (!d.kata_sandi || !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/.test(d.kata_sandi)) {
 		isValid = false;
-		errors.kata_sandi = "Kata sandi minimal 8 karakter dan harus mengandung huruf serta angka.";
+		errors.kata_sandi = "Kata sandi minimal 6 karakter dan harus mengandung huruf kecil, huruf besar, angka, dan simbol.";
 	}
 
 	return {

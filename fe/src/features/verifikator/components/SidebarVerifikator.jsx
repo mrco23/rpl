@@ -4,15 +4,19 @@ import { House, FileText, LogOut } from "lucide-react";
 // Pastikan path ini sesuai dengan struktur folder kerjamu di VS Code
 import logo from "../../../shared/assets/logo.png";
 
+import useAuth from "../../auth/contexts/useAuth.js";
+
 function SidebarVerifikator({ onClose }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Apakah Anda yakin ingin keluar?");
     if (confirmLogout) {
       if (onClose) onClose();
-      navigate("/login");
+      logout();
+      navigate("/");
     }
   };
 

@@ -1,0 +1,19 @@
+meta {
+  name: Get All Landing Page
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/profile/landing-page
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

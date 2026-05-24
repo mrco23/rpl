@@ -79,9 +79,9 @@ export default function UbahKataSandiPage() {
     }
 
     // Password policy check
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
     if (!passwordRegex.test(formData.newPassword)) {
-      setError("Kata sandi harus minimal 8 karakter, mengandung huruf besar, huruf kecil, angka, dan simbol");
+      setError("Kata sandi minimal 6 karakter dan harus mengandung huruf kecil, huruf besar, angka, dan simbol.");
       return;
     }
 
@@ -220,7 +220,7 @@ export default function UbahKataSandiPage() {
                   </span>
                 </div>
                 <p className="text-[10px] text-gray-500 mt-1">
-                  Minimal 8 karakter, harus ada huruf besar, huruf kecil, angka, dan simbol.
+                  Minimal 6 karakter, harus ada huruf besar, huruf kecil, angka, dan simbol.
                 </p>
               </div>
 
