@@ -17,7 +17,7 @@ class KepalaSekolahController {
 				where: { username },
 			});
 
-			if (!kepsek) {
+			if (!kepsek || kepsek.username !== username) {
 				return res.status(401).json({ message: "Username atau password salah" });
 			}
 

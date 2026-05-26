@@ -56,3 +56,20 @@ export const downloadLaporanBlob = async (type, format) => {
     throw error;
   }
 };
+
+export const getValidasiGelombang = async () => {
+  const res = await requestAPI({
+    method: "GET",
+    url: "/kepala-sekolah/validasi-gelombang",
+  });
+  return res.data;
+};
+
+export const setujuiValidasiGelombang = async (id) => {
+  const res = await requestAPI({
+    method: "POST",
+    url: `/kepala-sekolah/validasi-gelombang/${id}/setujui`,
+    data: {},
+  });
+  return res.data;
+};

@@ -113,7 +113,9 @@ export default function BeritaPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* GRID */}
               {paginatedNews.map((item, index) => (
-                <NewsCard key={item.id_berita || index} item={item} />
+                <div key={item.id_berita || index} className="w-[90%] mx-auto">
+                  <NewsCard item={item} />
+                </div>
               ))}
             </div>
           )}

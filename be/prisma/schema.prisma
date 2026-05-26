@@ -98,6 +98,8 @@ model Gelombang {
   tanggal_mulai   DateTime    @db.DateTime(3)
   tanggal_selesai DateTime    @db.DateTime(3)
   kuota           Int
+  status_validasi String      @default("belum_diajukan") @db.VarChar(50)
+  tanggal_validasi DateTime?  @db.DateTime(3)
   pendaftar       Pendaftar[]
 
   @@map("gelombang")

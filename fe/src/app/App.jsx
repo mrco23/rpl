@@ -54,6 +54,7 @@ const PendaftarPengumumanPage = lazy(() => import("../features/pendaftar/pages/P
 /* Kepala Sekolah */
 const BerandaKepalaSekolah = lazy(() => import("../features/kepala-sekolah/pages/BerandaKepalaSekolah.jsx"));
 const LaporanPPDBPage = lazy(() => import("../features/kepala-sekolah/pages/LaporanPPDBPage.jsx"));
+const ValidasiGelombangPage = lazy(() => import("../features/kepala-sekolah/pages/ValidasiGelombangPage.jsx"));
 
 
 /* scrool */
@@ -134,8 +135,8 @@ function App() {
             }
           >
             <Route index element={<BerandaKepalaSekolah />} />
-            <Route path="beranda" element={<BerandaKepalaSekolah />} />
             <Route path="laporan" element={<LaporanPPDBPage />} />
+            <Route path="validasi-gelombang" element={<ValidasiGelombangPage />} />
 
           </Route>
 

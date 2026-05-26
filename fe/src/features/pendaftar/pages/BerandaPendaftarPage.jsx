@@ -44,10 +44,10 @@ function BerandaPendaftarPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-6 lg:px-8 py-8 md:py-10 font-sans">
-      <div className="max-w-5xl mx-auto w-full">
+      <div className="max-w-6xl mx-auto w-full space-y-6">
 
         {/* HEADER MESSAGE */}
-        <div className="mb-8">
+        <div>
           <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
             Biodata Pendaftar
           </h1>
@@ -56,7 +56,7 @@ function BerandaPendaftarPage() {
           </p>
         </div>
 
-        <div className="mb-8 bg-blue-light/50 border border-blue-200 rounded-2xl p-4 flex items-start gap-3">
+        <div className="bg-blue-light/50 border border-blue-200 rounded-2xl p-4 flex items-start gap-3">
           <AlertCircle className="text-blue-dark shrink-0 mt-0.5" size={24} />
           <div>
             <p className="text-sm md:text-base font-medium text-gray-800 leading-6">

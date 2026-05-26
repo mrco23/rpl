@@ -364,9 +364,8 @@ async function main() {
 	/* KEPALA SEKOLAH */
 	const existingKepsek = await prisma.kepalaSekolah.findUnique({ where: { username: "kepsek" } });
 	if (existingKepsek) {
-		await prisma.kepalaSekolah.update({
-			where: { username: "kepsek" },
-			data: { username: "kepsekSanrafa", password: hashedKepsekPass, nama: "Kepala Sekolah", status_aktif: true }
+		await prisma.kepalaSekolah.delete({
+			where: { username: "kepsek" }
 		});
 	}
 
@@ -701,6 +700,7 @@ async function main() {
 			tanggal_mulai: tanggalUtc(2026, 1, 1),
 			tanggal_selesai: tanggalUtc(2026, 3, 31, 23, 59),
 			kuota: 68,
+			status_validasi: "menunggu_validasi",
 		},
 	});
 

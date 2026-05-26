@@ -54,7 +54,11 @@ export default function ApplicantRegisterPage() {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    let value = e.target.value;
+    if (e.target.name === 'kodePos') {
+      value = value.replace(/\D/g, "");
+    }
+    setFormData({ ...formData, [e.target.name]: value });
     // Remove error when user types
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: null });
@@ -107,8 +111,8 @@ export default function ApplicantRegisterPage() {
     }
 
     // K. Kode Pos
-    if (!/^\d{5}$/.test(d.kodePos)) {
-      newErrors.kodePos = "Kode pos harus berisi 5 digit angka.";
+    if (!d.kodePos || !/^\d+$/.test(d.kodePos)) {
+      newErrors.kodePos = "Kode pos wajib diisi dan hanya boleh berisi angka.";
     }
 
     // Tempat Lahir
@@ -469,7 +473,7 @@ export default function ApplicantRegisterPage() {
                         name="kodePos"
                         value={formData.kodePos}
                         onChange={handleChange}
-                        placeholder="5 Digit Kode Pos"
+                        placeholder="Kode Pos"
                         className={getFieldClass('kodePos')}
                       />
                       {errors.kodePos && <p className="text-red-500 text-xs mt-1 font-medium">{errors.kodePos}</p>}

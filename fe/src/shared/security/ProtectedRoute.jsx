@@ -6,7 +6,7 @@ export default function ProtectedRoute({ allowedRoles, children }) {
 
     // Tentukan route redirect default berdasarkan allowedRoles
     let redirectPath = "/login";
-    if (allowedRoles && (allowedRoles.includes("admin") || allowedRoles.includes("verifikator") || allowedRoles.includes("kepala-sekolah"))) {
+    if (allowedRoles && (allowedRoles.includes("admin") || allowedRoles.includes("verifikator") || allowedRoles.includes("kepala_sekolah"))) {
         redirectPath = "/akses-internal";
     }
 

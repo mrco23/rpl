@@ -8,6 +8,7 @@ import {
 	update,
 	remove,
 	exportExcel,
+	ajukanValidasi,
 } from "../controllers/GelombangController.js";
 import { verifyToken, authorizeRole } from "../middleware/authMiddleware.js";
 
@@ -22,5 +23,6 @@ router.get("/:id", verifyToken, authorizeRole("admin"), getById);
 router.get("/:id/export", verifyToken, authorizeRole("admin"), exportExcel);
 router.put("/:id", verifyToken, authorizeRole("admin"), update);
 router.delete("/:id", verifyToken, authorizeRole("admin"), remove);
+router.post("/:id/ajukan-validasi", verifyToken, authorizeRole("admin"), ajukanValidasi);
 
 export default router;

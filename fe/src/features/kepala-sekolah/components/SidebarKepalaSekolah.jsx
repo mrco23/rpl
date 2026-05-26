@@ -1,11 +1,10 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { House, FileText, MonitorPlay, LogOut } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { House, FileText, LogOut, FileCheck } from "lucide-react";
 import logo from "../../../shared/assets/logo.png";
 import useAuth from "../../auth/contexts/useAuth";
 
 function SidebarKepalaSekolah({ onClose }) {
-  const location = useLocation();
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
@@ -13,15 +12,20 @@ function SidebarKepalaSekolah({ onClose }) {
     const confirmLogout = window.confirm("Apakah Anda yakin ingin keluar?");
     if (confirmLogout) {
       if (onClose) onClose();
+      const currentRole = user?.role;
       logout();
-      navigate("/");
+      if (["admin", "verifikator", "kepala_sekolah"].includes(currentRole)) {
+        navigate("/akses-internal");
+      } else {
+        navigate("/login");
+      }
     }
   };
 
   const menus = [
     {
       name: "Beranda",
-      path: "/kepala-sekolah/beranda",
+      path: "/kepala-sekolah",
       icon: House,
     },
     {
@@ -29,11 +33,14 @@ function SidebarKepalaSekolah({ onClose }) {
       path: "/kepala-sekolah/laporan",
       icon: FileText,
     },
+    {
+      name: "Validasi Gelombang",
+      path: "/kepala-sekolah/validasi-gelombang",
+      icon: FileCheck,
+    },
   ];
 
-  const isActive = (path) => {
-    return location.pathname.startsWith(path);
-  };
+
 
   return (
     <aside className="w-64 min-h-screen bg-blue-dark text-white rounded-r-2xl flex flex-col shrink-0 shadow-lg">
@@ -73,39 +80,41 @@ function SidebarKepalaSekolah({ onClose }) {
       </div>
 
       {/* Menu Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-4 space-y-2 overflow-auto no-scrollbar-custom">
         {menus.map((item, index) => {
           const Icon = item.icon;
-          const active = isActive(item.path);
 
           return (
-            <Link
+            <NavLink
               key={index}
               to={item.path}
+              end={item.path === "/kepala-sekolah"}
               onClick={onClose}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer
-                ${active
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer
+                ${isActive
                   ? "bg-white text-blue-dark shadow-md"
                   : "text-white/80 hover:bg-white/10 hover:text-white"
-                }`}
+                }`
+              }
             >
-              <Icon size={20} strokeWidth={active ? 2.5 : 2} />
+              <Icon size={20} strokeWidth={2} />
               {item.name}
-            </Link>
+            </NavLink>
           );
         })}
       </nav>
 
+      <hr className="border-white/30" />
+
       {/* Logout */}
-      <div className="p-4 mb-2">
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold text-white/80 hover:bg-red-500 hover:text-white transition-colors cursor-pointer border border-white/20 hover:border-red-500"
-        >
-          <LogOut size={20} strokeWidth={2} />
-          Keluar
-        </button>
-      </div>
+      <button
+        onClick={handleLogout}
+        className="flex items-center gap-3 px-4 py-3 mt-2 mb-4 mx-2 hover:bg-white/10 rounded-lg text-left text-sm font-semibold text-white/80 hover:text-white transition-colors cursor-pointer border border-transparent hover:border-white/20"
+      >
+        <LogOut size={20} strokeWidth={2} />
+        Keluar
+      </button>
 
     </aside>
   );

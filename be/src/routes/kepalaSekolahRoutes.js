@@ -24,4 +24,8 @@ routes.get("/laporan/rekap-ppdb/pdf", verifyToken, authorizeRole("kepala_sekolah
 routes.get("/laporan/final-penerimaan/excel", verifyToken, authorizeRole("kepala_sekolah"), LaporanKepalaSekolahController.exportFinalPenerimaanExcel);
 routes.get("/laporan/final-penerimaan/pdf", verifyToken, authorizeRole("kepala_sekolah"), LaporanKepalaSekolahController.exportFinalPenerimaanPdf);
 
+// Validasi Gelombang
+routes.get("/validasi-gelombang", verifyToken, authorizeRole("kepala_sekolah"), LaporanKepalaSekolahController.getValidasiGelombang);
+routes.post("/validasi-gelombang/:id/setujui", verifyToken, authorizeRole("kepala_sekolah"), LaporanKepalaSekolahController.setujuiValidasiGelombang);
+
 export default routes;

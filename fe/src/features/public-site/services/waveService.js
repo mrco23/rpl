@@ -16,5 +16,6 @@ export const waveApi = {
   update: (id, payload) => service.update(id, payload),
   remove: (id) => service.remove(id),
   exportExcel: (id) => httpClient.get(`/gelombang/${id}/export`, { responseType: "blob" }),
-  getActiveWave: () => httpClient.get(`/gelombang/aktif`)
+  getActiveWave: () => httpClient.get(`/gelombang/aktif`),
+  ajukanValidasi: (id) => httpClient.post(`/gelombang/${id}/ajukan-validasi`)
 };

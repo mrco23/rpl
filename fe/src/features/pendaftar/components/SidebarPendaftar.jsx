@@ -21,8 +21,9 @@ function SidebarPendaftar({ onClose }) {
 
     if (confirmLogout) {
       if (onClose) onClose();
+      const currentRole = "pendaftar";
       logout();
-      navigate("/");
+      navigate("/login");
     }
   };
 

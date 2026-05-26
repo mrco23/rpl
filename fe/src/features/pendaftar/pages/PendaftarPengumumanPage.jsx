@@ -57,10 +57,10 @@ function PendaftarPengumumanPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-6 lg:px-8 py-8 md:py-10 font-sans">
-      <div className="max-w-5xl mx-auto w-full">
+      <div className="max-w-6xl mx-auto w-full space-y-6">
         
         {/* HEADER MESSAGE */}
-        <div className="mb-8">
+        <div>
           <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
             Pengumuman
           </h1>
@@ -69,7 +69,7 @@ function PendaftarPengumumanPage() {
           </p>
         </div>
 
-        <div className="space-y-6 max-w-4xl">
+        <div className="space-y-6">
           {dataPengumuman.length === 0 ? (
             <div className="bg-white rounded-3xl p-10 shadow-card border border-gray-100 flex flex-col items-center justify-center text-center">
               <div className="bg-blue-light/50 p-6 rounded-full mb-4">

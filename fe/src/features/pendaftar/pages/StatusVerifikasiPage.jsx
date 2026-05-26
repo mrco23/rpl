@@ -125,10 +125,10 @@ export default function StatusVerifikasiPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-6 lg:px-8 py-8 md:py-10 font-sans">
-      <div className="max-w-5xl mx-auto w-full">
+      <div className="max-w-6xl mx-auto w-full space-y-6">
 
         {/* HEADER MESSAGE */}
-        <div className="mb-8">
+        <div>
           <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
             Status Pendaftaran
           </h1>
@@ -137,7 +137,7 @@ export default function StatusVerifikasiPage() {
           </p>
         </div>
 
-        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-card border border-gray-100 max-w-4xl">
+        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-card border border-gray-100">
 
           {/* HEADER STATUS */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 pb-6 border-b border-gray-100">

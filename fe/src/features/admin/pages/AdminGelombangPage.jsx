@@ -7,8 +7,6 @@ import {
     CheckCircle2,
     Clock3,
     FileCheck,
-    Search,
-    X,
     Loader2,
     CalendarPlus,
     XCircle,
@@ -97,7 +95,8 @@ function AdminGelombang() {
         try {
             setToastConfig({ show: true, message: "Mempersiapkan dokumen Excel...", type: "success" });
             const response = await waveApi.exportExcel(id);
-            const url = window.URL.createObjectURL(new Blob([response]));
+            const blob = response?.data instanceof Blob ? response.data : response;
+            const url = window.URL.createObjectURL(blob instanceof Blob ? blob : new Blob([blob]));
             const link = document.createElement("a");
             link.href = url;
             link.setAttribute("download", `Export_Gelombang_${id}.xlsx`);
@@ -111,10 +110,23 @@ function AdminGelombang() {
         }
     };
 
+    const handleAjukanValidasi = async (id) => {
+        try {
+            setToastConfig({ show: true, message: "Mengajukan validasi...", type: "success" });
+            await waveApi.ajukanValidasi(id);
+            setToastConfig({ show: true, message: "Validasi berhasil diajukan!", type: "success" });
+            fetchGelombang(false);
+        } catch (error) {
+            console.error("Gagal mengajukan validasi:", error);
+            setToastConfig({ show: true, message: error.message || "Gagal mengajukan validasi", type: "error" });
+        }
+    };
+
     const getStatus = (item) => {
         const now = new Date();
         const start = new Date(item.tanggal_mulai);
         const end = new Date(item.tanggal_selesai);
+        end.setHours(23, 59, 59, 999);
         if (now >= start && now <= end) return "Aktif";
         if (now < start) return "Akan Datang";
         return "Selesai";
@@ -124,6 +136,18 @@ function AdminGelombang() {
         if (status === "Aktif") return "bg-green-100 text-green-700";
         if (status === "Selesai") return "bg-gray-200 text-gray-700";
         return "bg-yellow-100 text-yellow-700";
+    };
+
+    const getValidasiStyle = (status) => {
+        if (status === "disetujui") return "bg-green-100 text-green-700";
+        if (status === "menunggu_validasi") return "bg-yellow-100 text-yellow-700";
+        return "bg-gray-200 text-gray-700";
+    };
+
+    const getValidasiLabel = (status) => {
+        if (status === "disetujui") return "Disetujui";
+        if (status === "menunggu_validasi") return "Menunggu Kepsek";
+        return "Belum Diajukan";
     };
 
     const formatDate = (dateString) => {
@@ -229,11 +253,20 @@ function AdminGelombang() {
                                 >
                                     <div className="flex justify-between items-center mb-1">
                                         <h3 className="font-semibold text-xl text-gray-900">{item.nama}</h3>
-                                        <span
-                                            className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md ${getStatusStyle(status)}`}
-                                        >
-                                            {status}
-                                        </span>
+                                        <div className="flex flex-col gap-1 items-end">
+                                            <span
+                                                className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md ${getStatusStyle(status)}`}
+                                            >
+                                                {status}
+                                            </span>
+                                            {status === "Selesai" && (
+                                                <span
+                                                    className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md ${getValidasiStyle(item.status_validasi)}`}
+                                                >
+                                                    {getValidasiLabel(item.status_validasi)}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
 
                                     <hr className="my-4 border-gray-100" />
@@ -265,15 +298,8 @@ function AdminGelombang() {
                                         ></div>
                                     </div>
 
-                                    {/* Render buttons hanya jika status Selesai */}
-                                    {status === "Selesai" && (
-                                        <div className="grid grid-cols-2 gap-3 mt-2">
-                                            <button
-                                                onClick={() => handleExportExcel(item.id_gelombang)}
-                                                className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white border border-green-200 hover:border-green-600 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
-                                            >
-                                                <DownloadIcon /> Export
-                                            </button>
+                                    {status === "Akan Datang" && (
+                                        <div className="grid grid-cols-1 gap-3 mt-2">
                                             <button
                                                 onClick={() => {
                                                     setSelectedDeleteId(item.id_gelombang);
@@ -283,6 +309,61 @@ function AdminGelombang() {
                                             >
                                                 <Trash2 size={16} /> Hapus
                                             </button>
+                                        </div>
+                                    )}
+                                    {status === "Selesai" && (
+                                        <div className="grid grid-cols-2 gap-3 mt-2">
+                                            {(!item.status_validasi || item.status_validasi === "belum_diajukan") && (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleExportExcel(item.id_gelombang)}
+                                                        className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white border border-green-200 hover:border-green-600 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
+                                                    >
+                                                        <DownloadIcon /> Export Sementara
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleAjukanValidasi(item.id_gelombang)}
+                                                        className="bg-blue-50 text-[#253b80] hover:bg-[#253b80] hover:text-white border border-blue-200 hover:border-[#253b80] px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
+                                                    >
+                                                        <FileCheck size={16} /> Ajukan Validasi
+                                                    </button>
+                                                </>
+                                            )}
+                                            {item.status_validasi === "menunggu_validasi" && (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleExportExcel(item.id_gelombang)}
+                                                        className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white border border-green-200 hover:border-green-600 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
+                                                    >
+                                                        <DownloadIcon /> Export Sementara
+                                                    </button>
+                                                    <button
+                                                        disabled
+                                                        className="bg-gray-100 text-gray-500 border border-gray-200 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 cursor-not-allowed"
+                                                    >
+                                                        Menunggu Kepsek
+                                                    </button>
+                                                </>
+                                            )}
+                                            {item.status_validasi === "disetujui" && (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleExportExcel(item.id_gelombang)}
+                                                        className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white border border-green-200 hover:border-green-600 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
+                                                    >
+                                                        <DownloadIcon /> Export Final
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedDeleteId(item.id_gelombang);
+                                                            setOpenDeleteModal(true);
+                                                        }}
+                                                        className="hover:bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer duration-300"
+                                                    >
+                                                        <Trash2 size={16} /> Hapus
+                                                    </button>
+                                                </>
+                                            )}
                                         </div>
                                     )}
                                 </div>

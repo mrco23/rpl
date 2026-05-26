@@ -57,6 +57,7 @@ export const getPublicAll = async () => {
         let statusGelombang = "";
         const startDate = new Date(item.tanggal_mulai);
         const endDate = new Date(item.tanggal_selesai);
+        endDate.setHours(23, 59, 59, 999);
 
         if (now < startDate) {
             statusGelombang = "belum dibuka";
@@ -143,8 +144,13 @@ export const update = async (id, payload) => {
 };
 
 export const remove = async (id) => {
-    return prisma.gelombang.delete({
-        where: { id_gelombang: Number(id) }
+    return prisma.$transaction(async (tx) => {
+        await tx.pendaftar.deleteMany({
+            where: { id_gelombang: Number(id) }
+        });
+        return tx.gelombang.delete({
+            where: { id_gelombang: Number(id) }
+        });
     });
 };
 
@@ -160,3 +166,32 @@ export const checkActive = async (id) => {
     return !!gelombang;
 
 }
+
+export const ajukanValidasi = async (id) => {
+    const gelombang = await prisma.gelombang.findUnique({
+        where: { id_gelombang: Number(id) }
+    });
+
+    if (!gelombang) throw new Error("Gelombang tidak ditemukan.");
+
+    const now = new Date();
+    const end = new Date(gelombang.tanggal_selesai);
+    end.setHours(23, 59, 59, 999);
+
+    if (now <= end) {
+        throw new Error("Gelombang belum selesai sehingga belum dapat diajukan untuk validasi.");
+    }
+
+    if (gelombang.status_validasi === "menunggu_validasi") {
+        throw new Error("Laporan gelombang sudah diajukan dan sedang menunggu validasi kepala sekolah.");
+    }
+    
+    if (gelombang.status_validasi === "disetujui") {
+        throw new Error("Laporan gelombang sudah disetujui kepala sekolah.");
+    }
+
+    return prisma.gelombang.update({
+        where: { id_gelombang: Number(id) },
+        data: { status_validasi: "menunggu_validasi" }
+    });
+};

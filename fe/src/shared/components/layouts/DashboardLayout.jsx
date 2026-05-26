@@ -8,8 +8,13 @@ export default function DashboardLayout({ role, title, subtitle, sidebarItems, c
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
+    const currentRole = user?.role;
     logout();
-    navigate("/");
+    if (["admin", "verifikator", "kepala_sekolah"].includes(currentRole)) {
+      navigate("/akses-internal");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (

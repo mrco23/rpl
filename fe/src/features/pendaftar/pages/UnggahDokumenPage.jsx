@@ -3,12 +3,12 @@ import {
   FileText,
   UploadCloud,
   AlertCircle,
-  CheckCircle,
+  CheckCircle2,
   Loader2,
   Info,
   RefreshCcw,
   Eye,
-  Upload
+  ImageIcon,
 } from "lucide-react";
 import {
   getMyDocuments,
@@ -19,10 +19,30 @@ import { resolveDocumentUrl, extractFileNameFromUrl } from "../../../shared/util
 import Toast from "../../../shared/components/Toast.jsx";
 
 const DOKUMEN_WAJIB = [
-  { title: "Ijazah atau SKL", desk: "Dokumen kelulusan dari SD atau sekolah asal." },
-  { title: "Akta Kelahiran", desk: "Dokumen identitas resmi untuk mencocokkan nama dan tanggal lahir." },
-  { title: "Kartu Keluarga", desk: "Dokumen keluarga untuk validasi data orang tua atau wali." },
-  { title: "Pas Foto", desk: "Foto terbaru dengan kualitas jelas." },
+  {
+    key: "Ijazah atau SKL",
+    title: "Rapor / Ijazah Terakhir",
+    desc: "Rapor semester terakhir atau ijazah bagi lulusan",
+    icon: FileText,
+  },
+  {
+    key: "Akta Kelahiran",
+    title: "Akte Kelahiran",
+    desc: "Dokumen akte kelahiran asli",
+    icon: FileText,
+  },
+  {
+    key: "Kartu Keluarga",
+    title: "Kartu Keluarga",
+    desc: "Dokumen kartu keluarga asli",
+    icon: ImageIcon,
+  },
+  {
+    key: "Pas Foto",
+    title: "Pas Foto",
+    desc: "Pas foto terbaru latar belakang merah.",
+    icon: ImageIcon,
+  },
 ];
 
 export default function UnggahDokumenPage() {
@@ -55,14 +75,21 @@ export default function UnggahDokumenPage() {
     }
   };
 
-  const getDocStatus = (nama) => {
-    const doc = documents.find(d => d.nama_dokumen === nama);
+  const getDocStatus = (key) => {
+    const doc = documents.find((d) => d.nama_dokumen === key);
     if (!doc) return { isUploaded: false, fileName: null, fileUrl: null };
-    return { isUploaded: true, fileName: extractFileNameFromUrl(doc.jenis_dokumen), fileUrl: doc.jenis_dokumen };
+    return {
+      isUploaded: true,
+      fileName: extractFileNameFromUrl(doc.jenis_dokumen),
+      fileUrl: doc.jenis_dokumen,
+    };
   };
 
-  const uploadedCount = DOKUMEN_WAJIB.filter(type => getDocStatus(type.title).isUploaded).length;
-  const isLocked = pendaftar && ['terverifikasi', 'wawancara orang tua', 'lulus', 'tidak lulus'].includes(pendaftar.status_pendaftaran);
+  const uploadedCount = DOKUMEN_WAJIB.filter((d) => getDocStatus(d.key).isUploaded).length;
+  const isLocked = pendaftar &&
+    ["terverifikasi", "wawancara orang tua", "lulus", "tidak lulus"].includes(
+      pendaftar.status_pendaftaran
+    );
   const catatanDokumen = pendaftar?.catatan_dokumen || "";
   const hasCatatan = catatanDokumen && catatanDokumen.trim().length > 0;
 
@@ -76,101 +103,120 @@ export default function UnggahDokumenPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-6 lg:px-8 py-8 md:py-10 font-sans">
-      <div className="max-w-5xl mx-auto w-full">
+      <div className="max-w-6xl mx-auto w-full space-y-6">
 
-        {/* HEADER */}
-        <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
-            Unggah Dokumen
-          </h1>
-          <p className="text-sm md:text-base leading-7 text-gray-500 mt-2 max-w-2xl">
-            Lengkapi berkas pendaftaran Anda. Pastikan dokumen yang diunggah dapat terbaca dengan jelas agar proses verifikasi berjalan lancar.
-          </p>
-        </div>
+        {/* HEADER & PROGRESS ROW */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          {/* HEADER TEXT */}
+          <div>
+            <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">Unggah Dokumen</h1>
+            <p className="text-sm text-gray-500 mt-1 max-w-2xl leading-relaxed">
+              Lengkapi berkas pendaftaran Anda. Pastikan dokumen terbaca dengan jelas agar proses verifikasi berjalan lancar.
+            </p>
+          </div>
 
-        {/* CATATAN DARI PANITIA */}
-        {hasCatatan && (
-          <div className="mb-8 bg-yellow-light border border-yellow-normal/30 rounded-3xl p-6 shadow-sm flex gap-4 items-start">
-            <div className="p-3 bg-yellow-100 rounded-full text-yellow-700 shrink-0">
-              <AlertCircle size={28} />
+          {/* CIRCULAR PROGRESS */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm flex items-center gap-4 shrink-0 min-w-[200px]">
+            <div className="relative w-16 h-16 flex items-center justify-center shrink-0">
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                <path
+                  className="text-gray-100"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                />
+                <path
+                  className="text-blue-dark transition-all duration-1000 ease-out"
+                  strokeDasharray={`${(uploadedCount / DOKUMEN_WAJIB.length) * 100}, 100`}
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center flex-col">
+                <span className="text-sm font-bold text-gray-800">{Math.round((uploadedCount / DOKUMEN_WAJIB.length) * 100)}%</span>
+              </div>
             </div>
             <div>
-              <h3 className="text-lg md:text-xl font-semibold text-yellow-900 mb-2">
-                Catatan dari Panitia:
-              </h3>
-              <p className="text-sm md:text-base leading-7 text-yellow-800 whitespace-pre-wrap">
-                {catatanDokumen}
+              <p className="text-xs text-gray-500 font-medium mb-0.5">Kelengkapan</p>
+              <p className="text-sm font-bold text-gray-800">
+                <span className="text-blue-dark">{uploadedCount}</span> / {DOKUMEN_WAJIB.length} Dokumen
               </p>
             </div>
           </div>
-        )}
+        </div>
 
-        <div className="grid xl:grid-cols-3 gap-6 md:gap-8">
-
-          {/* KIRI - LIST DOKUMEN */}
-          <div className="xl:col-span-2 space-y-6 md:space-y-8">
-            {DOKUMEN_WAJIB.map((doc) => {
-              const info = getDocStatus(doc.title);
-              return (
-                <DokumenCard
-                  key={doc.title}
-                  title={doc.title}
-                  deskcripsi={doc.desk}
-                  isUploaded={info.isUploaded}
-                  fileName={info.fileName}
-                  fileUrl={info.fileUrl}
-                  onUploadSuccess={loadData}
-                  isLocked={isLocked}
-                  showToast={showToast}
-                />
-              );
-            })}
-          </div>
-
-          {/* KANAN - RINGKASAN & BANTUAN */}
-          <div className="space-y-6 md:space-y-8">
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-card xl:sticky xl:top-6">
-              <div className="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
-                <div className="p-2 bg-blue-light rounded-xl text-blue-dark">
-                  <Info size={24} />
-                </div>
-                <h2 className="text-lg md:text-xl font-semibold text-gray-900">
-                  Ringkasan Dokumen
-                </h2>
-              </div>
-
-              <div className="space-y-4">
-                <div className="bg-[#f5f6f8] rounded-2xl p-5">
-                  <h4 className="text-sm md:text-base font-semibold text-gray-900 mb-2">Total Dokumen Wajib</h4>
-                  <div className="flex items-end gap-2">
-                    <span className="text-3xl font-bold text-blue-dark">{uploadedCount}</span>
-                    <span className="text-sm md:text-base text-gray-500 mb-1">/ 4 berkas dokumen</span>
-                  </div>
-                </div>
-
-                <div className="p-5 border border-gray-200 rounded-2xl">
-                  <h4 className="text-sm md:text-base font-semibold text-gray-900 mb-3">Ketentuan File</h4>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-2 text-sm md:text-base leading-6 text-gray-600">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-normal mt-2.5 shrink-0" />
-                      Ukuran maksimal setiap file adalah 10 Megabyte (MB).
-                    </li>
-                    <li className="flex items-start gap-2 text-sm md:text-base leading-6 text-gray-600">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-normal mt-2.5 shrink-0" />
-                      Format file yang didukung: JPG, PNG, dan PDF.
-                    </li>
-                    <li className="flex items-start gap-2 text-sm md:text-base leading-6 text-gray-600">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-normal mt-2.5 shrink-0" />
-                      Pastikan resolusi cukup tinggi agar tulisan di dokumen terbaca jelas oleh panitia.
-                    </li>
-                  </ul>
-                </div>
-
-              </div>
+        {/* CATATAN DARI PANITIA */}
+        {hasCatatan ? (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-5 flex gap-4 items-start">
+            <div className="p-2 bg-yellow-100 rounded-xl text-yellow-700 shrink-0">
+              <AlertCircle size={22} />
+            </div>
+            <div>
+              <h3 className="font-semibold text-yellow-900 mb-1">Catatan dari Panitia:</h3>
+              <p className="text-sm text-yellow-800 whitespace-pre-wrap leading-relaxed">{catatanDokumen}</p>
             </div>
           </div>
+        ) : (
+          <div className="bg-white border border-gray-100 rounded-2xl p-5 flex gap-4 items-center shadow-sm">
+            <div className="p-2 bg-gray-100 rounded-xl text-gray-400 shrink-0">
+              <Info size={20} />
+            </div>
+            <p className="text-sm text-gray-500">Belum ada catatan dari verifikator.</p>
+          </div>
+        )}
 
+        {/* SECTION TITLE */}
+        <div>
+          <h2 className="text-base font-bold text-gray-800 uppercase tracking-wide border-b border-gray-200 pb-3">
+            Dokumen Yang Diperlukan
+          </h2>
         </div>
+
+        {/* DOKUMEN CARDS GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          {DOKUMEN_WAJIB.map((doc) => {
+            const info = getDocStatus(doc.key);
+            // derive "perlu perbaiki" — doc uploaded but has global catatan (or you can wire per-doc catatan)
+            const perluperbaiki = info.isUploaded && hasCatatan;
+            return (
+              <DokumenCard
+                key={doc.key}
+                docKey={doc.key}
+                title={doc.title}
+                desc={doc.desc}
+                Icon={doc.icon}
+                isUploaded={info.isUploaded}
+                fileName={info.fileName}
+                fileUrl={info.fileUrl}
+                perluperbaiki={perluperbaiki}
+                onUploadSuccess={loadData}
+                isLocked={isLocked}
+                showToast={showToast}
+              />
+            );
+          })}
+        </div>
+
+        {/* KETENTUAN */}
+        <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+          <h4 className="font-bold text-gray-800 mb-3 text-sm">Ketentuan File</h4>
+          <ul className="space-y-2">
+            {[
+              "Format yang diterima: PDF, JPG, PNG",
+              "Ukuran maksimal setiap file adalah 10 MB",
+              "Pastikan dokumen terbaca jelas dan tidak terpotong",
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-gray-500">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-dark mt-1.5 shrink-0" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
       </div>
 
       <Toast
@@ -183,68 +229,152 @@ export default function UnggahDokumenPage() {
   );
 }
 
-function DokumenCard({ title, deskcripsi, isUploaded, fileName, fileUrl, onUploadSuccess, isLocked, showToast }) {
+function DokumenCard({
+  docKey, title, desc, Icon,
+  isUploaded, fileName, fileUrl,
+  perluperbaiki, onUploadSuccess, isLocked, showToast,
+}) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
-  const handleFileChange = async (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      if (selectedFile.size > 2 * 1024 * 1024) {
-        showToast("Ukuran file maksimal 2MB", "error");
-        event.target.value = null;
-        return;
-      }
-      try {
-        setIsUploading(true);
-        await uploadDocument(title, selectedFile);
-        showToast(`Dokumen ${title} berhasil diunggah!`, "success");
-        onUploadSuccess();
-      } catch (err) {
-        console.error(err);
-        showToast("Gagal mengunggah dokumen: " + (err.response?.data?.message || err.message || "Unknown error"), "error");
-      } finally {
-        setIsUploading(false);
-        event.target.value = null;
-      }
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      showToast("Ukuran file maksimal 10 MB", "error");
+      e.target.value = null;
+      return;
+    }
+    const allowed = ["image/jpeg", "image/png", "application/pdf"];
+    if (!allowed.includes(file.type)) {
+      showToast("Format file harus JPG, PNG, atau PDF.", "error");
+      e.target.value = null;
+      return;
+    }
+    try {
+      setIsUploading(true);
+      await uploadDocument(docKey, file);
+      showToast(`Dokumen ${title} berhasil diunggah!`, "success");
+      onUploadSuccess();
+    } catch (err) {
+      showToast("Gagal mengunggah: " + (err.response?.data?.message || err.message || "Unknown error"), "error");
+    } finally {
+      setIsUploading(false);
+      e.target.value = null;
     }
   };
 
-  const triggerUpload = () => {
-    fileInputRef.current.click();
-  };
+  const triggerUpload = () => fileInputRef.current?.click();
+  const handleView = () => fileUrl && window.open(resolveDocumentUrl(fileUrl), "_blank");
 
-  const handleViewFile = () => {
-    if (fileUrl) {
-      window.open(resolveDocumentUrl(fileUrl), '_blank');
-    }
-  };
+  // Determine card state styling
+  const isPerluPerbaiki = perluperbaiki && isUploaded;
+
+  let zoneClass = "border-dashed border-2 border-blue-200 bg-blue-50";
+  let zoneIconColor = "text-blue-dark";
+  if (isUploaded && !isPerluPerbaiki) {
+    zoneClass = "border-dashed border-2 border-green-200 bg-green-50";
+    zoneIconColor = "text-green-500";
+  } else if (isPerluPerbaiki) {
+    zoneClass = "border-dashed border-2 border-orange-200 bg-orange-50";
+    zoneIconColor = "text-orange-400";
+  }
 
   return (
-    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-card flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col overflow-hidden">
 
-      {/* INFO DOKUMEN */}
-      <div className="flex items-start gap-4">
-        <div className={`p-3 rounded-2xl shrink-0 mt-1
-          ${isUploaded ? "bg-blue-light text-blue-dark" : "bg-gray-100 text-gray-400"}
-        `}>
-          <FileText size={28} />
+      {/* Card Top Info */}
+      <div className="p-4 pb-0">
+        <div className="flex items-start justify-between gap-2 mb-1">
+          <h3 className="font-bold text-gray-900 text-sm leading-tight">{title}</h3>
+          <span className="shrink-0 text-[9px] font-black uppercase tracking-wide bg-red-100 text-red-600 px-2 py-0.5 rounded-full border border-red-200">
+            Wajib
+          </span>
         </div>
-        <div>
-          <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-1">
-            {title}
-          </h3>
-          <p className="text-sm md:text-base text-gray-500 leading-6">
-            {deskcripsi}
-          </p>
+        <p className="text-xs text-gray-400 leading-relaxed mb-3">{desc}</p>
 
-          {isUploaded && (
-            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 border border-green-200 text-green-700 text-xs font-semibold rounded-full">
-              <CheckCircle size={14} />
-              Sudah Diunggah
+        <p className="text-[10px] text-gray-400 font-medium">Format : PDF, JPG, PNG</p>
+        <p className="text-[10px] text-gray-400 font-medium mb-3">Maks. 10MB</p>
+      </div>
+
+      {/* Upload Zone */}
+      <div className="px-4">
+        <div
+          className={`${zoneClass} rounded-xl flex flex-col items-center justify-center py-7 relative cursor-pointer transition-all`}
+          onClick={!isLocked ? triggerUpload : undefined}
+        >
+          <Icon size={40} className={zoneIconColor} strokeWidth={1.5} />
+          {isUploaded && !isPerluPerbaiki && (
+            <div className="absolute bottom-2 right-2 bg-green-500 text-white rounded-full p-1">
+              <CheckCircle2 size={14} />
+            </div>
+          )}
+          {isPerluPerbaiki && (
+            <div className="absolute bottom-2 right-2 bg-orange-400 text-white rounded-full p-1">
+              <AlertCircle size={14} />
+            </div>
+          )}
+          {!isUploaded && (
+            <div className="absolute bottom-2 right-2 bg-blue-dark text-white rounded-full p-1 opacity-70">
+              <UploadCloud size={14} />
             </div>
           )}
         </div>
+      </div>
+
+      {/* Status & File Name */}
+      <div className="px-4 pt-2 pb-1">
+        {isUploaded && !isPerluPerbaiki && (
+          <p className="text-xs font-bold text-green-600">Sudah diunggah</p>
+        )}
+        {isPerluPerbaiki && (
+          <p className="text-xs font-bold text-orange-500">Perlu Perbaiki</p>
+        )}
+        {!isUploaded && (
+          <p className="text-xs text-gray-400">Belum ada file</p>
+        )}
+        {isUploaded && (
+          <div className="flex justify-between items-center">
+            <p className="text-[10px] text-gray-400 truncate max-w-[80%]">{fileName}</p>
+            <p className="text-[10px] text-gray-400">1.2 MB</p>
+          </div>
+        )}
+      </div>
+
+      {/* Actions */}
+      <div className="p-4 pt-2 space-y-2 mt-auto">
+        {isUploaded && (
+          <button
+            onClick={handleView}
+            className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer
+              ${isPerluPerbaiki
+                ? "border-orange-300 text-orange-600 bg-orange-50 hover:bg-orange-100"
+                : "border-blue-200 text-blue-dark bg-blue-50 hover:bg-blue-100"
+              }`}
+          >
+            <Eye size={13} />
+            {isPerluPerbaiki ? "Lihat Catatan" : "Lihat File"}
+          </button>
+        )}
+
+        {!isLocked && (
+          <button
+            onClick={triggerUpload}
+            disabled={isUploading}
+            className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer disabled:opacity-50
+              ${isUploaded
+                ? "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                : "bg-blue-dark text-white hover:bg-[#253b80]"
+              }`}
+          >
+            {isUploading
+              ? <Loader2 className="animate-spin" size={13} />
+              : <RefreshCcw size={13} />
+            }
+            {isUploading ? "Proses..." : isUploaded ? "Unggah Ulang" : "Unggah File"}
+          </button>
+        )}
       </div>
 
       <input
@@ -255,42 +385,6 @@ function DokumenCard({ title, deskcripsi, isUploaded, fileName, fileUrl, onUploa
         accept=".pdf,.jpg,.jpeg,.png"
         disabled={isUploading || isLocked}
       />
-
-      {/* AKSI DOKUMEN */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-        {isUploaded ? (
-          <>
-            <button
-              onClick={handleViewFile}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#f5f6f8] text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition font-medium text-sm md:text-base"
-            >
-              <Eye size={18} />
-              Lihat
-            </button>
-            {!isLocked && (
-              <button
-                onClick={triggerUpload}
-                disabled={isUploading}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-dark text-white hover:bg-blue-dark-hover transition font-medium text-sm md:text-base cursor-pointer disabled:opacity-50"
-              >
-                {isUploading ? <Loader2 className="animate-spin" size={18} /> : <RefreshCcw size={18} />}
-                {isUploading ? "Proses..." : "Ganti"}
-              </button>
-            )}
-          </>
-        ) : (
-          !isLocked && (
-            <button
-              onClick={triggerUpload}
-              disabled={isUploading}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border-2 border-dashed border-gray-300 text-gray-600 hover:border-blue-dark hover:text-blue-dark hover:bg-blue-50 transition font-medium text-sm md:text-base cursor-pointer w-full sm:w-auto min-h-[48px] disabled:opacity-50"
-            >
-              {isUploading ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />}
-              {isUploading ? "Proses..." : "Unggah File"}
-            </button>
-          )
-        )}
-      </div>
     </div>
   );
 }

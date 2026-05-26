@@ -54,8 +54,16 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.set("etag", false);
+
 // Main Routes
-app.use("/api", routes);
+app.use("/api", (req, res, next) => {
+	// Jangan cache API kecuali endpoint download laporan
+	if (!req.path.includes("/pdf") && !req.path.includes("/excel")) {
+		res.set("Cache-Control", "no-store");
+	}
+	next();
+}, routes);
 
 // Health Check
 app.get("/", (req, res) => {
