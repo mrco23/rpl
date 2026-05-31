@@ -152,7 +152,7 @@ function Navbar() {
 
           {/* Button DESKTOP*/}
           <div className="hidden lg:flex space-x-3 items-center">
-
+           
             <button
               onClick={() => navigate("/login")}
               className="px-3 py-1 bg-white border border-blue-dark text-blue-dark rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
@@ -165,17 +165,17 @@ function Navbar() {
             >
               Daftar Sekarang
             </button>
+             <button
+              onClick={() => navigate("/akses-internal")}
+              className="text-sm px-3 py-1 text-blue-dark rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
+            >
+              Akses Internal
+            </button>
           </div>
 
           {/* ✅ HAMBURGER BUTTON (MOBILE) */}
           <button className="lg:hidden" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={28} className="" /> : <Menu size={28} />}
-          </button>
-          <button
-            onClick={() => navigate("/akses-internal")}
-            className="text-sm px-3 py-1 text-blue-dark rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
-          >
-            Akses Internal
           </button>
         </div>
 

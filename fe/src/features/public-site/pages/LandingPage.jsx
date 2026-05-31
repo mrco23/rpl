@@ -133,7 +133,7 @@ export default function LandingPage() {
           <p className="text-gray-500 font-medium">Data Landing Page tidak tersedia.</p>
         </section>
       ) : (
-        <section className="relative w-full min-h-[65vh] md:min-h-[68vh] flex items-stretch">
+        <section className="relative w-full min-h-[65vh] md:min-h-[55vh] xl:min-h-[65vh] flex items-stretch">
           <div
             className="absolute inset-0 bg-cover bg-center rounded-b-3xl overflow-hidden brightness-40"
             style={{ backgroundImage: `url(${hero})` }}
@@ -141,7 +141,7 @@ export default function LandingPage() {
             <div className="absolute inset-0 bg-black/20" />
           </div>
 
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 flex flex-col justify-start pt-24 md:pt-20 text-white">
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 flex flex-col justify-start pt-15 md:pt-20 text-white">
             <div className="w-full text-left">
               <h1 className="text-2xl md:text-6xl font-bold mb-4 leading-tight">
                 SMP KATOLIK <br className="hidden sm:block" /> ST. RAFAEL MANADO
@@ -169,7 +169,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-[-250px] sm:bottom-[-300px] md:bottom-[-120px] lg:bottom-[-130px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-[-300px] sm:bottom-[-300px] md:bottom-[-120px] lg:bottom-[-130px] xl:bottom-[-150px] w-full max-w-6xl px-5 flex flex-col justify-center">
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-10 sm:px-20 md:px-0 md:gap-5 lg:gap-10 xl:gap-24">
               {stats.map((item, index) => (
                 <div

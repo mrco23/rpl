@@ -52,7 +52,7 @@ function BerandaPendaftarPage() {
             Biodata Pendaftar
           </h1>
           <p className="text-sm md:text-base leading-7 text-gray-500 mt-2">
-            Data berikut diambil saat pendaftaran akun. Sebagian data dapat diubah pada bagian kontak.
+           
           </p>
         </div>
 
@@ -60,7 +60,7 @@ function BerandaPendaftarPage() {
           <AlertCircle className="text-blue-dark shrink-0 mt-0.5" size={24} />
           <div>
             <p className="text-sm md:text-base font-medium text-gray-800 leading-6">
-              Periksa kembali data identitas pendaftar. Hubungi panitia jika terdapat kesalahan data penting.
+               Data berikut diambil saat pendaftaran calon siswa baru. Periksa kembali data identitas pendaftar.
             </p>
           </div>
         </div>

@@ -55,16 +55,16 @@ export default function VerifikatorBerandaPage() {
         subText="Selamat datang di sistem verifikasi dokumen PPDB"
       />
 
-      {/* Kontainer Utama Dinamis (Pas Layar) */}
-      <div className="max-w-7xl mx-auto flex flex-col gap-5 px-4 lg:px-0 lg:h-[calc(100vh-110px)] pb-4">
+      {/* Kontainer Utama Dinamis (Pas Layar di desktop) */}
+      <div className="max-w-7xl mx-auto flex flex-col gap-5 px-4 xl:px-0 xl:h-[calc(100vh-110px)] pb-4">
 
-        {/* Stats Cards (Tidak menyusut) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 shrink-0">
+        {/* Stats Cards (Bisa swipe horizontal) */}
+        <div className="flex flex-nowrap overflow-x-auto gap-5 pb-2 shrink-0 snap-x custom-scrollbar">
           {loading
             ? Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-white rounded-xl px-6 py-4 border border-gray-200 shadow-sm border-l-4 border-l-gray-300"
+                className="bg-white rounded-xl px-6 py-4 border border-gray-200 shadow-sm border-l-4 border-l-gray-300 min-w-[280px] sm:min-w-[300px] lg:flex-1 shrink-0 snap-start"
               >
                 <Skeleton className="h-4 w-24 mb-2" />
                 <Skeleton className="h-8 w-16 mb-4" />
@@ -111,7 +111,7 @@ export default function VerifikatorBerandaPage() {
               return (
                 <div
                   key={i}
-                  className={`${config.bg} rounded-xl px-6 py-4 border border-gray-200 shadow-sm flex flex-col border-l-4 ${config.border}`}
+                  className={`${config.bg} rounded-xl px-6 py-4 border border-gray-200 shadow-sm flex flex-col border-l-4 ${config.border} min-w-[280px] sm:min-w-[300px] lg:flex-1 shrink-0 snap-start`}
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
@@ -151,9 +151,9 @@ export default function VerifikatorBerandaPage() {
         </div>
 
         {/* Tables Section (Mengisi sisa ruang secara dinamis) */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 flex-1 min-h-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 flex-1 min-h-0">
           {/* Pendaftar Terbaru Table */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-[450px] xl:h-full overflow-hidden">
             <div className="p-5 pb-3 flex justify-between items-center shrink-0">
               <h2 className="text-lg font-bold text-slate-600">
                 Pendaftar Terbaru
@@ -240,7 +240,7 @@ export default function VerifikatorBerandaPage() {
           </div>
 
           {/* Yang Perlu Revisi Table */}
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full overflow-hidden">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-[450px] xl:h-full overflow-hidden">
             <div className="p-5 pb-3 flex justify-between items-center shrink-0">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-red-100 text-red-500 rounded-full">
