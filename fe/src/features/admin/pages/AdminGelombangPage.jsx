@@ -63,16 +63,32 @@ function AdminGelombang() {
 
     const handleAdd = async (e) => {
         e.preventDefault();
+
+        // Validasi tanggal
+        const tglMulai = new Date(formData.tanggal_mulai);
+        const tglSelesai = new Date(formData.tanggal_selesai);
+        if (tglSelesai <= tglMulai) {
+            setToastConfig({ show: true, message: "Tanggal selesai harus lebih besar dari tanggal mulai.", type: "error" });
+            return;
+        }
+
         setSubmitting(true);
+        let successMsg = null;
+        let errorMsg = null;
         try {
             await waveApi.create(formData);
-            handleCloseAddModal();
-            setToastConfig({ show: true, message: "Gelombang berhasil ditambahkan!", type: "success" });
+            successMsg = "Gelombang berhasil ditambahkan!";
             fetchGelombang(false);
         } catch (error) {
-            setToastConfig({ show: true, message: error.message || "Gagal menambah gelombang", type: "error" });
+            errorMsg = error.message || "Gagal menambah gelombang";
         } finally {
             setSubmitting(false);
+            // Tutup modal terlebih dahulu, baru tampilkan toast
+            handleCloseAddModal();
+            setTimeout(() => {
+                if (successMsg) setToastConfig({ show: true, message: successMsg, type: "success" });
+                if (errorMsg) setToastConfig({ show: true, message: errorMsg, type: "error" });
+            }, 0);
         }
     };
 

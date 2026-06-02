@@ -19,5 +19,6 @@ export const normalizeApiError = (error) => {
     message: data?.message || "Terjadi kesalahan pada server",
     status: status || 500,
     errors: data?.errors || null,
+    error: data?.error || null,
   };
 };

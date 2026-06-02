@@ -90,6 +90,10 @@ export const create = async (payload) => {
     const tanggal_mulai = new Date(payload.tanggal_mulai);
     const tanggal_selesai = new Date(payload.tanggal_selesai);
 
+    if (tanggal_selesai <= tanggal_mulai) {
+        throw new Error("Tanggal selesai harus lebih besar dari tanggal mulai.");
+    }
+
     const overlap = await prisma.gelombang.findFirst({
         where: {
             AND: [
@@ -122,6 +126,10 @@ export const update = async (id, payload) => {
     if (payload.kuota) data.kuota = Number(payload.kuota);
 
     if (data.tanggal_mulai && data.tanggal_selesai) {
+        if (data.tanggal_selesai <= data.tanggal_mulai) {
+            throw new Error("Tanggal selesai harus lebih besar dari tanggal mulai.");
+        }
+
         const overlap = await prisma.gelombang.findFirst({
             where: {
                 id_gelombang: { not: Number(id) },

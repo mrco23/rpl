@@ -20,7 +20,7 @@ export default function Toast({ message, type = "success", onClose, show }) {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
           transition={{ duration: 0.2 }}
-          className={`fixed top-6 right-6 z-60 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border ${
+          className={`fixed top-6 right-6 z-[9999] flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border ${
             type === "success" 
               ? "bg-green-50 border-green-200 text-green-800" 
               : "bg-red-50 border-red-200 text-red-800"

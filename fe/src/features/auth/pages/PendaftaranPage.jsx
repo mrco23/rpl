@@ -235,9 +235,46 @@ export default function ApplicantRegisterPage() {
 
       setShowSuccessModal(true);
     } catch (err) {
+      if (err.errors) {
+        const backendToFrontend = {
+          "nama_lengkap": "namaLengkap",
+          "nisn": "nisn",
+          "alamat.provinsi": "provinsi",
+          "alamat.kota_kabupaten": "kotaKabupaten",
+          "alamat.kecamatan": "kecamatan",
+          "alamat.kelurahan": "kelurahan",
+          "alamat.rt_rw": "rtRw",
+          "alamat.kode_pos": "kodePos",
+          "tempat_lahir": "tempatLahir",
+          "tanggal_lahir": "tanggalLahir",
+          "jenis_kelamin": "jenisKelamin",
+          "no_hp": "noHp",
+          "asal_sekolah": "asalSekolah",
+          "email": "emailWali",
+          "nama_wali": "namaWali",
+          "kata_sandi": "password"
+        };
+        
+        const mappedErrors = {};
+        for (const [key, msg] of Object.entries(err.errors)) {
+          if (backendToFrontend[key]) {
+            mappedErrors[backendToFrontend[key]] = msg;
+          } else {
+             mappedErrors[key] = msg;
+          }
+        }
+        
+        setErrors(mappedErrors);
+        
+        setTimeout(() => {
+          const firstErrorEl = document.querySelector('.error-input');
+          if (firstErrorEl) firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+
       setToastConfig({
         show: true,
-        message: err.message || err.error || "Gagal melakukan registrasi. Silakan coba lagi.",
+        message: err.error || err.message || "Gagal melakukan registrasi. Silakan coba lagi.",
         type: "error"
       });
     } finally {

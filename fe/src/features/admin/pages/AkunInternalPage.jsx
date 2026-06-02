@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Plus, Edit2, Power, PowerOff, UserCircle2, Trash2 } from "lucide-react";
+import { Search, Plus, Edit2, Power, PowerOff, UserCircle2, Trash2, AlertTriangle, Loader2 } from "lucide-react";
 import AdminHeader from "../components/AdminHeader";
 import Modal from "../../../shared/components/Modal.jsx";
 import Skeleton from "../../../shared/components/Skeleton.jsx";
@@ -40,6 +40,18 @@ export default function AkunInternalPage() {
   const [modalMode, setModalMode] = useState("add"); // 'add', 'edit'
   const [modalType, setModalType] = useState("verifikator"); // 'verifikator', 'kepsek'
   const [selectedAccount, setSelectedAccount] = useState(null);
+
+  // Confirmation modal state
+  const [confirmModal, setConfirmModal] = useState({
+    open: false,
+    title: "",
+    message: "",
+    confirmLabel: "",
+    confirmClass: "",
+    isDanger: false,
+    onConfirm: null,
+  });
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     nama: "",
@@ -103,42 +115,78 @@ export default function AkunInternalPage() {
     setIsModalOpen(true);
   };
 
-  const handleToggleStatus = async (type, account) => {
-    const newStatus = !account.status_aktif;
-    if (!window.confirm(`Yakin ingin ${newStatus ? 'mengaktifkan' : 'menonaktifkan'} akun ini?`)) return;
+  const closeConfirmModal = () => {
+    setConfirmModal((prev) => ({ ...prev, open: false, onConfirm: null }));
+    setConfirmLoading(false);
+  };
+
+  const handleConfirmAction = async () => {
+    if (!confirmModal.onConfirm) return;
+    setConfirmLoading(true);
     try {
-      if (type === "verifikator") {
-        await updateStatusVerifikator(account.id_verifikator, newStatus);
-        await fetchVerifiers(false);
-      } else {
-        await updateStatusKepalaSekolah(account.id_kepala_sekolah, newStatus);
-        await fetchKepsek(false);
-      }
-      setToastConfig({ show: true, message: `Akun berhasil di${newStatus ? 'aktifkan' : 'nonaktifkan'}!`, type: "success" });
-    } catch (err) {
-      setToastConfig({ show: true, message: "Gagal mengubah status akun", type: "error" });
+      await confirmModal.onConfirm();
+    } finally {
+      setConfirmLoading(false);
+      closeConfirmModal();
     }
   };
 
-  const handleDelete = async (type, account) => {
+  const handleToggleStatus = (type, account) => {
+    const newStatus = !account.status_aktif;
+    const label = newStatus ? 'mengaktifkan' : 'menonaktifkan';
+    setConfirmModal({
+      open: true,
+      title: newStatus ? 'Aktifkan Akun?' : 'Nonaktifkan Akun?',
+      message: `Yakin ingin ${label} akun "${account.nama}"?`,
+      confirmLabel: newStatus ? 'Ya, Aktifkan' : 'Ya, Nonaktifkan',
+      confirmClass: newStatus
+        ? 'bg-green-600 hover:bg-green-700 text-white'
+        : 'bg-orange-500 hover:bg-orange-600 text-white',
+      isDanger: false,
+      onConfirm: async () => {
+        try {
+          if (type === "verifikator") {
+            await updateStatusVerifikator(account.id_verifikator, newStatus);
+            await fetchVerifiers(false);
+          } else {
+            await updateStatusKepalaSekolah(account.id_kepala_sekolah, newStatus);
+            await fetchKepsek(false);
+          }
+          setToastConfig({ show: true, message: `Akun berhasil di${newStatus ? 'aktifkan' : 'nonaktifkan'}!`, type: "success" });
+        } catch (err) {
+          setToastConfig({ show: true, message: "Gagal mengubah status akun", type: "error" });
+        }
+      },
+    });
+  };
+
+  const handleDelete = (type, account) => {
     if (account.status_aktif) {
       setToastConfig({ show: true, message: "Akun yang masih aktif tidak dapat dihapus.", type: "error" });
       return;
     }
-
-    if (!window.confirm(`Yakin ingin menghapus akun ${account.nama} secara permanen?`)) return;
-    try {
-      if (type === "verifikator") {
-        await deleteVerifikator(account.id_verifikator);
-        await fetchVerifiers(false);
-      } else {
-        await deleteKepalaSekolah(account.id_kepala_sekolah);
-        await fetchKepsek(false);
-      }
-      setToastConfig({ show: true, message: `Akun berhasil dihapus!`, type: "success" });
-    } catch (err) {
-      setToastConfig({ show: true, message: err.response?.data?.message || "Gagal menghapus akun", type: "error" });
-    }
+    setConfirmModal({
+      open: true,
+      title: 'Hapus Akun Permanen?',
+      message: `Akun "${account.nama}" akan dihapus secara permanen dan tidak dapat dikembalikan.`,
+      confirmLabel: 'Ya, Hapus Permanen',
+      confirmClass: 'bg-red-600 hover:bg-red-700 text-white',
+      isDanger: true,
+      onConfirm: async () => {
+        try {
+          if (type === "verifikator") {
+            await deleteVerifikator(account.id_verifikator);
+            await fetchVerifiers(false);
+          } else {
+            await deleteKepalaSekolah(account.id_kepala_sekolah);
+            await fetchKepsek(false);
+          }
+          setToastConfig({ show: true, message: `Akun berhasil dihapus!`, type: "success" });
+        } catch (err) {
+          setToastConfig({ show: true, message: err.response?.data?.message || "Gagal menghapus akun", type: "error" });
+        }
+      },
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -505,7 +553,7 @@ export default function AkunInternalPage() {
 
       </div>
 
-      {/* MODAL */}
+      {/* MODAL FORM AKUN */}
       <Modal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -585,6 +633,57 @@ export default function AkunInternalPage() {
           </div>
         </form>) : (<></>)}
       </Modal>
+
+      {/* MODAL KONFIRMASI */}
+      {confirmModal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" aria-modal="true">
+          <div
+            className="fixed inset-0 bg-slate-950/55 transition-opacity"
+            aria-hidden="true"
+            onClick={!confirmLoading ? closeConfirmModal : undefined}
+          />
+          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl p-7 z-10">
+            {/* Ikon */}
+            <div className={`w-14 h-14 mx-auto flex items-center justify-center rounded-full mb-4 border-4 ${
+              confirmModal.isDanger
+                ? 'bg-red-50 border-red-100'
+                : 'bg-orange-50 border-orange-100'
+            }`}>
+              <AlertTriangle
+                size={26}
+                className={confirmModal.isDanger ? 'text-red-600' : 'text-orange-500'}
+              />
+            </div>
+            {/* Judul */}
+            <h3 className="text-center text-lg font-extrabold text-gray-900 mb-2">
+              {confirmModal.title}
+            </h3>
+            {/* Pesan */}
+            <p className="text-center text-sm text-gray-500 leading-relaxed mb-6">
+              {confirmModal.message}
+            </p>
+            {/* Tombol */}
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={closeConfirmModal}
+                disabled={confirmLoading}
+                className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors cursor-pointer disabled:opacity-50"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmAction}
+                disabled={confirmLoading}
+                className={`flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-60 shadow-sm ${confirmModal.confirmClass}`}
+              >
+                {confirmLoading ? <Loader2 size={16} className="animate-spin" /> : confirmModal.confirmLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Toast
         show={toastConfig.show}

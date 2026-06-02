@@ -10,7 +10,7 @@
     "build": "prisma generate",
     "postinstall": "prisma generate",
     "dev": "nodemon app.js",
-    "db:seed": "node prisma/seed.js",
+    "db:seed": "node prisma/seed/index.js",
     "db:reset": "node prisma/reset.js"
   },
   "keywords": [],
@@ -41,6 +41,6 @@
     "prisma": "^5.10.0"
   },
   "prisma": {
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed/index.js"
   }
 }
