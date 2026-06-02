@@ -82,6 +82,16 @@ app.use((req, res, next) => {
 	});
 });
 
+// Handler khusus: body JSON tidak valid (misal DELETE dengan body null)
+app.use((err, req, res, next) => {
+	if (err.type === "entity.parse.failed") {
+		return res.status(400).json({
+			message: "Format request tidak valid. Body harus berupa JSON yang valid.",
+		});
+	}
+	next(err);
+});
+
 // Global Error Handler
 app.use((err, req, res, next) => {
 	console.error("[Global Error Handler]", err);

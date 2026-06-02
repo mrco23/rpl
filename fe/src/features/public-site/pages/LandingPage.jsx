@@ -133,7 +133,7 @@ export default function LandingPage() {
           <p className="text-gray-500 font-medium">Data Landing Page tidak tersedia.</p>
         </section>
       ) : (
-        <section className="relative w-full min-h-[65vh] md:min-h-[55vh] xl:min-h-[65vh] flex items-stretch">
+        <section className="relative w-full min-h-[65vh] md:min-h-[55vh] xl:min-h-[67vh] flex items-stretch">
           <div
             className="absolute inset-0 bg-cover bg-center rounded-b-3xl overflow-hidden brightness-40"
             style={{ backgroundImage: `url(${hero})` }}
@@ -143,7 +143,7 @@ export default function LandingPage() {
 
           <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 flex flex-col justify-start pt-15 md:pt-20 text-white">
             <div className="w-full text-left">
-              <h1 className="text-2xl md:text-6xl font-bold mb-4 leading-tight">
+              <h1 className="text-xl md:text-6xl font-bold mb-4 leading-tight">
                 SMP KATOLIK <br className="hidden sm:block" /> ST. RAFAEL MANADO
               </h1>
               <p className="text-sm md:text-lg mb-8 max-w-4xl opacity-90 leading-relaxed">

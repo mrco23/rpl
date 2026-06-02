@@ -90,7 +90,8 @@ export const requestAPI = async ({
   return httpClient({
     method,
     url,
-    data,
+    // Jangan kirim body jika null/undefined (mencegah error body-parser di server)
+    ...(data != null && { data }),
     params,
     responseType,
   });
