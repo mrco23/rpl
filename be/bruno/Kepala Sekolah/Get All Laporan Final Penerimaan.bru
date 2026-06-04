@@ -1,0 +1,19 @@
+meta {
+  name: Get All Laporan Final Penerimaan
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/kepala-sekolah/laporan/final-penerimaan
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

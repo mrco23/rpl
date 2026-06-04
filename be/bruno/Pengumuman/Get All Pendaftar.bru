@@ -1,0 +1,19 @@
+meta {
+  name: Get All Pendaftar
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/pengumuman/pendaftar
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

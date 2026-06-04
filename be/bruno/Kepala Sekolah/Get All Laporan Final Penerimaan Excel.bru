@@ -1,0 +1,19 @@
+meta {
+  name: Get All Laporan Final Penerimaan Excel
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/kepala-sekolah/laporan/final-penerimaan/excel
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Get By Id
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/prestasi/:id
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

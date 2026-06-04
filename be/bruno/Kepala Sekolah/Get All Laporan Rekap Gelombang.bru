@@ -1,0 +1,19 @@
+meta {
+  name: Get All Laporan Rekap Gelombang
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/kepala-sekolah/laporan/rekap-gelombang
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJrZXBzZWtTYW5yYWZhIiwicm9sZSI6ImtlcGFsYV9zZWtvbGFoIiwiaWF0IjoxNzc5NjI3MjE1LCJleHAiOjE3Nzk4ODY0MTV9.BVpGoB6lEs9Q-rRT5Pa88kobGaWIv709Tns6O2ev8G4
+}
+
+body:json {
+  {}
+}

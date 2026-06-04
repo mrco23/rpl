@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import prisma from "../config/prisma.js";
+import { getStatusLabel } from "../constants/statusPendaftaran.js";
 
 export const getAdmin = async (username) => {
     const admin = await prisma.admin.findUnique({where: {username: username}});
@@ -17,10 +18,7 @@ export const createAdmin = async (username, password) => {
     const created = await prisma.admin.create({data});
     return {...created, id: created.id_admin};
 }
-export const getAdminProfil = async () => {
-}
-export const putAdminProfil = async () => {
-}
+
 export const getBerandaData = async () => {
     const [totalFasilitas, totalEkstrakurikuler, totalPrestasi, totalBerita, totalProgramUnggulan] = await Promise.all([
         prisma.fasilitas.count(),
@@ -39,12 +37,7 @@ export const getBerandaData = async () => {
     ];
 
     const mapStatus = (status) => {
-        switch (status) {
-            case "menunggu_verifikasi": return "menunggu verifikasi";
-            case "perlu_perbaikan": return "perlu perbaikan";
-            case "terverifikasi": return "terverifikasi";
-            default: return status;
-        }
+        return getStatusLabel ? getStatusLabel(status) : status;
     };
 
     const formatDate = (date) => {

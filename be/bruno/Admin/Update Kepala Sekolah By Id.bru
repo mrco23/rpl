@@ -1,0 +1,19 @@
+meta {
+  name: Update Kepala Sekolah By Id
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{baseUrl}}/api/admin/kepala-sekolah/:id
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

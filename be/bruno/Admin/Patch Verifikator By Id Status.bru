@@ -1,0 +1,19 @@
+meta {
+  name: Patch Verifikator By Id Status
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{baseUrl}}/api/admin/verifikator/:id/status
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -2,20 +2,19 @@ import multer from "multer";
 
 const storage = multer.memoryStorage();
 
-// Filter (Hanya PDF, JPG, PNG, WEBP)
+// Filter (Hanya PDF, JPG, JPEG, PNG)
 const fileFilter = (req, file, cb) => {
 	const allowedMimeTypes = [
 		"application/pdf",
 		"image/jpeg",
 		"image/jpg",
-		"image/png",
-		"image/webp",
+		"image/png"
 	];
 	if (allowedMimeTypes.includes(file.mimetype)) {
 		cb(null, true);
 	} else {
 		console.error("Upload ditolak: Format tidak didukung ->", file.mimetype);
-		cb(new Error(`Format file ${file.mimetype} tidak didukung. Hanya PDF, JPG, PNG, WEBP`), false);
+		cb(new Error(`Format file harus JPG, PNG, atau PDF.`), false);
 	}
 };
 

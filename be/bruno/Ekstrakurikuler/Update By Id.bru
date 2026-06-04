@@ -1,0 +1,19 @@
+meta {
+  name: Update By Id
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{baseUrl}}/api/ekstrakurikuler/:id
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

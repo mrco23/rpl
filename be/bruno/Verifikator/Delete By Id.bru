@@ -1,0 +1,19 @@
+meta {
+  name: Delete By Id
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{baseUrl}}/api/verifikator/:id
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

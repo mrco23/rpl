@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/jwt.js";
 import * as VerifikatorService from "../services/VerifikatorService.js";
+import { normalizeStatusPendaftaran } from "../constants/statusPendaftaran.js";
 
 class VerifikatorController {
 	register = async (req, res) => {
@@ -10,6 +11,11 @@ class VerifikatorController {
 			// Validasi input
 			if (!nama || !username || !password) {
 				return res.status(400).json({ message: "Nama, username, dan password wajib diisi" });
+			}
+
+			const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
+			if (!passwordRegex.test(password)) {
+				return res.status(400).json({ message: "Kata sandi minimal 6 karakter dan harus mengandung huruf kecil, huruf besar, angka, dan simbol." });
 			}
 
 			// Cek duplikasi
@@ -52,6 +58,10 @@ class VerifikatorController {
 				return res.status(401).json({ message: "Username atau password salah" });
 			}
 
+			if (!verifikator.status_aktif) {
+				return res.status(403).json({ message: "Akun verifikator tidak aktif." });
+			}
+
 			const token = generateToken({ id: verifikator.id_verifikator, role: "verifikator" });
 
 			res.status(200).json({
@@ -87,8 +97,33 @@ class VerifikatorController {
 	updateVerifikatorData = async (req, res) => {
 		try {
 			const { id } = req.params;
+			const { password } = req.body;
+
+			if (password && password.trim() !== "") {
+				const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
+				if (!passwordRegex.test(password)) {
+					return res.status(400).json({ message: "Kata sandi minimal 6 karakter dan harus mengandung huruf kecil, huruf besar, angka, dan simbol." });
+				}
+			}
+
 			const updated = await VerifikatorService.updateVerifikator(id, req.body);
 			res.status(200).json({ message: "Update verifikator berhasil", data: updated });
+		} catch (error) {
+			res.status(500).json({ message: error.message });
+		}
+	};
+
+	updateStatus = async (req, res) => {
+		try {
+			const { id } = req.params;
+			const { status_aktif } = req.body;
+
+			if (typeof status_aktif !== "boolean") {
+				return res.status(400).json({ message: "status_aktif harus berupa boolean" });
+			}
+
+			const updated = await VerifikatorService.updateStatusVerifikator(id, status_aktif);
+			res.status(200).json({ message: "Status verifikator berhasil diperbarui", data: updated });
 		} catch (error) {
 			res.status(500).json({ message: error.message });
 		}
@@ -97,6 +132,16 @@ class VerifikatorController {
 	remove = async (req, res) => {
 		try {
 			const { id } = req.params;
+			const verifikator = await VerifikatorService.getVerifikatorById(id);
+			
+			if (!verifikator) {
+				return res.status(404).json({ message: "Verifikator tidak ditemukan" });
+			}
+			
+			if (verifikator.status_aktif) {
+				return res.status(400).json({ message: "Akun aktif tidak dapat dihapus." });
+			}
+
 			await VerifikatorService.deleteVerifikator(id);
 			res.status(200).json({ message: "Hapus verifikator berhasil" });
 		} catch (error) {
@@ -138,7 +183,8 @@ class VerifikatorController {
 		try {
 			const { id } = req.params;
 			const { status, catatan } = req.body;
-			const updated = await VerifikatorService.verifyPendaftar(id, req.user.id, status, catatan);
+			const mappedStatus = normalizeStatusPendaftaran(status);
+			const updated = await VerifikatorService.verifyPendaftar(id, req.user.id, mappedStatus, catatan);
 			res.status(200).json({ message: "Proses verifikasi pendaftar selesai", data: updated });
 		} catch (error) {
 			res.status(400).json({ message: error.message });

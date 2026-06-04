@@ -1,5 +1,6 @@
 import prisma from "../config/prisma.js";
 import bcrypt from "bcryptjs";
+import { STATUS_PENDAFTARAN } from "../constants/statusPendaftaran.js";
 
 export const register = async (payload) => {
 	const now = new Date();
@@ -51,7 +52,7 @@ export const register = async (payload) => {
 		email: payload.email || null,
 		nama_wali: payload.nama_wali || null,
 		id_gelombang: activeGelombang.id_gelombang,
-		status_pendaftaran: "menunggu verifikasi",
+		status_pendaftaran: STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI,
 		alamat: {
 			create: {
 				provinsi: payload.alamat.provinsi,
@@ -164,10 +165,27 @@ export const updatePassword = async (id, newPassword) => {
 };
 
 export const getStatusById = async (id) => {
-	return await prisma.pendaftar.findUnique({
+	const data = await prisma.pendaftar.findUnique({
 		where: { id_pendaftar: Number(id) },
-		select: { status_pendaftaran: true },
+		select: {
+			status_pendaftaran: true,
+			tanggal_daftar: true,
+			catatan_dokumen: true,
+			gelombang: {
+				select: {
+					id_gelombang: true,
+					nama: true,
+					tanggal_mulai: true,
+					tanggal_selesai: true,
+				},
+			},
+		},
 	});
+
+	if (data) {
+		return data;
+	}
+	return null;
 };
 
 export const deletePendaftar = async (id) => {

@@ -1,0 +1,19 @@
+meta {
+  name: Get All Admin
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/profile/admin
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -4,12 +4,12 @@ export const getAktif = async () => {
     const now = new Date();
     const gelombang = await prisma.gelombang.findFirst({
         where: {
-            tanggal_mulai: {lte: now},
-            tanggal_selesai: {gte: now}
+            tanggal_mulai: { lte: now },
+            tanggal_selesai: { gte: now }
         },
         include: {
             _count: {
-                select: {pendaftar: true}
+                select: { pendaftar: true }
             }
         }
     });
@@ -25,30 +25,74 @@ export const getAktif = async () => {
 
 export const getAll = async () => {
     const data = await prisma.gelombang.findMany({
-        orderBy: {tanggal_mulai: "desc"},
+        orderBy: { tanggal_mulai: "desc" },
         include: {
             _count: {
-                select: {pendaftar: true}
+                select: { pendaftar: true }
             }
         }
     });
-    console.log(data)
-
     return data.map(item => ({
         ...item,
         totalPendaftar: item._count.pendaftar
     }));
 };
 
+export const getPublicAll = async () => {
+    const data = await prisma.gelombang.findMany({
+        orderBy: { tanggal_mulai: "desc" },
+        include: {
+            _count: {
+                select: { pendaftar: true }
+            }
+        }
+    });
+
+    const now = new Date();
+
+    return data.map(item => {
+        const totalPendaftar = item._count.pendaftar;
+        const sisaKuota = Math.max(0, item.kuota - totalPendaftar);
+
+        let statusGelombang = "";
+        const startDate = new Date(item.tanggal_mulai);
+        const endDate = new Date(item.tanggal_selesai);
+        endDate.setHours(23, 59, 59, 999);
+
+        if (now < startDate) {
+            statusGelombang = "belum dibuka";
+        } else if (now > endDate) {
+            statusGelombang = "ditutup";
+        } else {
+            statusGelombang = "aktif";
+        }
+
+        return {
+            id_gelombang: item.id_gelombang,
+            nama: item.nama,
+            tanggal_mulai: item.tanggal_mulai,
+            tanggal_selesai: item.tanggal_selesai,
+            kuota: item.kuota,
+            totalPendaftar,
+            sisaKuota,
+            statusGelombang
+        };
+    });
+};
+
 export const getById = async (id) => {
     return prisma.gelombang.findUnique({
-        where: {id_gelombang: Number(id)}
+        where: { id_gelombang: Number(id) }
     });
 };
 
 export const create = async (payload) => {
     const tanggal_mulai = new Date(payload.tanggal_mulai);
     const tanggal_selesai = new Date(payload.tanggal_selesai);
+
+    if (tanggal_selesai <= tanggal_mulai) {
+        throw new Error("Tanggal selesai harus lebih besar dari tanggal mulai.");
+    }
 
     const overlap = await prisma.gelombang.findFirst({
         where: {
@@ -82,6 +126,10 @@ export const update = async (id, payload) => {
     if (payload.kuota) data.kuota = Number(payload.kuota);
 
     if (data.tanggal_mulai && data.tanggal_selesai) {
+        if (data.tanggal_selesai <= data.tanggal_mulai) {
+            throw new Error("Tanggal selesai harus lebih besar dari tanggal mulai.");
+        }
+
         const overlap = await prisma.gelombang.findFirst({
             where: {
                 id_gelombang: { not: Number(id) },
@@ -98,14 +146,19 @@ export const update = async (id, payload) => {
     }
 
     return prisma.gelombang.update({
-        where: {id_gelombang: Number(id)},
+        where: { id_gelombang: Number(id) },
         data
     });
 };
 
 export const remove = async (id) => {
-    return prisma.gelombang.delete({
-        where: {id_gelombang: Number(id)}
+    return prisma.$transaction(async (tx) => {
+        await tx.pendaftar.deleteMany({
+            where: { id_gelombang: Number(id) }
+        });
+        return tx.gelombang.delete({
+            where: { id_gelombang: Number(id) }
+        });
     });
 };
 
@@ -114,10 +167,39 @@ export const checkActive = async (id) => {
     const gelombang = await prisma.gelombang.findFirst({
         where: {
             id_gelombang: Number(id),
-            tanggal_mulai: {lte: now},
-            tanggal_selesai: {gte: now}
+            tanggal_mulai: { lte: now },
+            tanggal_selesai: { gte: now }
         }
     })
     return !!gelombang;
 
 }
+
+export const ajukanValidasi = async (id) => {
+    const gelombang = await prisma.gelombang.findUnique({
+        where: { id_gelombang: Number(id) }
+    });
+
+    if (!gelombang) throw new Error("Gelombang tidak ditemukan.");
+
+    const now = new Date();
+    const end = new Date(gelombang.tanggal_selesai);
+    end.setHours(23, 59, 59, 999);
+
+    if (now <= end) {
+        throw new Error("Gelombang belum selesai sehingga belum dapat diajukan untuk validasi.");
+    }
+
+    if (gelombang.status_validasi === "menunggu_validasi") {
+        throw new Error("Laporan gelombang sudah diajukan dan sedang menunggu validasi kepala sekolah.");
+    }
+    
+    if (gelombang.status_validasi === "disetujui") {
+        throw new Error("Laporan gelombang sudah disetujui kepala sekolah.");
+    }
+
+    return prisma.gelombang.update({
+        where: { id_gelombang: Number(id) },
+        data: { status_validasi: "menunggu_validasi" }
+    });
+};

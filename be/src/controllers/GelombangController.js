@@ -1,6 +1,7 @@
 import * as GelombangService from "../services/GelombangService.js";
 import ExcelJS from "exceljs";
 import prisma from "../config/prisma.js";
+import { STATUS_PENDAFTARAN } from "../constants/statusPendaftaran.js";
 
 export const getAktif = async (req, res) => {
 	try {
@@ -15,6 +16,15 @@ export const getAktif = async (req, res) => {
 export const getAll = async (req, res) => {
 	try {
 		const gelombang = await GelombangService.getAll();
+		return res.status(200).json({ message: "success", data: gelombang });
+	} catch (error) {
+		return res.status(500).json({ message: error.message });
+	}
+};
+
+export const getPublic = async (req, res) => {
+	try {
+		const gelombang = await GelombangService.getPublicAll();
 		return res.status(200).json({ message: "success", data: gelombang });
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
@@ -51,13 +61,43 @@ export const update = async (req, res) => {
 
 export const remove = async (req, res) => {
 	try {
-		const isActive = await GelombangService.checkActive(req.params.id);
-		if (isActive)
-			return res.status(403).json({ message: "gelombang yang aktif tidak boleh dihapus!" });
+		const gelombang = await GelombangService.getById(req.params.id);
+		if (!gelombang) return res.status(404).json({ message: "Gelombang tidak ditemukan" });
+
+		const now = new Date();
+		const start = new Date(gelombang.tanggal_mulai);
+		const end = new Date(gelombang.tanggal_selesai);
+		end.setHours(23, 59, 59, 999);
+
+		const isActive = start <= now && now <= end;
+		if (isActive) {
+			return res.status(403).json({ message: "Gelombang aktif tidak dapat dihapus." });
+		}
+
+		const isFuture = start > now;
+		if (isFuture && gelombang.totalPendaftar > 0) {
+			return res.status(403).json({ message: "Gelombang yang sudah memiliki pendaftar tidak dapat dihapus." });
+		}
+
+		const isPast = now > end;
+		if (isPast && gelombang.status_validasi !== "disetujui") {
+			return res.status(403).json({ message: "Gelombang selesai hanya dapat dihapus setelah laporan disetujui kepala sekolah." });
+		}
+
 		await GelombangService.remove(req.params.id);
 		return res.status(200).json({ message: "Data berhasil dihapus" });
 	} catch (error) {
 		return res.status(500).json({ message: error.message });
+	}
+};
+
+export const ajukanValidasi = async (req, res) => {
+	try {
+		const gelombang = await GelombangService.ajukanValidasi(req.params.id);
+		return res.status(200).json({ message: "Laporan gelombang berhasil diajukan ke kepala sekolah", data: gelombang });
+	} catch (error) {
+		if (error.message.includes("Gelombang tidak ditemukan")) return res.status(404).json({ message: error.message });
+		return res.status(400).json({ message: error.message });
 	}
 };
 
@@ -81,18 +121,11 @@ export const exportExcel = async (req, res) => {
 		const totalPendaftar = pendaftarList.length;
 
 		const listLulus = pendaftarList.filter((p) => {
-			const status = p.status_pendaftaran.toLowerCase();
-			return status === "lulus" || status === "diterima" || status === "lolos";
+			return p.status_pendaftaran === STATUS_PENDAFTARAN.LULUS;
 		});
 
 		const listTidakLolos = pendaftarList.filter((p) => {
-			const status = p.status_pendaftaran.toLowerCase();
-			return (
-				status === "tidak lulus" ||
-				status === "gagal" ||
-				status === "ditolak" ||
-				status === "tidak lolos"
-			);
+			return p.status_pendaftaran === STATUS_PENDAFTARAN.TIDAK_LULUS;
 		});
 
 		const totalDiterima = listLulus.length;
@@ -116,6 +149,8 @@ export const exportExcel = async (req, res) => {
 		sheetRingkasan.addRow({ metrik: "Total Diterima", nilai: totalDiterima });
 		sheetRingkasan.addRow({ metrik: "Rasio Kelulusan", nilai: rasioKelulusan });
 		sheetRingkasan.addRow({ metrik: "Sisa Kuota", nilai: sisaKuota });
+		sheetRingkasan.addRow({ metrik: "Status Validasi", nilai: gelombang.status_validasi || "belum_diajukan" });
+		sheetRingkasan.addRow({ metrik: "Tanggal Validasi", nilai: gelombang.tanggal_validasi ? new Date(gelombang.tanggal_validasi).toLocaleDateString("id-ID") : "-" });
 
 		// Styling Header Ringkasan
 		sheetRingkasan.getRow(1).font = { bold: true };

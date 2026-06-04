@@ -1,0 +1,19 @@
+meta {
+  name: Get All Laporan Wilayah Pendaftar
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/kepala-sekolah/laporan/wilayah-pendaftar
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {}
+}
+
+auth:bearer {
+  token: {{token}}
+}
