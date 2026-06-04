@@ -133,7 +133,7 @@ export default function LandingPage() {
           <p className="text-gray-500 font-medium">Data Landing Page tidak tersedia.</p>
         </section>
       ) : (
-        <section className="relative w-full min-h-[65vh] md:min-h-[55vh] xl:min-h-[67vh] flex items-stretch">
+        <section className="relative w-full min-h-[60vh] md:min-h-[63vh] xl:min-h-[67vh] flex items-stretch">
           <div
             className="absolute inset-0 bg-cover bg-center rounded-b-3xl overflow-hidden brightness-40"
             style={{ backgroundImage: `url(${hero})` }}
@@ -155,13 +155,13 @@ export default function LandingPage() {
               <div className="flex gap-3 justify-start">
                 <button
                   onClick={handleRegister}
-                  className="bg-blue-dark px-4 py-2 cursor-pointer rounded-md text-sm font-medium hover:bg-blue-dark-hover transition"
+                  className="bg-blue-dark px-6 py-2 cursor-pointer rounded-md text-sm md:text-lg font-medium hover:bg-blue-dark-hover transition"
                 >
                   Daftar Sekarang
                 </button>
                 <Link
                   to="/panduan"
-                  className="border border-white px-4 py-2 cursor-pointer rounded-md text-sm font-medium hover:bg-white hover:text-blue-dark transition"
+                  className="border border-white px-6 py-2 cursor-pointer rounded-md text-sm md:text-lg font-medium hover:bg-white hover:text-blue-dark transition"
                 >
                   Pelajari Lebih Lanjut
                 </Link>

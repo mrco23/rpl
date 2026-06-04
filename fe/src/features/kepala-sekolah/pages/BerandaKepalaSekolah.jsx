@@ -58,7 +58,7 @@ export default function BerandaKepalaSekolah() {
           <BookOpen size={250} />
         </div>
         <div className="relative z-10">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">Beranda Kepala Sekolah</h1>
+          <h1 className="text-2xl md:text-3xl font-semibold mb-2">Beranda Kepala Sekolah</h1>
           <p className="text-blue-100 text-sm md:text-base max-w-xl">
             Ringkasan Manajerial PPDB
           </p>

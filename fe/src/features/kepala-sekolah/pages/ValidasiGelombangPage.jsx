@@ -91,7 +91,7 @@ export default function ValidasiGelombangPage() {
                             <FileCheck size={20} className="opacity-80" />
                             <span className="text-sm font-medium opacity-80 uppercase tracking-wider">Kepala Sekolah</span>
                         </div>
-                        <h1 className="text-2xl md:text-3xl font-bold">Validasi Laporan Gelombang</h1>
+                        <h1 className="text-2xl md:text-3xl font-semibold">Validasi Laporan Gelombang</h1>
                         <p className="text-blue-100 text-sm mt-1 max-w-xl">
                             Periksa dan setujui rekap gelombang yang telah selesai sebelum admin menghapus data.
                         </p>

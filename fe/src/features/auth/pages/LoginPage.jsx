@@ -336,7 +336,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={forgotLoading}
-                  className="w-full bg-blue-dark text-white py-3 rounded-xl font-bold hover:bg-blue-dark-hover active:bg-blue-dark-active transition-colors disabled:opacity-50 cursor-pointer shadow-md"
+                  className="w-full bg-blue-dark text-white py-2 rounded-lg font-semibold hover:bg-blue-dark-hover active:bg-blue-dark-active transition-colors disabled:opacity-50 cursor-pointer shadow-md"
                 >
                   {forgotLoading ? "Mengirim..." : "Kirim Link Reset"}
                 </button>
@@ -344,7 +344,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowForgotModal(false)}
                   disabled={forgotLoading}
-                  className="w-full py-3 text-gray-500 font-medium hover:text-gray-800 transition-colors cursor-pointer"
+                  className="w-full py-3 text-gray-500 font-medium hover:text-gray-800 transition-colors cursor-pointer bg-gray-50 rounded-lg"
                 >
                   Batal
                 </button>

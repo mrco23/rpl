@@ -282,15 +282,15 @@ export default function UbahKataSandiPage() {
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4">
             <CheckCircle2 size={48} className="text-green-600" />
           </div>
-          <h3 className="text-2xl font-bold text-slate-800 mb-2">Kata Sandi Diperbarui</h3>
+          <h3 className="text-2xl font-semibold text-slate-800 mb-2">Kata Sandi Diperbarui</h3>
           <p className="text-slate-600 mb-8 max-w-sm">
             Kata sandi Anda telah berhasil diubah. Silakan gunakan kata sandi baru Anda untuk masuk ke sistem.
           </p>
           <button
             onClick={() => navigate("/login")}
-            className="w-full bg-[#253b80] text-white py-3 rounded-xl hover:bg-blue-800 transition-colors cursor-pointer font-bold"
+            className="w-full bg-blue-dark text-white py-3 rounded-xl hover:bg-blue-dark-hover transition-colors cursor-pointer font-semibold"
           >
-            OK, Ke Halaman Login
+            Ke Halaman Login
           </button>
         </div>
       </Modal>

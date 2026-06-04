@@ -139,7 +139,7 @@ export default function InternalLoginPage() {
             <button
               type="button"
               onClick={() => setRole("admin")}
-              className={`flex-1 py-2 text-sm font-medium rounded-md transition ${
+              className={`cursor-pointer flex-1 py-2 text-sm font-medium rounded-md transition ${
                 role === "admin"
                   ? "bg-blue-dark text-white shadow"
                   : "bg-blue-light text-blue-dark hover:bg-gray-200"
@@ -150,7 +150,7 @@ export default function InternalLoginPage() {
             <button
               type="button"
               onClick={() => setRole("verifikator")}
-              className={`flex-1 py-2 text-sm font-medium rounded-md transition ${
+              className={`cursor-pointer flex-1 py-2 text-sm font-medium rounded-md transition ${
                 role === "verifikator"
                   ? "bg-blue-dark text-white shadow"
                   : "bg-blue-light text-blue-dark hover:bg-gray-200"
@@ -161,7 +161,7 @@ export default function InternalLoginPage() {
             <button
               type="button"
               onClick={() => setRole("kepala_sekolah")}
-              className={`flex-1 py-2 text-sm font-medium rounded-md transition ${
+              className={`cursor-pointer flex-1 py-2 text-sm font-medium rounded-md transition ${
                 role === "kepala_sekolah"
                   ? "bg-blue-dark text-white shadow"
                   : "bg-blue-light text-blue-dark hover:bg-gray-200"

@@ -626,7 +626,7 @@ export default function ApplicantRegisterPage() {
                 <div className="flex justify-end mt-8">
                   <button
                     type="submit"
-                    className="px-8 py-3 bg-blue-dark text-white rounded-xl hover:bg-blue-dark-hover transition-all duration-300 flex items-center gap-2 group cursor-pointer font-bold shadow-md"
+                    className="px-8 py-2 bg-blue-dark text-white rounded-lg hover:bg-blue-dark-hover transition-all duration-300 flex items-center gap-2 group cursor-pointer font-semibold shadow-md"
                   >
                     <span>LANJUTKAN</span>
                     <ArrowRight
@@ -708,7 +708,7 @@ export default function ApplicantRegisterPage() {
                   <button
                     type="button"
                     onClick={() => { setStep(1); setToastConfig({ ...toastConfig, show: false }); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                    className="px-6 py-3 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition"
+                    className="px-6 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition shadow"
                   >
                     ← Kembali
                   </button>
@@ -716,7 +716,7 @@ export default function ApplicantRegisterPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="px-8 py-3 bg-blue-dark hover:bg-blue-dark-hover text-white font-bold rounded-xl shadow-md disabled:opacity-50 cursor-pointer flex items-center justify-center min-w-[140px]"
+                    className="px-8 py-2 bg-blue-dark hover:bg-blue-dark-hover text-white font-semibold rounded-lg shadow-md disabled:opacity-50 cursor-pointer flex items-center justify-center min-w-[140px]"
                   >
                     {submitting ? (
                       <span className="flex items-center gap-2">
@@ -740,7 +740,7 @@ export default function ApplicantRegisterPage() {
       {/* Modal Sukses */}
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full text-center mx-4 animate-in fade-in zoom-in duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center mx-4 animate-in fade-in zoom-in duration-300">
             <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
               <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -752,7 +752,7 @@ export default function ApplicantRegisterPage() {
             </p>
             <button
               onClick={() => navigate("/login")}
-              className="w-full py-3.5 bg-blue-dark text-white rounded-xl font-bold hover:bg-blue-dark-hover transition shadow-md cursor-pointer"
+              className="w-full py-2 bg-blue-dark text-white rounded-lg font-semibold hover:bg-blue-dark-hover transition shadow-md cursor-pointer"
             >
               Lanjut ke Halaman Login
             </button>

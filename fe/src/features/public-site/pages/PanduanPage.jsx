@@ -112,7 +112,7 @@ export default function PanduanPage() {
             </p>
 
             <div className="flex flex-wrap gap-4 mt-6">
-              <Link to="/register" className="bg-blue-dark hover:bg-blue-800 transition text-white px-8 py-3 rounded-full font-medium shadow-md">
+              <Link to="/register" className="bg-blue-dark hover:bg-blue-dark-hover transition text-white px-8 py-3 rounded-full font-medium shadow-md">
                 Daftar Sekarang
               </Link>
               <a href="#alur" className="bg-white hover:bg-gray-50 border border-gray-200 transition text-blue-dark px-8 py-3 rounded-full font-medium shadow-sm">

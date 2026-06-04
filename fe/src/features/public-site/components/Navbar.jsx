@@ -41,14 +41,14 @@ function Navbar() {
   return (
     <>
       <nav ref={dropdownRef} className="w-full sticky top-0 z-50 bg-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="mx-5 h-16 flex items-center justify-between xl:justify-center gap-0 xl:gap-10">
           {/* Logo */}
           <div className="flex items-center h-full gap-2 ml-2">
             <img src={logo} alt="logo" className="w-12 xl:w-14 h-auto object-contain" />
           </div>
 
           {/* Menu */}
-          <ul className="hidden lg:flex space-x-5 xl:space-x-10 text-gray-600 font-medium items-center">
+          <ul className="hidden lg:flex my-auto gap-10 text-gray-600 font-medium items-center">
             {/* Beranda */}
             <Li title="Beranda" to="/" />
 
@@ -167,7 +167,7 @@ function Navbar() {
             </button>
              <button
               onClick={() => navigate("/akses-internal")}
-              className="text-sm px-3 py-1 text-blue-dark rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
+              className="text-sm px-4 py-2 text-blue-dark rounded-md font-medium hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
             >
               Akses Internal
             </button>
@@ -288,7 +288,7 @@ function Li({ title, to }) {
     <Link
       to={to}
       className={`px-1 lg:px-2 xl:px-3 py-2 border-2 rounded transition-colors relative hover:after:w-full after:w-0 after:h-0.5 after:absolute after:left-1/2 after:bottom-0 after:-translate-x-1/2 after:bg-blue-normal after:transition-all after:duration-300 hover:text-blue-normal ${location.pathname === to
-        ? "border-transparent  text-gray-950 font-semibold"
+        ? "border-transparent  text-gray-900 font-semibold"
         : "border-transparent"
         } hover:bg-gray-100`}
     >

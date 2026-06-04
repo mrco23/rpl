@@ -56,7 +56,7 @@ export default function LaporanPPDBPage() {
 
       {/* HEADER */}
       <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">Laporan PPDB</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-1">Laporan PPDB</h1>
         <p className="text-gray-500 text-sm leading-relaxed max-w-2xl">
           Unduh laporan resmi PPDB. PDF digunakan sebagai laporan dengan kop surat, sedangkan Excel untuk rekap data yang dapat diolah kembali.
         </p>
