@@ -613,7 +613,7 @@ export default function AkunInternalPage() {
             {modalMode === "edit" && (
               <p className="text-xs text-gray-500 mt-1 font-medium">Kosongkan jika tidak ingin mengubah kata sandi.</p>
             )}
-            <p className="text-xs text-blue-600 mt-1 font-medium">Kata sandi minimal 6 karakter, mengandung huruf kecil, huruf besar, angka, dan simbol.</p>
+            <p className="text-xs text-blue-600 mt-4 font-medium">Kata sandi minimal 6 karakter, mengandung huruf kecil, huruf besar, angka, dan simbol.</p>
           </div>
           <div className="pt-4 flex justify-end gap-3 border-t">
             <button

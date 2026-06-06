@@ -27,7 +27,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!identifier || !password) {
-      setError("identifier dan password wajib diisi");
+      setError("NISN dan password wajib diisi");
       setSubmitting(false);
       return;
     }
@@ -85,7 +85,7 @@ export default function LoginPage() {
       navigate("/pendaftar");
     } catch (err) {
       console.log("ERROR:", err.response?.data);
-      setError(err.response?.data?.message || "Login gagal");
+      setError(err.message || "Login gagal");
     } finally {
       setSubmitting(false);
     }

@@ -6,7 +6,7 @@ import httpClient, { requestAPI } from "../../../services/httpClient.js";
 import { waveApi } from "../../public-site/services/waveService.js";
 import Toast from "../../../shared/components/Toast.jsx";
 
-export default function ApplicantRegisterPage() {
+export default function PendaftarPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     namaLengkap: "",
@@ -353,9 +353,9 @@ export default function ApplicantRegisterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 py-16 px-4 flex justify-center">
+    <main className="min-h-screen bg-slate-50 py-10 px-4 flex justify-center">
       <div className="w-full max-w-4xl">
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center gap-3 mb-8">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-slate-700 hover:text-blue-800 transition cursor-pointer"
