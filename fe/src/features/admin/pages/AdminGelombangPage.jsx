@@ -10,7 +10,7 @@ import {
     Loader2,
     CalendarPlus,
     XCircle,
-    AlertTriangle
+    AlertTriangle,
 } from "lucide-react";
 import AdminHeader from "../components/AdminHeader";
 import { waveApi } from "../../public-site/services/waveService.js";
@@ -30,7 +30,11 @@ function AdminGelombang() {
         kuota: "",
     });
     const [submitting, setSubmitting] = useState(false);
-    const [toastConfig, setToastConfig] = useState({ show: false, message: "", type: "success" });
+    const [toastConfig, setToastConfig] = useState({
+        show: false,
+        message: "",
+        type: "success",
+    });
 
     useEffect(() => {
         fetchGelombang();
@@ -43,7 +47,11 @@ function AdminGelombang() {
             setDataGelombang(res.data || []);
         } catch (error) {
             console.error("Gagal mengambil data gelombang:", error);
-            setToastConfig({ show: true, message: "Gagal mengambil data gelombang", type: "error" });
+            setToastConfig({
+                show: true,
+                message: "Gagal mengambil data gelombang",
+                type: "error",
+            });
         } finally {
             if (showLoader) setLoading(false);
         }
@@ -68,7 +76,11 @@ function AdminGelombang() {
         const tglMulai = new Date(formData.tanggal_mulai);
         const tglSelesai = new Date(formData.tanggal_selesai);
         if (tglSelesai <= tglMulai) {
-            setToastConfig({ show: true, message: "Tanggal selesai harus lebih besar dari tanggal mulai.", type: "error" });
+            setToastConfig({
+                show: true,
+                message: "Tanggal selesai harus lebih besar dari tanggal mulai.",
+                type: "error",
+            });
             return;
         }
 
@@ -86,8 +98,10 @@ function AdminGelombang() {
             // Tutup modal terlebih dahulu, baru tampilkan toast
             handleCloseAddModal();
             setTimeout(() => {
-                if (successMsg) setToastConfig({ show: true, message: successMsg, type: "success" });
-                if (errorMsg) setToastConfig({ show: true, message: errorMsg, type: "error" });
+                if (successMsg)
+                    setToastConfig({ show: true, message: successMsg, type: "success" });
+                if (errorMsg)
+                    setToastConfig({ show: true, message: errorMsg, type: "error" });
             }, 0);
         }
     };
@@ -96,12 +110,20 @@ function AdminGelombang() {
         try {
             setSubmitting(true);
             await waveApi.remove(selectedDeleteId);
-            setToastConfig({ show: true, message: "Gelombang berhasil dihapus!", type: "success" });
+            setToastConfig({
+                show: true,
+                message: "Gelombang berhasil dihapus!",
+                type: "success",
+            });
             fetchGelombang(false);
             setOpenDeleteModal(false);
             setSelectedDeleteId(null);
         } catch (error) {
-            setToastConfig({ show: true, message: error.message || "Gagal menghapus gelombang", type: "error" });
+            setToastConfig({
+                show: true,
+                message: error.message || "Gagal menghapus gelombang",
+                type: "error",
+            });
         } finally {
             setSubmitting(false);
         }
@@ -109,32 +131,58 @@ function AdminGelombang() {
 
     const handleExportExcel = async (id) => {
         try {
-            setToastConfig({ show: true, message: "Mempersiapkan dokumen Excel...", type: "success" });
+            setToastConfig({
+                show: true,
+                message: "Mempersiapkan dokumen Excel...",
+                type: "success",
+            });
             const response = await waveApi.exportExcel(id);
             const blob = response?.data instanceof Blob ? response.data : response;
-            const url = window.URL.createObjectURL(blob instanceof Blob ? blob : new Blob([blob]));
+            const url = window.URL.createObjectURL(
+                blob instanceof Blob ? blob : new Blob([blob]),
+            );
             const link = document.createElement("a");
             link.href = url;
             link.setAttribute("download", `Export_Gelombang_${id}.xlsx`);
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
-            setToastConfig({ show: true, message: "Berhasil mengunduh dokumen Excel!", type: "success" });
+            setToastConfig({
+                show: true,
+                message: "Berhasil mengunduh dokumen Excel!",
+                type: "success",
+            });
         } catch (error) {
             console.error("Gagal export Excel:", error);
-            setToastConfig({ show: true, message: "Gagal mengekspor dokumen Excel", type: "error" });
+            setToastConfig({
+                show: true,
+                message: "Gagal mengekspor dokumen Excel",
+                type: "error",
+            });
         }
     };
 
     const handleAjukanValidasi = async (id) => {
         try {
-            setToastConfig({ show: true, message: "Mengajukan validasi...", type: "success" });
+            setToastConfig({
+                show: true,
+                message: "Mengajukan validasi...",
+                type: "success",
+            });
             await waveApi.ajukanValidasi(id);
-            setToastConfig({ show: true, message: "Validasi berhasil diajukan!", type: "success" });
+            setToastConfig({
+                show: true,
+                message: "Validasi berhasil diajukan!",
+                type: "success",
+            });
             fetchGelombang(false);
         } catch (error) {
             console.error("Gagal mengajukan validasi:", error);
-            setToastConfig({ show: true, message: error.message || "Gagal mengajukan validasi", type: "error" });
+            setToastConfig({
+                show: true,
+                message: error.message || "Gagal mengajukan validasi",
+                type: "error",
+            });
         }
     };
 
@@ -169,7 +217,11 @@ function AdminGelombang() {
     const formatDate = (dateString) => {
         if (!dateString) return "-";
         const date = new Date(dateString);
-        return date.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+        return date.toLocaleDateString("id-ID", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+        });
     };
 
     const progressWidth = (peserta, kuota) => {
@@ -229,7 +281,9 @@ function AdminGelombang() {
                     <InfoCard
                         icon={<CheckCircle2 size={20} />}
                         title="Gelombang Aktif"
-                        value={dataGelombang.filter((g) => getStatus(g) === "Aktif").length}
+                        value={
+                            dataGelombang.filter((g) => getStatus(g) === "Aktif").length
+                        }
                         desc="Aktif"
                         color="text-green-600"
                         bgIcon="bg-green-100"
@@ -237,7 +291,10 @@ function AdminGelombang() {
                     <InfoCard
                         icon={<Clock3 size={20} />}
                         title="Akan Datang"
-                        value={dataGelombang.filter((g) => getStatus(g) === "Akan Datang").length}
+                        value={
+                            dataGelombang.filter((g) => getStatus(g) === "Akan Datang")
+                                .length
+                        }
                         desc="Gelombang"
                         color="text-orange-500"
                         bgIcon="bg-orange-100"
@@ -245,7 +302,9 @@ function AdminGelombang() {
                     <InfoCard
                         icon={<FileCheck size={20} />}
                         title="Selesai"
-                        value={dataGelombang.filter((g) => getStatus(g) === "Selesai").length}
+                        value={
+                            dataGelombang.filter((g) => getStatus(g) === "Selesai").length
+                        }
                         desc="Selesai"
                         color="text-gray-600"
                         bgIcon="bg-gray-100"
@@ -268,7 +327,9 @@ function AdminGelombang() {
                                     className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col hover:shadow-md transition-shadow"
                                 >
                                     <div className="flex justify-between items-center mb-1">
-                                        <h3 className="font-semibold text-xl text-gray-900">{item.nama}</h3>
+                                        <h3 className="font-semibold text-xl text-gray-900">
+                                            {item.nama}
+                                        </h3>
                                         <div className="flex flex-col gap-1 items-end">
                                             <span
                                                 className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md ${getStatusStyle(status)}`}
@@ -279,7 +340,9 @@ function AdminGelombang() {
                                                 <span
                                                     className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md ${getValidasiStyle(item.status_validasi)}`}
                                                 >
-                                                    {getValidasiLabel(item.status_validasi)}
+                                                    {getValidasiLabel(
+                                                        item.status_validasi,
+                                                    )}
                                                 </span>
                                             )}
                                         </div>
@@ -292,8 +355,13 @@ function AdminGelombang() {
                                             <CalendarDays size={18} />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-400 uppercase tracking-wide">Periode</p>
-                                            <p>{formatDate(item.tanggal_mulai)} - {formatDate(item.tanggal_selesai)}</p>
+                                            <p className="text-xs text-gray-400 uppercase tracking-wide">
+                                                Periode
+                                            </p>
+                                            <p>
+                                                {formatDate(item.tanggal_mulai)} -{" "}
+                                                {formatDate(item.tanggal_selesai)}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -302,15 +370,28 @@ function AdminGelombang() {
                                             <Users size={18} />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-400 uppercase tracking-wide">Pendaftar</p>
-                                            <p>{item.totalPendaftar || 0} / <span className="text-gray-900 font-bold">{item.kuota}</span> Peserta</p>
+                                            <p className="text-xs text-gray-400 uppercase tracking-wide">
+                                                Pendaftar
+                                            </p>
+                                            <p>
+                                                {item.totalPendaftar || 0} /{" "}
+                                                <span className="text-gray-900 font-bold">
+                                                    {item.kuota}
+                                                </span>{" "}
+                                                Peserta
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div className="w-full h-2.5 bg-gray-100 rounded-full mb-5 mt-auto overflow-hidden">
                                         <div
                                             className="h-full bg-[#253b80] rounded-full transition-all duration-500 ease-out"
-                                            style={{ width: progressWidth(item.totalPendaftar, item.kuota) }}
+                                            style={{
+                                                width: progressWidth(
+                                                    item.totalPendaftar,
+                                                    item.kuota,
+                                                ),
+                                            }}
                                         ></div>
                                     </div>
 
@@ -318,7 +399,9 @@ function AdminGelombang() {
                                         <div className="grid grid-cols-1 gap-3 mt-2">
                                             <button
                                                 onClick={() => {
-                                                    setSelectedDeleteId(item.id_gelombang);
+                                                    setSelectedDeleteId(
+                                                        item.id_gelombang,
+                                                    );
                                                     setOpenDeleteModal(true);
                                                 }}
                                                 className="hover:bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer duration-300"
@@ -329,26 +412,42 @@ function AdminGelombang() {
                                     )}
                                     {status === "Selesai" && (
                                         <div className="grid grid-cols-2 gap-3 mt-2">
-                                            {(!item.status_validasi || item.status_validasi === "belum_diajukan") && (
+                                            {(!item.status_validasi ||
+                                                item.status_validasi ===
+                                                    "belum_diajukan") && (
                                                 <>
                                                     <button
-                                                        onClick={() => handleExportExcel(item.id_gelombang)}
-                                                        className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white border border-green-200 hover:border-green-600 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
+                                                        onClick={() =>
+                                                            handleExportExcel(
+                                                                item.id_gelombang,
+                                                            )
+                                                        }
+                                                        className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white border border-green-200 hover:border-green-600 px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
                                                     >
                                                         <DownloadIcon /> Export Sementara
                                                     </button>
                                                     <button
-                                                        onClick={() => handleAjukanValidasi(item.id_gelombang)}
-                                                        className="bg-blue-50 text-[#253b80] hover:bg-[#253b80] hover:text-white border border-blue-200 hover:border-[#253b80] px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
+                                                        onClick={() =>
+                                                            handleAjukanValidasi(
+                                                                item.id_gelombang,
+                                                            )
+                                                        }
+                                                        className="bg-blue-50 text-[#253b80] hover:bg-[#253b80] hover:text-white border border-blue-200 hover:border-[#253b80] px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
                                                     >
-                                                        <FileCheck size={16} /> Ajukan Validasi
+                                                        <FileCheck size={16} /> Ajukan
+                                                        Validasi
                                                     </button>
                                                 </>
                                             )}
-                                            {item.status_validasi === "menunggu_validasi" && (
+                                            {item.status_validasi ===
+                                                "menunggu_validasi" && (
                                                 <>
                                                     <button
-                                                        onClick={() => handleExportExcel(item.id_gelombang)}
+                                                        onClick={() =>
+                                                            handleExportExcel(
+                                                                item.id_gelombang,
+                                                            )
+                                                        }
                                                         className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white border border-green-200 hover:border-green-600 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
                                                     >
                                                         <DownloadIcon /> Export Sementara
@@ -364,14 +463,20 @@ function AdminGelombang() {
                                             {item.status_validasi === "disetujui" && (
                                                 <>
                                                     <button
-                                                        onClick={() => handleExportExcel(item.id_gelombang)}
+                                                        onClick={() =>
+                                                            handleExportExcel(
+                                                                item.id_gelombang,
+                                                            )
+                                                        }
                                                         className="bg-green-50 text-green-700 hover:bg-green-600 hover:text-white border border-green-200 hover:border-green-600 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer"
                                                     >
                                                         <DownloadIcon /> Export Final
                                                     </button>
                                                     <button
                                                         onClick={() => {
-                                                            setSelectedDeleteId(item.id_gelombang);
+                                                            setSelectedDeleteId(
+                                                                item.id_gelombang,
+                                                            );
                                                             setOpenDeleteModal(true);
                                                         }}
                                                         className="hover:bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer duration-300"
@@ -393,7 +498,6 @@ function AdminGelombang() {
             {openAddModal && (
                 <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
                     <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl relative flex flex-col max-h-[90vh] zoom-in-95 animate-in duration-200">
-
                         {/* Modal Header */}
                         <div className="flex justify-between items-start p-6 border-b border-gray-100 rounded-t-3xl bg-white sticky top-0 z-10">
                             <div className="flex items-center gap-3">
@@ -401,8 +505,12 @@ function AdminGelombang() {
                                     <CalendarPlus size={24} />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-bold text-gray-900">Tambah Gelombang</h2>
-                                    <p className="text-sm text-gray-500">Buat periode pendaftaran baru</p>
+                                    <h2 className="text-xl font-bold text-gray-900">
+                                        Tambah Gelombang
+                                    </h2>
+                                    <p className="text-sm text-gray-500">
+                                        Buat periode pendaftaran baru
+                                    </p>
                                 </div>
                             </div>
                             <button
@@ -414,8 +522,10 @@ function AdminGelombang() {
                         </div>
 
                         {/* Modal Body */}
-                        <form onSubmit={handleAdd} className="flex flex-col p-6 overflow-y-auto custom-scrollbar gap-5">
-
+                        <form
+                            onSubmit={handleAdd}
+                            className="flex flex-col p-6 overflow-y-auto custom-scrollbar gap-5"
+                        >
                             <div className="space-y-1.5">
                                 <label className="block text-sm font-semibold text-gray-700">
                                     Nama Gelombang <span className="text-red-500">*</span>
@@ -425,7 +535,9 @@ function AdminGelombang() {
                                     required
                                     placeholder="Contoh: Gelombang 1"
                                     value={formData.nama}
-                                    onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
+                                    onChange={(e) =>
+                                        setFormData({ ...formData, nama: e.target.value })
+                                    }
                                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#253b80]/50 focus:border-[#253b80] transition-all"
                                 />
                             </div>
@@ -440,7 +552,12 @@ function AdminGelombang() {
                                     placeholder="Contoh: 150"
                                     min="1"
                                     value={formData.kuota}
-                                    onChange={(e) => setFormData({ ...formData, kuota: e.target.value })}
+                                    onChange={(e) =>
+                                        setFormData({
+                                            ...formData,
+                                            kuota: e.target.value,
+                                        })
+                                    }
                                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#253b80]/50 focus:border-[#253b80] transition-all"
                                 />
                             </div>
@@ -448,25 +565,37 @@ function AdminGelombang() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
                                     <label className="block text-sm font-semibold text-gray-700">
-                                        Tanggal Mulai <span className="text-red-500">*</span>
+                                        Tanggal Mulai{" "}
+                                        <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
                                         required
                                         value={formData.tanggal_mulai}
-                                        onChange={(e) => setFormData({ ...formData, tanggal_mulai: e.target.value })}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                tanggal_mulai: e.target.value,
+                                            })
+                                        }
                                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#253b80]/50 focus:border-[#253b80] transition-all text-gray-700"
                                     />
                                 </div>
                                 <div className="space-y-1.5">
                                     <label className="block text-sm font-semibold text-gray-700">
-                                        Tanggal Selesai <span className="text-red-500">*</span>
+                                        Tanggal Selesai{" "}
+                                        <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
                                         required
                                         value={formData.tanggal_selesai}
-                                        onChange={(e) => setFormData({ ...formData, tanggal_selesai: e.target.value })}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                tanggal_selesai: e.target.value,
+                                            })
+                                        }
                                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#253b80]/50 focus:border-[#253b80] transition-all text-gray-700"
                                     />
                                 </div>
@@ -516,13 +645,20 @@ function AdminGelombang() {
                         </h3>
 
                         <p className="text-sm text-gray-500 leading-relaxed mb-4">
-                            Tindakan ini akan menghapus gelombang beserta <strong>seluruh data pendaftar</strong> di dalamnya secara permanen.
+                            Tindakan ini akan menghapus gelombang beserta{" "}
+                            <strong>seluruh data pendaftar</strong> di dalamnya secara
+                            permanen.
                         </p>
 
                         <div className="bg-yellow-50/80 text-yellow-800 p-4 rounded-xl text-sm text-left flex items-start gap-3 border border-yellow-200/60 mb-8">
-                            <AlertTriangle size={18} className="shrink-0 text-yellow-600 mt-0.5" />
+                            <AlertTriangle
+                                size={18}
+                                className="shrink-0 text-yellow-600 mt-0.5"
+                            />
                             <p className="leading-relaxed">
-                                Sangat disarankan untuk melakukan <strong className="font-bold">Export Excel</strong> terlebih dahulu untuk mencadangkan data pendaftaran.
+                                Sangat disarankan untuk melakukan{" "}
+                                <strong className="font-bold">Export Excel</strong>{" "}
+                                terlebih dahulu untuk mencadangkan data pendaftaran.
                             </p>
                         </div>
 
@@ -540,7 +676,11 @@ function AdminGelombang() {
                                 disabled={submitting}
                                 className="flex-1 py-3 rounded-xl text-sm font-bold text-white bg-red-600 hover:bg-red-700 transition-colors flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
                             >
-                                {submitting ? <Loader2 size={16} className="animate-spin" /> : "Ya, Hapus"}
+                                {submitting ? (
+                                    <Loader2 size={16} className="animate-spin" />
+                                ) : (
+                                    "Ya, Hapus"
+                                )}
                             </button>
                         </div>
                     </div>
@@ -555,8 +695,9 @@ function AdminGelombang() {
             />
 
             {/* CSS Scrollbar */}
-            <style dangerouslySetInnerHTML={{
-                __html: `
+            <style
+                dangerouslySetInnerHTML={{
+                    __html: `
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
@@ -570,7 +711,9 @@ function AdminGelombang() {
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background-color: #94a3b8;
         }
-      `}} />
+      `,
+                }}
+            />
         </>
     );
 }
@@ -579,9 +722,7 @@ function AdminGelombang() {
 function InfoCard({ icon, title, value, desc, color, bgIcon }) {
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex items-start gap-4">
-            <div className={`p-3 rounded-xl ${color} ${bgIcon}`}>
-                {icon}
-            </div>
+            <div className={`p-3 rounded-xl ${color} ${bgIcon}`}>{icon}</div>
             <div>
                 <p className="text-sm font-semibold text-gray-500 mb-1">{title}</p>
                 <div className="flex items-baseline gap-1">
@@ -597,7 +738,12 @@ function InfoCard({ icon, title, value, desc, color, bgIcon }) {
 function DownloadIcon() {
     return (
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 10v6m0 0l-3-3m3 3l3-3m-6 4h6m-6 4h6M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"></path>
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                d="M12 10v6m0 0l-3-3m3 3l3-3m-6 4h6m-6 4h6M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"
+            ></path>
         </svg>
     );
 }
