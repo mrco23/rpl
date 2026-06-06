@@ -82,8 +82,10 @@ export default function ApplicantRegisterPage() {
     const repeatRegex = /^(.)\1{4,}$/; // e.g. AAAAA
 
     // A. Nama Lengkap
-    if (
-      !d.namaLengkap ||
+    // Nama Lengkap
+    if (!d.namaLengkap) {
+      newErrors.namaLengkap = "Nama lengkap wajib diisi.";
+    } else if (
       d.namaLengkap.length < 3 ||
       d.namaLengkap.length > 100 ||
       !nameRegex.test(d.namaLengkap) ||
@@ -94,13 +96,16 @@ export default function ApplicantRegisterPage() {
     }
 
     // B. NISN
-    if (!/^\d{10}$/.test(d.nisn)) {
-      newErrors.nisn = "NISN SD harus berisi 10 digit angka.";
+    if (!d.nisn) {
+      newErrors.nisn = "NISN wajib diisi.";
+    } else if (!/^\d{10}$/.test(d.nisn)) {
+      newErrors.nisn = "NISN harus berisi 10 digit angka.";
     }
 
     // G. Asal Sekolah
-    if (
-      !d.asalSekolah ||
+    if (!d.asalSekolah) {
+      newErrors.asalSekolah = "Asal sekolah wajib diisi.";
+    } else if (
       /(SMA|SMK|MA\b|MAN\b|Paket C)/i.test(d.asalSekolah) ||
       !/(SD|MI|Sekolah Dasar)/i.test(d.asalSekolah)
     ) {
@@ -114,9 +119,11 @@ export default function ApplicantRegisterPage() {
       kecamatan: "Kecamatan",
       kelurahan: "Kelurahan",
     };
+
     Object.keys(alamatFields).forEach((f) => {
-      if (
-        !d[f] ||
+      if (!d[f]) {
+        newErrors[f] = `${alamatFields[f]} wajib diisi.`;
+      } else if (
         d[f].length < 3 ||
         !nameRegex.test(d[f]) ||
         repeatRegex.test(d[f].replace(/\s/g, ""))
@@ -126,21 +133,23 @@ export default function ApplicantRegisterPage() {
     });
 
     // J. RT/RW
-    if (!/^\d{3}\/\d{3}$/.test(d.rtRw)) {
+    if (!d.rtRw) {
+      newErrors.rtRw = "RT/RW wajib diisi.";
+    } else if (!/^\d{3}\/\d{3}$/.test(d.rtRw)) {
       newErrors.rtRw = "RT/RW harus menggunakan format 001/001.";
     }
 
     // K. Kode Pos
-    if (!d.kodePos || !/^\d+$/.test(d.kodePos)) {
-      newErrors.kodePos = "Kode pos wajib diisi dan hanya boleh berisi angka.";
+    if (!d.kodePos) {
+      newErrors.kodePos = "Kode pos wajib diisi.";
+    } else if (!/^\d+$/.test(d.kodePos)) {
+      newErrors.kodePos = "Kode pos hanya boleh berisi angka.";
     }
 
     // Tempat Lahir
-    if (
-      !d.tempatLahir ||
-      d.tempatLahir.length < 3 ||
-      !nameRegex.test(d.tempatLahir)
-    ) {
+    if (!d.tempatLahir) {
+      newErrors.tempatLahir = "Tempat lahir wajib diisi.";
+    } else if (d.tempatLahir.length < 3 || !nameRegex.test(d.tempatLahir)) {
       newErrors.tempatLahir = "Tempat lahir tidak valid.";
     }
 
@@ -155,7 +164,9 @@ export default function ApplicantRegisterPage() {
       if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         age--;
       }
-      if (birthDate >= today || age < 10 || age > 16) {
+      if (birthDate >= today) {
+        newErrors.tanggalLahir = "Tanggal lahir tidak valid.";
+      } else if (age < 11 || age > 30) {
         newErrors.tanggalLahir = "Pendaftar harus berusia minimal 11 tahun.";
       }
     }
@@ -166,23 +177,28 @@ export default function ApplicantRegisterPage() {
     }
 
     // D. Nomor HP
-    if (!/^(08|62)\d{8,13}$/.test(d.noHp)) {
-      newErrors.noHp = "Nomor HP harus berisi 10 sampai 15 digit angka.";
+    if (!d.noHp) {
+      newErrors.noHp = "Nomor handphone wajib diisi.";
+    } else if (!/^(08|62)\d{8,13}$/.test(d.noHp)) {
+      newErrors.noHp = "Nomor handphone tidak valid.";
     }
 
     // H. Nama Wali
-    if (
-      !d.namaWali ||
+    if (!d.namaWali) {
+      newErrors.namaWali = "Nama orang tua/wali wajib diisi.";
+    } else if (
       d.namaWali.length < 3 ||
       d.namaWali.length > 100 ||
       !nameRegex.test(d.namaWali) ||
       repeatRegex.test(d.namaWali.replace(/\s/g, ""))
     ) {
-      newErrors.namaWali = "Nama Wali harus diisi dengan nama yang valid.";
+      newErrors.namaWali = "Nama orang tua/wali tidak valid.";
     }
 
     // C. Email
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.emailWali)) {
+    if (!d.emailWali) {
+      newErrors.emailWali = "Email wajib diisi.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.emailWali)) {
       newErrors.emailWali = "Format email tidak valid.";
     }
 
