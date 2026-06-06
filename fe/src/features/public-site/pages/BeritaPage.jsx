@@ -64,7 +64,7 @@ export default function BeritaPage() {
       {/* HEADER BIRU */}
       <section className="w-full bg-blue-dark text-white rounded-b-3xl py-12 mb-10 text-center">
         <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-3">Berita Sekolah</h1>
+          <h1 className="text-4xl font-semibold mb-3">Berita Sekolah</h1>
           <p className="text-blue-light text-lg">Kabar terkini dan kegiatan SMP Katolik St. Rafael Manado</p>
         </div>
       </section>

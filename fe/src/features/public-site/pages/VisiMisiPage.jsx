@@ -71,7 +71,7 @@ function VisiMisiPage() {
         <NavbarAbout location='visi-misi' />
 
         {/* VISI SECTION */}
-        <section className="text-center py-20 px-6">
+        <section className="text-center py-15 px-6">
           <h2 className="text-5xl font-semibold mb-8">Visi</h2>
           {loading ? (
             <div className="max-w-3xl mx-auto space-y-3 animate-pulse">
