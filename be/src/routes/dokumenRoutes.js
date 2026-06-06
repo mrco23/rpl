@@ -9,10 +9,20 @@ const dokumenRoute = express.Router();
 dokumenRoute.get("/me", verifyToken, authorizeRole("pendaftar"), DokumenController.getMe);
 
 // Get dokumen pendaftar tertentu (untuk verifikator/admin)
-dokumenRoute.get("/pendaftar/:id_pendaftar", verifyToken, authorizeRole("admin", "verifikator"), DokumenController.getByPendaftar);
+dokumenRoute.get(
+    "/pendaftar/:id_pendaftar",
+    verifyToken,
+    authorizeRole("admin", "verifikator"),
+    DokumenController.getByPendaftar,
+);
 
 // Upload dokumen (untuk pendaftar)
-dokumenRoute.post("/upload", verifyToken, authorizeRole("pendaftar"), upload.single("file"), DokumenController.upload);
+dokumenRoute.patch(
+    "/upload",
+    verifyToken,
+    authorizeRole("pendaftar"),
+    upload.single("file"),
+    DokumenController.upload,
+);
 
 export default dokumenRoute;
-

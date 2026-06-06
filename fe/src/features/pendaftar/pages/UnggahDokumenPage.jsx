@@ -35,7 +35,7 @@ const DOKUMEN_WAJIB = [
     key: "Kartu Keluarga",
     title: "Kartu Keluarga",
     desc: "Dokumen kartu keluarga asli",
-    icon: ImageIcon,
+    icon: FileText,
   },
   {
     key: "Pas Foto",
@@ -148,15 +148,15 @@ export default function UnggahDokumenPage() {
           </div>
         </div>
 
-        {/* CATATAN DARI PANITIA */}
+        {/* CATATAN DARI VERIFIKATOR */}
         {hasCatatan ? (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-5 flex gap-4 items-start">
+          <div className="bg-yellow-50 border border-yellow-700 rounded-2xl p-5 flex gap-4 items-start">
             <div className="p-2 bg-yellow-100 rounded-xl text-yellow-700 shrink-0">
               <AlertCircle size={22} />
             </div>
             <div>
-              <h3 className="font-semibold text-yellow-900 mb-1">Catatan dari Panitia:</h3>
-              <p className="text-sm text-yellow-800 whitespace-pre-wrap leading-relaxed">{catatanDokumen}</p>
+              <h3 className="font-semibold text-yellow-900 mb-1">Catatan dari Verifikator :</h3>
+              <p className="text-base text-yellow-800 whitespace-pre-wrap font-bold leading-relaxed">{catatanDokumen}</p>
             </div>
           </div>
         ) : (
@@ -347,7 +347,7 @@ function DokumenCard({
         {isUploaded && (
           <button
             onClick={handleView}
-            className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer
+            className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold border transition-colors cursor-pointer
               ${isPerluPerbaiki
                 ? "border-orange-300 text-orange-600 bg-orange-50 hover:bg-orange-100"
                 : "border-blue-200 text-blue-dark bg-blue-50 hover:bg-blue-100"
@@ -362,7 +362,7 @@ function DokumenCard({
           <button
             onClick={triggerUpload}
             disabled={isUploading}
-            className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer disabled:opacity-50
+            className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer disabled:opacity-50
               ${isUploaded
                 ? "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
                 : "bg-blue-dark text-white hover:bg-[#253b80]"

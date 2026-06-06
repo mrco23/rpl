@@ -1,0 +1,20 @@
+meta {
+  name: Assigned Pendaftar
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/verifikator/pendaftar/2235/assign
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

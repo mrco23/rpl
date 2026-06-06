@@ -579,7 +579,7 @@ export default function VerifikatorVerifikasiPage() {
             <div className="p-6 border-t border-gray-100 bg-gray-50/80 rounded-b-2xl">
               <button
                 onClick={() => setIsBiodataModalOpen(false)}
-                className="w-full bg-[#253b80] text-white py-3 rounded-xl font-bold hover:bg-blue-800 transition-all cursor-pointer shadow-md"
+                className="w-full bg-blue-dark text-white py-2 rounded-lg font-semibold hover:bg-blue-dark-hover transition-all cursor-pointer shadow-md"
               >
                 TUTUP BIODATA
               </button>
