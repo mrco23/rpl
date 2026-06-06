@@ -9,8 +9,8 @@ import profileService from "../services/profileService";
 import { useAos } from "../../../shared/hooks/useAos";
 
 const HeroSkeleton = () => (
-  <section className="relative w-full min-h-[65vh] bg-gray-600 rounded-b-3xl">
-    <div className="relative z-10 flex flex-col justify-start pt-32 h-full max-w-7xl mx-auto px-8">
+  <section className="relative w-full min-h-[70vh] bg-gray-600 rounded-b-3xl">
+    <div className="relative z-10 flex flex-col justify-start pt-22 h-full max-w-7xl mx-auto px-8">
       <div className="w-1/2 h-12 md:h-16 bg-slate-200 rounded mb-4" />
       <div className="w-2/3 h-12 md:h-16 bg-slate-200 rounded mb-4" />
       <div className="w-full max-w-lg h-6 bg-slate-200 rounded mb-2" />
@@ -28,7 +28,7 @@ const HeroSkeleton = () => (
             className="bg-white border text-center border-gray-100 rounded-lg py-8 px-8 shadow-md relative w-full h-40"
           >
             <div className="w-16 h-12 bg-gray-200 mx-auto rounded mt-2 mb-3" />
-            <div className="w-24 h-4 bg-gray-200 mx-auto rounded" />
+            <div className="w-full h-4 bg-gray-200 mx-auto rounded" />
           </div>
         ))}
       </div>
@@ -143,10 +143,10 @@ export default function LandingPage() {
 
           <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 flex flex-col justify-start pt-15 md:pt-20 text-white">
             <div className="w-full text-left">
-              <h1 className="text-xl md:text-6xl font-bold mb-4 leading-tight">
+              <h1 className="text-xl md:text-5xl font-bold mb-4 leading-tight">
                 SMP KATOLIK <br className="hidden sm:block" /> ST. RAFAEL MANADO
               </h1>
-              <p className="text-sm md:text-lg mb-8 max-w-4xl opacity-90 leading-relaxed">
+              <p className="text-sm md:text-base mb-8 max-w-4xl opacity-90 leading-relaxed">
                 Mulai perjalanan pendidikan menengah Anda di SMP Katolik St. Rafael
                 Manado. Kami menyediakan lingkungan belajar yang mendukung prestasi
                 dan pertumbuhan karakter. Klik tombol di bawah untuk proses
