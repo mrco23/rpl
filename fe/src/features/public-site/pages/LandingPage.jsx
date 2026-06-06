@@ -155,13 +155,13 @@ export default function LandingPage() {
               <div className="flex gap-3 justify-start">
                 <button
                   onClick={handleRegister}
-                  className="bg-blue-dark px-6 py-2 cursor-pointer rounded-md text-sm md:text-lg font-medium hover:bg-blue-dark-hover transition"
+                  className="bg-blue-dark px-6 py-2 cursor-pointer rounded-md text-sm md:text-base font-medium hover:bg-blue-dark-hover transition"
                 >
                   Daftar Sekarang
                 </button>
                 <Link
                   to="/panduan"
-                  className="border border-white px-6 py-2 cursor-pointer rounded-md text-sm md:text-lg font-medium hover:bg-white hover:text-blue-dark transition"
+                  className="border border-white px-6 py-2 cursor-pointer rounded-md text-sm md:text-base font-medium hover:bg-white hover:text-blue-dark transition"
                 >
                   Pelajari Lebih Lanjut
                 </Link>
