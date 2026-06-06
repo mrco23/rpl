@@ -41,14 +41,14 @@ function Navbar() {
   return (
     <>
       <nav ref={dropdownRef} className="w-full sticky top-0 z-50 bg-white shadow-lg">
-        <div className="mx-5 h-16 flex items-center justify-between xl:justify-center gap-0 xl:gap-10">
+        <div className="mx-5 h-16 flex items-center justify-between xl:justify-center gap-0 xl:gap-7">
           {/* Logo */}
           <div className="flex items-center h-full gap-2 ml-2">
             <img src={logo} alt="logo" className="w-12 xl:w-14 h-auto object-contain" />
           </div>
 
           {/* Menu */}
-          <ul className="hidden lg:flex my-auto gap-10 text-gray-600 font-medium items-center">
+          <ul className="hidden lg:flex my-auto gap-6 text-gray-600 font-medium items-center">
             {/* Beranda */}
             <Li title="Beranda" to="/" />
 

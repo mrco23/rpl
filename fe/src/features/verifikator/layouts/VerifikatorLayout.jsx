@@ -11,7 +11,7 @@ function VerifikatorLayout() {
       {/* Mobile Toggle Button */}
       <button 
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-[60] p-2 bg-blue-dark text-white rounded-lg shadow-lg cursor-pointer"
+        className="lg:hidden fixed top-4 right-4 z-60 p-2 bg-blue-dark text-white rounded-lg shadow-lg cursor-pointer"
       >
         {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>

@@ -265,5 +265,9 @@ const status = {
 
 console.log(status["Hello Dunia"]); */
 
-const isFalse = false;
-console.log(!!isFalse ? "yes" : "no");
+const objek1 = {
+    objek2: {
+        name1: "jayjax",
+    },
+};
+console.log(objek1?.objek2);

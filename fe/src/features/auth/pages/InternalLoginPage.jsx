@@ -90,8 +90,8 @@ export default function InternalLoginPage() {
 
       navigate(roleRedirect[finalRole] || "/");
     } catch (err) {
-      console.log("ERROR:", err.response?.data);
-      setError(err.response?.data?.message || "Login gagal");
+      console.log("ERROR:", err.data?.message);
+      setError(err.message || "Login gagal");
     } finally {
       setSubmitting(false);
     }

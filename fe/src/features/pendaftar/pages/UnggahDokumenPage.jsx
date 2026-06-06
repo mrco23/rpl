@@ -354,7 +354,7 @@ function DokumenCard({
               }`}
           >
             <Eye size={13} />
-            {isPerluPerbaiki ? "Lihat Catatan" : "Lihat File"}
+            {"Lihat File"}
           </button>
         )}
 

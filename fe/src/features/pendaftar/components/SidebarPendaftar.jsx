@@ -79,7 +79,7 @@ function SidebarPendaftar({ onClose }) {
             to={item.path}
             onClick={onClose}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all cursor-pointer ${isActive(item.path)
-              ? "bg-white text-[#1f3fa6] font-bold shadow-md"
+              ? "bg-white text-[#1f3fa6] font-semibold shadow-md"
               : "text-white hover:bg-white/10"
               }`}
           >
