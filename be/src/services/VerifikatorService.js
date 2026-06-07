@@ -3,235 +3,254 @@ import bcrypt from "bcryptjs";
 import { STATUS_PENDAFTARAN, getStatusLabel } from "../constants/statusPendaftaran.js";
 
 export const getVerifikatorByUsername = async (username) => {
-	return await prisma.verifikator.findUnique({
-		where: { username },
-	});
+    return await prisma.verifikator.findUnique({
+        where: { username },
+    });
 };
 
 export const getVerifikatorById = async (id) => {
-	return await prisma.verifikator.findUnique({
-		where: { id_verifikator: Number(id) },
-	});
+    return await prisma.verifikator.findUnique({
+        where: { id_verifikator: Number(id) },
+    });
 };
 
 export const createVerifikator = async (data) => {
-	const { username, password, nama } = data;
-	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(password, salt);
+    const { username, password, nama } = data;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-	return await prisma.verifikator.create({
-		data: {
-			username,
-			password: hashedPassword,
-			nama,
-		},
-	});
+    return await prisma.verifikator.create({
+        data: {
+            username,
+            password: hashedPassword,
+            nama,
+        },
+    });
 };
 
 export const getBerandaData = async () => {
-	const totalPendaftar = await prisma.pendaftar.count();
-	const menungguVerifikasi = await prisma.pendaftar.count({
-		where: { status_pendaftaran: STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI },
-	});
-	const perluPerbaikan = await prisma.pendaftar.count({
-		where: { status_pendaftaran: STATUS_PENDAFTARAN.PERLU_PERBAIKAN },
-	});
-	const terverifikasi = await prisma.pendaftar.count({
-		where: { status_pendaftaran: STATUS_PENDAFTARAN.TERVERIFIKASI },
-	});
+    const totalPendaftar = await prisma.pendaftar.count();
+    const menungguVerifikasi = await prisma.pendaftar.count({
+        where: { status_pendaftaran: STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI },
+    });
+    const perluPerbaikan = await prisma.pendaftar.count({
+        where: { status_pendaftaran: STATUS_PENDAFTARAN.PERLU_PERBAIKAN },
+    });
+    const terverifikasi = await prisma.pendaftar.count({
+        where: { status_pendaftaran: STATUS_PENDAFTARAN.TERVERIFIKASI },
+    });
 
-	const card = [
-		{ status: "menunggu verifikasi", jumlah: menungguVerifikasi },
-		{ status: "perlu perbaikan", jumlah: perluPerbaikan },
-		{ status: "terverifikasi", jumlah: terverifikasi },
-		{ status: "total semua pendaftar", jumlah: totalPendaftar },
-	];
+    const card = [
+        { status: "menunggu verifikasi", jumlah: menungguVerifikasi },
+        { status: "perlu perbaikan", jumlah: perluPerbaikan },
+        { status: "terverifikasi", jumlah: terverifikasi },
+        { status: "total semua pendaftar", jumlah: totalPendaftar },
+    ];
 
-	const mapStatus = (status) => {
-		return getStatusLabel ? getStatusLabel(status) : status;
-	};
+    const mapStatus = (status) => {
+        return getStatusLabel ? getStatusLabel(status) : status;
+    };
 
-	const formatDate = (date) => {
-		if (!date) return null;
-		return date.toISOString().split("T")[0];
-	};
+    const formatDate = (date) => {
+        if (!date) return null;
+        return date.toISOString().split("T")[0];
+    };
 
-	const pendaftarTerbaruData = await prisma.pendaftar.findMany({
-		orderBy: { tanggal_daftar: "desc" },
-		take: 3,
-		select: { nama_lengkap: true, nisn: true, tanggal_daftar: true, status_pendaftaran: true },
-	});
+    const pendaftarTerbaruData = await prisma.pendaftar.findMany({
+        orderBy: { tanggal_daftar: "desc" },
+        take: 3,
+        select: {
+            nama_lengkap: true,
+            nisn: true,
+            tanggal_daftar: true,
+            status_pendaftaran: true,
+        },
+    });
 
-	const pendaftarTerbaru = pendaftarTerbaruData.map((p) => ({
-		nama: p.nama_lengkap,
-		nisn: p.nisn,
-		tanggalDaftar: formatDate(p.tanggal_daftar),
-		status: mapStatus(p.status_pendaftaran),
-	}));
+    const pendaftarTerbaru = pendaftarTerbaruData.map((p) => ({
+        nama: p.nama_lengkap,
+        nisn: p.nisn,
+        tanggalDaftar: formatDate(p.tanggal_daftar),
+        status: mapStatus(p.status_pendaftaran),
+    }));
 
-	const pendaftarYangPerluRevisiData = await prisma.pendaftar.findMany({
-		where: { status_pendaftaran: STATUS_PENDAFTARAN.PERLU_PERBAIKAN },
-		orderBy: { tanggal_daftar: "desc" },
-		take: 3,
-		select: { nama_lengkap: true, nisn: true, tanggal_daftar: true, status_pendaftaran: true },
-	});
+    const pendaftarYangPerluRevisiData = await prisma.pendaftar.findMany({
+        where: { status_pendaftaran: STATUS_PENDAFTARAN.PERLU_PERBAIKAN },
+        orderBy: { tanggal_daftar: "asc" },
+        take: 3,
+        select: {
+            nama_lengkap: true,
+            nisn: true,
+            tanggal_daftar: true,
+            status_pendaftaran: true,
+        },
+    });
 
-	const pendaftarYangPerluRevisi = pendaftarYangPerluRevisiData.map((p) => ({
-		nama: p.nama_lengkap,
-		nisn: p.nisn,
-		tanggalDaftar: formatDate(p.tanggal_daftar),
-		status: mapStatus(p.status_pendaftaran),
-	}));
+    const pendaftarYangPerluRevisi = pendaftarYangPerluRevisiData.map((p) => ({
+        nama: p.nama_lengkap,
+        nisn: p.nisn,
+        tanggalDaftar: formatDate(p.tanggal_daftar),
+        status: mapStatus(p.status_pendaftaran),
+    }));
 
-	return {
-		card,
-		pendaftarTerbaru,
-		pendaftarYangPerluRevisi,
-	};
+    return {
+        card,
+        pendaftarTerbaru,
+        pendaftarYangPerluRevisi,
+    };
 };
 
 export const getAllVerifikator = async () => {
-	return await prisma.verifikator.findMany({
-		orderBy: { id_verifikator: "desc" },
-		select: {
-			id_verifikator: true,
-			username: true,
-			nama: true,
-			status_aktif: true,
-		},
-	});
+    return await prisma.verifikator.findMany({
+        orderBy: { id_verifikator: "desc" },
+        select: {
+            id_verifikator: true,
+            username: true,
+            nama: true,
+            status_aktif: true,
+        },
+    });
 };
 
 export const updateVerifikator = async (id, data) => {
-	const { username, password, nama } = data;
-	const updateData = { username, nama };
+    const { username, password, nama } = data;
+    const updateData = { username, nama };
 
-	if (password) {
-		const salt = await bcrypt.genSalt(10);
-		updateData.password = await bcrypt.hash(password, salt);
-	}
+    if (password) {
+        const salt = await bcrypt.genSalt(10);
+        updateData.password = await bcrypt.hash(password, salt);
+    }
 
-	return await prisma.verifikator.update({
-		where: { id_verifikator: Number(id) },
-		data: updateData,
-	});
+    return await prisma.verifikator.update({
+        where: { id_verifikator: Number(id) },
+        data: updateData,
+    });
 };
 
 export const updateStatusVerifikator = async (id, status_aktif) => {
-	return await prisma.verifikator.update({
-		where: { id_verifikator: Number(id) },
-		data: { status_aktif },
-	});
+    return await prisma.verifikator.update({
+        where: { id_verifikator: Number(id) },
+        data: { status_aktif },
+    });
 };
 
 export const deleteVerifikator = async (id) => {
-	return await prisma.verifikator.delete({
-		where: { id_verifikator: Number(id) },
-	});
+    return await prisma.verifikator.delete({
+        where: { id_verifikator: Number(id) },
+    });
 };
 
 export const getPendaftarForVerifikator = async () => {
-	const data = await prisma.pendaftar.findMany({
-		where: {
-			status_pendaftaran: {
-				in: [STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI, STATUS_PENDAFTARAN.UNGGAH_ULANG, STATUS_PENDAFTARAN.PERLU_PERBAIKAN],
-			},
-		},
-		include: {
-			gelombang: true,
-			alamat: true,
-			verifikator: {
-				select: { nama: true },
-			},
-		},
-		orderBy: { tanggal_daftar: "desc" },
-	});
-	return data.map(p => {
-		const { kata_sandi, ...rest } = p;
-		return rest;
-	});
+    const data = await prisma.pendaftar.findMany({
+        where: {
+            status_pendaftaran: {
+                in: [
+                    STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI,
+                    STATUS_PENDAFTARAN.UNGGAH_ULANG,
+                    STATUS_PENDAFTARAN.PERLU_PERBAIKAN,
+                ],
+            },
+        },
+        include: {
+            gelombang: true,
+            alamat: true,
+            verifikator: {
+                select: { nama: true },
+            },
+        },
+        orderBy: { tanggal_daftar: "desc" },
+    });
+    return data.map((p) => {
+        const { kata_sandi, ...rest } = p;
+        return rest;
+    });
 };
 
 export const getAssignedPendaftar = async (idVerifikator) => {
-	const pendaftar = await prisma.pendaftar.findFirst({
-		where: { id_verifikator: Number(idVerifikator) },
-		include: {
-			gelombang: true,
-			dokumen: true,
-			alamat: true,
-		},
-	});
-	if (pendaftar) {
-		const { kata_sandi, ...rest } = pendaftar;
-		return rest;
-	}
-	return null;
+    const pendaftar = await prisma.pendaftar.findFirst({
+        where: { id_verifikator: Number(idVerifikator) },
+        include: {
+            gelombang: true,
+            dokumen: true,
+            alamat: true,
+        },
+    });
+    if (pendaftar) {
+        const { kata_sandi, ...rest } = pendaftar;
+        return rest;
+    }
+    return null;
 };
 
 export const assignPendaftar = async (idPendaftar, idVerifikator) => {
-	const pendaftar = await prisma.pendaftar.findUnique({
-		where: { id_pendaftar: Number(idPendaftar) },
-	});
+    const pendaftar = await prisma.pendaftar.findUnique({
+        where: { id_pendaftar: Number(idPendaftar) },
+    });
 
-	if (!pendaftar) throw new Error("Pendaftar tidak ditemukan");
+    if (!pendaftar) throw new Error("Pendaftar tidak ditemukan");
 
-	if (pendaftar.id_verifikator && pendaftar.id_verifikator !== Number(idVerifikator)) {
-		throw new Error("Pendaftar sedang diperiksa oleh verifikator lain");
-	}
+    if (pendaftar.id_verifikator && pendaftar.id_verifikator !== Number(idVerifikator)) {
+        throw new Error("Pendaftar sedang diperiksa oleh verifikator lain");
+    }
 
-	// Release any previous pendaftar this verifier was checking
-	await prisma.pendaftar.updateMany({
-		where: { id_verifikator: Number(idVerifikator) },
-		data: { id_verifikator: null },
-	});
+    // Release any previous pendaftar this verifier was checking
+    await prisma.pendaftar.updateMany({
+        where: { id_verifikator: Number(idVerifikator) },
+        data: { id_verifikator: null },
+    });
 
-	return await prisma.pendaftar.update({
-		where: { id_pendaftar: Number(idPendaftar) },
-		data: { id_verifikator: Number(idVerifikator) },
-	});
+    return await prisma.pendaftar.update({
+        where: { id_pendaftar: Number(idPendaftar) },
+        data: { id_verifikator: Number(idVerifikator) },
+    });
 };
 
 export const verifyPendaftar = async (idPendaftar, idVerifikator, status, catatan) => {
-	const pendaftar = await prisma.pendaftar.findUnique({
-		where: { id_pendaftar: Number(idPendaftar) },
-	});
+    const pendaftar = await prisma.pendaftar.findUnique({
+        where: { id_pendaftar: Number(idPendaftar) },
+    });
 
-	if (!pendaftar || pendaftar.id_verifikator !== Number(idVerifikator)) {
-		throw new Error(
-			"Anda tidak memiliki akses untuk memverifikasi pendaftar ini atau pendaftar tidak ditemukan",
-		);
-	}
+    if (!pendaftar || pendaftar.id_verifikator !== Number(idVerifikator)) {
+        throw new Error(
+            "Anda tidak memiliki akses untuk memverifikasi pendaftar ini atau pendaftar tidak ditemukan",
+        );
+    }
 
-	const allowedStatuses = [STATUS_PENDAFTARAN.TERVERIFIKASI, STATUS_PENDAFTARAN.PERLU_PERBAIKAN];
-	if (!allowedStatuses.includes(status)) {
-		throw new Error("Status verifikasi tidak valid. Hanya boleh 'terverifikasi' atau 'perlu perbaikan'");
-	}
+    const allowedStatuses = [
+        STATUS_PENDAFTARAN.TERVERIFIKASI,
+        STATUS_PENDAFTARAN.PERLU_PERBAIKAN,
+    ];
+    if (!allowedStatuses.includes(status)) {
+        throw new Error(
+            "Status verifikasi tidak valid. Hanya boleh 'terverifikasi' atau 'perlu perbaikan'",
+        );
+    }
 
-	return await prisma.pendaftar.update({
-		where: { id_pendaftar: Number(idPendaftar) },
-		data: {
-			status_pendaftaran: status,
-			catatan_dokumen: catatan,
-			id_verifikator: null,
-		},
-	});
+    return await prisma.pendaftar.update({
+        where: { id_pendaftar: Number(idPendaftar) },
+        data: {
+            status_pendaftaran: status,
+            catatan_dokumen: catatan,
+            id_verifikator: null,
+        },
+    });
 };
 
 export const cancelVerifikasi = async (idPendaftar, idVerifikator) => {
-	const pendaftar = await prisma.pendaftar.findUnique({
-		where: { id_pendaftar: Number(idPendaftar) },
-	});
+    const pendaftar = await prisma.pendaftar.findUnique({
+        where: { id_pendaftar: Number(idPendaftar) },
+    });
 
-	if (!pendaftar || pendaftar.id_verifikator !== Number(idVerifikator)) {
-		throw new Error(
-			"Anda tidak memiliki akses untuk membatalkan pendaftaran ini atau pendaftar tidak ditemukan",
-		);
-	}
+    if (!pendaftar || pendaftar.id_verifikator !== Number(idVerifikator)) {
+        throw new Error(
+            "Anda tidak memiliki akses untuk membatalkan pendaftaran ini atau pendaftar tidak ditemukan",
+        );
+    }
 
-	return await prisma.pendaftar.update({
-		where: { id_pendaftar: Number(idPendaftar) },
-		data: {
-			id_verifikator: null,
-		},
-	});
+    return await prisma.pendaftar.update({
+        where: { id_pendaftar: Number(idPendaftar) },
+        data: {
+            id_verifikator: null,
+        },
+    });
 };
