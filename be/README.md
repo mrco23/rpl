@@ -93,3 +93,107 @@ Gunakan Aplikasi [Bruno](https://www.usebruno.com) untuk menjalankan request pen
 ## ⚠️ Catatan Keamanan
 Karena file `.env` pernah terunggah ke dalam *version control* atau didistribusikan dalam *archive/project*, rahasia-rahasia asli (seperti `JWT_SECRET`, sandi database, atau API Keys) **harus dirotasi (diubah nilainya)** secara manual di environment produksi untuk menjaga keamanan sistem.
 
+---
+
+## 🗄️ TiDB — Primary Key Sequence untuk Tabel `pendaftar`
+
+### Latar Belakang
+
+Production database menggunakan **TiDB Cloud**. TiDB **tidak mengizinkan** penambahan atribut `AUTO_INCREMENT` ke kolom yang sudah ada melalui:
+
+```sql
+-- ❌ TIDAK AKAN BERHASIL di TiDB
+ALTER TABLE pendaftar MODIFY COLUMN id_pendaftar INT AUTO_INCREMENT;
+```
+
+Perintah tersebut akan gagal dengan error:
+> *"Unsupported modify column: can't set auto_increment"*
+
+Oleh karena itu, `id_pendaftar` di Prisma schema **tidak** menggunakan `@default(autoincrement())`. ID dibuat secara eksplisit di layer aplikasi menggunakan **TiDB SEQUENCE**.
+
+---
+
+### Solusi: TiDB Sequence
+
+Kode aplikasi menggunakan `prisma.$transaction()` untuk:
+1. Memanggil `SELECT NEXTVAL(seq_pendaftar_id)` via raw SQL untuk mendapatkan ID unik.
+2. Memvalidasi ID tersebut dengan `Number.isSafeInteger()`.
+3. Meneruskan `id_pendaftar` secara eksplisit ke `prisma.pendaftar.create()`.
+
+Pendekatan ini menjamin ID unik bahkan pada dua request yang masuk secara bersamaan, tanpa perlu `MAX(id) + 1` di sisi aplikasi.
+
+---
+
+### Setup Sekali — Jalankan di TiDB Cloud SQL Editor
+
+> ⚠️ Langkah ini hanya perlu dilakukan **satu kali** di database produksi.
+
+**Langkah 1** — Cari nilai `id_pendaftar` tertinggi saat ini:
+
+```sql
+SELECT COALESCE(MAX(id_pendaftar), 0) AS max_id
+FROM pendaftar;
+```
+
+**Langkah 2** — Buat sequence dengan `START WITH` = `max_id + 1`.
+*(Contoh di bawah menggunakan `START WITH 1` untuk tabel kosong. Sesuaikan nilainya.)*
+
+```sql
+CREATE SEQUENCE IF NOT EXISTS seq_pendaftar_id
+    START WITH 1        -- Ganti dengan MAX(id_pendaftar) + 1
+    INCREMENT BY 1
+    CACHE 100;
+```
+
+Lihat file [`scripts/create-pendaftar-sequence.sql`](./scripts/create-pendaftar-sequence.sql) untuk script lengkap beserta komentar panduan.
+
+---
+
+### Verifikasi Sequence
+
+Setelah sequence dibuat, konfirmasi bahwa sequence berfungsi dengan menjalankan:
+
+```sql
+SELECT NEXTVAL(seq_pendaftar_id) AS next_id;
+```
+
+Nilai yang dikembalikan harus berupa integer positif yang lebih besar dari `MAX(id_pendaftar)` yang ada.
+
+---
+
+### Menyinkronkan Ulang Sequence (jika diperlukan)
+
+Jika data diimpor langsung ke tabel tanpa melalui sequence, gunakan `SETVAL()` untuk memperbarui posisi sequence:
+
+```sql
+-- Ganti 100 dengan nilai MAX(id_pendaftar) aktual
+SELECT SETVAL(seq_pendaftar_id, 100);
+```
+
+Pemanggilan `NEXTVAL` berikutnya akan mengembalikan `101`.
+
+---
+
+### ⛔ Anti-pattern — Jangan Lakukan Ini
+
+| Larangan | Alasan |
+|---|---|
+| `ALTER TABLE ... MODIFY COLUMN id_pendaftar INT AUTO_INCREMENT` | Tidak didukung TiDB untuk kolom yang sudah ada |
+| `MAX(id_pendaftar) + 1` di aplikasi | Race condition — dua request bersamaan bisa mendapat ID yang sama |
+| `prisma migrate reset` di produksi | Menghapus semua data dan sequence |
+| Drop tabel `pendaftar` | Menghapus data pendaftar nyata |
+
+---
+
+### Error Handling
+
+Jika sequence belum dibuat di TiDB, aplikasi akan mengembalikan:
+
+```json
+{
+  "message": "Terjadi gangguan pada penyimpanan data pendaftaran. Silakan hubungi administrator."
+}
+```
+
+dengan HTTP status `500`. Log server akan mencatat kode Prisma error (`P2011`) beserta `meta` — tanpa membocorkan password, payload, token, atau environment variable.
+

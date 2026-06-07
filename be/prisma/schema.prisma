@@ -122,7 +122,7 @@ model Kontak {
 }
 
 model Pendaftar {
-  id_pendaftar         Int                   @id @default(autoincrement())
+  id_pendaftar         Int                   @id
   nama_lengkap         String                @db.VarChar(150)
   kata_sandi           String?               @db.VarChar(255)
   nisn                 String?               @unique @db.VarChar(20)
