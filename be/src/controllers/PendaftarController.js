@@ -37,9 +37,34 @@ class PendaftarController {
 				data: pendaftar,
 			});
 		} catch (error) {
-			return res.status(400).json({
-				message: "Gagal melakukan registrasi",
-				error: error.message,
+			// Log the original error for diagnostics — never expose it to users
+			console.error("[register] error:", {
+				message: error.message,
+				code: error.code,
+				meta: error.meta,
+			});
+
+			// Prisma unique-constraint violation
+			if (error.code === "P2002") {
+				const fields = error.meta?.target ?? [];
+				if (fields.includes("email")) {
+					return res.status(409).json({ message: "Email sudah digunakan oleh pendaftar lain." });
+				}
+				if (fields.includes("nisn")) {
+					return res.status(409).json({ message: "NISN sudah digunakan oleh pendaftar lain." });
+				}
+				return res.status(409).json({ message: "Data pendaftar sudah pernah digunakan." });
+			}
+
+			// Known service-level errors (closed batch, full quota, duplicate NISN/email)
+			const knownStatus = error.statusCode;
+			if (knownStatus === 400 || knownStatus === 409) {
+				return res.status(knownStatus).json({ message: error.message });
+			}
+
+			// Unknown / unexpected errors → 500
+			return res.status(500).json({
+				message: "Terjadi kesalahan pada server saat melakukan registrasi.",
 			});
 		}
 	};

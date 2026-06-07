@@ -70,9 +70,15 @@ httpClient.interceptors.response.use(
     const status =
       error.response?.status || "NETWORK_ERROR";
 
-    console.error(
-      `[API Error] ${method} ${url} ${status} ${normalizedError.message}`
-    );
+    // Log structured fields — never include request payload (may contain passwords)
+    console.error("[API Error]", {
+      method,
+      url,
+      status,
+      message: normalizedError.message,
+      detail: normalizedError.error || undefined,
+      validationErrors: normalizedError.errors || undefined,
+    });
 
     return Promise.reject(normalizedError);
   }

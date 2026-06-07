@@ -46,8 +46,8 @@ export default function PendaftarPage() {
         const checkGelombang = async () => {
             setGelombangLoading(true);
             try {
-                const data = await waveApi.getActiveWave();
-                setGelombangAktif(data || null);
+                const response = await waveApi.getActiveWave();
+                setGelombangAktif(response.data || null);
             } catch {
                 setGelombangAktif(null);
             } finally {

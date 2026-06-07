@@ -2,12 +2,23 @@ import prisma from "../config/prisma.js";
 import bcrypt from "bcryptjs";
 import { STATUS_PENDAFTARAN } from "../constants/statusPendaftaran.js";
 
+/**
+ * Returns a copy of `date` with time set to 23:59:59.999.
+ * This makes `tanggal_selesai` inclusive for the entire final calendar day.
+ */
+export const getEndOfDay = (date) => {
+	const d = new Date(date);
+	d.setHours(23, 59, 59, 999);
+	return d;
+};
+
 export const register = async (payload) => {
 	const now = new Date();
+	// Use end-of-day boundary so registrations on the last calendar day still work
 	const activeGelombang = await prisma.gelombang.findFirst({
 		where: {
 			tanggal_mulai: { lte: now },
-			tanggal_selesai: { gte: now },
+			tanggal_selesai: { gte: new Date(new Date().setHours(0, 0, 0, 0)) },
 		},
 		include: {
 			_count: {
@@ -16,7 +27,13 @@ export const register = async (payload) => {
 		},
 	});
 
-	if (!activeGelombang) {
+	// Secondary check: ensure we are still within today (up to 23:59:59.999)
+	const isWithinBatch =
+		activeGelombang &&
+		now <= getEndOfDay(activeGelombang.tanggal_selesai) &&
+		now >= new Date(activeGelombang.tanggal_mulai);
+
+	if (!isWithinBatch) {
 		const error = new Error("Pendaftaran saat ini ditutup");
 		error.statusCode = 400;
 		throw error;
@@ -38,14 +55,30 @@ export const register = async (payload) => {
 		!payload.no_hp ||
 		!payload.asal_sekolah
 	) {
-		throw new Error(
+		const error = new Error(
 			"Field wajib belum lengkap. Pastikan nama_lengkap, alamat, jenis_kelamin, no_hp, asal_sekolah terisi.",
 		);
+		error.statusCode = 400;
+		throw error;
+	}
+
+	// Explicit email duplicate check
+	if (payload.email) {
+		const existingEmail = await prisma.pendaftar.findFirst({ where: { email: payload.email } });
+		if (existingEmail) {
+			const error = new Error("Email sudah digunakan oleh pendaftar lain.");
+			error.statusCode = 409;
+			throw error;
+		}
 	}
 
 	if (payload.nisn) {
 		const existingNisn = await prisma.pendaftar.findUnique({ where: { nisn: payload.nisn } });
-		if (existingNisn) throw new Error("NISN sudah digunakan");
+		if (existingNisn) {
+			const error = new Error("NISN sudah digunakan oleh pendaftar lain.");
+			error.statusCode = 409;
+			throw error;
+		}
 	}
 
 	let hashedKataSandi = null;

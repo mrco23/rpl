@@ -1,11 +1,16 @@
 import prisma from "../config/prisma.js";
+import { getEndOfDay } from "./PendaftarService.js";
 
 export const getAktif = async () => {
     const now = new Date();
+    const startOfToday = new Date(now);
+    startOfToday.setHours(0, 0, 0, 0);
+
     const gelombang = await prisma.gelombang.findFirst({
         where: {
             tanggal_mulai: { lte: now },
-            tanggal_selesai: { gte: now }
+            // Treat tanggal_selesai as active until 23:59:59.999 of that day
+            tanggal_selesai: { gte: startOfToday },
         },
         include: {
             _count: {
@@ -15,6 +20,8 @@ export const getAktif = async () => {
     });
 
     if (gelombang) {
+        // Ensure we are still within the batch end day
+        if (now > getEndOfDay(gelombang.tanggal_selesai)) return null;
         return {
             ...gelombang,
             totalPendaftar: gelombang._count.pendaftar
@@ -163,16 +170,20 @@ export const remove = async (id) => {
 };
 
 export const checkActive = async (id) => {
-    const now = new Date()
+    const now = new Date();
+    const startOfToday = new Date(now);
+    startOfToday.setHours(0, 0, 0, 0);
+
     const gelombang = await prisma.gelombang.findFirst({
         where: {
             id_gelombang: Number(id),
             tanggal_mulai: { lte: now },
-            tanggal_selesai: { gte: now }
+            tanggal_selesai: { gte: startOfToday },
         }
-    })
-    return !!gelombang;
-
+    });
+    if (!gelombang) return false;
+    // Verify we are within the final day boundary
+    return now <= getEndOfDay(gelombang.tanggal_selesai);
 }
 
 export const ajukanValidasi = async (id) => {
