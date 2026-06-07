@@ -61,10 +61,7 @@ export const exportRekapitulasiPdf = async (req, res) => {
 
         // 3. Setup response
         res.setHeader("Content-Type", "application/pdf");
-        res.setHeader(
-            "Content-Disposition",
-            `attachment; filename="${safeFilename}"`,
-        );
+        res.setHeader("Content-Disposition", `attachment; filename="${safeFilename}"`);
 
         // 4. Buat dokumen PDF
         const doc = createPdfDoc();
@@ -111,7 +108,10 @@ export const exportRekapitulasiPdf = async (req, res) => {
         await doc.table(ringkasanTable, {
             x: contentX,
             width: contentWidth,
-            columnsSize: [Math.round(contentWidth * 0.68), Math.round(contentWidth * 0.32)],
+            columnsSize: [
+                Math.round(contentWidth * 0.68),
+                Math.round(contentWidth * 0.32),
+            ],
             prepareHeader: () => doc.fontSize(9).font("Helvetica-Bold"),
             prepareRow: () => doc.fontSize(9).font("Helvetica"),
         });
@@ -124,9 +124,7 @@ export const exportRekapitulasiPdf = async (req, res) => {
             (idx + 1).toString(),
             getStatusLabel(s.status),
             s.jumlah.toString(),
-            jumlahPendaftar > 0
-                ? formatPct((s.jumlah / jumlahPendaftar) * 100)
-                : "0%",
+            jumlahPendaftar > 0 ? formatPct((s.jumlah / jumlahPendaftar) * 100) : "0%",
         ]);
 
         const statusTable = {
@@ -215,13 +213,11 @@ export const exportRekapitulasiPdf = async (req, res) => {
             .font("Helvetica-Bold")
             .text("Kesimpulan", contentX, doc.y, { width: contentWidth });
         doc.moveDown(0.3);
-        doc.fontSize(10)
-            .font("Helvetica")
-            .text(kesimpulan, contentX, doc.y, {
-                width: contentWidth,
-                align: "justify",
-                lineGap: 3,
-            });
+        doc.fontSize(10).font("Helvetica").text(kesimpulan, contentX, doc.y, {
+            width: contentWidth,
+            align: "justify",
+            lineGap: 3,
+        });
 
         // ── TANDA TANGAN ──────────────────────────────────────────────────────
         drawSignature(doc, kop.namaKepsek);
@@ -254,10 +250,7 @@ export const exportFinalPenerimaanPdf = async (req, res) => {
         const safeFilename = `laporan-final-penerimaan-${sanitizeFilename(namaGelombang)}.pdf`;
 
         res.setHeader("Content-Type", "application/pdf");
-        res.setHeader(
-            "Content-Disposition",
-            `attachment; filename="${safeFilename}"`,
-        );
+        res.setHeader("Content-Disposition", `attachment; filename="${safeFilename}"`);
 
         const doc = createPdfDoc();
         doc.pipe(res);
@@ -276,24 +269,15 @@ export const exportFinalPenerimaanPdf = async (req, res) => {
         // ── TABEL SISWA LULUS ─────────────────────────────────────────────────
         const rows = pendaftar.map((p, idx) => [
             (idx + 1).toString(),
-            p.id_pendaftar.toString(),
             p.nama_lengkap || "-",
             p.nisn || "-",
             p.asal_sekolah || "-",
-            getStatusLabel(p.status_pendaftaran),
         ]);
 
         const table = {
             title: `Daftar Pendaftar Lulus — ${namaGelombang}`,
-            headers: [
-                "No.",
-                "No. Pendaftaran",
-                "Nama Lengkap",
-                "NISN",
-                "Asal Sekolah",
-                "Status",
-            ],
-            rows: rows.length > 0 ? rows : [["–", "–", "Belum ada data", "–", "–", "–"]],
+            headers: ["No.", "Nama Lengkap", "NISN", "Asal Sekolah"],
+            rows: rows.length > 0 ? rows : [["–", "Belum ada data", "–", "–"]],
         };
 
         const { contentX: cx, contentWidth: fcw } = getPageLayout(doc);
@@ -301,7 +285,7 @@ export const exportFinalPenerimaanPdf = async (req, res) => {
         await doc.table(table, {
             x: cx,
             width: fcw,
-            columnsSize: [28, 72, Math.round(fcw * 0.30), 68, Math.round(fcw * 0.22), 52],
+            columnsSize: [28, Math.round(fcw * 0.3), 85, Math.round(fcw * 0.44)],
             prepareHeader: () => doc.fontSize(9).font("Helvetica-Bold"),
             prepareRow: () => doc.fontSize(9).font("Helvetica"),
         });

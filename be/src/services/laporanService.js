@@ -120,8 +120,7 @@ export const getRekapitulasiData = async (idGelombang) => {
         }))
         .sort((a, b) => b.jumlahPendaftar - a.jumlahPendaftar);
 
-    const asalTerbanyak =
-        rekapAsalSekolah.length > 0 ? rekapAsalSekolah[0] : null;
+    const asalTerbanyak = rekapAsalSekolah.length > 0 ? rekapAsalSekolah[0] : null;
 
     return {
         gelombang,
@@ -165,13 +164,11 @@ export const getFinalPenerimaanData = async (idGelombang) => {
             status_pendaftaran: STATUS_PENDAFTARAN.LULUS,
         },
         select: {
-            id_pendaftar: true,
             nisn: true,
             nama_lengkap: true,
             asal_sekolah: true,
-            status_pendaftaran: true,
         },
-        orderBy: { nama_lengkap: "asc" },
+        orderBy: { asal_sekolah: "asc" },
     });
 
     return { gelombang, pendaftar };

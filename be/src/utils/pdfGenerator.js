@@ -73,7 +73,7 @@ export const drawKopSurat = (doc, kopData) => {
     const { contentX, contentWidth } = getPageLayout(doc);
     const logoPath = path.join(process.cwd(), "public", "logo.png");
     const logoExists = fs.existsSync(logoPath);
-    const logoSize = 65; // width & height logo
+    const logoSize = 58; // width & height logo
     const logoY = doc.y;
 
     // Gambar logo di sebelah kiri area cetak
@@ -109,12 +109,10 @@ export const drawKopSurat = (doc, kopData) => {
         align: "center",
     });
 
-    doc.text(
-        `${kopData.telepon || "-"} | ${kopData.email || "-"}`,
-        contentX,
-        doc.y + 2,
-        { width: contentWidth, align: "center" },
-    );
+    doc.text(`${kopData.telepon || "-"} | ${kopData.email || "-"}`, contentX, doc.y + 2, {
+        width: contentWidth,
+        align: "center",
+    });
 
     // Garis ganda horizontal simetris setelah KOP
     // Pastikan garis tidak lebih tinggi dari logo
@@ -221,14 +219,13 @@ export const drawSignature = (doc, namaKepsek) => {
         align: "right",
     });
 
-    doc.moveDown(3.5);
+    doc.moveDown(5.5);
 
-    doc.font("Helvetica-Bold").text(
-        namaKepsek || "Kepala Sekolah",
-        contentX,
-        doc.y,
-        { width: contentWidth, align: "right", underline: true },
-    );
+    doc.font("Helvetica-Bold").text(namaKepsek || "Kepala Sekolah", contentX, doc.y, {
+        width: contentWidth,
+        align: "right",
+        underline: true,
+    });
 };
 
 // ─── FACTORY PDF ──────────────────────────────────────────────────────────────
@@ -238,4 +235,8 @@ export const drawSignature = (doc, namaKepsek) => {
  * @returns {PDFDocument}
  */
 export const createPdfDoc = () =>
-    new PDFDocument({ margin: 50, size: "A4", autoFirstPage: true });
+    new PDFDocument({
+        margin: { top: 30, bottom: 30, left: 60, right: 60 },
+        size: "A4",
+        autoFirstPage: true,
+    });

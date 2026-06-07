@@ -443,7 +443,7 @@ export default function PendaftarPage() {
                         </p>
                         <button
                             onClick={() => navigate("/")}
-                            className="px-8 py-3 bg-blue-dark text-white rounded-xl font-semibold hover:bg-blue-dark-hover transition shadow-md cursor-pointer"
+                            className="px-8 py-2 bg-blue-dark text-white rounded-lg font-semibold hover:bg-blue-dark-hover transition shadow-md cursor-pointer"
                         >
                             Kembali ke Beranda
                         </button>
@@ -883,8 +883,8 @@ export default function PendaftarPage() {
                                         className="w-full px-4 py-3 bg-gray-100 border border-gray-200 text-gray-600 font-medium rounded-xl cursor-not-allowed"
                                     />
                                     <p className="text-xs text-gray-500 mt-1 font-medium">
-                                        * NISN Anda otomatis digunakan sebagai username
-                                        login.
+                                        * NISN Anda otomatis digunakan sebagai Nama
+                                        Pengguna login.
                                     </p>
                                 </div>
 
