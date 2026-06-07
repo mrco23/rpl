@@ -20,11 +20,6 @@ export const register = async (payload) => {
 			tanggal_mulai: { lte: now },
 			tanggal_selesai: { gte: new Date(new Date().setHours(0, 0, 0, 0)) },
 		},
-		include: {
-			_count: {
-				select: { pendaftar: true },
-			},
-		},
 	});
 
 	// Secondary check: ensure we are still within today (up to 23:59:59.999)
@@ -38,16 +33,6 @@ export const register = async (payload) => {
 		error.statusCode = 400;
 		throw error;
 	}
-
-	// Validasi kuota gelombang
-	if (activeGelombang._count.pendaftar >= activeGelombang.kuota) {
-		const error = new Error(
-			"Kuota pendaftaran pada gelombang ini sudah penuh. Silakan pantau informasi gelombang berikutnya.",
-		);
-		error.statusCode = 400;
-		throw error;
-	}
-
 	if (
 		!payload.nama_lengkap ||
 		!payload.alamat ||
@@ -87,53 +72,33 @@ export const register = async (payload) => {
 		hashedKataSandi = await bcrypt.hash(payload.kata_sandi, salt);
 	}
 
-	// Use a Prisma transaction so the sequence fetch and the insert are atomic.
-	// TiDB does not allow adding AUTO_INCREMENT to an existing column, so we use
-	// a SEQUENCE object (seq_pendaftar_id) created once in TiDB Cloud SQL Editor.
-	return prisma.$transaction(async (tx) => {
-		// Fetch the next unique ID from the TiDB sequence via raw SQL.
-		// NEXTVAL is a TiDB-specific function — no application-side MAX(id)+1.
-		const seqResult = await tx.$queryRaw`SELECT NEXTVAL(seq_pendaftar_id) AS id_pendaftar`;
-
-		// $queryRaw may return BigInt for numeric columns — convert to JS number safely.
-		const id_pendaftar = Number(seqResult[0].id_pendaftar);
-
-		if (!Number.isSafeInteger(id_pendaftar) || id_pendaftar <= 0) {
-			const err = new Error(
-				"Gagal memperoleh ID pendaftar dari sequence. Pastikan sequence seq_pendaftar_id sudah dibuat di TiDB.",
-			);
-			err.statusCode = 500;
-			throw err;
-		}
-
-		return tx.pendaftar.create({
-			data: {
-				id_pendaftar,
-				nama_lengkap: payload.nama_lengkap,
-				kata_sandi: hashedKataSandi,
-				nisn: payload.nisn || null,
-				tempat_lahir: payload.tempat_lahir || null,
-				tanggal_lahir: payload.tanggal_lahir ? new Date(payload.tanggal_lahir) : null,
-				jenis_kelamin: payload.jenis_kelamin,
-				no_hp: payload.no_hp,
-				asal_sekolah: payload.asal_sekolah,
-				email: payload.email || null,
-				nama_wali: payload.nama_wali || null,
-				id_gelombang: activeGelombang.id_gelombang,
-				status_pendaftaran: STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI,
-				alamat: {
-					create: {
-						provinsi: payload.alamat.provinsi,
-						kota_kabupaten: payload.alamat.kota_kabupaten,
-						kecamatan: payload.alamat.kecamatan,
-						kelurahan: payload.alamat.kelurahan,
-						rt_rw: payload.alamat.rt_rw,
-						kode_pos: payload.alamat.kode_pos,
-					},
+	// Biarkan database mengisi id_pendaftar secara otomatis via auto increment
+	return prisma.pendaftar.create({
+		data: {
+			nama_lengkap: payload.nama_lengkap,
+			kata_sandi: hashedKataSandi,
+			nisn: payload.nisn || null,
+			tempat_lahir: payload.tempat_lahir || null,
+			tanggal_lahir: payload.tanggal_lahir ? new Date(payload.tanggal_lahir) : null,
+			jenis_kelamin: payload.jenis_kelamin,
+			no_hp: payload.no_hp,
+			asal_sekolah: payload.asal_sekolah,
+			email: payload.email || null,
+			nama_wali: payload.nama_wali || null,
+			id_gelombang: activeGelombang.id_gelombang,
+			status_pendaftaran: STATUS_PENDAFTARAN.MENUNGGU_VERIFIKASI,
+			alamat: {
+				create: {
+					provinsi: payload.alamat.provinsi,
+					kota_kabupaten: payload.alamat.kota_kabupaten,
+					kecamatan: payload.alamat.kecamatan,
+					kelurahan: payload.alamat.kelurahan,
+					rt_rw: payload.alamat.rt_rw,
+					kode_pos: payload.alamat.kode_pos,
 				},
 			},
-			include: { alamat: true },
-		});
+		},
+		include: { alamat: true },
 	});
 };
 

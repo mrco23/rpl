@@ -66,17 +66,7 @@ class PendaftarController {
                     .json({ message: "Data pendaftar sudah pernah digunakan." });
             }
 
-            // Prisma null-constraint violation (P2011)
-            // This occurs when id_pendaftar could not be obtained from the TiDB sequence
-            // (e.g. the sequence object seq_pendaftar_id has not been created yet).
-            if (error.code === "P2011") {
-                return res.status(500).json({
-                    message:
-                        "Terjadi gangguan pada penyimpanan data pendaftaran. Silakan hubungi administrator.",
-                });
-            }
-
-            // Known service-level errors (closed batch, full quota, duplicate NISN/email)
+            // Known service-level errors (closed batch, duplicate NISN/email)
             const knownStatus = error.statusCode;
             if (knownStatus === 400 || knownStatus === 409) {
                 return res.status(knownStatus).json({ message: error.message });
