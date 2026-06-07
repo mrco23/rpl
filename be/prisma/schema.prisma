@@ -93,14 +93,14 @@ model Fasilitas {
 }
 
 model Gelombang {
-  id_gelombang    Int         @id @default(autoincrement())
-  nama            String      @db.VarChar(100)
-  tanggal_mulai   DateTime    @db.DateTime(3)
-  tanggal_selesai DateTime    @db.DateTime(3)
-  kuota           Int
-  status_validasi String      @default("belum_diajukan") @db.VarChar(50)
-  tanggal_validasi DateTime?  @db.DateTime(3)
-  pendaftar       Pendaftar[]
+  id_gelombang     Int         @id @default(autoincrement())
+  nama             String      @db.VarChar(100)
+  tanggal_mulai    DateTime    @db.DateTime(3)
+  tanggal_selesai  DateTime    @db.DateTime(3)
+  kuota            Int
+  status_validasi  String      @default("belum_diajukan") @db.VarChar(50)
+  tanggal_validasi DateTime?   @db.DateTime(3)
+  pendaftar        Pendaftar[]
 
   @@map("gelombang")
 }
@@ -122,7 +122,7 @@ model Kontak {
 }
 
 model Pendaftar {
-  id_pendaftar         Int                   @id
+  id_pendaftar         Int                   @id @default(autoincrement())
   nama_lengkap         String                @db.VarChar(150)
   kata_sandi           String?               @db.VarChar(255)
   nisn                 String?               @unique @db.VarChar(20)
