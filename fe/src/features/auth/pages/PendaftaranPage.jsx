@@ -171,9 +171,8 @@ export default function PendaftarPage() {
                 }
                 if (birthDate >= today) {
                     newErrors.tanggalLahir = "Tanggal lahir tidak valid.";
-                } else if (age < 10 || age > 16) {
-                    newErrors.tanggalLahir =
-                        "Usia pendaftar harus berada pada rentang 10 sampai 16 tahun.";
+                } else if (age <= 11) {
+                    newErrors.tanggalLahir = "Usia pendaftar harus minimal 11 tahun.";
                 }
             }
         }
@@ -333,10 +332,21 @@ export default function PendaftarPage() {
                 };
 
                 const step1Fields = new Set([
-                    "namaLengkap", "nisn", "provinsi", "kotaKabupaten",
-                    "kecamatan", "kelurahan", "rtRw", "kodePos",
-                    "tempatLahir", "tanggalLahir", "jenisKelamin",
-                    "noHp", "asalSekolah", "namaWali", "emailWali",
+                    "namaLengkap",
+                    "nisn",
+                    "provinsi",
+                    "kotaKabupaten",
+                    "kecamatan",
+                    "kelurahan",
+                    "rtRw",
+                    "kodePos",
+                    "tempatLahir",
+                    "tanggalLahir",
+                    "jenisKelamin",
+                    "noHp",
+                    "asalSekolah",
+                    "namaWali",
+                    "emailWali",
                 ]);
 
                 const mappedErrors = {};
@@ -349,7 +359,7 @@ export default function PendaftarPage() {
 
                 // Kembalikan ke step 1 jika ada error field biodata
                 const hasStep1Error = Object.keys(mappedErrors).some((key) =>
-                    step1Fields.has(key)
+                    step1Fields.has(key),
                 );
                 if (hasStep1Error) {
                     setStep(1);
