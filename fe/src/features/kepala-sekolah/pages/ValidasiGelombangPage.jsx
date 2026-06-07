@@ -134,9 +134,9 @@ export default function ValidasiGelombangPage() {
             {data.length === 0 ? (
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
                     <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <CheckCircle2 size={32} className="text-green-500" />
+                        <CheckCircle2 size={32} className="text-green-700" />
                     </div>
-                    <h3 className="text-gray-800 font-bold text-lg mb-1">
+                    <h3 className="text-gray-800 font-semibold text-lg mb-1">
                         Semua Bersih!
                     </h3>
                     <p className="text-gray-400 text-sm">
