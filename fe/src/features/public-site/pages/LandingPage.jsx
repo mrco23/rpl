@@ -144,7 +144,7 @@ export default function LandingPage() {
                     </div>
 
                     <div className="relative z-10 w-full max-w-7xl m-auto px-6 sm:px-10 flex flex-col justify-start text-white">
-                        <div className="w-full text-left">
+                        <div className="w-full text-left flex flex-col gap-0 md:gap-5">
                             <h1 className="text-xl md:text-5xl font-bold mb-4 leading-tight">
                                 SMP KATOLIK <br className="hidden sm:block" /> ST. RAFAEL
                                 MANADO
