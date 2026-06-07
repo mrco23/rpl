@@ -9,10 +9,24 @@ export const register = async (payload) => {
 			tanggal_mulai: { lte: now },
 			tanggal_selesai: { gte: now },
 		},
+		include: {
+			_count: {
+				select: { pendaftar: true },
+			},
+		},
 	});
 
 	if (!activeGelombang) {
 		const error = new Error("Pendaftaran saat ini ditutup");
+		error.statusCode = 400;
+		throw error;
+	}
+
+	// Validasi kuota gelombang
+	if (activeGelombang._count.pendaftar >= activeGelombang.kuota) {
+		const error = new Error(
+			"Kuota pendaftaran pada gelombang ini sudah penuh. Silakan pantau informasi gelombang berikutnya.",
+		);
 		error.statusCode = 400;
 		throw error;
 	}

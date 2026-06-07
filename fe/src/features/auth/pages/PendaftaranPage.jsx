@@ -141,8 +141,8 @@ export default function PendaftarPage() {
         // K. Kode Pos
         if (!d.kodePos) {
             newErrors.kodePos = "Kode pos wajib diisi.";
-        } else if (!/^\d+$/.test(d.kodePos)) {
-            newErrors.kodePos = "Kode pos hanya boleh berisi angka.";
+        } else if (!/^\d{5}$/.test(d.kodePos)) {
+            newErrors.kodePos = "Kode pos harus berisi 5 digit angka.";
         }
 
         // Tempat Lahir
@@ -157,16 +157,24 @@ export default function PendaftarPage() {
             newErrors.tanggalLahir = "Tanggal lahir wajib diisi.";
         } else {
             const birthDate = new Date(d.tanggalLahir);
-            const today = new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
-            if (birthDate >= today) {
+            if (Number.isNaN(birthDate.getTime())) {
                 newErrors.tanggalLahir = "Tanggal lahir tidak valid.";
-            } else if (age < 11 || age > 30) {
-                newErrors.tanggalLahir = "Pendaftar harus berusia minimal 11 tahun.";
+            } else {
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                if (
+                    monthDiff < 0 ||
+                    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+                ) {
+                    age--;
+                }
+                if (birthDate >= today) {
+                    newErrors.tanggalLahir = "Tanggal lahir tidak valid.";
+                } else if (age < 10 || age > 16) {
+                    newErrors.tanggalLahir =
+                        "Usia pendaftar harus berada pada rentang 10 sampai 16 tahun.";
+                }
             }
         }
 
@@ -232,6 +240,19 @@ export default function PendaftarPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validasi ulang step 1 sebelum mengirim ke API
+        const isBiodataValid = validateStep1();
+        if (!isBiodataValid) {
+            setStep(1);
+            setToastConfig({
+                show: true,
+                message: "Periksa kembali data calon siswa sebelum melanjutkan.",
+                type: "error",
+            });
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
 
         const newErrors = {};
         if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/.test(password)) {
@@ -311,16 +332,33 @@ export default function PendaftarPage() {
                     kata_sandi: "password",
                 };
 
+                const step1Fields = new Set([
+                    "namaLengkap", "nisn", "provinsi", "kotaKabupaten",
+                    "kecamatan", "kelurahan", "rtRw", "kodePos",
+                    "tempatLahir", "tanggalLahir", "jenisKelamin",
+                    "noHp", "asalSekolah", "namaWali", "emailWali",
+                ]);
+
                 const mappedErrors = {};
                 for (const [key, msg] of Object.entries(err.errors)) {
-                    if (backendToFrontend[key]) {
-                        mappedErrors[backendToFrontend[key]] = msg;
-                    } else {
-                        mappedErrors[key] = msg;
-                    }
+                    const frontKey = backendToFrontend[key] || key;
+                    mappedErrors[frontKey] = msg;
                 }
 
                 setErrors(mappedErrors);
+
+                // Kembalikan ke step 1 jika ada error field biodata
+                const hasStep1Error = Object.keys(mappedErrors).some((key) =>
+                    step1Fields.has(key)
+                );
+                if (hasStep1Error) {
+                    setStep(1);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+
+                // Tampilkan pesan error pertama yang lebih informatif
+                const firstValidationMessage =
+                    Object.values(mappedErrors)[0] || "Periksa kembali data pendaftaran.";
 
                 setTimeout(() => {
                     const firstErrorEl = document.querySelector(".error-input");
@@ -330,16 +368,22 @@ export default function PendaftarPage() {
                             block: "center",
                         });
                 }, 100);
-            }
 
-            setToastConfig({
-                show: true,
-                message:
-                    err.error ||
-                    err.message ||
-                    "Gagal melakukan registrasi. Silakan coba lagi.",
-                type: "error",
-            });
+                setToastConfig({
+                    show: true,
+                    message: firstValidationMessage,
+                    type: "error",
+                });
+            } else {
+                setToastConfig({
+                    show: true,
+                    message:
+                        err.error ||
+                        err.message ||
+                        "Gagal melakukan registrasi. Silakan coba lagi.",
+                    type: "error",
+                });
+            }
         } finally {
             setSubmitting(false);
         }
@@ -628,7 +672,9 @@ export default function PendaftarPage() {
                                                 name="kodePos"
                                                 value={formData.kodePos}
                                                 onChange={handleChange}
-                                                placeholder="Kode Pos"
+                                                placeholder="Contoh: 95111"
+                                                inputMode="numeric"
+                                                maxLength={5}
                                                 className={getFieldClass("kodePos")}
                                             />
                                             {errors.kodePos && (
