@@ -169,7 +169,7 @@ export default function PendaftarPage() {
                 ) {
                     age--;
                 }
-                if (birthDate >= today) {
+                if (birthDate >= today || age > 30) {
                     newErrors.tanggalLahir = "Tanggal lahir tidak valid.";
                 } else if (age <= 11) {
                     newErrors.tanggalLahir = "Usia pendaftar harus minimal 11 tahun.";
