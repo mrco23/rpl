@@ -338,7 +338,7 @@ export default function AkunInternalPage() {
                             />
                             <input
                                 type="text"
-                                placeholder="Cari nama / username..."
+                                placeholder="Cari nama / Nama Pengguna..."
                                 value={searchQueryVerifier}
                                 onChange={(e) => {
                                     setSearchQueryVerifier(e.target.value);
@@ -513,7 +513,7 @@ export default function AkunInternalPage() {
                             />
                             <input
                                 type="text"
-                                placeholder="Cari nama / username..."
+                                placeholder="Cari nama / Nama Pengguna..."
                                 value={searchQueryKepsek}
                                 onChange={(e) => {
                                     setSearchQueryKepsek(e.target.value);
@@ -535,7 +535,7 @@ export default function AkunInternalPage() {
                         <table className="w-full text-left border-collapse min-w-max">
                             <thead>
                                 <tr className="bg-[#e2e8f0] border-b border-gray-200 text-sm font-semibold text-gray-700">
-                                    <th className="p-4 w-1/2">Nama / Username</th>
+                                    <th className="p-4 w-1/2">Nama / Nama Pengguna</th>
                                     <th className="p-4 w-1/4">Status</th>
                                     <th className="p-4 w-1/4 text-center">Aksi</th>
                                 </tr>
@@ -701,7 +701,7 @@ export default function AkunInternalPage() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Username
+                                Nama Pengguna
                             </label>
                             <input
                                 type="text"
